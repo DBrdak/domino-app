@@ -17,6 +17,7 @@ namespace OnlineShop.Catalog.API.Entities
         public string Image { get; set; }
         public Money Price { get; set; }
         public bool IsAvailable { get; set; }
+        public bool IsDiscounted { get; set; } = false;
         public QuantityModifier QuantityModifier { get; set; }
     }
 }

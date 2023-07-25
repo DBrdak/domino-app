@@ -22,9 +22,22 @@ namespace OnlineShop.Catalog.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] string sortOrder = "asc",
             [FromQuery] string sortBy = "Name",
-            [FromQuery] int pageSize = 9)
+            [FromQuery] int pageSize = 9,
+            [FromQuery] string searchPhrase = null,
+            [FromQuery] decimal minPrice = 0,
+            [FromQuery] decimal maxPrice = decimal.MaxValue,
+            [FromQuery] bool? isAvailable = null,
+            [FromQuery] bool? isDiscounted = null)
         {
-            return await _repository.GetProductsAsync(page, sortOrder, sortBy, pageSize, category);
+            return await _repository.GetProductsAsync(
+                page, sortOrder, sortBy, pageSize, category, searchPhrase,
+                minPrice, maxPrice, isAvailable, isDiscounted);
         }
+
+        //TODO
+        //Dodawanie produktu z ceną z cennika, jeżeli nie znaleziono, to wtedy z ustaloną, po czym dodaję do cennika
+        //Usuwanie produktu
+        //Edytowanie produktu z integracją ceny w cenniku, jeżeli dodam promocję tu to i tam
+        //Get dla admina (w formie tabeli, może zrobić to agregatem z cennikiem?)
     }
 }
