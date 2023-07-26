@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using OnlineShop.Catalog.API.CustomTypes;
 using OnlineShop.Catalog.API.Entities;
+using System.Text;
 
 namespace OnlineShop.Catalog.API.Data;
 

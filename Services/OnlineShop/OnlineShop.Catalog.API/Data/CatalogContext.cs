@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using System.Text;
+using MongoDB.Driver;
 using OnlineShop.Catalog.API.Entities;
 
 namespace OnlineShop.Catalog.API.Data
@@ -17,10 +18,10 @@ namespace OnlineShop.Catalog.API.Data
                 config.GetValue<string>("DatabaseSettings:DatabaseName"));
 
             Products = database.GetCollection<Product>(
-                config.GetValue<string>("DatabaseSettings:CollectionName"));
+            config.GetValue<string>("DatabaseSettings:CollectionName"));
 
             if (_env.IsDevelopment())
-                Products.SeedData();
+                CatalogContextSeed.SeedData(Products);
         }
 
         public IMongoCollection<Product> Products { get; }

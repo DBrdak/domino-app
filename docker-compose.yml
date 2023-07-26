@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+#Databases
+  catalogdb:
+    image: mongo
+
+  shoppingcartdb:
+    image: redis
+
+#Microservices
+  onlineshop.catalog.api:
+    image: ${DOCKER_REGISTRY-}onlineshopcatalogapi
+    build:
+      context: .
+      dockerfile: Services/OnlineShop/OnlineShop.Catalog.API/Dockerfile
+
+  onlineshop.shoppingcart.api:
+    image: ${DOCKER_REGISTRY-}onlineshopshoppingcartapi
+    build:
+      context: .
+      dockerfile: Services/OnlineShop/OnlineShop.ShoppingCart.API/Dockerfile
+

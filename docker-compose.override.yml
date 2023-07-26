@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+#Databases
+  catalogdb:
+    container_name: catalogdb
+    restart: always
+    environment:
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
+    ports:
+      - "27017:27017"
+    volumes:
+      - /data/db
+
+  shoppingcartdb:
+    container_name: shoppingcartdb
+    restart: always
+    ports:
+      - "6379:6379"
+
+#Microservices
+  onlineshop.catalog.api:
+    container_name: catalog.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings__ConnectionString=mongodb://catalogdb:27017"
+    depends_on:
+      - catalogdb
+    ports:
+      - "8000:80"
+
+  onlineshop.shoppingcart.api:
+    container_name: shoppingcart.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings__ConnectionString=shoppingcartdb:6379"
+    depends_on:
+      - shoppingcartdb
+    ports:
+      - "8001:80"
+

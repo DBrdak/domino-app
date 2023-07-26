@@ -1,4 +1,6 @@
-﻿using OnlineShop.Catalog.API.Data;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using OnlineShop.Catalog.API.Data;
 using OnlineShop.Catalog.API.Repositories;
 
 namespace OnlineShop.Catalog.API.Extensions
