@@ -2,7 +2,7 @@
 using System.Text.Json;
 using OnlineShop.Catalog.API.Models;
 
-namespace Payroll.API.Middlewares
+namespace OnlineShop.Catalog.API.Middlewares
 {
     public class ExceptionMiddleware
     {

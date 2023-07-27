@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Application.Contracts;
 using Order.Infrastructure.Persistence;
+using Order.Infrastructure.Repositories;
 
 namespace Order.Infrastructure
 {
@@ -17,6 +19,8 @@ namespace Order.Infrastructure
         {
             services.AddDbContext<OrderContext>(opt =>
                 opt.UseNpgsql(configuration.GetConnectionString("OrderConnectionString")));
+
+            services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
 
             return services;
         }

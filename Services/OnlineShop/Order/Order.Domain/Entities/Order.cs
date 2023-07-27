@@ -11,7 +11,6 @@ namespace Order.Domain.Entities
     {
         // Shopping Cart Info
 
-        public string ShoppingCartId { get; set; }
         public decimal TotalPrice { get; set; }
         public List<OrderItem> Items { get; set; }
 
@@ -23,12 +22,13 @@ namespace Order.Domain.Entities
 
         // Delivery Info
 
-        public Coordinates Coordinates { get; set; }
+        public Location DeliveryLocation { get; set; }
         public string ShopId { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTimeRange DeliveryDate { get; set; }
 
         // Order Info
 
+        public string OrderId { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Status { get; set; }
     }

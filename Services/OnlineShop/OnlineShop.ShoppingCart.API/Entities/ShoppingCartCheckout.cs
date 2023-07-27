@@ -18,8 +18,8 @@ namespace OnlineShop.ShoppingCart.API.Entities
 
         // Delivery Info
 
-        public Coordinates Coordinates { get; set; }
+        public Location DeliveryLocation { get; set; }
         public string ShopId { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTimeRange DeliveryDate { get; set; }
     }
 }

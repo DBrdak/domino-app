@@ -1,5 +1,7 @@
-﻿using Order.Application;
+﻿using Microsoft.EntityFrameworkCore;
+using Order.Application;
 using Order.Infrastructure;
+using Order.Infrastructure.Persistence;
 
 namespace OnlineShop.Order.API.Extensions
 {
@@ -12,6 +14,26 @@ namespace OnlineShop.Order.API.Extensions
             services.InjectInfrastructure(configuration);
 
             return services;
+        }
+
+        public static async Task<IHost> MigrateDatabase(this IHost app)
+        {
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            try
+            {
+                var context = services.GetRequiredService<OrderContext>();
+                await context.Database.MigrateAsync();
+                //context.Seed();
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex.Message, "Error occured during migration");
+            }
+
+            return app;
         }
     }
 }

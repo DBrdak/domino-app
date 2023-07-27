@@ -1,4 +1,5 @@
 using OnlineShop.Catalog.API.Extensions;
+using OnlineShop.Catalog.API.Middlewares;
 
 namespace OnlineShop.Catalog.API
 {
@@ -16,7 +17,7 @@ namespace OnlineShop.Catalog.API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
 
             await app.RunAsync();

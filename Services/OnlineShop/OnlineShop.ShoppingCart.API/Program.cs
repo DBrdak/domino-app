@@ -1,4 +1,5 @@
 using OnlineShop.ShoppingCart.API.Extensions;
+using OnlineShop.ShoppingCart.API.Middlewares;
 
 namespace OnlineShop.ShoppingCart.API
 {
@@ -14,6 +15,7 @@ namespace OnlineShop.ShoppingCart.API
 
             app.UseRouting();
             app.MapControllers();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             await app.RunAsync();
         }

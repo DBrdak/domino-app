@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Order.Domain.Common
 {
-    public record Coordinates(string Latitude, string Longitude);
+    public record Location(string Name, string Latitude, string Longitude);
 }
