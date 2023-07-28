@@ -10,6 +10,6 @@ namespace OnlineShop.ShoppingCart.API.Repositories
 
         Task DeleteShoppingCart(string cartId);
 
-        Task<bool> Checkout(ShoppingCartCheckout shoppingCartCheckout);
+        Task<string> Checkout(ShoppingCartCheckout shoppingCartCheckout);
     }
 }

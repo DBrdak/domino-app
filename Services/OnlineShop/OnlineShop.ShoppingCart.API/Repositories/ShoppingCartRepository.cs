@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using OnlineShop.ShoppingCart.API.Entities;
+using OnlineShop.ShoppingCart.API.EventBusConsumer;
 
 namespace OnlineShop.ShoppingCart.API.Repositories
 {
@@ -43,19 +44,27 @@ namespace OnlineShop.ShoppingCart.API.Repositories
             await _cache.RemoveAsync(cartId);
         }
 
-        public async Task<bool> Checkout(ShoppingCartCheckout shoppingCartCheckout)
+        public async Task<string> Checkout(ShoppingCartCheckout shoppingCartCheckout)
         {
             var cart = await GetShoppingCart(shoppingCartCheckout.ShoppingCartId);
 
             if (cart is null)
-                return false;
+                return null;
 
             var eventMessage = _mapper.Map<ShoppingCartCheckoutEvent>(shoppingCartCheckout);
+
             await _publishEndpoint.Publish(eventMessage);
+
+            Task.WaitAll(CheckoutResultConsumer.GetCheckoutResult());
+
+            var result = await CheckoutResultConsumer.GetCheckoutResult();
+
+            if (!result.IsSuccess)
+                return result.Message;
 
             await DeleteShoppingCart(shoppingCartCheckout.ShoppingCartId);
 
-            return true;
+            return result.Message;
         }
     }
 }

@@ -32,7 +32,6 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         }
 
         [HttpDelete("{shoppingCartId}")]
-        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteBasket(string shoppingCartId)
         {
             await _repository.DeleteShoppingCart(shoppingCartId);
@@ -40,13 +39,13 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         }
 
         [HttpPost("[action]")]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Accepted)]
         public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckout shoppingCartCheckout)
         {
             var result = await _repository.Checkout(shoppingCartCheckout);
-            //TODO Dodać zwrotkę z ID Zamówienia
-            return result ? Accepted() : BadRequest();
+
+            return result != null ?
+                Ok(result) :
+                BadRequest();
         }
     }
 }
