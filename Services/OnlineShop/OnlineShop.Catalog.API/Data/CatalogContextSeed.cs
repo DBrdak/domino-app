@@ -1,29 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.API.Entities;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using OnlineShop.Catalog.API.Models;
+using OnlineShop.Catalog.API.Entities;
+
+using OnlineShop.Catalog.API.Models;
+
+using System.Text;
 
 namespace OnlineShop.Catalog.API.Data;
 
 public static class CatalogContextSeed
 {
-    public static void SeedData(this CatalogContext context)
+    public static void SeedData(this IMongoCollection<Product> productCollection)
     {
-        var isDbEmpty = !context.Set<Product>().Any();
+        var isDbEmpty = !productCollection.Find(p => true).Any();
 
         if (isDbEmpty)
-        {
-            context.Set<Product>().AddRange(GetPreconfiguredProducts());
-            context.SaveChanges();
-        }
+            productCollection.InsertMany(GetPreconfiguredProducts());
     }
 
     public static Product CreateProduct(string name, string description, string category, decimal price, bool isAvailable, decimal? kgPerPcs)
     {
         return new Product
         {
-            Id = Guid.NewGuid(),
+            Id = ObjectId.GenerateNewId().ToString(),
             Name = name,
             Description = description,
             Category = category,

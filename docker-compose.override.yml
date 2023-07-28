@@ -4,15 +4,14 @@ services:
 #Databases
   catalogdb:
     container_name: catalogdb
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin1234
-      - POSTGRES_DB=CatalogDb
     restart: always
+    environment:
+      - LC_ALL=C.UTF-8
+      - LANG=C.UTF-8
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - mongo_data:/data/db
 
   shoppingcartdb:
     container_name: shoppingcartdb
@@ -28,7 +27,7 @@ services:
       - POSTGRES_DB=OrderDb
     restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
@@ -37,7 +36,7 @@ services:
     container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings__CatalogConnectionString=Server=catalogdb;Port=5432;Database=CatalogDb;User Id=admin;Password=admin1234"
+      - "DatabaseSettings__ConnectionString=mongodb://catalogdb:27017"
     depends_on:
       - catalogdb
     ports:

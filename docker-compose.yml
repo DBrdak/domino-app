@@ -3,7 +3,7 @@ version: '3.4'
 services:
 #Databases
   catalogdb:
-    image: postgres
+    image: mongo
 
   shoppingcartdb:
     image: redis

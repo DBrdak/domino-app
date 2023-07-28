@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace OnlineShop.Catalog.API.Models
+﻿namespace OnlineShop.Catalog.API.Models
 {
     public class PagedList<T>
     {
@@ -20,16 +18,16 @@ namespace OnlineShop.Catalog.API.Models
         }
 
         public static async Task<PagedList<T>> CreateAsync(
-            IQueryable<T> query, int page, int pageSize)
+            List<T> collection, int page, int pageSize)
         {
-            var totalCount = await query.CountAsync();
+            var totalCount = collection.Count();
 
             var skipAmount = (page - 1) * pageSize;
 
-            var items = await query
+            var items = collection
                 .Skip(skipAmount)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToList();
 
             return new(items, page, pageSize, totalCount);
         }

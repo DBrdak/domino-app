@@ -19,7 +19,6 @@ namespace OnlineShop.Catalog.API
             app.UseAuthorization();
             app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
-            await app.MigrateDatabase(app.Environment);
 
             await app.RunAsync();
         }
