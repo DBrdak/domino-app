@@ -1,4 +1,5 @@
-﻿using OnlineShop.ShoppingCart.API.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using OnlineShop.ShoppingCart.API.Models;
 
 namespace OnlineShop.ShoppingCart.API.Entities
 {
@@ -12,14 +13,15 @@ namespace OnlineShop.ShoppingCart.API.Entities
 
         // Personal Info
 
-        public PhoneNumber PhoneNumber { get; set; }
+        [RegularExpression("^[0-9]{9}$")]
+        public string PhoneNumber { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
         // Delivery Info
 
         public Location DeliveryLocation { get; set; }
-        public string ShopId { get; set; }
         public DateTimeRange DeliveryDate { get; set; }
     }
 }

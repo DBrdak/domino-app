@@ -3,10 +3,13 @@ version: '3.4'
 services:
 #Databases
   catalogdb:
-    image: mongo
+    image: postgres
 
   shoppingcartdb:
     image: redis
+
+  orderdb:
+    image: postgres
 
 #Microservices
   onlineshop.catalog.api:
@@ -21,3 +24,14 @@ services:
       context: .
       dockerfile: Services/OnlineShop/OnlineShop.ShoppingCart.API/Dockerfile
 
+
+  onlineshop.order.api:
+    image: ${DOCKER_REGISTRY-}onlineshoporderapi
+    build:
+      context: .
+      dockerfile: Services/OnlineShop/Order/OnlineShop.Order.API/Dockerfile
+
+#Volumes
+volumes:
+  mongo_data:
+  postgres_data:

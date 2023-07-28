@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
-using OnlineShop.Catalog.API.CustomTypes;
-using OnlineShop.Catalog.API.Entities;
+﻿using OnlineShop.Catalog.API.Entities;
+using OnlineShop.Catalog.API.Models;
 
 namespace OnlineShop.Catalog.API.Repositories
 {
@@ -9,6 +7,6 @@ namespace OnlineShop.Catalog.API.Repositories
     {
         public Task<PagedList<Product>> GetProductsAsync(
             int page, string sortOrder, string sortBy, int pageSize, string category, string name,
-            decimal minPrice, decimal maxPrice, bool? isAvailable, bool? isDiscounted);
+            decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted);
     }
 }

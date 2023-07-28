@@ -1,22 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Order.Application.Contracts;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Order.Application.Features.Commands.CancelOrder;
+using OnlineShop.Order.Application.Features.Queries.GetCustomerOrders;
 
 namespace OnlineShop.Order.API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class OrderController : ControllerBase
+    [Route("api/v1/[controller]")]
+    public class OrderController : BaseOrderController
     {
-        private readonly IOrderRepository _repository;
+        private readonly IMediator _mediator;
 
-        public OrderController(IOrderRepository repository)
+        public OrderController(IMediator mediator)
         {
-            _repository = repository;
+            _mediator = mediator;
         }
 
-        //TODO
-        // Get dla jednego zamówienia jako klient
-        // Post zamówienia jako klient
-        // Delete zamówienia jako klient
+        [HttpGet]
+        public async Task<IActionResult> GetCustomerOrder([FromBody] GetCustomerOrderQuery query)
+        {
+            var result = await _mediator.Send(query);
+
+            return HandleResult(result);
+        }
+
+        [HttpPut("cancel")]
+        public async Task<IActionResult> CancelOrder([FromBody] CancelOrderCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return HandleResult(result);
+        }
     }
 }

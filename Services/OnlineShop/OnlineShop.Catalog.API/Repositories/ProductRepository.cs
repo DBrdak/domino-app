@@ -1,54 +1,87 @@
 ﻿using System.Linq.Expressions;
-using MongoDB.Driver;
-using OnlineShop.Catalog.API.CustomTypes;
 using OnlineShop.Catalog.API.Data;
 using OnlineShop.Catalog.API.Entities;
 using OnlineShop.Catalog.API.Extensions;
+using OnlineShop.Catalog.API.Models;
 
 namespace OnlineShop.Catalog.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ICatalogContext _context;
+        private readonly CatalogContext _context;
 
-        public ProductRepository(ICatalogContext context)
+        public ProductRepository(CatalogContext context)
         {
             _context = context;
         }
 
-        public async Task<PagedList<Product>> GetProductsAsync
-            (int page, string sortOrder, string sortBy, int pageSize, string category, string name,
-                decimal minPrice, decimal maxPrice, bool? isAvailable, bool? isDiscounted)
+        //TODO Rozkminić cursor pagination
+
+        public async Task<PagedList<Product>> GetProductsAsync(int page, string sortOrder, string sortBy, int pageSize, string category, string name,
+            decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
-            var filter = ApplyFiltering(category, minPrice, maxPrice, isAvailable, isDiscounted);
+            var query = _context.Set<Product>()
+                .AsQueryable()
+                .ApplyCategorySelect(category)
+                .ApplySorting(sortBy, sortOrder)
+                .ApplySearching(name)
+                .ApplyFiltering(minPrice, maxPrice, isAvailable, isDiscounted);
 
-            var options = ApplySorting(sortOrder, sortBy);
-
-            var products = await (await _context.Products.FindAsync(filter, options)).ToListAsync();
-
-            products = ApplySearch(name, products);
-
-            return await PagedList<Product>.CreateAsync(products, page, pageSize);
+            return await PagedList<Product>.CreateAsync(query, page, pageSize);
         }
+    }
 
-        private static FindOptions<Product> ApplySorting(string sortOrder, string sortBy)
+    internal static class Querying
+    {
+        internal static IQueryable<Product> ApplyCategorySelect(this IQueryable<Product> query, string category) =>
+            query.Where(p => p.Category.ToLower() == category.ToLower());
+
+        internal static IQueryable<Product> ApplySorting(this IQueryable<Product> query, string sortBy, string sortOrder)
         {
-            var sort = sortOrder == "asc"
-                ? Builders<Product>.Sort.Ascending(sortBy)
-                : Builders<Product>.Sort.Descending(sortBy);
-            var options = new FindOptions<Product>
+            if (sortBy.ToLower() == "price")
             {
-                Sort = sort
-            };
-            return options;
+                return sortOrder.ToLower() == "desc" ?
+                    query.OrderByDescending(p => p.Price.Amount)
+                    : query.OrderBy(p => p.Price.Amount);
+            }
+
+            return sortOrder.ToLower() == "desc" ?
+                query.OrderByDescending(p => p.Name)
+                : query.OrderBy(p => p.Name);
         }
 
-        private static List<Product> ApplySearch(string name, List<Product> products)
+        internal static IQueryable<Product> ApplyFiltering(this IQueryable<Product> query, decimal? minPrice,
+            decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
-            if (string.IsNullOrEmpty(name))
-                return products;
+            if (maxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price.Amount <= maxPrice);
+            }
 
-            return products.Where(p =>
+            if (minPrice.HasValue)
+            {
+                query = query.Where(p => p.Price.Amount >= minPrice);
+            }
+
+            if (isAvailable.HasValue)
+            {
+                query = query.Where(p => p.IsAvailable == isAvailable);
+            }
+
+            if (isDiscounted.HasValue)
+            {
+                query = query.Where(p => p.IsDiscounted == isDiscounted);
+            }
+
+            return query;
+        }
+
+        internal static IQueryable<Product> ApplySearching(this IQueryable<Product> query, string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return query;
+            //TODO Fix ToList
+            return query.ToList().Where(p =>
             {
                 name = name.ToLower().RemovePolishAccents();
                 var productName = p.Name.ToLower().RemovePolishAccents();
@@ -67,39 +100,7 @@ namespace OnlineShop.Catalog.API.Repositories
                 }
 
                 return productName.StartsWith(name);
-            }).ToList();
-        }
-
-        private FilterDefinition<Product> ApplyFiltering(string category, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
-        {
-            var filter = FilterDefinition<Product>.Empty;
-
-            if (category.ToLower() == "meat" || category.ToLower() == "sausage")
-            {
-                filter &= Builders<Product>.Filter.Where(p => p.Category.ToLower() == category.ToLower());
-            }
-
-            if (minPrice.HasValue)
-            {
-                filter &= Builders<Product>.Filter.Gte(p => p.Price.Amount, minPrice.Value);
-            }
-
-            if (maxPrice.HasValue)
-            {
-                filter &= Builders<Product>.Filter.Lte(p => p.Price.Amount, maxPrice.Value);
-            }
-
-            if (isDiscounted.HasValue)
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.IsDiscounted, isDiscounted.Value);
-            }
-
-            if (isAvailable.HasValue)
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.IsAvailable, isAvailable.Value);
-            }
-
-            return filter;
+            }).AsQueryable();
         }
     }
 }

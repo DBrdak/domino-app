@@ -4,14 +4,15 @@ services:
 #Databases
   catalogdb:
     container_name: catalogdb
-    restart: always
     environment:
-      - LC_ALL=C.UTF-8
-      - LANG=C.UTF-8
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=CatalogDb
+    restart: always
     ports:
-      - "27017:27017"
+      - "5432:5432"
     volumes:
-      - /data/db
+      - postgres_data:/var/lib/postgresql/data/
 
   shoppingcartdb:
     container_name: shoppingcartdb
@@ -19,12 +20,24 @@ services:
     ports:
       - "6379:6379"
 
+  orderdb:
+    container_name: orderdb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_DB=OrderDb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
 #Microservices
   onlineshop.catalog.api:
     container_name: catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=mongodb://catalogdb:27017"
+      - "ConnectionStrings__CatalogConnectionString=Server=catalogdb;Port=5432;Database=CatalogDb;User Id=admin;Password=admin1234"
     depends_on:
       - catalogdb
     ports:
@@ -39,4 +52,15 @@ services:
       - shoppingcartdb
     ports:
       - "8001:80"
+
+  onlineshop.order.api:
+    container_name: order.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__OrderConnectionString=Server=orderdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234"
+    depends_on:
+      - orderdb
+    ports:
+      - "8002:80"
+
 

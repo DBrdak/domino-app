@@ -1,29 +1,28 @@
 ﻿using System.Text;
-using MongoDB.Driver;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Catalog.API.Entities;
 
 namespace OnlineShop.Catalog.API.Data
 {
-    public sealed class CatalogContext : ICatalogContext
+    public sealed class CatalogContext : DbContext
     {
-        private readonly IWebHostEnvironment _env;
+        public DbSet<Product> Products { get; }
 
-        public CatalogContext(IConfiguration config, IWebHostEnvironment env)
+        public CatalogContext(DbContextOptions options) : base(options)
+        { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _env = env;
+            base.OnModelCreating(modelBuilder);
 
-            var client = new MongoClient(
-                config.GetValue<string>("DatabaseSettings:ConnectionString"));
-            var database = client.GetDatabase(
-                config.GetValue<string>("DatabaseSettings:DatabaseName"));
+            modelBuilder.Entity<Product>()
+                .HasKey(p => p.Id);
 
-            Products = database.GetCollection<Product>(
-            config.GetValue<string>("DatabaseSettings:CollectionName"));
+            modelBuilder.Entity<Product>()
+                .OwnsOne(p => p.Price);
 
-            if (_env.IsDevelopment())
-                CatalogContextSeed.SeedData(Products);
+            modelBuilder.Entity<Product>()
+                .OwnsOne(p => p.QuantityModifier);
         }
-
-        public IMongoCollection<Product> Products { get; }
     }
 }

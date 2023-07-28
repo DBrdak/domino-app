@@ -6,7 +6,8 @@
       "serviceActions": {
         "onlineshop.basket.api": "StartDebugging",
         "onlineshop.catalog.api": "StartDebugging",
-        "onlineshop.shoppingcart.api": "StartDebugging"
+        "onlineshop.shoppingcart.api": "StartDebugging",
+        "onlineshop.order.api": "StartDebugging"
       }
     }
   }

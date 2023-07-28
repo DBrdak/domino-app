@@ -9,7 +9,7 @@ namespace OnlineShop.Catalog.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.Inject();
+            builder.Services.Inject(builder.Configuration);
 
             var app = builder.Build();
 
@@ -19,6 +19,7 @@ namespace OnlineShop.Catalog.API
             app.UseAuthorization();
             app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
+            await app.MigrateDatabase(app.Environment);
 
             await app.RunAsync();
         }

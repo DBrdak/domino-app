@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.API.CustomTypes;
 using OnlineShop.Catalog.API.Entities;
+using OnlineShop.Catalog.API.Models;
 using OnlineShop.Catalog.API.Repositories;
 
 namespace OnlineShop.Catalog.API.Controllers

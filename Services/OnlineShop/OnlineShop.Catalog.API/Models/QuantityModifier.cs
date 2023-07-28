@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Catalog.API.CustomTypes;
+﻿namespace OnlineShop.Catalog.API.Models;
 
 public class QuantityModifier
 {

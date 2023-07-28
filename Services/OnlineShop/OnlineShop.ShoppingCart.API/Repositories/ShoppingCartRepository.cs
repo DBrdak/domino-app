@@ -45,6 +45,8 @@ namespace OnlineShop.ShoppingCart.API.Repositories
 
             // Here goes EventBus
 
+            await DeleteShoppingCart(shoppingCartCheckout.ShoppingCartId);
+
             return true;
         }
     }

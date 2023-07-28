@@ -1,8 +1,6 @@
-﻿using MongoDB.Driver;
-using OnlineShop.Catalog.API.Entities;
-using System.Globalization;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace OnlineShop.Catalog.API.CustomTypes
+namespace OnlineShop.Catalog.API.Models
 {
     public class PagedList<T>
     {
@@ -22,18 +20,18 @@ namespace OnlineShop.Catalog.API.CustomTypes
         }
 
         public static async Task<PagedList<T>> CreateAsync(
-            List<T> collection, int page, int pageSize)
+            IQueryable<T> query, int page, int pageSize)
         {
-            var totalCount = collection.Count();
+            var totalCount = await query.CountAsync();
 
             var skipAmount = (page - 1) * pageSize;
 
-            var items = collection
+            var items = await query
                 .Skip(skipAmount)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
-            return new PagedList<T>(items, page, pageSize, totalCount);
+            return new(items, page, pageSize, totalCount);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace OnlineShop.Order.API
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            await app.MigrateDatabase();
+            await app.MigrateDatabase(app.Environment);
 
             await app.RunAsync();
         }

@@ -43,11 +43,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{2CCE495B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Order.API", "Services\OnlineShop\Order\OnlineShop.Order.API\OnlineShop.Order.API.csproj", "{63D9106C-806A-47D0-9D57-78EF64197D69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Application", "Services\OnlineShop\Order\Order.Application\Order.Application.csproj", "{837D606E-45CB-4827-AA08-E8973E62C393}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Order.Application", "Services\OnlineShop\Order\OnlineShop.Order.Application\OnlineShop.Order.Application.csproj", "{837D606E-45CB-4827-AA08-E8973E62C393}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Domain", "Services\OnlineShop\Order\Order.Domain\Order.Domain.csproj", "{C073DD39-2F64-482E-B628-162348FC72E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Order.Domain", "Services\OnlineShop\Order\OnlineShop.Order.Domain\OnlineShop.Order.Domain.csproj", "{C073DD39-2F64-482E-B628-162348FC72E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Infrastructure", "Services\OnlineShop\Order\Order.Infrastructure\Order.Infrastructure.csproj", "{D0022E01-33F8-4FCD-B7F3-7C473BB99A25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Order.Infrastructure", "Services\OnlineShop\Order\OnlineShop.Order.Infrastructure\OnlineShop.Order.Infrastructure.csproj", "{D0022E01-33F8-4FCD-B7F3-7C473BB99A25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
