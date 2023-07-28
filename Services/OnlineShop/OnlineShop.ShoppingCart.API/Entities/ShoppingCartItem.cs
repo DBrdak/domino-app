@@ -12,16 +12,17 @@ namespace OnlineShop.ShoppingCart.API.Entities
         public string ProductName { get; set; }
         public string ProductImage { get; set; }
 
-        public ShoppingCartItem(decimal quantity, string unit, decimal kgPerPcs, decimal price, string productId, string productName, string productImage)
-        {
-            Unit = unit == "kg" || unit == "szt" ? unit
-                : throw new WrongInputException($"Provided unit {unit} is wrong, only \"kg\" and \"szt\" are allowed");
-            KgPerPcs = kgPerPcs;
-            Quantity = quantity;
-            Price = price;
-            ProductId = productId;
-            ProductName = productName;
-            ProductImage = productImage;
-        }
+        //public ShoppingCartItem(decimal quantity, string unit, decimal kgPerPcs, decimal price, string productId, string productName, string productImage)
+        //{
+        //    //TODO Użyć FluentValidation zamiast rzucać wyjątek
+        //    Unit = unit == "kg" || unit == "szt" ? unit
+        //        : throw new WrongInputException($"Provided unit {unit} is wrong, only \"kg\" and \"szt\" are allowed");
+        //    KgPerPcs = kgPerPcs;
+        //    Quantity = quantity;
+        //    Price = price;
+        //    ProductId = productId;
+        //    ProductName = productName;
+        //    ProductImage = productImage;
+        //}
     }
 }

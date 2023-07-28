@@ -2,8 +2,13 @@
 
 public class QuantityModifier
 {
-    public bool IsPcsAllowed { get; set; }
-    public decimal? KgPerPcs { get; set; }
+    public bool IsPcsAllowed { get; private set; }
+    public decimal? KgPerPcs { get; private set; }
+
+    public QuantityModifier()
+    {
+        IsPcsAllowed = false;
+    }
 
     public QuantityModifier(decimal? kgPerPcs)
     {

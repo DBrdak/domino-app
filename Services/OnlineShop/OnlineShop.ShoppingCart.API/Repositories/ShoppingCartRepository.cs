@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
+﻿using AutoMapper;
+using EventBus.Messages.Events;
+using MassTransit;
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using OnlineShop.ShoppingCart.API.Entities;
 
@@ -7,10 +10,14 @@ namespace OnlineShop.ShoppingCart.API.Repositories
     public class ShoppingCartRepository : IShoppingCartRepository
     {
         private readonly IDistributedCache _cache;
+        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IMapper _mapper;
 
-        public ShoppingCartRepository(IDistributedCache cache)
+        public ShoppingCartRepository(IDistributedCache cache, IPublishEndpoint publishEndpoint, IMapper mapper)
         {
             _cache = cache;
+            _publishEndpoint = publishEndpoint;
+            _mapper = mapper;
         }
 
         public async Task<Entities.ShoppingCart> GetShoppingCart(string cartId)
@@ -43,7 +50,8 @@ namespace OnlineShop.ShoppingCart.API.Repositories
             if (cart is null)
                 return false;
 
-            // Here goes EventBus
+            var eventMessage = _mapper.Map<ShoppingCartCheckoutEvent>(shoppingCartCheckout);
+            await _publishEndpoint.Publish(eventMessage);
 
             await DeleteShoppingCart(shoppingCartCheckout.ShoppingCartId);
 

@@ -1,4 +1,14 @@
 ﻿namespace OnlineShop.Order.Domain.Common
 {
-    public record DateTimeRange(DateTime Start, DateTime End);
+    public class DateTimeRange
+    {
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+
+        public DateTimeRange(DateTime start, DateTime end)
+        {
+            Start = start.ToUniversalTime();
+            End = end.ToUniversalTime();
+        }
+    }
 }

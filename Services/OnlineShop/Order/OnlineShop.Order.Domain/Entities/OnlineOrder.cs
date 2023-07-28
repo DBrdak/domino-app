@@ -28,7 +28,7 @@ namespace OnlineShop.Order.Domain.Entities
         public string OrderId { get; set; } = GenerateId();
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public bool IsCanceled { get; set; } = false; // Customer
-        public string Status { get; set; } // Admin
+        public string Status { get; set; } = "Oczekuje na potwierdzenie"; // Admin
         public bool IsConfirmed { get; set; } = false; // Admin
         public bool IsRejected { get; set; } = false; // Admin
 

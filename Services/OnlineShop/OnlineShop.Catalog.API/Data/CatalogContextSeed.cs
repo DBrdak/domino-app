@@ -1,60 +1,77 @@
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
+using System;
 using MongoDB.Driver;
-using OnlineShop.Catalog.API.Models;
 using OnlineShop.Catalog.API.Entities;
-
 using OnlineShop.Catalog.API.Models;
 
-using System.Text;
-
-namespace OnlineShop.Catalog.API.Data;
-
-public static class CatalogContextSeed
+namespace OnlineShop.Catalog.API.Data
 {
-    public static void SeedData(this IMongoCollection<Product> productCollection)
+    public static class CatalogContextSeed
     {
-        var isDbEmpty = !productCollection.Find(p => true).Any();
-
-        if (isDbEmpty)
-            productCollection.InsertMany(GetPreconfiguredProducts());
-    }
-
-    public static Product CreateProduct(string name, string description, string category, decimal price, bool isAvailable, decimal? kgPerPcs)
-    {
-        return new Product
+        public static void SeedData(this IMongoCollection<Product> productCollection)
         {
-            Id = ObjectId.GenerateNewId().ToString(),
-            Name = name,
-            Description = description,
-            Category = category,
-            Image = "product_image.jpg",
-            Price = new Money(price),
-            IsAvailable = isAvailable,
-            QuantityModifier = new(kgPerPcs)
-        };
-    }
+            if (!productCollection.Find(p => true).Any())
+            {
+                var sausageProducts = new string[]
+                {
+                    "Kie³basa Marysieñki",
+                    "Boczek Marysieñki",
+                    "Kaszanka",
+                    "Pachwina Wêdzona",
+                    "Boczek Wêdzony",
+                    "Salceson Królewski",
+                    "Szynka Bia³a Gotowana",
+                    "Szynka Wêdzona Tradycyjnie",
+                    "Polêdwiczka Wêdzona",
+                    "Kiszka Ziemiaczana",
+                    "Salceson Ozorkowy"
+                };
 
-    private static IEnumerable<Product> GetPreconfiguredProducts()
-    {
-        var products = new List<Product>
-        {
-            CreateProduct("Kie³basa Marysieñki", "Kie³basa Marysieñki jest pyszna i soczysta.", "Sausage", 20.50m, true, null),
-            CreateProduct("Boczek Marysieñki", "Boczek Marysieñki jest aromatyczny i miêkki.", "Sausage", 30.00m, true, null),
-            CreateProduct("Parówkowa", "Parówka wêdzona to doskona³y wybór dla dzieci i doros³ych.", "Sausage", 18.75m, true, null),
-            CreateProduct("Szynka Tradycyjnie Wêdzona", "Szynka wêdzona to klasyczna polska tradycja.", "Sausage", 40.90m, true, null),
-            CreateProduct("Kaszanka", "Kaszanka to danie charakterystyczne dla kuchni polskiej.", "Sausage", 15.20m, true, null),
-            CreateProduct("Kiszka Ziemiaczana", "Kiszka ziemniaczana to smak dzieciñstwa.", "Sausage", 16.80m, true, null),
-            CreateProduct("Parówki", "Parówki to popularne danie na grillu i nie tylko.", "Sausage", 21.00m, true, null),
-            CreateProduct("Szynka Marysieñki", "Szynka Marysieñki jest idealna na kanapki.", "Sausage", 35.25m, false, null),
-            CreateProduct("Salceson W³oski", "Salceson w³oski to pyszny dodatek do obiadu.", "Sausage", 19.70m, true, null),
-            CreateProduct("Szynka Bia³a Gotowana", "Szynka bia³a gotowana to zdrowy wybór dla ca³ej rodziny.", "Sausage", 28.45m, false, null),
-            CreateProduct("Schab", "Schab to pyszne miêso wieprzowe.", "Meat", 25.50m, true, 2.5m),
-            CreateProduct("Kark", "Kark to wyœmienite miêso wieprzowe.", "Meat", 22.90m, true, 2),
-            CreateProduct("£opatka b/k", "£opatka bez koœci to miêso idealne do duszenia.", "Meat", 26.75m, false, 4.8m),
-            CreateProduct("¯ebro", "¯eberka to wyj¹tkowa przyjemnoœæ dla mi³oœników miêsa.", "Meat", 30.80m, true, 1)
-        };
+                var meatProducts = new string[]
+                {
+                    "Kark",
+                    "Schab",
+                    "£opatka b/k",
+                    "Szynka Górny Zraz",
+                    "Szynka Dolny Zraz",
+                    "Polêdwiczka",
+                    "¯eberka",
+                    "Golonka Tylnia",
+                    "Pachwina",
+                    "Koœci Spo¿ywcze",
+                    "Koœci Schabowe"
+                };
 
-        return products;
+                var random = new Random();
+
+                for (int i = 0; i < 10; i++)
+                {
+                    var sausageProduct = new Product
+                    {
+                        Name = sausageProducts[random.Next(0, sausageProducts.Length)],
+                        Description = "Przyk³adowy opis wêdliny",
+                        Category = "Sausage",
+                        Image = "sausage-image.jpg",
+                        Price = new Money(random.Next(15, 45)),
+                        IsAvailable = i % 2 == 0,
+                        IsDiscounted = i % 3 == 0,
+                        QuantityModifier = new QuantityModifier()
+                    };
+                    productCollection.InsertOne(sausageProduct);
+
+                    var meatProduct = new Product
+                    {
+                        Name = meatProducts[random.Next(0, meatProducts.Length)],
+                        Description = "Przyk³adowy opis miêsa",
+                        Category = "Meat",
+                        Image = "meat-image.jpg",
+                        Price = new Money(random.Next(15, 45)),
+                        IsAvailable = i % 2 == 0,
+                        IsDiscounted = i % 3 == 0,
+                        QuantityModifier = new QuantityModifier((decimal)random.NextDouble() * random.Next(1, 3))
+                    };
+                    productCollection.InsertOne(meatProduct);
+                }
+            }
+        }
     }
 }

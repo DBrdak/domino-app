@@ -7,5 +7,5 @@ public class OrderItem
     public decimal Quantity { get; set; }
     public string Unit { get; set; }
     public string ProductName { get; set; }
-    public string Status { get; set; }
+    public string Status { get; set; } = "Oczekuje na potwierdzenie";
 }

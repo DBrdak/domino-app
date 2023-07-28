@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using EventBus.Messages.Common;
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using OnlineShop.Order.API.EventBusConsumer;
 using OnlineShop.Order.API.Middlewares;
 using OnlineShop.Order.Application;
 using OnlineShop.Order.Infrastructure;
@@ -16,6 +20,17 @@ namespace OnlineShop.Order.API.Extensions
             services.InjectInfrastructure(configuration);
 
             services.AddTransient<ExceptionHandlingMiddleware>();
+
+            services.AddMassTransit(config =>
+            {
+                config.AddConsumer<ShoppingCartCheckoutConsumer>();
+                config.UsingRabbitMq((context, configMq) =>
+                {
+                    configMq.Host(configuration["EventBusSettings:HostAddress"]);
+                    configMq.ReceiveEndpoint(EventBusConstants.ShoppingCartCheckoutQueue,
+                        configEndpoint => { configEndpoint.ConfigureConsumer<ShoppingCartCheckoutConsumer>(context); });
+                });
+            });
 
             return services;
         }

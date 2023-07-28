@@ -45,7 +45,7 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckout shoppingCartCheckout)
         {
             var result = await _repository.Checkout(shoppingCartCheckout);
-
+            //TODO Dodać zwrotkę z ID Zamówienia
             return result ? Accepted() : BadRequest();
         }
     }

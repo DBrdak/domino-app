@@ -31,6 +31,9 @@ services:
       context: .
       dockerfile: Services/OnlineShop/Order/OnlineShop.Order.API/Dockerfile
 
+#Tools
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
 #Volumes
 volumes:
   mongo_data:

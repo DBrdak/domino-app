@@ -47,8 +47,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CacheSettings__ConnectionString=shoppingcartdb:6379"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - shoppingcartdb
+      - rabbitmq
     ports:
       - "8001:80"
 
@@ -57,9 +59,19 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings__OrderConnectionString=Server=orderdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - orderdb
+      - rabbitmq
     ports:
       - "8002:80"
+
+#Tools
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 

@@ -16,7 +16,7 @@ namespace OnlineShop.Order.Infrastructure.Persistence
                 TotalPrice = 100.0m,
                 Items = new List<OrderItem>
                 {
-                    new OrderItem { Quantity = 2, Unit = "kg", ProductName = "Product A", Status = "Nie" },
+                    new OrderItem { Quantity = 2, Unit = "kg", ProductName = "Boczek Marysieńki", Status = "Nie" },
                     new OrderItem { Quantity = 3, Unit = "szt", ProductName = "Product B", Status = "Nie" }
                 },
 

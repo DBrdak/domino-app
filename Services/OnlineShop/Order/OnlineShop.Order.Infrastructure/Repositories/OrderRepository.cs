@@ -24,7 +24,13 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
         public async Task<OnlineOrder> CreateOrder(OnlineOrder order)
         {
-            throw new NotImplementedException();
+            await _context.Set<OnlineOrder>().AddAsync(order);
+            var isSuccess = await _context.SaveChangesAsync() > 0;
+
+            if (!isSuccess)
+                return null;
+
+            return order;
         }
 
         public async Task<bool> CancelOrder(OnlineOrder order)

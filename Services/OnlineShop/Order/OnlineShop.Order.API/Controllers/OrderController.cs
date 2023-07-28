@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Order.Application.Features.Commands.CancelOrder;
-using OnlineShop.Order.Application.Features.Queries.GetCustomerOrders;
+using OnlineShop.Order.Application.Features.Queries.GetCustomerOrder;
 
 namespace OnlineShop.Order.API.Controllers
 {
