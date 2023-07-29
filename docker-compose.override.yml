@@ -33,7 +33,7 @@ services:
 
 #Microservices
   onlineshop.catalog.api:
-    container_name: catalog.api
+    container_name: onlineshop.catalog.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings__ConnectionString=mongodb://catalogdb:27017"
@@ -43,7 +43,7 @@ services:
       - "8000:80"
 
   onlineshop.shoppingcart.api:
-    container_name: shoppingcart.api
+    container_name: onlineshop.shoppingcart.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CacheSettings__ConnectionString=shoppingcartdb:6379"
@@ -55,7 +55,7 @@ services:
       - "8001:80"
 
   onlineshop.order.api:
-    container_name: order.api
+    container_name: onlineshop.order.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings__OrderConnectionString=Server=orderdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234"
@@ -74,4 +74,14 @@ services:
       - "5672:5672"
       - "15672:15672"
 
+  ocelotapigateway:
+    container_name: ocelotapigateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - onlineshop.catalog.api
+      - onlineshop.shoppingcart.api
+      - onlineshop.order.api
+    ports:
+      - "8100:80"
 

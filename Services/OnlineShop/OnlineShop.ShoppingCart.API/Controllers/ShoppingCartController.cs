@@ -6,7 +6,7 @@ using OnlineShop.ShoppingCart.API.Entities;
 namespace OnlineShop.ShoppingCart.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/onlineshop/shoppingcart")]
     public class ShoppingCartController : ControllerBase
     {
         private readonly IShoppingCartRepository _repository;
@@ -38,7 +38,7 @@ namespace OnlineShop.ShoppingCart.API.Controllers
             return Ok();
         }
 
-        [HttpPost("[action]")]
+        [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckout shoppingCartCheckout)
         {
             var result = await _repository.Checkout(shoppingCartCheckout);

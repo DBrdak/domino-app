@@ -6,7 +6,7 @@ using OnlineShop.Catalog.API.Repositories;
 namespace OnlineShop.Catalog.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/onlineshop/catalog")]
     public sealed class CatalogController : ControllerBase
     {
         private readonly IProductRepository _repository;

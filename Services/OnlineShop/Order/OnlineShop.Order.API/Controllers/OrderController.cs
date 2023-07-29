@@ -5,7 +5,7 @@ using OnlineShop.Order.Application.Features.Queries.GetCustomerOrder;
 
 namespace OnlineShop.Order.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/onlineshop/order")]
     public class OrderController : BaseOrderController
     {
         private readonly IMediator _mediator;
@@ -30,5 +30,10 @@ namespace OnlineShop.Order.API.Controllers
 
             return HandleResult(result);
         }
+
+        //TODO
+        // Get dla admina - pobieranie wszystkich orderów
+        // Delete dla admina - usuwanie wszystkich orderów
+        // Put dla admina - zmienianie statusów ordera/ów
     }
 }
