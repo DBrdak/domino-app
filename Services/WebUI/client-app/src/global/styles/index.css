@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.homeContainer {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(../../../public/assets/composition.JPG);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.homeStack {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  background: radial-gradient(75% 107% at 50% 50%, rgba(0, 0, 0, 0.91) 0%, rgba(255, 255, 255, 0) 100%);
+}
