@@ -42,11 +42,11 @@ const Navbar = () => {
         ) : (
           <Stack direction={'row'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={'100vw'}>
           {/* Desktop Navbar */}
-            <Button className='navbarBtn' disableRipple={true} >Nasze produkty</Button>
-            <Button className='navbarBtn' disableRipple={true} >O nas</Button>
+            <button className='navbarBtn' >Nasze produkty</button>
+            <button className='navbarBtn'  >O nas</button>
             <img src='assets/logoimg.png' alt='Logo Domino' width={'7%'} style={{margin: '10px 0px 10px 0px'}} />
-            <Button className='navbarBtn' disableRipple={true} >Dla firm</Button>
-            <Button className='navbarBtn' disableRipple={true} >Kontakt</Button>
+            <button className='navbarBtn'  >Dla firm</button>
+            <button className='navbarBtn'  >Kontakt</button>
           </Stack>
         )}
       </Toolbar>

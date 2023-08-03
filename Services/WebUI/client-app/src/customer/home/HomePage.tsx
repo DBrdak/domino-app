@@ -1,6 +1,6 @@
 import { Button, Stack } from '@mui/material'
 import React from 'react'
-import '../../global/styles/index.css'
+import './homeStyles.css'
 import { Link } from 'react-router-dom'
 
 function HomePage() {
@@ -14,7 +14,7 @@ function HomePage() {
         justifyContent={'start'} 
         alignItems={'center'} 
         direction={'column'}>
-          <img src='assets/logoimg.png' alt='Logo Domino' width={'70%'} />
+          <img src='assets/logoimg.png' alt='Logo Domino' width={'70%'} style={{padding: '50px'}}/>
           <Link to={'produkty'} style={{width: '55%'}}>
             <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} 
             size='large' variant='contained'>

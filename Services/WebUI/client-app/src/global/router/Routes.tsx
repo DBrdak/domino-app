@@ -9,6 +9,7 @@ export const routes: RouteObject[] = [
     path: '/',
     element: <App />,
     children: [
+      {path: '', element: <HomePage />},
       {path: 'produkty', element: <CatalogMain />},
       {path: '*', element: <Navigate replace={true} to='/' />}
     ]
