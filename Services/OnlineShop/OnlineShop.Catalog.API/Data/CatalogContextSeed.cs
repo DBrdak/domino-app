@@ -41,6 +41,15 @@ namespace OnlineShop.Catalog.API.Data
                     "Koœci Schabowe"
                 };
 
+                var subcategories = new string[]
+                {
+                    "Podroby",
+                    "Kie³basy cienkie",
+                    "Kie³basy grube",
+                    "Seria Marysieñki",
+                    "Smarowid³a"
+                };
+
                 var random = new Random();
 
                 for (int i = 0; i < 10; i++)
@@ -50,6 +59,7 @@ namespace OnlineShop.Catalog.API.Data
                         Name = sausageProducts[random.Next(0, sausageProducts.Length)],
                         Description = "Przyk³adowy opis wêdliny",
                         Category = "Sausage",
+                        Subcategory = subcategories[random.Next(0, subcategories.Length)],
                         Image = "sausage-image.jpg",
                         Price = new Money(random.Next(15, 45)),
                         IsAvailable = i % 2 == 0,
@@ -63,6 +73,7 @@ namespace OnlineShop.Catalog.API.Data
                         Name = meatProducts[random.Next(0, meatProducts.Length)],
                         Description = "Przyk³adowy opis miêsa",
                         Category = "Meat",
+                        Subcategory = "",
                         Image = "meat-image.jpg",
                         Price = new Money(random.Next(15, 45)),
                         IsAvailable = i % 2 == 0,

@@ -1,7 +1,8 @@
 import { RouteObject, Navigate } from "react-router"
 import {createBrowserRouter} from 'react-router-dom'
-import App from "../../App"
+import App from "../layout/App"
 import CatalogMain from "../../customer/catalog/CatalogMain";
+import HomePage from "../../customer/home/HomePage";
 
 export const routes: RouteObject[] = [
   {

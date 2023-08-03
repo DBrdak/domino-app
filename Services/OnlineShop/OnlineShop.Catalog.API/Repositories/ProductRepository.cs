@@ -19,10 +19,10 @@ namespace OnlineShop.Catalog.API.Repositories
         }
 
         public async Task<PagedList<Product>> GetProductsAsync
-            (int page, string sortOrder, string sortBy, int pageSize, string category, string name,
-                decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
+            (int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
+                decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, bool pcsMode)
         {
-            var filter = ApplyFiltering(category, minPrice, maxPrice, isAvailable, isDiscounted);
+            var filter = ApplyFiltering(category, subcategory, minPrice, maxPrice, isAvailable, isDiscounted);
 
             var options = ApplySorting(sortOrder, sortBy);
 
@@ -30,7 +30,25 @@ namespace OnlineShop.Catalog.API.Repositories
 
             products = ApplySearch(name, products);
 
+            ApplyPcsMode(pcsMode, products);
+
             return await PagedList<Product>.CreateAsync(products, page, pageSize);
+        }
+
+        private void ApplyPcsMode(bool pcsMode, List<Product> products)
+        {
+            if (!pcsMode)
+                return;
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                if (products[i].QuantityModifier.IsPcsAllowed && products[i].QuantityModifier.KgPerPcs != null)
+                {
+                    products[i].Price.Amount =
+                        (decimal)(products[i].Price.Amount * products[i].QuantityModifier.KgPerPcs);
+                    products[i].Price.Unit = "szt";
+                }
+            }
         }
 
         private static FindOptions<Product> ApplySorting(string sortOrder, string sortBy)
@@ -72,7 +90,7 @@ namespace OnlineShop.Catalog.API.Repositories
             }).ToList();
         }
 
-        private FilterDefinition<Product> ApplyFiltering(string category, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
+        private FilterDefinition<Product> ApplyFiltering(string category, string subcategory, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
             var filter = FilterDefinition<Product>.Empty;
 
@@ -81,12 +99,17 @@ namespace OnlineShop.Catalog.API.Repositories
                 filter &= Builders<Product>.Filter.Where(p => p.Category.ToLower() == category.ToLower());
             }
 
-            if (minPrice.HasValue)
+            if (!string.IsNullOrWhiteSpace(subcategory))
+            {
+                filter &= Builders<Product>.Filter.Where(p => p.Subcategory == subcategory);
+            }
+
+            if (minPrice is > 0)
             {
                 filter &= Builders<Product>.Filter.Gte(p => p.Price.Amount, minPrice.Value);
             }
 
-            if (maxPrice.HasValue)
+            if (maxPrice is > 0 && maxPrice > minPrice)
             {
                 filter &= Builders<Product>.Filter.Lte(p => p.Price.Amount, maxPrice.Value);
             }

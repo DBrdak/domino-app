@@ -24,14 +24,16 @@ namespace OnlineShop.Catalog.API.Controllers
             [FromQuery] string sortBy = "Name",
             [FromQuery] int pageSize = 9,
             [FromQuery] string searchPhrase = null,
+            [FromQuery] string subcategory = null,
             [FromQuery] decimal minPrice = 0,
             [FromQuery] decimal maxPrice = decimal.MaxValue,
             [FromQuery] bool? isAvailable = null,
-            [FromQuery] bool? isDiscounted = null)
+            [FromQuery] bool? isDiscounted = null,
+            [FromQuery] bool pcsMode = false)
         {
             return await _repository.GetProductsAsync(
-                page, sortOrder, sortBy, pageSize, category, searchPhrase,
-                minPrice, maxPrice, isAvailable, isDiscounted);
+                page, sortOrder, sortBy, pageSize, category, subcategory, searchPhrase,
+                minPrice, maxPrice, isAvailable, isDiscounted, pcsMode);
         }
 
         //TODO
@@ -39,5 +41,6 @@ namespace OnlineShop.Catalog.API.Controllers
         //Usuwanie produktu
         //Edytowanie produktu z integracją ceny w cenniku, jeżeli dodam promocję tu to i tam
         //Get dla admina (w formie tabeli, może zrobić to agregatem z cennikiem?)
+        //Możliwość ustawienia jednostki podglądowej jako sztuka (dla customera)
     }
 }
