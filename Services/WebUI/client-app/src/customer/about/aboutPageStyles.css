@@ -1,0 +1,16 @@
+.aboutGird {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutParagraph {
+  width: 50%;
+  padding: 15px;
+}
+
+.aboutParagraphMobile {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}

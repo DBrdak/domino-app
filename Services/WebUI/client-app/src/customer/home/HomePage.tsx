@@ -21,9 +21,22 @@ function HomePage() {
               Nasze Produkty
             </Button>
           </Link>
-          <Button style={{backgroundColor: '#C32B28', width: '55%', borderRadius: '20px'}} size='large' variant='contained'>O nas</Button>
-          <Button style={{backgroundColor: '#C32B28', width: '55%', borderRadius: '20px'}} size='large' variant='contained'>Dla firm</Button>
-          <Button style={{backgroundColor: '#C32B28', width: '55%', borderRadius: '20px'}} size='large' variant='contained'>Kontakt</Button>
+          <Link to={'o-nas'} style={{width: '55%'}}>
+            <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} 
+            size='large' variant='contained'>
+              O nas
+            </Button>
+          </Link>
+          <Link to={'kontakt'} style={{width: '55%'}}>
+            <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} size='large' variant='contained'>
+              Kontakt
+            </Button>
+          </Link>
+          <Link to={'dla-firm'} style={{width: '55%'}}>
+            <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} size='large' variant='contained'>
+              Dla firm
+              </Button>
+          </Link>
         </Stack>
       </div>
     </div>

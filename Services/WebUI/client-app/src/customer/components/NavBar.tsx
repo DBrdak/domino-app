@@ -3,10 +3,12 @@ import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, useMediaQuery,
 import MenuIcon from '@mui/icons-material/Menu';
 import theme from '../../global/layout/theme';
 import './componentStyles.css'
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMobile = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
+  const currentLocation = useLocation()
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,7 +22,7 @@ const Navbar = () => {
     <AppBar position="static" style={{backgroundColor: '#FFFFFF'}}>
       <Toolbar>
         {isMobile ? (
-          <Stack direction={'row'} justifyContent={'space-between'}>
+          <Stack direction={'row'} justifyContent={'space-between'} style={{padding: '10px'}}>
             {/* Mobile Menu */}
             <img src='assets/logoimg.png' alt='Logo Domino' width={'16%'} />
             <IconButton color='primary' onClick={handleMenuOpen}>
@@ -32,21 +34,37 @@ const Navbar = () => {
               onClose={handleMenuClose}
             >
               <MenuList style={{width: '100vw', textAlign: 'center'}}>
-                <MenuItem className='navbarMenuItem' onClick={handleMenuClose}>Nasze produkty</MenuItem>
-                <MenuItem className='navbarMenuItem' onClick={handleMenuClose}>O nas</MenuItem>
-                <MenuItem className='navbarMenuItem' onClick={handleMenuClose}>Dla firm</MenuItem>
-                <MenuItem className='navbarMenuItem' onClick={handleMenuClose}>Kontakt</MenuItem>
+                <MenuItem className='navbarMenuItem' onClick={handleMenuClose} disabled={currentLocation.pathname === '/produkty'}>
+                  <Link replace to={'/produkty'} className='navbarLink'>Nasze produkty</Link>
+                </MenuItem>
+                <MenuItem className='navbarMenuItem' onClick={handleMenuClose} disabled={currentLocation.pathname === '/o-nas'}>
+                  <Link replace to={'/o-nas'} className='navbarLink'>O nas</Link>
+                </MenuItem>
+                <MenuItem className='navbarMenuItem' onClick={handleMenuClose} disabled={currentLocation.pathname === '/dla-firm'}>
+                  <Link replace to={'/dla-firm'} className='navbarLink'>Dla firm</Link>
+                </MenuItem>
+                <MenuItem className='navbarMenuItem' onClick={handleMenuClose} disabled={currentLocation.pathname === '/kontakt'}>
+                  <Link replace to={'/kontakt'} className='navbarLink'>Kontakt</Link>
+                </MenuItem>
               </MenuList>
             </Menu>
           </Stack>
         ) : (
           <Stack direction={'row'} display={'flex'} justifyContent={'space-between'} alignItems={'center'} width={'100vw'}>
           {/* Desktop Navbar */}
-            <button className='navbarBtn' >Nasze produkty</button>
-            <button className='navbarBtn'  >O nas</button>
+            <Link replace className='navbarLink' to={'/produkty'}>
+              <button className='navbarBtn' disabled={currentLocation.pathname === '/produkty'}>Nasze produkty</button>
+            </Link>
+            <Link replace className='navbarLink' to={'/o-nas'}>
+              <button className='navbarBtn' disabled={currentLocation.pathname === '/o-nas'}>O nas</button>
+            </Link>
             <img src='assets/logoimg.png' alt='Logo Domino' width={'7%'} style={{margin: '10px 0px 10px 0px'}} />
-            <button className='navbarBtn'  >Dla firm</button>
-            <button className='navbarBtn'  >Kontakt</button>
+            <Link replace className='navbarLink' to={'/dla-firm'}>
+              <button className='navbarBtn' disabled={currentLocation.pathname === '/dla-firm'}>Dla firm</button>
+            </Link>
+            <Link replace className='navbarLink' to={'/kontakt'}>
+              <button className='navbarBtn' disabled={currentLocation.pathname === '/kontakt'}>Kontakt</button>
+            </Link>
           </Stack>
         )}
       </Toolbar>
