@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import {Grid,TextField,Checkbox,FormControlLabel,FormControl,InputLabel,Select,MenuItem,useMediaQuery,useTheme, Button, Paper, IconButton, Stack, Typography} from '@mui/material';
 import { FilterList, Sort } from '@mui/icons-material';
 import RevealButton from '../components/RevealButton';
+import { FilterOptions } from '../../global/models/filterOptions';
+import { observer } from 'mobx-react-lite';
 
 interface FilterPanelProps {
   onApplyFilter: (filterOptions: FilterOptions) => void;
@@ -11,6 +13,7 @@ interface FilterPanelProps {
 
 const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch, subcategories }) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    searchPhrase: '',
     subcategory: '',
     minPrice: null,
     maxPrice: null,
@@ -18,12 +21,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
     isDiscounted: false,
     sortProperty: 'name',
     sortDirection: 'asc',
-    pcsMode: false,
   });
   const [searchPhrase, setSearchPhrase] = useState<string | null>(null)
-
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   const handleApplyFilter = () => {
     onApplyFilter(filterOptions);
@@ -111,15 +112,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
               }
               label="Promocja"
             />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filterOptions.pcsMode}
-                  onChange={(e) => setFilterOptions({ ...filterOptions, pcsMode: e.target.checked })}
-                />
-              }
-              label="Pokaż cenę za sztukę"
-            />
           </Grid>
           <Stack direction={'row'} margin={'10px 0px 10px 0px'} 
           style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -177,6 +169,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
           )}
         </FormControl>
           <TextField
+            style={{width: '100%'}}
             margin='normal'
             label="Minimalna cena"
             type="number"
@@ -186,6 +179,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
             }
           />
           <TextField
+            style={{width: '100%'}}
             label="Maksymalna cena"
             type="number"
             value={filterOptions.maxPrice || ''}
@@ -213,16 +207,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
             }
             label="Promocja"
           />
-          <FormControlLabel
-              control={
-                <Checkbox
-                  checked={filterOptions.pcsMode}
-                  onChange={(e) => setFilterOptions({ ...filterOptions, pcsMode: e.target.checked })}
-                />
-              }
-              label="Pokaż cenę za sztukę"
-              style={{whiteSpace: 'nowrap'}}
-            />
         </Grid>
         <Stack direction={'row'} margin={'10px 0px 10px 0px'} 
         style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -252,4 +236,4 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
   );
 };
 
-export default FilterPanel;
+export default observer(FilterPanel);

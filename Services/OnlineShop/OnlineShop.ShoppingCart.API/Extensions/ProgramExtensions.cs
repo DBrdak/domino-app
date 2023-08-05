@@ -31,6 +31,19 @@ namespace OnlineShop.ShoppingCart.API.Extensions
                 });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(
+                                "http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             return services;
         }
     }

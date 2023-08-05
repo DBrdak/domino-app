@@ -32,7 +32,7 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         }
 
         [HttpDelete("{shoppingCartId}")]
-        public async Task<IActionResult> DeleteBasket(string shoppingCartId)
+        public async Task<IActionResult> DeleteShoppingCart(string shoppingCartId)
         {
             await _repository.DeleteShoppingCart(shoppingCartId);
             return Ok();
@@ -41,10 +41,10 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckout shoppingCartCheckout)
         {
-            var result = await _repository.Checkout(shoppingCartCheckout);
+            var orderId = await _repository.Checkout(shoppingCartCheckout);
 
-            return result != null ?
-                Ok(result) :
+            return orderId != null ?
+                Ok(orderId) :
                 BadRequest();
         }
     }

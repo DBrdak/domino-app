@@ -56,7 +56,7 @@ namespace OnlineShop.Catalog.API.Data
                 {
                     var sausageProduct = new Product
                     {
-                        Name = sausageProducts[random.Next(0, sausageProducts.Length)],
+                        Name = sausageProducts[i],
                         Description = "Przyk³adowy opis wêdliny",
                         Category = "Sausage",
                         Subcategory = subcategories[random.Next(0, subcategories.Length)],
@@ -64,7 +64,7 @@ namespace OnlineShop.Catalog.API.Data
                         Price = new Money(random.Next(15, 45)),
                         IsAvailable = i % 2 == 0,
                         IsDiscounted = i % 3 == 0,
-                        QuantityModifier = new QuantityModifier()
+                        QuantityModifier = i % 3 == 0 ? new QuantityModifier() : new QuantityModifier((decimal)random.NextDouble() * random.Next(1, 3))
                     };
                     productCollection.InsertOne(sausageProduct);
 

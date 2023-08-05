@@ -1,3 +1,5 @@
+import { Money, QuantityModifier } from "./common";
+
 export interface Product {
   id: string;
   name: string;
@@ -5,13 +7,10 @@ export interface Product {
   category: string;
   subcategory: string;
   image: string;
-  price: number;
-  currency: string;
-  unit: string;
+  price: Money
   isAvailable: boolean;
   isDiscounted: boolean;
-  isPcsAllowed: boolean;
-  kgPerPcs: number;
+  quantityModifier: QuantityModifier;
 }
 
 export class Product implements Product {

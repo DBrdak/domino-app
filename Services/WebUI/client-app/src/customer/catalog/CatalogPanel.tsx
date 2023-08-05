@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import ProductCard from './ProductCard';
 import { Product } from '../../global/models/product';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
   products: Product[]
@@ -9,9 +10,9 @@ interface Props {
 
 const ProductCatalog: React.FC<Props> = ({products}: Props) => {
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={4} >
       {products.map((product) => (
-        <Grid item xs={12} sm={6} md={4} key={product.id}>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={3 } key={product.id}>
           <ProductCard product={product} />
         </Grid>
       ))}
@@ -19,4 +20,4 @@ const ProductCatalog: React.FC<Props> = ({products}: Props) => {
   );
 };
 
-export default ProductCatalog;
+export default observer(ProductCatalog);

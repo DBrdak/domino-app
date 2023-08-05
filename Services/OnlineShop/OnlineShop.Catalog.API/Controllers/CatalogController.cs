@@ -28,12 +28,11 @@ namespace OnlineShop.Catalog.API.Controllers
             [FromQuery] decimal minPrice = 0,
             [FromQuery] decimal maxPrice = decimal.MaxValue,
             [FromQuery] bool? isAvailable = null,
-            [FromQuery] bool? isDiscounted = null,
-            [FromQuery] bool pcsMode = false)
+            [FromQuery] bool? isDiscounted = null)
         {
             return await _repository.GetProductsAsync(
                 page, sortOrder, sortBy, pageSize, category, subcategory, searchPhrase,
-                minPrice, maxPrice, isAvailable, isDiscounted, pcsMode);
+                minPrice, maxPrice, isAvailable, isDiscounted);
         }
 
         //TODO

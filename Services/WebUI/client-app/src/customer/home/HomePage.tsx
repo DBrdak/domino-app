@@ -27,15 +27,15 @@ function HomePage() {
               O nas
             </Button>
           </Link>
-          <Link to={'kontakt'} style={{width: '55%'}}>
-            <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} size='large' variant='contained'>
-              Kontakt
-            </Button>
-          </Link>
           <Link to={'dla-firm'} style={{width: '55%'}}>
             <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} size='large' variant='contained'>
               Dla firm
               </Button>
+          </Link>
+          <Link to={'kontakt'} style={{width: '55%'}}>
+            <Button style={{backgroundColor: '#C32B28', width: '100%', borderRadius: '20px'}} size='large' variant='contained'>
+              Kontakt
+            </Button>
           </Link>
         </Stack>
       </div>

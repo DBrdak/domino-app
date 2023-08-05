@@ -1,8 +1,11 @@
-import React from 'react';
-import { Card, CardMedia, CardContent, Typography, Button, CardActions, useMediaQuery, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import { Card, CardMedia, CardContent, Typography, Button, CardActions, useMediaQuery, IconButton, Stack, Chip } from '@mui/material';
 import { Product } from '../../global/models/product';
 import theme from '../../global/layout/theme';
-import { AddShoppingCart, VisibilityOutlined } from '@mui/icons-material';
+import { Add, AddCircle, AddCircleOutlined, AddShoppingCart, CancelOutlined, Clear, VisibilityOutlined } from '@mui/icons-material';
+import { useStore } from '../../global/stores/store';
+import { observer } from 'mobx-react-lite';
+import QuantityInput from './QuantityInput';
 
 
 interface Props {
@@ -11,42 +14,92 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({product}: Props) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const {shoppingCartStore, catalogStore} = useStore()
+
+  function handleQuantityModeEnter(): void {
+    catalogStore.setQuantityModeFor(product.id)
+    shoppingCartStore.setProduct(product)
+  }
+
   return (
-    <Card style={{padding: '15px'}}>
+    <Card style={{padding: '15px', position: 'relative', height: '400px'}}>
+        {product.isDiscounted && (
+        <Chip 
+        label="Promocja" 
+        color="primary" 
+        style={{ position: 'absolute', top: '5px', left: '5px', zIndex: 1}}
+        />
+        )}
       <CardMedia component="img" height="200" image={product.image} alt={product.name} />
       <CardContent style={{paddingBottom: '0px'}}>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6">
           {product.name}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
-          {product.description}
-        </Typography>
-        <div style={{margin: '10px 0px 0px 0px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <Typography textAlign={'center'} style={{width: '70%', borderRadius: '30px', color: '#FFFFFF', backgroundColor: '#C32B28', padding: '6px 0px 6px 0px'}}>
-            {product.price} {product.currency}/{product.unit}
+        {catalogStore.quantityMode !== product.id && 
+        <>
+          <Typography variant="body2" color="textSecondary">
+            {product.description}
           </Typography>
-        </div>
+          <div style={{margin: '10px 0px 0px 0px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            {product.isDiscounted ?
+            <Typography textAlign={'center'} 
+            style={{width: '70%', borderRadius: '30px', color: '#FFFFFF', backgroundColor: '#C32B28', padding: '6px 0px 6px 0px'}}>
+              {product.price.amount} {product.price.currency}/{product.price.unit}
+            </Typography>
+            :
+            <Typography textAlign={'center'} 
+            style={{width: '70%', borderRadius: '30px', color: '#C32B28', border: '1px', borderColor: '#C32B28', padding: '6px 0px 6px 0px'}}>
+              {product.price.amount} {product.price.currency}/{product.price.unit}
+            </Typography>
+            }
+          </div>
+        </>}
       </CardContent>
       <CardActions style={{justifyContent: 'center'}}>
-        {isMobile ?         
-        <IconButton color="secondary" style={{backgroundColor: '#C32B28', width: '50%', borderRadius: '20px'}}>
-          <AddShoppingCart fontSize='large'/>
-        </IconButton> :
-        <IconButton color="secondary" style={{backgroundColor: '#C32B28'}}>
-          <AddShoppingCart />
-        </IconButton>
-        }
-        {isMobile ?         
-        <IconButton color="primary" style={{width: '50%', borderRadius: '20px'}}>
-          <VisibilityOutlined fontSize='large'/>
-        </IconButton> :
-        <IconButton color="primary">
-          <VisibilityOutlined />
-        </IconButton>
+        {catalogStore.quantityMode !== product.id ?
+        <>
+          {isMobile ?
+          <>
+            {product.isAvailable ? 
+            <IconButton color="secondary" style={{backgroundColor: '#C32B28', width: '50%', borderRadius: '20px'}}
+            onClick={() => handleQuantityModeEnter()} disabled={!product.isAvailable}>
+              <AddShoppingCart fontSize='large'/>
+            </IconButton>
+            :
+            <Typography textAlign={'center'} 
+            style={{width: '100%', color: '#C32B28'}}>
+              Produkt chwilowo niedostępny
+            </Typography>
+            }
+          </> :
+          <>
+            {product.isAvailable ? 
+            <IconButton color="secondary" style={{backgroundColor: '#C32B28'}} 
+            onClick={() => handleQuantityModeEnter()} disabled={!product.isAvailable}>
+              <AddShoppingCart />
+            </IconButton>
+            :
+            <Typography textAlign={'center'} 
+            style={{width: '100%', color: '#C32B28'}}>
+              Produkt chwilowo niedostępny
+            </Typography>
+            }
+          </>
+
+          }
+        </>
+        :
+        <Stack direction={'row'} style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+          <QuantityInput isPcsAllowed={product.quantityModifier.isPcsAllowed}/>
+          <IconButton color='primary' style={{width: '10%', borderRadius: '20px'}}
+          onClick={() => catalogStore.resetQuantityMode()}>
+            <CancelOutlined />
+          </IconButton>
+        </Stack>
         }
       </CardActions>
     </Card>
   );
 };
 
-export default ProductCard;
+export default observer(ProductCard);

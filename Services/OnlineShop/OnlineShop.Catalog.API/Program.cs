@@ -19,6 +19,7 @@ namespace OnlineShop.Catalog.API
             app.UseAuthorization();
             app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
+            app.UseCors("DefaultPolicy");
 
             await app.RunAsync();
         }

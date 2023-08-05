@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.API.Repositories
 
         public async Task<PagedList<Product>> GetProductsAsync
             (int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
-                decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, bool pcsMode)
+                decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
             var filter = ApplyFiltering(category, subcategory, minPrice, maxPrice, isAvailable, isDiscounted);
 
@@ -30,25 +30,7 @@ namespace OnlineShop.Catalog.API.Repositories
 
             products = ApplySearch(name, products);
 
-            ApplyPcsMode(pcsMode, products);
-
             return await PagedList<Product>.CreateAsync(products, page, pageSize);
-        }
-
-        private void ApplyPcsMode(bool pcsMode, List<Product> products)
-        {
-            if (!pcsMode)
-                return;
-
-            for (int i = 0; i < products.Count; i++)
-            {
-                if (products[i].QuantityModifier.IsPcsAllowed && products[i].QuantityModifier.KgPerPcs != null)
-                {
-                    products[i].Price.Amount =
-                        (decimal)(products[i].Price.Amount * products[i].QuantityModifier.KgPerPcs);
-                    products[i].Price.Unit = "szt";
-                }
-            }
         }
 
         private static FindOptions<Product> ApplySorting(string sortOrder, string sortBy)

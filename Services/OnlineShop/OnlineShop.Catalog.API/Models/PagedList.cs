@@ -6,6 +6,7 @@
         public int Page { get; }
         public int PageSize { get; }
         public int TotalCount { get; }
+        public int TotalPages => (int)Math.Ceiling((decimal)TotalCount / PageSize);
         public bool HasNextPage => Page * PageSize < TotalCount;
         public bool HasPreviousPage => Page > 1;
 

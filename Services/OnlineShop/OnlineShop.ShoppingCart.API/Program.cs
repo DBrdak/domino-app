@@ -16,6 +16,7 @@ namespace OnlineShop.ShoppingCart.API
             app.UseRouting();
             app.MapControllers();
             app.UseMiddleware<ExceptionMiddleware>();
+            app.UseCors("DefaultPolicy");
 
             await app.RunAsync();
         }

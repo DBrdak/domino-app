@@ -7,6 +7,6 @@ namespace OnlineShop.Catalog.API.Repositories
     {
         public Task<PagedList<Product>> GetProductsAsync(
             int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
-            decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, bool pcsMode);
+            decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted);
     }
 }

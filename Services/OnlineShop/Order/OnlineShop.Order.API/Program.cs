@@ -19,7 +19,7 @@ namespace OnlineShop.Order.API
             app.UseAuthorization();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             await app.MigrateDatabase(app.Environment);
-
+            app.UseCors("DefaultPolicy");
             await app.RunAsync();
         }
     }

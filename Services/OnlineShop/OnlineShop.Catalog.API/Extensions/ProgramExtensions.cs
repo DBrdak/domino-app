@@ -15,6 +15,19 @@ namespace OnlineShop.Catalog.API.Extensions
             services.AddScoped<ICatalogContext, CatalogContext>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(
+                                "http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             return services;
         }
     }
