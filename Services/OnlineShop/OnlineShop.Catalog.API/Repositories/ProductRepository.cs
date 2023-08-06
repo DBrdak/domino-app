@@ -35,6 +35,8 @@ namespace OnlineShop.Catalog.API.Repositories
 
         private static FindOptions<Product> ApplySorting(string sortOrder, string sortBy)
         {
+            sortBy = NormailzeSortPropertyName(sortBy);
+
             var sort = sortOrder == "asc"
                 ? Builders<Product>.Sort.Ascending(sortBy)
                 : Builders<Product>.Sort.Descending(sortBy);
@@ -43,6 +45,18 @@ namespace OnlineShop.Catalog.API.Repositories
                 Sort = sort
             };
             return options;
+        }
+
+        private static string NormailzeSortPropertyName(string sortBy)
+        {
+            var normailzedSortBy = string.Empty;
+
+            for (int i = 0; i < sortBy.Length; i++)
+            {
+                normailzedSortBy += i == 0 ? sortBy[i].ToString().ToUpper() : sortBy[i];
+            }
+
+            return normailzedSortBy;
         }
 
         private static List<Product> ApplySearch(string name, List<Product> products)
@@ -96,14 +110,14 @@ namespace OnlineShop.Catalog.API.Repositories
                 filter &= Builders<Product>.Filter.Lte(p => p.Price.Amount, maxPrice.Value);
             }
 
-            if (isDiscounted.HasValue)
+            if (isDiscounted == true)
             {
-                filter &= Builders<Product>.Filter.Eq(p => p.IsDiscounted, isDiscounted.Value);
+                filter &= Builders<Product>.Filter.Eq(p => p.IsDiscounted, true);
             }
 
-            if (isAvailable.HasValue)
+            if (isAvailable == true)
             {
-                filter &= Builders<Product>.Filter.Eq(p => p.IsAvailable, isAvailable.Value);
+                filter &= Builders<Product>.Filter.Eq(p => p.IsAvailable, true);
             }
 
             return filter;

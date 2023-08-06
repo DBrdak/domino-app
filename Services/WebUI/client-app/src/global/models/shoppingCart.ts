@@ -33,6 +33,10 @@ export class ShoppingCart implements ShoppingCart {
   constructor(init?:ShoppingCart){
     Object.assign(this, init)
   }
+
+  addShoppingCartItem = (shoppingCartItem:ShoppingCartItem) => {
+    this.items.push(shoppingCartItem)
+  }
 }
 
 export interface ShoppingCartCheckout {

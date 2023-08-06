@@ -1,30 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Grid,TextField,Checkbox,FormControlLabel,FormControl,InputLabel,Select,MenuItem,useMediaQuery,useTheme, Button, Paper, IconButton, Stack, Typography} from '@mui/material';
 import { FilterList, Sort } from '@mui/icons-material';
 import RevealButton from '../components/RevealButton';
 import { FilterOptions } from '../../global/models/filterOptions';
 import { observer } from 'mobx-react-lite';
+import { useStore } from '../../global/stores/store';
 
 interface FilterPanelProps {
   onApplyFilter: (filterOptions: FilterOptions) => void;
   onApplySearch: (productName: string | null) => void;
-  subcategories: string[]
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch, subcategories }) => {
+const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch }) => {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     searchPhrase: '',
     subcategory: '',
     minPrice: null,
     maxPrice: null,
-    isAvailable: true,
+    isAvailable: false,
     isDiscounted: false,
     sortProperty: 'name',
     sortDirection: 'asc',
   });
   const [searchPhrase, setSearchPhrase] = useState<string | null>(null)
+  const [debouncedSearchPhrase, setDebouncedSearchPhrase] = useState<string | null>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const {catalogStore} = useStore()
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchPhrase(searchPhrase);
+      console.log(debouncedSearchPhrase)
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchPhrase]);
+
+  useEffect(() => {
+    if (debouncedSearchPhrase) {
+      onApplySearch(debouncedSearchPhrase);
+    }
+  }, [debouncedSearchPhrase]);
 
   const handleApplyFilter = () => {
     onApplyFilter(filterOptions);
@@ -32,7 +51,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
 
   const handleApplySearch = (productName: string | null) => {
     setSearchPhrase(productName)
-    onApplySearch(productName);
   };
 
   function handleSortDirChange(): void {
@@ -56,8 +74,8 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
             <Typography variant='h5' paddingBottom={'20px'} textAlign={'center'}>Filtry</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>Podkategoria</InputLabel>
+{/*              <FormControl fullWidth>
+                <InputLabel disabled={subcategories.length < 1}>Podkategoria</InputLabel>
                 <Select
                   value={filterOptions.subcategory}
                   onChange={(e) => setFilterOptions({...filterOptions, subcategory: String(e.target.value)})}
@@ -71,7 +89,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
                     Wyczyść
                   </Button>
                 )}
-              </FormControl>
+                </FormControl>*/}
                 <TextField
                   margin='normal'
                   fullWidth
@@ -152,7 +170,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
       <Typography variant='h5' paddingBottom={'20px'} textAlign={'center'}>Filtry</Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-        <FormControl fullWidth>
+{/*        <FormControl fullWidth disabled={subcategories.length < 1}>
           <InputLabel>Podgategoria</InputLabel>
           <Select
             value={filterOptions.subcategory}
@@ -167,7 +185,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch,
               Wyczyść
             </Button>
           )}
-        </FormControl>
+          </FormControl>*/}
           <TextField
             style={{width: '100%'}}
             margin='normal'

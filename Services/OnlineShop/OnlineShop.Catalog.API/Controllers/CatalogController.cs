@@ -36,6 +36,7 @@ namespace OnlineShop.Catalog.API.Controllers
         }
 
         //TODO
+        //Jak narazie zawieszam feature podkategorii, w przyszłości trzeba zrobić oddzielną kolekcję przechowującą podkategorie
         //Dodawanie produktu z ceną z cennika, jeżeli nie znaleziono, to wtedy z ustaloną, po czym dodaję do cennika
         //Usuwanie produktu
         //Edytowanie produktu z integracją ceny w cenniku, jeżeli dodam promocję tu to i tam

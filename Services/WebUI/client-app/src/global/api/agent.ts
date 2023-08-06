@@ -71,8 +71,8 @@ const catalog = {
 }
 
 const shoppingCart ={
-  get: (shoppingCartId: string) => axios.get<ShoppingCart>(`/onlineshop/shoppingcart/${shoppingCartId}`),
-  update: (shoppingCart: ShoppingCart) => axios.post('/onlineshop/shoppingcart', shoppingCart),
+  get: (shoppingCartId: string) => axios.get<ShoppingCart>(`/onlineshop/shoppingcart/${shoppingCartId}`).then(responseBody),
+  update: (shoppingCart: ShoppingCart) => axios.post<ShoppingCart>('/onlineshop/shoppingcart', shoppingCart).then(responseBody),
   delete: (shoppingCartId: string) => axios.delete<ShoppingCart>(`/onlineshop/shoppingcart/${shoppingCartId}`),
   chackout: (shoppingCart: ShoppingCartCheckout) => axios.post<string>('/onlineshop/shoppingcart/checkout', shoppingCart)
 }

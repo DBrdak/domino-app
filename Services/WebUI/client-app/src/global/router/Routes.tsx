@@ -6,6 +6,7 @@ import HomePage from "../../customer/home/HomePage";
 import AboutMain from "../../customer/about/AboutMain";
 import ContractorsMain from "../../customer/contractors/ContractorsMain";
 import ContactMain from "../../customer/contact/ContactMain";
+import ShoppingCartPage from "../../customer/catalog/shoppingCart/ShoppingCartPage";
 
 export const routes: RouteObject[] = [
   {
@@ -14,6 +15,7 @@ export const routes: RouteObject[] = [
     children: [
       {path: '', element: <HomePage />},
       {path: 'produkty', element: <CatalogMain />},
+      {path: 'koszyk', element: <ShoppingCartPage />},
       {path: 'o-nas', element: <AboutMain />},
       {path: 'dla-firm', element: <ContractorsMain />},
       {path: 'kontakt', element: <ContactMain />}

@@ -70,7 +70,7 @@ namespace OnlineShop.Catalog.API.Data
 
                     var meatProduct = new Product
                     {
-                        Name = meatProducts[random.Next(0, meatProducts.Length)],
+                        Name = meatProducts[i],
                         Description = "Przyk³adowy opis miêsa",
                         Category = "Meat",
                         Subcategory = "",

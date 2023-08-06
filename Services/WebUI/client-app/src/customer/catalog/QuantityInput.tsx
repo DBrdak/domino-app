@@ -13,14 +13,13 @@ interface Props {
 }
 
 function QuantityInput({isPcsAllowed}: Props) {
-  const [quantity, setQuantity] = useState(0);
   const [unit, setUnit] = useState('kg');
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const {shoppingCartStore, catalogStore} = useStore()
 
-  const handleQuantityChange = (newQuantity:number) => {
-    if (newQuantity >= 0 && (unit === 'kg' || unit === 'szt')) {
-      shoppingCartStore.setQuantity(quantity, unit)
+  const handleQuantityChange = (newQuantity:number | null) => {
+    if (newQuantity && newQuantity >= 0 && (unit === 'kg' || unit === 'szt')) {
+      shoppingCartStore.setQuantity(newQuantity, unit)
       catalogStore.resetQuantityMode()
     }
   };
@@ -37,8 +36,8 @@ function QuantityInput({isPcsAllowed}: Props) {
       <>
         <Formik
         validationSchema={Yup.object({quantity: Yup.number().required('Proszę podać ilość').moreThan(0,"Podaj ilość większą niż 0")})}
-        initialValues={{quantity: 0}} 
-        onSubmit={values => handleQuantityChange(values.quantity)} 
+        initialValues={{quantity: null}} 
+        onSubmit={values => handleQuantityChange(values.quantity)}
         validateOnMount={true}>
           {({ handleSubmit, isValid}) => (
           <Form className='ui form' onSubmit={handleSubmit} autoComplete='off' >
@@ -68,7 +67,7 @@ function QuantityInput({isPcsAllowed}: Props) {
       <Stack direction={'column'}>
         <Formik
         validationSchema={Yup.object({quantity: Yup.number().required('Proszę podać ilość').moreThan(0,"Podaj ilość większą niż 0")})}
-        initialValues={{quantity: quantity}} 
+        initialValues={{quantity: null}} 
         onSubmit={values => handleQuantityChange(values.quantity)} 
         validateOnMount={true}>
           {({ handleSubmit, isValid}) => (
