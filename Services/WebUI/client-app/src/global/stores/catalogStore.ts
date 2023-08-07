@@ -3,6 +3,8 @@ import { Product } from "../models/product";
 import { Pagination, PagingParams } from "../models/pagination";
 import { FilterOptions } from "../models/filterOptions";
 import agent from "../api/agent";
+import { useMediaQuery } from "@mui/material";
+import theme from "../layout/theme";
 //TODO Poprawić działanie filtrów
 export default class CatalogStore {
   productsRegistry = new Map<string, Product>()
@@ -10,7 +12,6 @@ export default class CatalogStore {
   pagination: Pagination | null = null
   pagingParams = new PagingParams()
   filterParams: FilterOptions = new FilterOptions()
-  predicate = new Map().set('all', true)
   loading: boolean = false
 
   constructor() {
@@ -52,7 +53,6 @@ export default class CatalogStore {
     this.setLoading(true)
     this.productsRegistry = new Map<string, Product>()
     try {
-      console.log(this.filterParams.searchPhrase)
       const result = await agent.catalog.products(category, this.axiosParams)
       result.items.forEach(i => this.setProduct(i))
       this.setPagination(result.page, result.pageSize, result.totalCount, result.totalPages, result.hasNextPage, result.hasPreviousPage)

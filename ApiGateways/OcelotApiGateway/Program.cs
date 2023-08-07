@@ -1,6 +1,7 @@
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Values;
 
 namespace OcelotApiGateway
 {
@@ -20,9 +21,23 @@ namespace OcelotApiGateway
             builder.WebHost.ConfigureAppConfiguration((hc, cfg) =>
                 cfg.AddJsonFile($"ocelot.{hc.HostingEnvironment.EnvironmentName}.json", true, true));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(
+                                "http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
+
             var app = builder.Build();
 
             app.UseRouting();
+            app.UseCors("DefaultPolicy");
             await app.UseOcelot();
             await app.RunAsync();
         }

@@ -13,13 +13,13 @@ namespace OnlineShop.Order.API
 
             var app = builder.Build();
 
+            app.UseCors("DefaultPolicy");
             app.UseRouting();
             app.MapControllers();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             await app.MigrateDatabase(app.Environment);
-            app.UseCors("DefaultPolicy");
             await app.RunAsync();
         }
     }

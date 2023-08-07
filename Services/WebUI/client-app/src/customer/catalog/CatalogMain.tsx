@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import { observer } from 'mobx-react-lite'
 import { Box, Button, Container, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material'
@@ -16,6 +16,10 @@ function CatalogMain() {
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const {shoppingCartStore, catalogStore} = useStore()
   
+  useEffect(() => {
+    shoppingCartStore.loadShoppingCart()
+  })
+
   function handleCategorySet(c: string): void {
     setCategory(c)
     catalogStore.loadProducts(c)
@@ -23,7 +27,6 @@ function CatalogMain() {
 
   function handleApplySearch(name: string | null): void {
     catalogStore.filterParams!.searchPhrase = name
-    console.log(catalogStore.filterParams!.searchPhrase)
     catalogStore.loadProducts(category!)
   }
 
@@ -59,7 +62,7 @@ function CatalogMain() {
               onApplySearch={(name) => handleApplySearch(name)}/>
             </Grid>
             <Grid item xs={12} md={12} lg={10} style={{textAlign: 'center'}}>
-              <ProductCatalog products={catalogStore.products} />
+              <ProductCatalog products={catalogStore.products} isLoading={catalogStore.loading} />
             </Grid>
         </Grid>
         <ShoppingCartBadge />

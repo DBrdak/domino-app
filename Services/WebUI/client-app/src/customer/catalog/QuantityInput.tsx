@@ -5,22 +5,23 @@ import MyTextInput from '../components/MyTextInput';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { observer } from 'mobx-react-lite';
-import { AddShoppingCart } from '@mui/icons-material';
+import { AddShoppingCart, CancelOutlined, Undo } from '@mui/icons-material';
 import { useStore } from '../../global/stores/store';
 
 interface Props {
   isPcsAllowed: boolean
+  onInputSubmit: () => void
 }
 
-function QuantityInput({isPcsAllowed}: Props) {
+function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
   const [unit, setUnit] = useState('kg');
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const {shoppingCartStore, catalogStore} = useStore()
 
-  const handleQuantityChange = (newQuantity:number | null) => {
+  const handleQuantityChange = (newQuantity:number) => {
     if (newQuantity && newQuantity >= 0 && (unit === 'kg' || unit === 'szt')) {
       shoppingCartStore.setQuantity(newQuantity, unit)
-      catalogStore.resetQuantityMode()
+      onInputSubmit()
     }
   };
 
@@ -31,71 +32,44 @@ function QuantityInput({isPcsAllowed}: Props) {
 
   return (
     <FormControl component="fieldset" style={{padding: '10px', width: '100%'}}>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      {isMobile ?
-      <>
+    <div style={{ display: 'flex', alignItems: 'center', width:'100%'}}>
         <Formik
         validationSchema={Yup.object({quantity: Yup.number().required('Proszę podać ilość').moreThan(0,"Podaj ilość większą niż 0")})}
-        initialValues={{quantity: null}} 
-        onSubmit={values => handleQuantityChange(values.quantity)}
+        initialValues={{quantity: ''}} 
+        onSubmit={values => handleQuantityChange(Number(values.quantity))}
         validateOnMount={true}>
           {({ handleSubmit, isValid}) => (
-          <Form className='ui form' onSubmit={handleSubmit} autoComplete='off' >
-            <Stack direction={'row'}>
-              <MyTextInput placeholder='Ilość' name='quantity'/>
-              <IconButton type='submit' style={{borderRadius: '6px'}} color='primary' disabled={!isValid}>
-                <AddShoppingCart />
-              </IconButton>
+          <Form style={{width:'100%'}} onSubmit={handleSubmit} autoComplete='off' >
+            <Stack direction={'column'} >
+              <Stack direction={'row'} width={'100%'} justifyContent={'center'}>
+                <MyTextInput placeholder='Ilość' name='quantity'/>
+                <FormControlLabel
+                style={{marginLeft: '5%'}}
+                control={
+                  <Switch 
+                    checked={unit === 'szt'} 
+                    onChange={handleSwitchChange} 
+                    name="checked" 
+                    color="primary"
+                    disabled={!isPcsAllowed}
+                  />
+                }
+                label={unit}
+                />
+              </Stack>
+              <Stack direction={'row'} marginTop={'10px'}>
+                <IconButton type='submit' style={{width: '50%', borderRadius: '6px'}} color='primary' disabled={!isValid}>
+                  <AddShoppingCart />
+                </IconButton>
+                <IconButton color='primary' style={{width: '50%', borderRadius: '6px'}}
+                onClick={() => catalogStore.resetQuantityMode()}>
+                  <Undo />
+                </IconButton>
+              </Stack>
             </Stack>
           </Form>
           )}
         </Formik>
-        <FormControlLabel
-        control={
-          <Switch 
-            checked={unit === 'szt'} 
-            onChange={handleSwitchChange} 
-            name="checked" 
-            color="primary"
-            disabled={!isPcsAllowed}
-          />
-        }
-        label={unit}
-        />
-      </>
-      :
-      <Stack direction={'column'}>
-        <Formik
-        validationSchema={Yup.object({quantity: Yup.number().required('Proszę podać ilość').moreThan(0,"Podaj ilość większą niż 0")})}
-        initialValues={{quantity: null}} 
-        onSubmit={values => handleQuantityChange(values.quantity)} 
-        validateOnMount={true}>
-          {({ handleSubmit, isValid}) => (
-          <Form className='ui form' onSubmit={handleSubmit} autoComplete='off' >
-            <Stack direction={'row'}>
-              <MyTextInput placeholder='Ilość' name='quantity'/>
-              <IconButton type='submit' style={{borderRadius: '6px'}} color='primary' disabled={!isValid}>
-                <AddShoppingCart />
-              </IconButton>
-            </Stack>
-          </Form>
-          )}
-        </Formik>
-        <FormControlLabel
-        style={{width:'100%', display: 'flex', justifyContent:'center'}}
-        control={
-          <Switch 
-            checked={unit === 'szt'} 
-            onChange={handleSwitchChange} 
-            name="checked" 
-            color="primary"
-            disabled={!isPcsAllowed}
-          />
-        }
-        label={unit}
-        />
-      </Stack>
-      }
     </div>
   </FormControl>
   );

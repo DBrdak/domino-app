@@ -14,16 +14,29 @@ export default class ShoppingCartStore {
   constructor() {
     makeAutoObservable(this);
   }
-
+  sleep = (delay: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, delay)
+    })
+  }
   loadShoppingCart = async () => {
     this.setLoading(true)
+    await this.sleep(1000)
     try {
       if(this.shoppingCart) {
-        const result =  await agent.shoppingCart.get(this.shoppingCart.shoppingCartId)
-        this.shoppingCart = result
+        if(localStorage.getItem('scid')) {
+          const result = await agent.shoppingCart.get(localStorage.getItem('scid')!)
+          this.shoppingCart = new ShoppingCart(result)
+        } else {
+          const result =  await agent.shoppingCart.get(this.shoppingCart.shoppingCartId)
+          this.shoppingCart = new ShoppingCart(result)
+        }
       } else {
         const result = await agent.shoppingCart.get(uuid())
-        this.shoppingCart = result
+        this.shoppingCart = new ShoppingCart(result)
+      }
+      if(!localStorage.getItem('scid')){
+        localStorage.setItem('scid', this.shoppingCart.shoppingCartId)
       }
       this.setLoading(false)
     } catch(e) {
@@ -48,11 +61,11 @@ export default class ShoppingCartStore {
     this.newProductQuantity = {quantity,unit}
   }
 
-  createShoppingCartItem() {
+  private createShoppingCartItem = () => {
     if(this.newProduct !== null && this.newProductQuantity !== null){
       this.newShoppingCartItem = new ShoppingCartItem(this.newProduct, this.newProductQuantity)
       this.newProduct = null
-      this. newProductQuantity = null
+      this.newProductQuantity = null
     }
   }
 
@@ -61,8 +74,8 @@ export default class ShoppingCartStore {
     this.setLoading(true)
     try {
       if(!this.shoppingCart) {
-        this.loadShoppingCart()
-      } 
+        await this.loadShoppingCart()
+      }
       this.newShoppingCartItem && this.shoppingCart?.addShoppingCartItem(this.newShoppingCartItem)
       const updatedShoppingCart = await agent.shoppingCart.update(this.shoppingCart!)
       this.setShoppingCart(updatedShoppingCart)

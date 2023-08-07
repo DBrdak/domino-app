@@ -28,6 +28,7 @@ namespace OnlineShop.ShoppingCart.API.Controllers
             [FromBody] Entities.ShoppingCart shoppingCart)
         {
             var updatedShoppingCart = await _repository.UpdateShoppingCart(shoppingCart);
+            Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
             return Ok(updatedShoppingCart);
         }
 

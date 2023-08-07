@@ -29,9 +29,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
   const {catalogStore} = useStore()
 
   useEffect(() => {
+    catalogStore.filterParams = filterOptions
+  }, [filterOptions])
+
+  useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedSearchPhrase(searchPhrase);
-      console.log(debouncedSearchPhrase)
     }, 500);
 
     return () => {
@@ -40,9 +43,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
   }, [searchPhrase]);
 
   useEffect(() => {
-    if (debouncedSearchPhrase) {
-      onApplySearch(debouncedSearchPhrase);
-    }
+    onApplySearch(debouncedSearchPhrase);
   }, [debouncedSearchPhrase]);
 
   const handleApplyFilter = () => {
@@ -51,7 +52,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
 
   const handleApplySearch = (productName: string | null) => {
     setSearchPhrase(productName)
-  };
+  }
 
   function handleSortDirChange(): void {
     filterOptions.sortDirection === 'asc' ? 
@@ -65,6 +66,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
           <Paper style={{padding: '40px'}}>
           <Typography variant='h5' paddingBottom={'20px'} textAlign={'center'}>Wyszukiwanie</Typography>
             <TextField
+              disabled={catalogStore.loading}
               style={{marginBottom: '15px'}}
               fullWidth
               label="Nazwa produktu"
@@ -162,7 +164,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
     <Paper style={{padding: '40px'}}>          
       <Typography variant='h5' paddingBottom={'20px'} textAlign={'center'}>Wyszukiwanie</Typography>
       <TextField
-        style={{marginBottom: '25px'}}
+        style={{marginBottom: '15px'}}
         fullWidth
         label="Nazwa produktu"
         onChange={(e) => handleApplySearch(e.target.value)}

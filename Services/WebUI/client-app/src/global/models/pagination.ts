@@ -1,3 +1,6 @@
+import { useMediaQuery } from "@mui/material";
+import theme from "../layout/theme";
+
 export interface Pagination {
   page: number;
   pageSize: number;
@@ -36,8 +39,8 @@ export class PaginatedResult<T> {
 export class PagingParams {
   pageNumber
   pageSize
-
-  constructor(pageNumber = 1, pageSize = 9) {
+  
+  constructor(pageNumber = 1, pageSize = 12) {
     this.pageNumber = pageNumber
     this.pageSize = pageSize
   }

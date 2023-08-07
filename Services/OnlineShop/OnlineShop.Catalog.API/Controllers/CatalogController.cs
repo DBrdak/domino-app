@@ -22,7 +22,7 @@ namespace OnlineShop.Catalog.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] string sortOrder = "asc",
             [FromQuery] string sortBy = "Name",
-            [FromQuery] int pageSize = 9,
+            [FromQuery] int pageSize = 12,
             [FromQuery] string searchPhrase = null,
             [FromQuery] string subcategory = null,
             [FromQuery] decimal minPrice = 0,

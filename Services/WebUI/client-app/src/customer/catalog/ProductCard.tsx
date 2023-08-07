@@ -21,6 +21,11 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
     shoppingCartStore.setProduct(product)
   }
 
+  function handleAddToShoppingCart(): void {
+    shoppingCartStore.addShoppingItem()
+    catalogStore.resetQuantityMode()
+  }
+
   return (
     <Card style={{padding: '15px', position: 'relative', height: '400px'}}>
         {product.isDiscounted && (
@@ -90,11 +95,7 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
         </>
         :
         <Stack direction={'row'} style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-          <QuantityInput isPcsAllowed={product.quantityModifier.isPcsAllowed}/>
-          <IconButton color='primary' style={{width: '10%', borderRadius: '20px'}}
-          onClick={() => catalogStore.resetQuantityMode()}>
-            <CancelOutlined />
-          </IconButton>
+          <QuantityInput isPcsAllowed={product.quantityModifier.isPcsAllowed} onInputSubmit={() => handleAddToShoppingCart()}/>
         </Stack>
         }
       </CardActions>

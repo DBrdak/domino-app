@@ -13,7 +13,6 @@ namespace OnlineShop.ShoppingCart.API.Entities
             i.Price * i.Quantity * i.KgPerPcs)
             .Sum();
 
-        [JsonConstructor]
         public ShoppingCart(string cartId, List<ShoppingCartItem> items)
         {
             ShoppingCartId = cartId;

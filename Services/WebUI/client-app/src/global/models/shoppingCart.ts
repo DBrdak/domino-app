@@ -29,7 +29,7 @@ export interface ShoppingCart {
   totalPrice: number
 }
 
-export class ShoppingCart implements ShoppingCart {
+export class ShoppingCart implements ShoppingCart {  
   constructor(init?:ShoppingCart){
     Object.assign(this, init)
   }

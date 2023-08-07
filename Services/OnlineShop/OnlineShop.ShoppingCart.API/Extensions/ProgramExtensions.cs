@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using EventBus.Messages.Common;
 using MassTransit;
+using Microsoft.Net.Http.Headers;
 using OnlineShop.ShoppingCart.API.EventBusConsumer;
 using OnlineShop.ShoppingCart.API.Repositories;
 
@@ -33,7 +34,7 @@ namespace OnlineShop.ShoppingCart.API.Extensions
 
             services.AddCors(options =>
             {
-                options.AddPolicy("DefaultPolicy",
+                options.AddPolicy(name: "DefaultPolicy",
                     builder =>
                     {
                         builder.WithOrigins(

@@ -14,8 +14,8 @@ namespace OnlineShop.ShoppingCart.API
             var app = builder.Build();
 
             app.UseRouting();
-            app.MapControllers();
             app.UseMiddleware<ExceptionMiddleware>();
+            app.MapControllers();
             app.UseCors("DefaultPolicy");
 
             await app.RunAsync();
