@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormControl, FormControlLabel, Switch, useMediaQuery, IconButton, Stack } from '@mui/material';
 import theme from '../../global/layout/theme';
-import MyTextInput from '../components/MyTextInput';
+import MyTextInput from '../../components/MyTextInput';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { observer } from 'mobx-react-lite';

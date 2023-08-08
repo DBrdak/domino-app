@@ -1,14 +1,15 @@
-import { DateTimeRange, Location } from "./common";
+import { DateTimeRange, Location, Money } from "./common";
 import { Product } from "./product";
 
 export interface ShoppingCartItem {
   quantity: number
   unit: string
   kgPerPcs: number | null
-  price: number
   productId: string
   productName: string
   productImage: string
+  price: Money
+  totalValue: number
 }
 
 export class ShoppingCartItem implements ShoppingCartItem {
@@ -16,10 +17,11 @@ export class ShoppingCartItem implements ShoppingCartItem {
     this.quantity = quantity.quantity
     this.unit = quantity.unit
     this.kgPerPcs = product.quantityModifier.kgPerPcs
-    this.price = product.price.amount
     this.productId = product.id
     this.productName = product.name
     this.productImage = product.image
+    this.price = product.price
+    this.totalValue = 0
   }
 }
 
@@ -27,6 +29,7 @@ export interface ShoppingCart {
   shoppingCartId: string
   items: ShoppingCartItem[]
   totalPrice: number
+  currency: string
 }
 
 export class ShoppingCart implements ShoppingCart {  

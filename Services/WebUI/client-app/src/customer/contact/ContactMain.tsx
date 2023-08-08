@@ -16,8 +16,8 @@ const ContactMain: React.FC = () => {
         <NavBar />
         <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 0px 0px'}}>
         <Box maxWidth="lg">
-          <Paper style={{width: '100%', padding: '20px'}}>
-            <Typography textAlign={'center'} variant="h3">Skontaktuj się z nami</Typography>
+          <Paper style={{width: '100%', padding: '100px'}}>
+            <Typography textAlign={'center'} width={'100%'} variant="h3">Skontaktuj się z nami</Typography>
             <Divider style={{margin: '20px 0px 25px 0px'}}/>
             {isMobile ?
             <Stack direction={'column'}>
@@ -29,8 +29,8 @@ const ContactMain: React.FC = () => {
               </div>
             </Stack>
             :
-            <Stack direction={'row'}>
-              <div style={{padding: '20px', width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Stack direction={'row'} width={'100%'}>
+              <div style={{padding: '20px', width: '70%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <GoogleMap apiKey={process.env.REACT_APP_MAPS_API_KEY as string} lat={52.805368774018085} lng={20.118366064444672} />
               </div>
               <div style={{width: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

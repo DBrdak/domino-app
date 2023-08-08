@@ -7,6 +7,7 @@ import AboutMain from "../../customer/about/AboutMain";
 import ContractorsMain from "../../customer/contractors/ContractorsMain";
 import ContactMain from "../../customer/contact/ContactMain";
 import ShoppingCartPage from "../../customer/catalog/shoppingCart/ShoppingCartPage";
+import path from "path";
 
 export const routes: RouteObject[] = [
   {
@@ -14,7 +15,9 @@ export const routes: RouteObject[] = [
     element: <App />,
     children: [
       {path: '', element: <HomePage />},
-      {path: 'produkty', element: <CatalogMain />},
+      {path: 'produkty', element: <CatalogMain category={null} />},
+      {path: 'produkty/mięso', element: <CatalogMain category={'meat'} />},
+      {path: 'produkty/wędliny', element: <CatalogMain category={'sausage'} />},
       {path: 'koszyk', element: <ShoppingCartPage />},
       {path: 'o-nas', element: <AboutMain />},
       {path: 'dla-firm', element: <ContractorsMain />},

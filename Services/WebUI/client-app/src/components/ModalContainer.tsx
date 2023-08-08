@@ -2,9 +2,9 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { useStore } from '../../global/stores/store';
 import { useMediaQuery } from '@mui/material';
-import theme from '../../global/layout/theme';
+import theme from '../global/layout/theme';
+import { useStore } from '../global/stores/store';
 
 function ModalContainer() {
   const { modalStore } = useStore();

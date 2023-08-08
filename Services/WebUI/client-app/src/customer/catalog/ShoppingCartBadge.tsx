@@ -18,7 +18,7 @@ function ShoppingCartBadge() {
     :
     shoppingCartStore.shoppingCart ?
     <Link style={{ position: 'fixed', right: 20, bottom: 20 }} replace to={'/koszyk'}>
-      <Fab color="primary" aria-label="add to shopping cart">
+      <Fab color="primary" aria-label="add to shopping cart" disabled={shoppingCartStore.shoppingCart.items.length < 1}>
         <Badge badgeContent={shoppingCartStore.shoppingCart && shoppingCartStore.shoppingCart.items.length} color="secondary">
           <ShoppingCartIcon />
         </Badge>

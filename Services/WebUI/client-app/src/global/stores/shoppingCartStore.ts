@@ -14,14 +14,9 @@ export default class ShoppingCartStore {
   constructor() {
     makeAutoObservable(this);
   }
-  sleep = (delay: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, delay)
-    })
-  }
+
   loadShoppingCart = async () => {
     this.setLoading(true)
-    await this.sleep(1000)
     try {
       if(this.shoppingCart) {
         if(localStorage.getItem('scid')) {
@@ -32,8 +27,13 @@ export default class ShoppingCartStore {
           this.shoppingCart = new ShoppingCart(result)
         }
       } else {
-        const result = await agent.shoppingCart.get(uuid())
-        this.shoppingCart = new ShoppingCart(result)
+        if(localStorage.getItem('scid')) {
+          const result = await agent.shoppingCart.get(localStorage.getItem('scid')!)
+          this.shoppingCart = new ShoppingCart(result)
+        } else {
+          const result = await agent.shoppingCart.get(uuid())
+          this.shoppingCart = new ShoppingCart(result)
+        }
       }
       if(!localStorage.getItem('scid')){
         localStorage.setItem('scid', this.shoppingCart.shoppingCartId)
@@ -50,7 +50,7 @@ export default class ShoppingCartStore {
   }
 
   private setShoppingCart(shoppingCart: ShoppingCart) {
-    this.shoppingCart = shoppingCart
+    this.shoppingCart = new ShoppingCart(shoppingCart)
   }
 
   setProduct(product: Product) {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, useMediaQuery, Button, Container, Stack, MenuList, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import theme from '../../global/layout/theme';
-import './componentStyles.css'
+import '../../components/componentStyles.css'
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
