@@ -2,6 +2,7 @@ import React from 'react'
 import { TextField, FormHelperText, FormControl, IconButton } from '@mui/material';
 import { useField } from 'formik';
 import { Done } from '@mui/icons-material';
+import { observer } from 'mobx-react-lite';
 
 interface Props {
   placeholder: string;
@@ -32,4 +33,4 @@ const MyTextInput: React.FC<Props> = (props: Props) => {
   );
 }
 
-export default MyTextInput;
+export default observer(MyTextInput);

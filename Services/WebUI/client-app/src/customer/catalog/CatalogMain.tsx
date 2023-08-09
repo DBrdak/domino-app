@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import { observer } from 'mobx-react-lite'
-import { Box, Button, Container, Grid, Paper, Stack, Typography, useMediaQuery } from '@mui/material'
+import { Box, Button, Container, Grid, IconButton, Paper, Stack, Typography, useMediaQuery } from '@mui/material'
 import FilterPanel from './FilterPanel'
 import ProductCatalog from './CatalogPanel'
 import { Product } from '../../global/models/product'
@@ -11,13 +11,15 @@ import ShoppingCartBadge from './ShoppingCartBadge'
 import { useStore } from '../../global/stores/store'
 import { FilterOptions } from '../../global/models/filterOptions'
 import { Link } from 'react-router-dom'
+import CategorySelection from './CategorySelection'
+import { Undo } from '@mui/icons-material'
+import ResetCategoryButton from './ResetCategoryButton'
 
 interface Props {
   category: string | null
 }
 
 function CatalogMain({category}: Props) {
-  const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const {shoppingCartStore, catalogStore} = useStore()
   
   useEffect(() => {
@@ -41,26 +43,14 @@ function CatalogMain({category}: Props) {
   //TODO Dodać animację dodania do koszyka + po dodaniu wyświetlać pencil zamiast koszyka
   return (
     !category ?
-    <div style={{backgroundColor: '#E4E4E4', minHeight:'100vh'}}>
-      <NavBar />
-      <div style={{height: '75vh', width:'100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <Paper style={{padding: '40px'}} >
-          <Stack direction={'column'} width={'100%'}>
-            <Typography variant='h4' marginBottom={2}>Wybierz kategorię</Typography>
-            <Stack direction={'row'} spacing={4} style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-              <Link to={'mięso'}><Button variant='contained'>Mięso</Button></Link>
-              <Link to={'wędliny'}><Button variant='contained'>Wędliny</Button></Link>
-            </Stack>
-          </Stack>
-        </Paper>
-      </div>
-    </div>
+      <CategorySelection />
     :
-    <div style={{backgroundColor: '#E4E4E4', width: '100vw'}}>
+    <div style={{backgroundColor: '#E4E4E4', width: '99.5vw', overflowX: 'hidden'}}>
       <NavBar />
       <div style={{marginTop: '20px', width: '100%', display: 'flex', justifyContent: 'center'}}>  
         <Grid container spacing={2} style={{width:'100%'}}>
-            <Grid item xs={12} md={12} lg={2}> 
+            <Grid item xs={12} md={12} lg={2}>
+              <ResetCategoryButton />
               <FilterPanel onApplyFilter={(filterOptions) => handleApplyFilter(filterOptions)} 
               onApplySearch={(name) => handleApplySearch(name)}/>
             </Grid>

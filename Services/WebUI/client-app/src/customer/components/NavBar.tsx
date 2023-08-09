@@ -24,7 +24,7 @@ const Navbar = () => {
         {isMobile ? (
           <Stack direction={'row'} justifyContent={'space-between'} style={{padding: '10px'}}>
             {/* Mobile Menu */}
-            <img src='assets/logoimg.png' alt='Logo Domino' width={'16%'} />
+            <img src='/assets/logoimg.png' alt='Logo Domino' width={'16%'} />
             <IconButton color='primary' onClick={handleMenuOpen}>
               <MenuIcon />
             </IconButton>
@@ -58,7 +58,7 @@ const Navbar = () => {
             <Link replace className='navbarLink' to={'/o-nas'}>
               <button className='navbarBtn' disabled={currentLocation.pathname === '/o-nas'}>O nas</button>
             </Link>
-            <img src='assets/logoimg.png' alt='Logo Domino' width={'7%'} style={{margin: '10px 0px 10px 0px'}} />
+            <img src='/assets/logoimg.png' alt='Logo Domino' width={'7%'} style={{margin: '10px 0px 10px 0px'}} />
             <Link replace className='navbarLink' to={'/dla-firm'}>
               <button className='navbarBtn' disabled={currentLocation.pathname === '/dla-firm'}>Dla firm</button>
             </Link>

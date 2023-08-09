@@ -5,7 +5,7 @@ import { FilterOptions } from "../models/filterOptions";
 import agent from "../api/agent";
 import { useMediaQuery } from "@mui/material";
 import theme from "../layout/theme";
-//TODO Poprawić działanie filtrów
+
 export default class CatalogStore {
   productsRegistry = new Map<string, Product>()
   quantityMode: string | null = null

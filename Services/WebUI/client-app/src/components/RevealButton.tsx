@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, IconButton } from '@mui/material';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import './componentStyles.css'
+import { observer } from 'mobx-react-lite';
 
 interface RevealButtonProps {
   buttonText: string;
@@ -29,4 +30,4 @@ const RevealButton: React.FC<RevealButtonProps> = ({
   );
 };
 
-export default RevealButton;
+export default observer(RevealButton);

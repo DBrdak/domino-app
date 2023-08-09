@@ -19,6 +19,25 @@ const theme = createTheme({
       main: red.A400,
     },
   },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '*::-webkit-scrollbar': {
+          width: '10px',
+        },
+        '*::-webkit-scrollbar-track': {
+          background: '#f5f5f5',
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: '#888',
+          borderRadius: '15px',
+          '&:hover': {
+            backgroundColor: '#555',
+          },
+        },
+      },
+    },
+  },
 });
 
 export default theme;

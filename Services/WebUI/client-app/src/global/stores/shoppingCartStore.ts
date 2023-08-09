@@ -21,22 +21,22 @@ export default class ShoppingCartStore {
       if(this.shoppingCart) {
         if(localStorage.getItem('scid')) {
           const result = await agent.shoppingCart.get(localStorage.getItem('scid')!)
-          this.shoppingCart = new ShoppingCart(result)
+          this.setShoppingCart(result)
         } else {
           const result =  await agent.shoppingCart.get(this.shoppingCart.shoppingCartId)
-          this.shoppingCart = new ShoppingCart(result)
+          this.setShoppingCart(result)
         }
       } else {
         if(localStorage.getItem('scid')) {
           const result = await agent.shoppingCart.get(localStorage.getItem('scid')!)
-          this.shoppingCart = new ShoppingCart(result)
+          this.setShoppingCart(result)
         } else {
           const result = await agent.shoppingCart.get(uuid())
-          this.shoppingCart = new ShoppingCart(result)
+          this.setShoppingCart(result)
         }
       }
       if(!localStorage.getItem('scid')){
-        localStorage.setItem('scid', this.shoppingCart.shoppingCartId)
+        localStorage.setItem('scid', this.shoppingCart!.shoppingCartId)
       }
       this.setLoading(false)
     } catch(e) {
