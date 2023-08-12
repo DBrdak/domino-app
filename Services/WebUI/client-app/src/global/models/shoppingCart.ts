@@ -1,4 +1,4 @@
-import { DateTimeRange, Location, Money } from "./common";
+import { DateTimeRange, DeliveryInfo, Location, Money, PersonalInfo } from "./common";
 import { Product } from "./product";
 
 export interface ShoppingCartItem {
@@ -45,6 +45,7 @@ export class ShoppingCart implements ShoppingCart {
 export interface ShoppingCartCheckout {
   shoppingCartId: string;
   totalPrice: number;
+  currency: string
   items: ShoppingCartItem[];
   phoneNumber: string;
   firstName: string;
@@ -54,7 +55,15 @@ export interface ShoppingCartCheckout {
 }
 
 export class ShoppingCartCheckout implements ShoppingCartCheckout {
-  constructor(init?: ShoppingCartCheckout) {
-    Object.assign(this, init)
+  constructor(init: ShoppingCart, personalInfo: PersonalInfo, deliveryInfo: DeliveryInfo) {
+    this.shoppingCartId = init?.shoppingCartId
+    this.totalPrice = init.totalPrice
+    this.items = init.items
+    this.currency = init.currency
+    this.phoneNumber = personalInfo.phoneNumber
+    this.firstName = personalInfo.firstName
+    this.lastName = personalInfo.lastName
+    this.deliveryLocation = deliveryInfo.deliveryLocation
+    this.deliveryDate = deliveryInfo.deliveryDate
   }
 }

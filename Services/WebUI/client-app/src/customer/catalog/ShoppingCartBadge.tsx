@@ -4,11 +4,19 @@ import React from 'react'
 import { ShoppingCart, ShoppingCartItem } from '../../global/models/shoppingCart'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '../../global/stores/store'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function ShoppingCartBadge() {
   const {shoppingCartStore} = useStore()
+  const navigate = useNavigate()
+
   
+
+  function handleNavigate(to: string): void {
+    if(!(shoppingCartStore.shoppingCart!.items.length < 1)) {
+      navigate(to)
+    }
+  }
 
   return (
     shoppingCartStore.loading ?
@@ -17,13 +25,12 @@ function ShoppingCartBadge() {
     </Fab>
     :
     shoppingCartStore.shoppingCart ?
-    <Link style={{ position: 'fixed', right: 20, bottom: 20 }} replace to={'/koszyk'}>
-      <Fab color="primary" aria-label="add to shopping cart" disabled={shoppingCartStore.shoppingCart.items.length < 1}>
+      <Fab color="primary" aria-label="add to shopping cart" onClick={() => handleNavigate('/koszyk')}
+      disabled={shoppingCartStore.shoppingCart.items.length < 1} style={{ position: 'fixed', right: 20, bottom: 20 }}>
         <Badge badgeContent={shoppingCartStore.shoppingCart && shoppingCartStore.shoppingCart.items.length} color="secondary">
           <ShoppingCartIcon />
         </Badge>
       </Fab>
-    </Link>
     :
     <Fab style={{ position: 'fixed', right: 20, bottom: 20 }}  color="primary" aria-label="add to shopping cart" disabled={true}>
       <Badge color="secondary">

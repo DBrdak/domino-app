@@ -33,6 +33,9 @@ namespace OnlineShop.Order.Infrastructure.Persistence
 
             modelBuilder.Entity<OnlineOrder>()
                 .OwnsOne(o => o.DeliveryLocation);
+
+            modelBuilder.Entity<OrderItem>()
+                .OwnsOne(o => o.Price);
         }
     }
 }

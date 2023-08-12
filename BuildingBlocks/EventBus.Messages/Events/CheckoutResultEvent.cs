@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Messages.Events
 {
-    public class CheckoutResultEvent : IntegrationBaseEvent
+    public class CheckoutResultEvent
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }

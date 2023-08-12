@@ -33,6 +33,8 @@ namespace OnlineShop.ShoppingCart.API.Repositories
 
         public async Task<Entities.ShoppingCart> UpdateShoppingCart(Entities.ShoppingCart shoppingCart)
         {
+            await _cache.RemoveAsync(shoppingCart.ShoppingCartId);
+
             await _cache.SetStringAsync(shoppingCart.ShoppingCartId,
                 JsonConvert.SerializeObject(shoppingCart));
 

@@ -8,9 +8,9 @@ import ContractorsMain from "../../customer/contractors/ContractorsMain";
 import ContactMain from "../../customer/contact/ContactMain";
 import ShoppingCartPage from "../../customer/catalog/shoppingCart/ShoppingCartPage";
 import path from "path";
-import PersonalInfo from "../../customer/catalog/shoppingCart/PersonalInfo";
+import PersonalInfo from "../../customer/catalog/shoppingCart/PersonalInfoStep";
 import OrderCompletion from "../../customer/catalog/shoppingCart/OrderCompletion";
-import DeliveryInfo from "../../customer/catalog/shoppingCart/DeliveryInfo";
+import DeliveryInfo from "../../customer/catalog/shoppingCart/DeliveryInfoStep";
 
 export const routes: RouteObject[] = [
   {

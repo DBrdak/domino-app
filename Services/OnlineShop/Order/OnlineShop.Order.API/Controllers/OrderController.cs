@@ -16,9 +16,9 @@ namespace OnlineShop.Order.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCustomerOrder([FromBody] GetCustomerOrderQuery query)
+        public async Task<IActionResult> GetCustomerOrder([FromQuery] string phoneNumber, [FromQuery] string orderId)
         {
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(new GetCustomerOrderQuery(phoneNumber, orderId));
 
             return HandleResult(result);
         }

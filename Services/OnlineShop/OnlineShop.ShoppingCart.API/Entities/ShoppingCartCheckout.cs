@@ -10,6 +10,7 @@ namespace OnlineShop.ShoppingCart.API.Entities
         public string ShoppingCartId { get; set; }
         public decimal TotalPrice { get; set; }
         public List<ShoppingCartItem> Items { get; set; }
+        public string Currency { get; set; }
 
         // Personal Info
 

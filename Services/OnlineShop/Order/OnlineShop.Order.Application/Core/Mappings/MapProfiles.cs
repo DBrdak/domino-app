@@ -14,6 +14,9 @@ public class MapProfiles : Profile
             .ForMember(d => d.CheckoutOrder, o => o.MapFrom(s => s))
             .ReverseMap();
 
+        CreateMap<OrderItem, ShoppingCartItem>()
+            .ForMember(d => d.Price, o => o.MapFrom(s => s.Price)).ReverseMap();
+
         CreateMap<OnlineOrder, ShoppingCartCheckoutEvent>()
             .ForMember(d => d.Items, o => o.MapFrom(s => s.Items))
             .ForMember(d => d.DeliveryDate, o => o.MapFrom(s => s.DeliveryDate))
@@ -26,5 +29,6 @@ public class MapProfiles : Profile
             .ForMember(d => d.End, o => o.MapFrom(s => s.End.ToUniversalTime()))
             .ReverseMap();
         CreateMap<Domain.Common.Location, Location>().ReverseMap();
+        CreateMap<Money, Domain.Common.Money>().ReverseMap();
     }
 }

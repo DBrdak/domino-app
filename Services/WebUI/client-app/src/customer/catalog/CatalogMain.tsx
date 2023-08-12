@@ -24,7 +24,7 @@ function CatalogMain({category}: Props) {
   
   useEffect(() => {
     shoppingCartStore.loadShoppingCart()
-  })
+  }, [])
   
   useEffect(() => {
     category && catalogStore.loadProducts(category)

@@ -35,6 +35,15 @@ namespace OnlineShop.Catalog.API.Controllers
                 minPrice, maxPrice, isAvailable, isDiscounted);
         }
 
+        [HttpPost("seed")]
+        [EndpointDescription("Development endpoint")]
+        public async Task<IActionResult> Seed()
+        {
+            var result = await _repository.Seed();
+
+            return result ? Ok() : BadRequest("Database already contains data");
+        }
+
         //TODO
         //Jak narazie zawieszam feature podkategorii, w przyszłości trzeba zrobić oddzielną kolekcję przechowującą podkategorie
         //Dodawanie produktu z ceną z cennika, jeżeli nie znaleziono, to wtedy z ustaloną, po czym dodaję do cennika

@@ -19,9 +19,6 @@ namespace OnlineShop.Catalog.API.Data
 
             Products = database.GetCollection<Product>(
                 config.GetValue<string>("DatabaseSettings:CollectionName"));
-
-            if (_env.IsDevelopment())
-                Products.SeedData();
         }
 
         public IMongoCollection<Product> Products { get; }

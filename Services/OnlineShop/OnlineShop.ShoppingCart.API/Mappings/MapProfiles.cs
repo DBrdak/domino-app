@@ -10,6 +10,10 @@ namespace OnlineShop.ShoppingCart.API.Mappings
     {
         public MapProfiles()
         {
+            CreateMap<ShoppingCartItem, EventBus.Messages.Common.ShoppingCartItem>()
+                .ForMember(d => d.Price, o => o.MapFrom(s => s.Price))
+                .ReverseMap();
+
             CreateMap<ShoppingCartCheckout, ShoppingCartCheckoutEvent>()
                 .ForMember(d => d.TotalPrice, o => o.MapFrom(s => s.TotalPrice))
                 .ForMember(d => d.Items, o => o.MapFrom(s => s.Items))
@@ -17,7 +21,7 @@ namespace OnlineShop.ShoppingCart.API.Mappings
                 .ForMember(d => d.DeliveryDate, o => o.MapFrom(s => s.DeliveryDate))
                 .ReverseMap();
 
-            CreateMap<ShoppingCartItem, EventBus.Messages.Common.ShoppingCartItem>().ReverseMap();
+            CreateMap<Money, EventBus.Messages.Common.Money>().ReverseMap();
             CreateMap<Location, EventBus.Messages.Common.Location>().ReverseMap();
             CreateMap<DateTimeRange, EventBus.Messages.Common.DateTimeRange>().ReverseMap();
         }

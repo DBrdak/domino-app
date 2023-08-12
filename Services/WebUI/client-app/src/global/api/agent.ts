@@ -6,6 +6,7 @@ import { request } from "http";
 import { PaginatedResult } from "../models/pagination";
 import { Product } from "../models/product";
 import { ShoppingCart, ShoppingCartCheckout } from "../models/shoppingCart";
+import { OnlineOrder, OnlineOrderRead, OrderCredentials } from "../models/order";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -60,7 +61,7 @@ axios.interceptors.response.use(async response => {
 })
 
 const requests = {
-  get: <T> (url: string, body?: {}) => axios.get<T>(url).then(responseBody),
+  get: <T> (url: string) => axios.get<T>(url).then(responseBody),
   post: <T> (url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
   put: <T> (url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
   delete: <T> (url: string) => axios.delete<T>(url).then(responseBody)
@@ -73,13 +74,19 @@ const catalog = {
 const shoppingCart ={
   get: (shoppingCartId: string) => axios.get<ShoppingCart>(`/onlineshop/shoppingcart/${shoppingCartId}`).then(responseBody),
   update: (shoppingCart: ShoppingCart) => axios.post<ShoppingCart>('/onlineshop/shoppingcart', shoppingCart).then(responseBody),
-  delete: (shoppingCartId: string) => axios.delete<ShoppingCart>(`/onlineshop/shoppingcart/${shoppingCartId}`),
-  chackout: (shoppingCart: ShoppingCartCheckout) => axios.post<string>('/onlineshop/shoppingcart/checkout', shoppingCart)
+  delete: (shoppingCartId: string) => axios.delete(`/onlineshop/shoppingcart/${shoppingCartId}`),
+  checkout: (shoppingCart: ShoppingCartCheckout) => axios.post<string>('/onlineshop/shoppingcart/checkout', shoppingCart).then(responseBody)
+}
+
+const order = {
+  get: (params: URLSearchParams) => axios.get<OnlineOrderRead>('/onlineshop/order', {params}).then(responseBody),
+  cancel: (order: OnlineOrder) => axios.put('/onlineshop/order/cancel', order)
 }
 
 const agent = {
   catalog,
-  shoppingCart
+  shoppingCart,
+  order
 }
 
 export default agent;

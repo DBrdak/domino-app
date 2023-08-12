@@ -10,7 +10,7 @@ const ShoppingCartPage: React.FC = () => {
   const {shoppingCart} = shoppingCartStore
 
   useEffect(() => {
-    shoppingCartStore.loadShoppingCart()
+    shoppingCartStore.loadShoppingCart();
   }, [])
 
   return (
@@ -59,9 +59,9 @@ const ShoppingCartPage: React.FC = () => {
               <CircularProgress />
             </div>
             )}
-          </TableContainer>
+          </TableContainer> 
           <Typography variant="h6" style={{ marginTop: '10px' }}>
-            Przewidywany koszt zamówienia: {}
+            Przewidywany koszt zamówienia: {/* TODO Zrobić null check */}
             {shoppingCart ? 
               `${shoppingCart.totalPrice.toFixed(1)} ${shoppingCart.currency}`
               :       

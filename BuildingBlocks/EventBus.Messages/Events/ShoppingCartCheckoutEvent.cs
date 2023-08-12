@@ -8,13 +8,14 @@ using EventBus.Messages.Common;
 
 namespace EventBus.Messages.Events
 {
-    public class ShoppingCartCheckoutEvent : IntegrationBaseEvent
+    public class ShoppingCartCheckoutEvent
     {
         // Shopping Cart Info
 
         public string ShoppingCartId { get; set; }
         public decimal TotalPrice { get; set; }
         public List<ShoppingCartItem> Items { get; set; }
+        public string Currency { get; set; }
 
         // Personal Info
 

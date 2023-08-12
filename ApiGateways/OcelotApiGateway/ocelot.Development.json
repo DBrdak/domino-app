@@ -12,7 +12,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/catalog/{category}",
       "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 }
+      "FileCacheOptions": { "TtlSeconds": 0 }
     },
     // OnlineShop.ShoppingCart.API
     {
@@ -26,7 +26,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/shoppingcart",
       "UpstreamHttpMethod": [ "POST" ],
-      "FileCacheOptions": { "TtlSeconds": 30 }
+      "FileCacheOptions": { "TtlSeconds": 0 }
     },
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/shoppingcart/{shoppingCartId}",
@@ -39,7 +39,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/shoppingcart/{shoppingCartId}",
       "UpstreamHttpMethod": [ "GET", "DELETE" ],
-      "FileCacheOptions": { "TtlSeconds": 30 }
+      "FileCacheOptions": { "TtlSeconds": 0 }
     },
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/shoppingcart/checkout",
@@ -52,7 +52,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/shoppingcart/checkout",
       "UpstreamHttpMethod": [ "POST" ],
-      "FileCacheOptions": { "TtlSeconds": 30 }
+      "FileCacheOptions": { "TtlSeconds": 0 }
     },
     // OnlineShop.Order.API
     {
@@ -66,7 +66,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/order",
       "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 30 }
+      "FileCacheOptions": { "TtlSeconds": 0 }
     },
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/order/cancel",
@@ -79,7 +79,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/order/cancel",
       "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 30 }
+      "FileCacheOptions": { "TtlSeconds": 0 }
     }
   ]
 }

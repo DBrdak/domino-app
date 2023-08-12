@@ -8,6 +8,7 @@ namespace OnlineShop.Order.Domain.Entities
         // Shopping Cart Info
 
         public decimal TotalPrice { get; set; }
+        public string Currency { get; set; }
         public List<OrderItem> Items { get; set; }
 
         // Personal Info

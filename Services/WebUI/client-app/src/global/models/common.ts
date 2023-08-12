@@ -19,3 +19,14 @@ export interface QuantityModifier {
   isPcsAllowed: boolean
   kgPerPcs: number | null
 }
+
+export interface PersonalInfo {
+  phoneNumber: string
+  firstName: string
+  lastName: string
+}
+
+export interface DeliveryInfo {
+  deliveryDate: DateTimeRange
+  deliveryLocation: Location
+}
