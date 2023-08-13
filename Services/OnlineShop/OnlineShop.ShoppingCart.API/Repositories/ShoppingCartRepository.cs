@@ -4,21 +4,21 @@ using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using OnlineShop.ShoppingCart.API.Entities;
-using OnlineShop.ShoppingCart.API.EventBusConsumer;
+using StackExchange.Redis;
 
 namespace OnlineShop.ShoppingCart.API.Repositories
 {
     public class ShoppingCartRepository : IShoppingCartRepository
     {
         private readonly IDistributedCache _cache;
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IBus _bus;
         private readonly IMapper _mapper;
 
-        public ShoppingCartRepository(IDistributedCache cache, IPublishEndpoint publishEndpoint, IMapper mapper)
+        public ShoppingCartRepository(IDistributedCache cache, IPublishEndpoint publishEndpoint, IMapper mapper, IBus bus)
         {
             _cache = cache;
-            _publishEndpoint = publishEndpoint;
             _mapper = mapper;
+            _bus = bus;
         }
 
         public async Task<Entities.ShoppingCart> GetShoppingCart(string cartId)
@@ -54,19 +54,15 @@ namespace OnlineShop.ShoppingCart.API.Repositories
                 return null;
 
             var eventMessage = _mapper.Map<ShoppingCartCheckoutEvent>(shoppingCartCheckout);
+            var client = _bus.CreateRequestClient<ShoppingCartCheckoutEvent>();
+            var response = await client.GetResponse<CheckoutResultResponse>(eventMessage);
 
-            await _publishEndpoint.Publish(eventMessage);
-
-            Task.WaitAll(CheckoutResultConsumer.GetCheckoutResult());
-
-            var result = await CheckoutResultConsumer.GetCheckoutResult();
-
-            if (!result.IsSuccess)
-                return result.Message;
+            if (!response.Message.IsSuccess)
+                return response.Message.Message;
 
             await DeleteShoppingCart(shoppingCartCheckout.ShoppingCartId);
 
-            return result.Message;
+            return response.Message.Message;
         }
     }
 }

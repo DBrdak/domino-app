@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, FormControlLabel, Switch, useMediaQuery, IconButton, Stack } from '@mui/material';
+import { FormControl, FormControlLabel, Switch, useMediaQuery, IconButton, Stack, Tooltip } from '@mui/material';
 import theme from '../../global/layout/theme';
 import MyTextInput from '../../components/MyTextInput';
 import { Form, Formik } from 'formik';
@@ -30,11 +30,22 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
     else setUnit('kg')
   };
 
+  function getMaxQ(): number | undefined {
+    if(unit === 'kg') {
+      return 50
+    } else {
+      return Number((50 / catalogStore.products.find(p => p.id === catalogStore.quantityMode)?.quantityModifier.kgPerPcs!).toFixed(0))
+    }
+  }
+
   return (
     <FormControl component="fieldset" style={{padding: '10px', width: '100%'}}>
     <div style={{ display: 'flex', alignItems: 'center', width:'100%'}}>
         <Formik
-        validationSchema={Yup.object({quantity: Yup.number().required('Proszę podać ilość').moreThan(0,"Podaj ilość większą niż 0")})}
+        validationSchema={Yup.object({quantity: Yup.number()
+                                                   .required('Proszę podać ilość')
+                                                   .moreThan(0,"Podaj ilość większą niż 0")
+                                                   .lessThan(getMaxQ()! + 1, 'Max 50 kg')})}
         initialValues={{quantity: ''}} 
         onSubmit={values => handleQuantityChange(Number(values.quantity))}
         validateOnMount={true}>
@@ -42,7 +53,7 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
           <Form style={{width:'100%'}} onSubmit={handleSubmit} autoComplete='off' >
             <Stack direction={'column'} >
               <Stack direction={'row'} width={'100%'} justifyContent={'center'}>
-                <MyTextInput placeholder='Ilość' name='quantity'/>
+                <MyTextInput placeholder='Ilość' name='quantity' maxValue={getMaxQ()} minValue={0} showErrors/>
                 <FormControlLabel
                 style={{marginLeft: '5%'}}
                 control={

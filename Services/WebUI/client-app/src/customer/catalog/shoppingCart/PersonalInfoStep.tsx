@@ -1,17 +1,22 @@
 import { Paper, Typography, Grid, TextField, Button, AppBar, Toolbar, Stack } from "@mui/material";
 import { Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useBeforeUnload, useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
 import { PersonalInfo } from "../../../global/models/common";
 import { useStore } from "../../../global/stores/store";
 import { observer } from "mobx-react-lite";
 import MyTextInput from "../../../components/MyTextInput";
+import { usePreventNavigation } from "../../../global/router/routeProtection";
+
 //TODO Ustawić na API walidację numeru telefonu
+
 const PersonalInfoStep = () => {
   const {shoppingCartStore} = useStore()
   const [initValues, setInitValues] = useState<PersonalInfo>(shoppingCartStore.personalInfo || {firstName: '', lastName: '', phoneNumber: ''})
   const navigate = useNavigate();
+
+  usePreventNavigation([shoppingCartStore.shoppingCart], '/koszyk')
 
   const validationSchema = Yup.object({
     firstName: Yup.string()

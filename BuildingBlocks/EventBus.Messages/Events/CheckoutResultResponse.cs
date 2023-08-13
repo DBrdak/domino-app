@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace EventBus.Messages.Events
 {
-    public class CheckoutResultEvent
+    public class CheckoutResultResponse
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
 
-        public static CheckoutResultEvent Success(string orderId) => new CheckoutResultEvent
+        public static CheckoutResultResponse Success(string orderId) => new CheckoutResultResponse
         {
             IsSuccess = true,
             Message = orderId
         };
 
-        public static CheckoutResultEvent Failure(string message) => new CheckoutResultEvent
+        public static CheckoutResultResponse Failure(string message) => new CheckoutResultResponse
         {
             IsSuccess = false,
             Message = message

@@ -10,12 +10,17 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; 
 import 'leaflet-defaulticon-compatibility';
 import { getPolishDayOfWeek, getNextDay } from "./temp";
+import { usePreventNavigation } from "../../../global/router/routeProtection";
 
 
 const DeliveryInfoStep: React.FC = () => {
   const { shoppingCartStore } = useStore();
   const [selectedDeliveryPoint, setSelectedDeliveryPoint] = useState<DeliveryInfo | null>(null);
   const navigate = useNavigate();
+
+  usePreventNavigation([
+    shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo
+  ], '/koszyk')
 
   const exampleLocations: Location[] = [
     { name: "Unieck", latitude: "52.86934621851329", longitude: "20.199904860257817" },

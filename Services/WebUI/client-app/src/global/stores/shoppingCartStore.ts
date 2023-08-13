@@ -51,7 +51,7 @@ export default class ShoppingCartStore {
     }
   }
 
-  setLoading = (state: boolean) => {
+  private setLoading = (state: boolean) => {
     this.loading = state
   }
 
@@ -79,7 +79,7 @@ export default class ShoppingCartStore {
     this.deliveryInfo = deliveryInfo
   }
 
-  private setShoppingCartCheckout() {
+  private createShoppingCartCheckout() {
     if(this.shoppingCart && this.personalInfo && this.deliveryInfo){
       this.shoppingCartCheckout = new ShoppingCartCheckout(this.shoppingCart, this.personalInfo, this.deliveryInfo)
     }
@@ -102,9 +102,7 @@ export default class ShoppingCartStore {
       }
       this.newShoppingCartItem && this.shoppingCart?.addShoppingCartItem(this.newShoppingCartItem)
       const updatedShoppingCart = await agent.shoppingCart.update(this.shoppingCart!)
-      console.log(updatedShoppingCart)
       this.setShoppingCart(updatedShoppingCart)
-      console.log(this.shoppingCart)
       this.setLoading(false)
     } catch(e) {
       console.log(e)
@@ -129,13 +127,13 @@ export default class ShoppingCartStore {
   checkoutShoppingCart= async () => {
     this.setLoading(true)
     try {
-      if(!this.shoppingCart) await this.loadShoppingCart
-      this.setShoppingCartCheckout()
-      const result = this.shoppingCartCheckout && await agent.shoppingCart.checkout(this.shoppingCartCheckout)
-      store.orderStore.setId(result!)
-      while(!result){
-        console.log(result)
-      }
+      if(!this.shoppingCart) await this.loadShoppingCart()
+      this.createShoppingCartCheckout()
+      console.log(this.personalInfo, this.deliveryInfo, this.shoppingCartCheckout)
+      const result = this.shoppingCartCheckout && await agent.shoppingCart.checkout(this.shoppingCartCheckout)      
+      console.log(`Order Id result from checkout:${result}`)
+      this.personalInfo?.phoneNumber && store.orderStore.setPhoneNumber(this.personalInfo.phoneNumber)
+      result && store.orderStore.setId(result)
     } catch (e) {
       console.log(e)
     } finally {

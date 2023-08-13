@@ -1,4 +1,6 @@
-﻿using OnlineShop.ShoppingCart.API.Entities;
+﻿using EventBus.Messages.Events;
+using MassTransit;
+using OnlineShop.ShoppingCart.API.Entities;
 
 namespace OnlineShop.ShoppingCart.API.Repositories
 {

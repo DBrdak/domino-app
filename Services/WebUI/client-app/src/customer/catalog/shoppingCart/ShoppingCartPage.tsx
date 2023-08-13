@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { Button, Container, Card, CardMedia, CardContent, Typography, CardActions, AppBar, Toolbar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from '@mui/material'
+import { Button, Container, Card, CardMedia, CardContent, Typography, CardActions, AppBar, Toolbar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Box } from '@mui/material'
 import ShoppingCartStore from '../../../global/stores/shoppingCartStore';
 import { useStore } from '../../../global/stores/store';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { ShoppingCartTableItem } from './ShoppingCartTableItem';
 
 const ShoppingCartPage: React.FC = () => {
   const {shoppingCartStore, catalogStore} = useStore()
@@ -14,7 +15,7 @@ const ShoppingCartPage: React.FC = () => {
   }, [])
 
   return (
-    <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', verticalAlign: 'middle', minHeight:'100vh', padding: '20px 0px 20px 0px' }}>
       <Container style={{ maxWidth: '750px', backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '10px' }}>
         <AppBar position="static" style={{ marginBottom: '20px' }}>
           <Toolbar>
@@ -23,7 +24,7 @@ const ShoppingCartPage: React.FC = () => {
             </Typography>
           </Toolbar>
         </AppBar>
-          <TableContainer component={Paper} style={{width:'100%', padding: '40px'}}>
+          <TableContainer component={Paper} style={{width:'100%', padding: '40px', overflowX: 'hidden', display: 'flex', justifyContent: 'center'}}>
             {shoppingCart ? (
             <Table sx={{ width: '100%' }} aria-label="spanning table" >
               <TableHead>
@@ -42,10 +43,11 @@ const ShoppingCartPage: React.FC = () => {
               <TableBody>
                 {shoppingCart && shoppingCart.items.map((item) => (
                   <TableRow key={item.productId.concat(item.unit)}>
-                    <TableCell>{item.productName}</TableCell>
-                    <TableCell align="right">{item.quantity} {item.unit}</TableCell>
-                    <TableCell align="right">{item.price.amount} {item.price.currency}/{item.price.unit}</TableCell>
-                    <TableCell align="right">{item.totalValue.toFixed(1)} {item.price.currency}</TableCell>
+                    <ShoppingCartTableItem 
+                      item={item} 
+                      onRemove={(item) => console.log('jp')}
+                      onEdit={(item) => console.log('jp')}
+                    />
                   </TableRow>
                 ))}
                 <TableRow>
@@ -61,9 +63,9 @@ const ShoppingCartPage: React.FC = () => {
             )}
           </TableContainer> 
           <Typography variant="h6" style={{ marginTop: '10px' }}>
-            Przewidywany koszt zamówienia: {/* TODO Zrobić null check */}
+            Przewidywany koszt zamówienia: {}
             {shoppingCart ? 
-              `${shoppingCart.totalPrice.toFixed(1)} ${shoppingCart.currency}`
+              shoppingCart.totalPrice && shoppingCart.currency && `${shoppingCart.totalPrice.toFixed(1)} ${shoppingCart.currency}`
               :       
               <CircularProgress size={'1.25rem'} />
             }
@@ -81,7 +83,7 @@ const ShoppingCartPage: React.FC = () => {
           </Link>
         </div>
       </Container>
-    </div>
+    </div>  
   );
 };
 

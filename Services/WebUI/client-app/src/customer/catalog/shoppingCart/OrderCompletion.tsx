@@ -7,21 +7,30 @@ import CompletionMark from "../../../components/CompletionMark";
 import { useStore } from "../../../global/stores/store";
 import { OnlineOrderRead } from "../../../global/models/order";
 import { getPolishDayOfWeek } from "./temp";
+import { usePreventNavigation } from "../../../global/router/routeProtection";
 
 const OrderCompletion: React.FC = observer(() => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCompleted, setIsCompleted] = useState(false);
   const [order, setOrder] = useState<OnlineOrderRead | null>(null)
   const {orderStore, shoppingCartStore} = useStore()
 
-  useEffect(() => {
-    shoppingCartStore.checkoutShoppingCart()
-    orderStore.loadOrder()
-    setOrder(orderStore.order as OnlineOrderRead)
-    setIsLoading(false)
-  }, [shoppingCartStore.checkoutShoppingCart, orderStore.loadOrder, orderStore.order])
+  usePreventNavigation([
+    shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo, 
+    shoppingCartStore.deliveryInfo, orderStore.orderId
+  ], '/koszyk')
 
-  if (isLoading) {
+  useEffect(() => {
+    const processCheckoutAndLoadOrder = async () => {
+        await shoppingCartStore.checkoutShoppingCart()
+        if (orderStore.orderId) {
+          await orderStore.loadOrder()
+        }
+        setOrder(orderStore.order as OnlineOrderRead)
+    }
+    processCheckoutAndLoadOrder()
+  }, []);
+
+
+  if (orderStore.loading || shoppingCartStore.loading) {
     return (
       <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
         <Paper style={{ padding: 24, margin: 'auto', maxWidth: 500, textAlign: 'center' }}>
@@ -47,11 +56,7 @@ const OrderCompletion: React.FC = observer(() => {
           <Typography variant="subtitle1">Numer telefonu: {order?.phoneNumber}</Typography>
           <Typography variant="subtitle1">Miejsce odbioru: {order?.deliveryLocation.name}</Typography>
           <Typography variant="subtitle1">Czas odbioru: {}
-          {getPolishDayOfWeek(order!.deliveryDate.start)} {}  
-          {order?.deliveryDate.start.toLocaleTimeString().slice(0,5)}  
-          {} - {}
-          {getPolishDayOfWeek(order!.deliveryDate.end)} {}  
-          {order?.deliveryDate.end.toLocaleTimeString().slice(0,5)} 
+
           </Typography>
           <Typography variant="subtitle1">Numer zamówienia: {order?.orderId}</Typography>
           <CompletionMark />

@@ -39,9 +39,8 @@ export default class OrderStore {
   async loadOrder() {
     this.setLoading(true)
     try {
-      const result = await agent.order.get(this.axiosParams)
-      console.log(result)
-      this.setOrder(result)
+      const result = this.phoneNumber && this.orderId && await agent.order.get(this.axiosParams)
+      result && this.setOrder(result)
     } catch(error) {
       console.log(error)
     } finally {
