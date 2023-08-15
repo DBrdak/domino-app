@@ -80,7 +80,7 @@ const shoppingCart ={
 
 const order = {
   get: (params: URLSearchParams) => axios.get<OnlineOrderRead>('/onlineshop/order', {params}).then(responseBody),
-  cancel: (order: OnlineOrder) => axios.put('/onlineshop/order/cancel', order)
+  cancel: (order: OnlineOrder) => axios.put('/onlineshop/order/cancel', {order})
 }
 
 const agent = {

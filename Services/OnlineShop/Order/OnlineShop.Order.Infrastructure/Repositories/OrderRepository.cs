@@ -16,7 +16,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
         public async Task<OnlineOrder> GetCustomerOrders(string phoneNumber, string orderId)
         {
-            return await _context.Orders
+            return await _context.Set<OnlineOrder>()
                 .Include(o => o.Items)
                 .FirstOrDefaultAsync(o => o.PhoneNumber == phoneNumber
                                           && o.OrderId == orderId);
@@ -35,12 +35,15 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
         public async Task<bool> CancelOrder(OnlineOrder order)
         {
-            order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == order.OrderId);
+            var orderInDb = await _context.Set<OnlineOrder>()
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.OrderId == order.OrderId);
 
             if (order is null)
                 return false;
 
-            order.IsCanceled = true;
+            orderInDb.IsCanceled = true;
+            orderInDb.Status = "Anulowane";
             var result = await _context.SaveChangesAsync();
 
             return result > 0;

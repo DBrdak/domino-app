@@ -3,12 +3,14 @@ import { DateTimeRange, Location, Money } from "./common";
 import { ShoppingCart, ShoppingCartCheckout, ShoppingCartItem } from "./shoppingCart";
 
 export interface OrderItem {
-  id: string | null;
-  orderId: string | null;
-  price: Money;
+  id: string | null
+  orderId: string | null
+  price: Money
+  quantity: number
+  unit: string
   totalValue: number
-  productName: string;
-  status: string | null;
+  productName: string
+  status: string | null
 }
 
 export interface OnlineOrder {

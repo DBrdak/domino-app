@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Typography, Grid, Paper, Theme, styled, Box, useMediaQuery, Stack, Divider } from '@mui/material';
 import './aboutPageStyles.css';
 import NavBar from '../components/NavBar';
 import { Padding } from '@mui/icons-material';
 import theme from '../../global/layout/theme';
+import { setPageTitle } from '../../global/utils/pageTitle';
 
 const AboutMain: React.FC = () => {
+  useEffect(() => {
+    setPageTitle('O Nas')
+  }, [])
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <>

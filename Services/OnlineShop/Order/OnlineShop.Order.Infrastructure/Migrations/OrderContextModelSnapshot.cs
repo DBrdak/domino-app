@@ -83,6 +83,9 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                     b.Property<decimal>("TotalValue")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Unit")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");

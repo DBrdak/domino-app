@@ -12,6 +12,7 @@ import PersonalInfo from "../../customer/catalog/shoppingCart/PersonalInfoStep";
 import OrderCompletion from "../../customer/catalog/shoppingCart/OrderCompletion";
 import DeliveryInfo from "../../customer/catalog/shoppingCart/DeliveryInfoStep";
 import OrderPage from "../../customer/catalog/order/OrderPage";
+import NotFoundPage from "../../components/NotFoundPage";
 
 export const routes: RouteObject[] = [
   {
@@ -23,14 +24,14 @@ export const routes: RouteObject[] = [
       {path: 'produkty/mięso', element: <CatalogMain category={'meat'} />},
       {path: 'produkty/wędliny', element: <CatalogMain category={'sausage'} />},
       {path: 'koszyk', element: <ShoppingCartPage />, },
-      {path: 'koszyk/dane-osobowe', element: <PersonalInfo />}, // <-- here
-      {path: 'koszyk/dane-wysyłki', element: <DeliveryInfo />}, // <-- here
-      {path: 'koszyk/zamówienie', element: <OrderCompletion />}, // <-- here
-      {path: 'zamówienie/:id', element: <OrderPage />}, // <-- here
+      {path: 'koszyk/dane-osobowe', element: <PersonalInfo />},
+      {path: 'koszyk/dane-wysyłki', element: <DeliveryInfo />},
+      {path: 'koszyk/zamówienie', element: <OrderCompletion />},
+      {path: `zamówienie/:id`, element: <OrderPage/>},
       {path: 'o-nas', element: <AboutMain />},
       {path: 'dla-firm', element: <ContractorsMain />},
-      {path: 'kontakt', element: <ContactMain />}
-      //{path: '*', element: <Navigate replace={true} to='/' />}
+      {path: 'kontakt', element: <ContactMain />},
+      {path: '*', element: <NotFoundPage text={'Nie znaleziono szukanej zawartości 😔'} />}
     ]
   }
 ]

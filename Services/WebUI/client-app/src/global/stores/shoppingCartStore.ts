@@ -16,6 +16,7 @@ export default class ShoppingCartStore {
   deliveryInfo: DeliveryInfo | null = null
   shoppingCartCheckout: ShoppingCartCheckout | null = null
   loading: boolean = false
+  subLoading: boolean = false
 
   constructor() {
     makeAutoObservable(this);
@@ -53,6 +54,10 @@ export default class ShoppingCartStore {
 
   private setLoading = (state: boolean) => {
     this.loading = state
+  }
+
+  private setSubLoading = (state: boolean) => {
+    this.subLoading = state
   }
 
   private setShoppingCart(shoppingCart: ShoppingCart) {
@@ -93,6 +98,38 @@ export default class ShoppingCartStore {
     }
   }
 
+  editShoppingItem = async (newQuantity: number, productId: string) => {
+    this.setSubLoading(true)
+    try {
+      if(!this.shoppingCart) {
+        await this.loadShoppingCart()
+      }
+      this.shoppingCart?.items.map(i => i.productId === productId ? i.quantity = newQuantity : i)
+      const updatedShoppingCart = await agent.shoppingCart.update(this.shoppingCart!)
+      this.setShoppingCart(updatedShoppingCart)
+    } catch(e) {
+      console.log(e)
+    } finally {
+      this.setSubLoading(false)
+    }
+  }
+
+  deleteShoppingItem = async (item: ShoppingCartItem) => {
+    this.setSubLoading(true)
+    try {
+      if(!this.shoppingCart) {
+        await this.loadShoppingCart()
+      }
+      this.shoppingCart?.removeShoppingCartItem(item)
+      const updatedShoppingCart = await agent.shoppingCart.update(this.shoppingCart!)
+      this.setShoppingCart(updatedShoppingCart)
+    } catch(e) {
+      console.log(e)
+    } finally {
+      this.setSubLoading(false)
+    }
+  }
+
   addShoppingItem = async () => {
     this.createShoppingCartItem()
     this.setLoading(true)
@@ -129,11 +166,10 @@ export default class ShoppingCartStore {
     try {
       if(!this.shoppingCart) await this.loadShoppingCart()
       this.createShoppingCartCheckout()
-      console.log(this.personalInfo, this.deliveryInfo, this.shoppingCartCheckout)
-      const result = this.shoppingCartCheckout && await agent.shoppingCart.checkout(this.shoppingCartCheckout)      
-      console.log(`Order Id result from checkout:${result}`)
+      const result = this.shoppingCartCheckout && await agent.shoppingCart.checkout(this.shoppingCartCheckout)
       this.personalInfo?.phoneNumber && store.orderStore.setPhoneNumber(this.personalInfo.phoneNumber)
       result && store.orderStore.setId(result)
+      localStorage.removeItem('scid')
     } catch (e) {
       console.log(e)
     } finally {

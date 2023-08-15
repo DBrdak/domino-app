@@ -25,6 +25,11 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
     }
   };
 
+  function getQty(): number | string {
+    const qty = shoppingCartStore.shoppingCart?.items.find(i => i.productId === catalogStore.quantityMode)?.quantity
+    return qty ? qty : ''
+  }
+
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if(event.target.checked) setUnit('szt');
     else setUnit('kg')
@@ -46,18 +51,19 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
                                                    .required('Proszę podać ilość')
                                                    .moreThan(0,"Podaj ilość większą niż 0")
                                                    .lessThan(getMaxQ()! + 1, 'Max 50 kg')})}
-        initialValues={{quantity: ''}} 
+        initialValues={{quantity: getQty()}} 
         onSubmit={values => handleQuantityChange(Number(values.quantity))}
         validateOnMount={true}>
           {({ handleSubmit, isValid}) => (
           <Form style={{width:'100%'}} onSubmit={handleSubmit} autoComplete='off' >
             <Stack direction={'column'} >
               <Stack direction={'row'} width={'100%'} justifyContent={'center'}>
-                <MyTextInput placeholder='Ilość' name='quantity' maxValue={getMaxQ()} minValue={0} showErrors/>
+                <MyTextInput placeholder='Ilość' name='quantity'
+                 maxValue={getMaxQ()} minValue={0} showErrors type="number"/>
                 <FormControlLabel
                 style={{marginLeft: '5%'}}
                 control={
-                  <Switch 
+                  <Switch
                     checked={unit === 'szt'} 
                     onChange={handleSwitchChange} 
                     name="checked" 

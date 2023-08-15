@@ -38,7 +38,14 @@ export class ShoppingCart implements ShoppingCart {
   }
 
   addShoppingCartItem = (shoppingCartItem:ShoppingCartItem) => {
+    if(this.items.some(i => i.productId === shoppingCartItem.productId)) {
+      this.removeShoppingCartItem(shoppingCartItem)
+    } 
     this.items.push(shoppingCartItem)
+  }
+
+  removeShoppingCartItem = (item: ShoppingCartItem) => {
+    this.items = this.items.filter(i => i.productId !== item.productId)
   }
 }
 

@@ -8,14 +8,16 @@ import { useStore } from "../../../global/stores/store";
 import { OnlineOrderRead } from "../../../global/models/order";
 import { getPolishDayOfWeek } from "./temp";
 import { usePreventNavigation } from "../../../global/router/routeProtection";
+import LoadingComponent from "../../../components/LoadingComponent";
+import DateTimeRangeDisplay from "../../../components/DateTimeRangeDisplay";
+import { setPageTitle } from "../../../global/utils/pageTitle";
 
 const OrderCompletion: React.FC = observer(() => {
   const [order, setOrder] = useState<OnlineOrderRead | null>(null)
   const {orderStore, shoppingCartStore} = useStore()
 
   usePreventNavigation([
-    shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo, 
-    shoppingCartStore.deliveryInfo, orderStore.orderId
+    shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo, shoppingCartStore.deliveryInfo
   ], '/koszyk')
 
   useEffect(() => {
@@ -27,16 +29,12 @@ const OrderCompletion: React.FC = observer(() => {
         setOrder(orderStore.order as OnlineOrderRead)
     }
     processCheckoutAndLoadOrder()
+    setPageTitle('Zamówienie')
   }, []);
-
 
   if (orderStore.loading || shoppingCartStore.loading) {
     return (
-      <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
-        <Paper style={{ padding: 24, margin: 'auto', maxWidth: 500, textAlign: 'center' }}>
-          <CircularProgress />
-        </Paper>
-      </div>
+      <LoadingComponent text="Przetwarzanie zamówienia..." fullScreen />
     );
   }
 
@@ -55,13 +53,13 @@ const OrderCompletion: React.FC = observer(() => {
           <Typography variant="subtitle1">Nazwisko: {order?.lastName}</Typography>
           <Typography variant="subtitle1">Numer telefonu: {order?.phoneNumber}</Typography>
           <Typography variant="subtitle1">Miejsce odbioru: {order?.deliveryLocation.name}</Typography>
-          <Typography variant="subtitle1">Czas odbioru: {}
-
+          <Typography variant="subtitle1">Czas odbioru: {<DateTimeRangeDisplay date={order.deliveryDate}/>}
           </Typography>
           <Typography variant="subtitle1">Numer zamówienia: {order?.orderId}</Typography>
           <CompletionMark />
+          <Typography>Dziękujemy!</Typography>
           <Stack width={'100%'} direction={'column'} style={{ marginTop: 20}}>
-            <Link to={'/zamówienie'} >
+            <Link to={`/zamówienie/${order.orderId}`} >
               <Button variant="contained" color="primary" style={{ width: '100%' }}>Zobacz zamówienie</Button>
             </Link>
             <Link to={'/'} >

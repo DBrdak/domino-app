@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, FormControl, Tooltip } from '@mui/material';
+import { TextField, FormControl, Tooltip, FilledInputProps, InputAdornment, InputProps, OutlinedInputProps } from '@mui/material';
 import { useField } from 'formik';
 import { observer } from 'mobx-react-lite';
 
@@ -11,13 +11,19 @@ interface Props {
     type?: string;
     maxValue?: number;
     minValue?: number;
+    inputProps?: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>
+    style?: React.CSSProperties
 }
 
-const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, ...props }) => {
+const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, inputProps, type, style, ...props }) => {
     const [field, meta, helpers] = useField(props.name);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value.replace(',', '.');
+
+        if (type === 'number') {
+            value = value.replace(/[^0-9.]/g, '');
+        }
 
         if (value !== '0') {
             value = value.replace(/^0+/, '');
@@ -39,21 +45,9 @@ const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, ...props
     };
 
     return (
-        showErrors ? (
-          <FormControl error={meta.touched && !!meta.error} fullWidth>
-              <Tooltip title={meta.touched && meta.error ? meta.error : ''} placement="right">
-                  <TextField
-                      {...field}
-                      {...props}
-                      onChange={handleChange}
-                      label={props.label}
-                      variant="outlined"
-                      error={meta.touched && !!meta.error}
-                  />
-              </Tooltip>
-          </FormControl>
-        ) : (
-            <FormControl error={meta.touched && !!meta.error} fullWidth>
+    showErrors ? (
+        <FormControl error={meta.touched && !!meta.error} fullWidth>
+            <Tooltip title={meta.touched && meta.error ? meta.error : ''} placement="right">
                 <TextField
                     {...field}
                     {...props}
@@ -61,9 +55,25 @@ const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, ...props
                     label={props.label}
                     variant="outlined"
                     error={meta.touched && !!meta.error}
+                    InputProps={inputProps} 
+                    style={style}
                 />
-            </FormControl>
-        )
+            </Tooltip>
+        </FormControl>
+    ) : (
+        <FormControl error={meta.touched && !!meta.error} fullWidth>
+            <TextField
+                {...field}
+                {...props}
+                onChange={handleChange}
+                label={props.label}
+                variant="outlined"
+                error={meta.touched && !!meta.error}
+                InputProps={inputProps} 
+                style={style}
+            />
+        </FormControl>
+    )
     );
 }
 

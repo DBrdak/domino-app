@@ -32,6 +32,7 @@ namespace OnlineShop.Order.API.Controllers
         }
 
         //TODO
+        // Zapobieganie powielaniu zamówień
         // Get dla admina - pobieranie wszystkich orderów
         // Delete dla admina - usuwanie wszystkich orderów
         // Put dla admina - zmienianie statusów ordera/ów

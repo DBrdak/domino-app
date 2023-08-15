@@ -67,7 +67,7 @@ const PersonalInfoStep = () => {
                     <MyTextInput name='lastName' placeholder="Nazwisko" showErrors />
                   </Grid>
                   <Grid item xs={12}>
-                    <MyTextInput name='phoneNumber' placeholder="Numer telefonu" showErrors />
+                    <MyTextInput name='phoneNumber' placeholder="Numer telefonu" showErrors type="number" />
                   </Grid>
                   <Grid item xs={12}>
                     <Stack width={'100%'} justifyContent={'space-between'} direction={'row'}>

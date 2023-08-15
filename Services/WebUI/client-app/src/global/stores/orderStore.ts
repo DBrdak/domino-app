@@ -20,7 +20,7 @@ export default class OrderStore {
     return params
   }
 
-  setLoading(state: boolean) {
+  private setLoading(state: boolean) {
     this.loading = state
   }
 
@@ -30,15 +30,19 @@ export default class OrderStore {
 
   setId(id: string) {
     this.orderId = id
+    localStorage.setItem('ord-id', id)
   }
 
   setPhoneNumber(phoneNumber: string) {
     this.phoneNumber = phoneNumber
+    localStorage.setItem('ord-ph-num', phoneNumber)
   }
 
   async loadOrder() {
     this.setLoading(true)
     try {
+      !this.phoneNumber && localStorage.getItem('ord-ph-num') && this.setPhoneNumber(localStorage.getItem('ord-ph-num')!)
+      !this.orderId && localStorage.getItem('ord-id') && this.setId(localStorage.getItem('ord-id')!)
       const result = this.phoneNumber && this.orderId && await agent.order.get(this.axiosParams)
       result && this.setOrder(result)
     } catch(error) {
@@ -51,6 +55,9 @@ export default class OrderStore {
   async cancelOrder() {
     this.setLoading(true)
     try {
+      if(!this.order){
+        await this.loadOrder()
+      }
       const result = this.order && await agent.order.cancel(this.order)
       await this.loadOrder()
     } catch(error) {

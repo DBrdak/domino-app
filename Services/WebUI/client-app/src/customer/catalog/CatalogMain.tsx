@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import CategorySelection from './CategorySelection'
 import { Undo } from '@mui/icons-material'
 import ResetCategoryButton from './ResetCategoryButton'
+import { setPageTitle } from '../../global/utils/pageTitle'
 
 interface Props {
   category: string | null
@@ -23,6 +24,7 @@ function CatalogMain({category}: Props) {
   const {shoppingCartStore, catalogStore} = useStore()
   
   useEffect(() => {
+    setPageTitle('Produkty')
     shoppingCartStore.loadShoppingCart()
   }, [])
   

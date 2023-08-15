@@ -4,9 +4,15 @@ import EmailForm from './EmailForm';
 import NavBar from "../components/NavBar";
 import theme from "../../global/layout/theme";
 import Map from './Map'
+import { useEffect } from "react";
+import { setPageTitle } from "../../global/utils/pageTitle";
 
 const ContactMain: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  useEffect(() => {
+    setPageTitle('Kontakt')
+  }, [])
 
     const handleSubmit = (email: string, message: string) => {
         console.log(email, message);

@@ -152,7 +152,7 @@ namespace OnlineShop.Catalog.API.Repositories
                 Description = "Przykładowy opis mięsa",
                 Category = "Meat",
                 Subcategory = "",
-                Image = "/assets/examples/bokmar.jpg",
+                Image = "/assets/examples/kark.jpg",
                 Price = new Money(Math.Round(random.Next(15, 40) + (decimal)random.NextDouble())),
                 IsAvailable = random.Next(2) == 0,
                 IsDiscounted = random.Next(5) == 0,
