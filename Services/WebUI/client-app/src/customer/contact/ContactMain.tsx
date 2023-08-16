@@ -1,5 +1,4 @@
 import { Typography, Box, Paper, Divider, Stack, useMediaQuery } from "@mui/material";
-import GoogleMap from './Map';
 import EmailForm from './EmailForm';
 import NavBar from "../components/NavBar";
 import theme from "../../global/layout/theme";

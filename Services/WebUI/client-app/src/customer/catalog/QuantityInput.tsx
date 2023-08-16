@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { FormControl, FormControlLabel, Switch, useMediaQuery, IconButton, Stack, Tooltip } from '@mui/material';
+import { FormControl, FormControlLabel, Switch, useMediaQuery, IconButton, Stack } from '@mui/material';
 import theme from '../../global/layout/theme';
 import MyTextInput from '../../components/MyTextInput';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { observer } from 'mobx-react-lite';
-import { AddShoppingCart, CancelOutlined, Undo } from '@mui/icons-material';
+import { AddShoppingCart, Undo } from '@mui/icons-material';
 import { useStore } from '../../global/stores/store';
 
 interface Props {

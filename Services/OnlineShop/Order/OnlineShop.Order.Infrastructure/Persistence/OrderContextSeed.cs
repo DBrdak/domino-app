@@ -1,7 +1,4 @@
-﻿using OnlineShop.Order.Domain.Common;
-using OnlineShop.Order.Domain.Entities;
-
-namespace OnlineShop.Order.Infrastructure.Persistence
+﻿namespace OnlineShop.Order.Infrastructure.Persistence
 {
     public static class OrderContextSeed
     {

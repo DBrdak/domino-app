@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EventBus.Messages.Common;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EventBus.Messages.Common;
 
 namespace EventBus.Messages.Events
 {

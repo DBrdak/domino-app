@@ -1,4 +1,3 @@
-import React from 'react'
 import { DateTimeRange } from '../global/models/common'
 
 interface Props {

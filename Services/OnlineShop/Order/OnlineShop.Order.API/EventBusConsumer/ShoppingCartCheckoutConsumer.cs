@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using AutoMapper;
+﻿using AutoMapper;
 using EventBus.Messages.Events;
 using MassTransit;
 using MediatR;

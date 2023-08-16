@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using OnlineShop.Order.Application.Core.GlobalValidators;
 
 namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder

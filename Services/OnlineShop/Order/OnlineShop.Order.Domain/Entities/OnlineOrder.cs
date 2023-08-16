@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using OnlineShop.Order.Domain.Common;
+﻿using OnlineShop.Order.Domain.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShop.Order.Domain.Entities
 {

@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Order.Application.Behaviors;
+using System.Reflection;
 
 namespace OnlineShop.Order.Application
 {

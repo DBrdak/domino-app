@@ -1,4 +1,4 @@
-import { Card, Skeleton, CardContent, CardActions, Chip } from "@mui/material";
+import { Card, Skeleton, CardContent, CardActions } from "@mui/material";
 
 const LoadingCard: React.FC = () => {
   return (

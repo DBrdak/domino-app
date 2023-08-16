@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardMedia, CardContent, Typography, Button, CardActions, useMediaQuery, IconButton, Stack, Chip } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, CardActions, useMediaQuery, IconButton, Stack, Chip } from '@mui/material';
 import { Product } from '../../global/models/product';
 import theme from '../../global/layout/theme';
-import { Add, AddCircle, AddCircleOutlined, AddShoppingCart, CancelOutlined, Clear, Draw, Edit, VisibilityOutlined } from '@mui/icons-material';
+import { AddShoppingCart, Edit } from '@mui/icons-material';
 import { useStore } from '../../global/stores/store';
 import { observer } from 'mobx-react-lite';
 import QuantityInput from './QuantityInput';

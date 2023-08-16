@@ -1,10 +1,8 @@
 import { ShoppingCart as ShoppingCartIcon } from '@mui/icons-material'
 import { Fab, Badge, CircularProgress } from '@mui/material'
-import React from 'react'
-import { ShoppingCart, ShoppingCartItem } from '../../global/models/shoppingCart'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '../../global/stores/store'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function ShoppingCartBadge() {
   const {shoppingCartStore} = useStore()

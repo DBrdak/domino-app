@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Paper, Typography, Button, Stack, AppBar, Toolbar, Box, CircularProgress } from "@mui/material";
+import { Paper, Typography, Button, Stack, AppBar, Toolbar } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate } from "react-router-dom";
 import { useStore } from "../../../global/stores/store";

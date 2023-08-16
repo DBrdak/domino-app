@@ -1,5 +1,4 @@
 import { Button, Stack } from '@mui/material'
-import React from 'react'
 import './homeStyles.css'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'

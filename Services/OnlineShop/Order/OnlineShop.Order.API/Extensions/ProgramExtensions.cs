@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using EventBus.Messages.Common;
+﻿using EventBus.Messages.Common;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using OnlineShop.Order.API.EventBusConsumer;
 using OnlineShop.Order.API.Middlewares;
 using OnlineShop.Order.Application;

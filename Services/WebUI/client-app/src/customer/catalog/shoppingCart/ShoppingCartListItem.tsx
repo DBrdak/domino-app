@@ -1,10 +1,8 @@
-import { ListItem, ListItemAvatar, Avatar, ListItemText, TextField, InputAdornment, IconButton } from "@mui/material";
-import { useState } from "react";
+import { ListItem, ListItemAvatar, Avatar, ListItemText, InputAdornment, IconButton } from "@mui/material";
 import { ShoppingCartItem } from "../../../global/models/shoppingCart";
-import { Delete, DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline } from "@mui/icons-material";
 import MyTextInput from "../../../components/MyTextInput";
-import { Form, Formik, FormikHelpers } from "formik";
-import { Product } from "../../../global/models/product";
+import { Form, Formik } from "formik";
 import * as Yup from 'yup'
 
 interface Props {

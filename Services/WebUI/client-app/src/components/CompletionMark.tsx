@@ -1,4 +1,3 @@
-import React from 'react'
 import {CheckCircleOutline} from '@mui/icons-material'
 import './componentStyles.css'
 

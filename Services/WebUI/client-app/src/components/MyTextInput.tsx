@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, FormControl, Tooltip, FilledInputProps, InputAdornment, InputProps, OutlinedInputProps } from '@mui/material';
+import { TextField, FormControl, Tooltip, FilledInputProps, InputProps, OutlinedInputProps } from '@mui/material';
 import { useField } from 'formik';
 import { observer } from 'mobx-react-lite';
 

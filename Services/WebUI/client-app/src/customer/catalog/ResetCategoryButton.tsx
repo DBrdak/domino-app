@@ -1,14 +1,10 @@
 import { Undo } from '@mui/icons-material'
 import { IconButton, Typography, useMediaQuery } from '@mui/material'
-import React from 'react'
 import { Link } from 'react-router-dom'
 import theme from '../../global/layout/theme'
-import { useStore } from '../../global/stores/store'
-import { observer } from 'mobx-react-lite'
 
 function ResetCategoryButton() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const {catalogStore} = useStore()
 
   return (
     isMobile ?
@@ -27,4 +23,4 @@ function ResetCategoryButton() {
   )
 }
 
-export default observer(ResetCategoryButton)
+export default ResetCategoryButton

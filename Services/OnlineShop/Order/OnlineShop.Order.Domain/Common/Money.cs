@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineShop.Order.Domain.Common
+﻿namespace OnlineShop.Order.Domain.Common
 {
     public sealed class Money
     {

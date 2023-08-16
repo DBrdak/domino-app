@@ -1,6 +1,5 @@
-import React from 'react'
 import { OrderItem } from '../../../global/models/order';
-import { ListItem, ListItemText, TableCell, TableRow } from '@mui/material';
+import { TableCell, TableRow } from '@mui/material';
 
 interface Props {
   item: OrderItem

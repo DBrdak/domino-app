@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import Navbar from '../components/NavBar'
 import { Paper, Typography } from '@mui/material'
 import { setPageTitle } from '../../global/utils/pageTitle'

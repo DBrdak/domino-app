@@ -1,7 +1,4 @@
-import { Box, Button, Stack, Typography } from '@mui/material'
-import { observer } from 'mobx-react-lite'
-import { title } from 'process'
-import React from 'react'
+import { Button, Stack, Typography } from '@mui/material'
 import theme from '../global/layout/theme'
 import { useStore } from '../global/stores/store'
 

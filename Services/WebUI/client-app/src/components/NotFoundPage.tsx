@@ -20,7 +20,6 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ text }) => {
           navigate('/')
           return 100;
         }
-        console.log(oldProgress)
         return Math.min(oldProgress + 1, 100);
       });
     }, 25);

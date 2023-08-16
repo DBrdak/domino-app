@@ -1,6 +1,4 @@
-import { TableCell, IconButton, TextField } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { TableCell } from '@mui/material';
 import { ShoppingCartItem } from '../../../global/models/shoppingCart';
 import { useState } from 'react';
 

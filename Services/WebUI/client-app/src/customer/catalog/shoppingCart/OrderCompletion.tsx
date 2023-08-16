@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Paper, CircularProgress, Typography, AppBar, Toolbar, Container, Stack, Button } from "@mui/material";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { Paper, Typography, AppBar, Toolbar, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import CompletionMark from "../../../components/CompletionMark";
 import { useStore } from "../../../global/stores/store";
 import { OnlineOrderRead } from "../../../global/models/order";
-import { getPolishDayOfWeek } from "./temp";
 import { usePreventNavigation } from "../../../global/router/routeProtection";
 import LoadingComponent from "../../../components/LoadingComponent";
 import DateTimeRangeDisplay from "../../../components/DateTimeRangeDisplay";

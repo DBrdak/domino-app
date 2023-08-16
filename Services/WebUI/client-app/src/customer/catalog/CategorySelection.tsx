@@ -1,11 +1,8 @@
-import React from 'react'
 import { Paper, Stack, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import NavBar from '../components/NavBar'
-import { useStore } from '../../global/stores/store'
 import { observer } from 'mobx-react-lite'
 import './catalogStyles.css'
-import theme from '../../global/layout/theme'
 
 function CategorySelection() {
     return (

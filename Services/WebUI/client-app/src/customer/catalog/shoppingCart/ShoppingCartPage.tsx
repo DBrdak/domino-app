@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
-import { Button, Container, Card, CardMedia, CardContent, Typography, CardActions, AppBar, Toolbar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Box } from '@mui/material'
-import ShoppingCartStore from '../../../global/stores/shoppingCartStore';
+import { Button, Container, Typography, AppBar, Toolbar, CircularProgress } from '@mui/material'
 import { useStore } from '../../../global/stores/store';
 import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { ShoppingCartTableItem } from './ShoppingCartTableItem';
 import LoadingComponent from '../../../components/LoadingComponent';
 import ShoppingCartListItem from './ShoppingCartListItem';
 import { ShoppingCartItem } from '../../../global/models/shoppingCart';

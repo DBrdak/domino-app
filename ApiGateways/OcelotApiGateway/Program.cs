@@ -1,7 +1,6 @@
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Values;
 
 namespace OcelotApiGateway
 {
