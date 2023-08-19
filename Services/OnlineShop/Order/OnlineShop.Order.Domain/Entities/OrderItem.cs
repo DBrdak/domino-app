@@ -1,4 +1,4 @@
-﻿using OnlineShop.Order.Domain.Common;
+﻿using Shared.Domain.Money;
 
 namespace OnlineShop.Order.Domain.Entities;
 

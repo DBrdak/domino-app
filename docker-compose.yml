@@ -16,13 +16,13 @@ services:
     image: ${DOCKER_REGISTRY-}onlineshopcatalogapi
     build:
       context: .
-      dockerfile: Services/OnlineShop/OnlineShop.Catalog.API/Dockerfile
+      dockerfile: Services/OnlineShop/Catalog/OnlineShop.Catalog.API/Dockerfile
 
   onlineshop.shoppingcart.api:
     image: ${DOCKER_REGISTRY-}onlineshopshoppingcartapi
     build:
       context: .
-      dockerfile: Services/OnlineShop/OnlineShop.ShoppingCart.API/Dockerfile
+      dockerfile: Services/OnlineShop/ShoppingCart/OnlineShop.ShoppingCart.API/Dockerfile
 
 
   onlineshop.order.api:

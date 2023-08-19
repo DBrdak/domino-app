@@ -1,5 +1,7 @@
-﻿using OnlineShop.ShoppingCart.API.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Shared.Domain.DateTimeRange;
+using Shared.Domain.Location;
+using Shared.Domain.Money;
 
 namespace OnlineShop.ShoppingCart.API.Entities
 {
@@ -7,22 +9,21 @@ namespace OnlineShop.ShoppingCart.API.Entities
     {
         // Shopping Cart Info
 
-        public string ShoppingCartId { get; set; }
-        public decimal TotalPrice { get; set; }
-        public List<ShoppingCartItem> Items { get; set; }
-        public string Currency { get; set; }
+        public string ShoppingCartId { get; init; }
+        public Money TotalPrice { get; init; }
+        public List<ShoppingCartItem> Items { get; init; }
 
         // Personal Info
 
         [RegularExpression("^[0-9]{9}$")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; init; }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
 
         // Delivery Info
 
-        public Location DeliveryLocation { get; set; }
-        public DateTimeRange DeliveryDate { get; set; }
+        public Location DeliveryLocation { get; init; }
+        public DateTimeRange DeliveryDate { get; init; }
     }
 }

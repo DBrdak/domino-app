@@ -1,5 +1,6 @@
-﻿using OnlineShop.Order.Domain.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Shared.Domain.DateTimeRange;
+using Shared.Domain.Location;
 
 namespace OnlineShop.Order.Domain.Entities
 {

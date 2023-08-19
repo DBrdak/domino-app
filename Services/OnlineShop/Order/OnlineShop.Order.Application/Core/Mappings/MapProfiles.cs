@@ -3,6 +3,9 @@ using EventBus.Messages.Common;
 using EventBus.Messages.Events;
 using OnlineShop.Order.Application.Features.Commands.CheckoutOrder;
 using OnlineShop.Order.Domain.Entities;
+using Shared.Domain.DateTimeRange;
+using Shared.Domain.Location;
+using Shared.Domain.Money;
 
 namespace OnlineShop.Order.Application.Core.Mappings;
 
@@ -24,11 +27,5 @@ public class MapProfiles : Profile
             .ReverseMap();
 
         CreateMap<ShoppingCartItem, OrderItem>().ReverseMap();
-        CreateMap<Domain.Common.DateTimeRange, DateTimeRange>()
-            .ForMember(d => d.Start, o => o.MapFrom(s => s.Start.ToUniversalTime()))
-            .ForMember(d => d.End, o => o.MapFrom(s => s.End.ToUniversalTime()))
-            .ReverseMap();
-        CreateMap<Domain.Common.Location, Location>().ReverseMap();
-        CreateMap<Money, Domain.Common.Money>().ReverseMap();
     }
 }

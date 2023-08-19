@@ -1,5 +1,7 @@
 ﻿using EventBus.Messages.Common;
 using System.ComponentModel.DataAnnotations;
+using Shared.Domain.DateTimeRange;
+using Shared.Domain.Location;
 
 namespace EventBus.Messages.Events
 {

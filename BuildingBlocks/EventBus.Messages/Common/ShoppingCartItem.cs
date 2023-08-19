@@ -1,14 +1,30 @@
-﻿namespace EventBus.Messages.Common
+﻿using Shared.Domain.Money;
+using Shared.Domain.Photo;
+using Shared.Domain.Quantity;
+
+namespace EventBus.Messages.Common
 {
     public class ShoppingCartItem
     {
-        public decimal Quantity { get; set; }
-        public string Unit { get; set; }
-        public decimal? KgPerPcs { get; set; }
-        public Money Price { get; set; }
-        public decimal TotalValue { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string ProductImage { get; set; }
+        public Quantity Quantity { get; init; }
+        public Money Price { get; init; }
+        public Money TotalValue { get; init; }
+        public string ProductId { get; init; }
+        public string ProductName { get; init; }
+        public Photo ProductImage { get; init; }
+
+        public ShoppingCartItem(
+            Quantity quantity,
+            Money price,
+            string productId,
+            string productName,
+            Photo productImage)
+        {
+            Quantity = quantity;
+            Price = price;
+            ProductId = productId;
+            ProductName = productName;
+            ProductImage = productImage;
+        }
     }
 }

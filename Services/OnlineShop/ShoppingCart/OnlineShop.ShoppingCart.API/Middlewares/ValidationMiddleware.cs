@@ -26,7 +26,6 @@
 
                     if (!validationResult.IsValid)
                     {
-                        // Handle validation errors and return a response with errors
                         context.Response.StatusCode = 400;
                         context.Response.ContentType = "application/json";
 
@@ -47,7 +46,6 @@
                 }
             }
 
-            // Call the next middleware in the pipeline
             await next(context);
         }
     }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using EventBus.Messages.Events;
 using OnlineShop.ShoppingCart.API.Entities;
-using OnlineShop.ShoppingCart.API.Models;
+using Shared.Domain.DateTimeRange;
+using Shared.Domain.Location;
+using Shared.Domain.Money;
 using ShoppingCartItem = OnlineShop.ShoppingCart.API.Entities.ShoppingCartItem;
 
 namespace OnlineShop.ShoppingCart.API.Mappings
@@ -20,10 +22,6 @@ namespace OnlineShop.ShoppingCart.API.Mappings
                 .ForMember(d => d.DeliveryLocation, o => o.MapFrom(s => s.DeliveryLocation))
                 .ForMember(d => d.DeliveryDate, o => o.MapFrom(s => s.DeliveryDate))
                 .ReverseMap();
-
-            CreateMap<Money, EventBus.Messages.Common.Money>().ReverseMap();
-            CreateMap<Location, EventBus.Messages.Common.Location>().ReverseMap();
-            CreateMap<DateTimeRange, EventBus.Messages.Common.DateTimeRange>().ReverseMap();
         }
     }
 }
