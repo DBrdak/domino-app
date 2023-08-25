@@ -26,7 +26,7 @@ namespace Shared.Domain.Money
 
         public static Unit FromCode(string code)
         {
-            return All.FirstOrDefault(u => u.Code == code) ??
+            return All.FirstOrDefault(u => u.Code.ToLower() == code.ToLower()) ??
                    throw new ApplicationException("The unit code is invalid");
         }
     }

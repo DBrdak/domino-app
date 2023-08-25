@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
-using OnlineShop.Order.Application.Contracts;
+using OnlineShop.Order.Application.Abstractions.Messaging;
 using OnlineShop.Order.Application.Core;
-using OnlineShop.Order.Application.Core.Interfaces;
+using OnlineShop.Order.Domain.OnlineOrders;
+using Shared.Domain.Errors;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder
 {
-    public class CheckoutOrderCommandHandler : ICommandHandler<CheckoutOrderCommand, Result<string>>
+    public class CheckoutOrderCommandHandler : ICommandHandler<CheckoutOrderCommand, string>
     {
         private readonly IOrderRepository _repository;
 
@@ -19,9 +21,9 @@ namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder
             var newOrder = await _repository.CreateOrder(request.CheckoutOrder);
 
             if (newOrder is null)
-                return Result<string>.Failure($"Problem while creating order");
+                return Result.Failure(Error.NullValue);
 
-            return Result<string>.Success(newOrder.OrderId);
+            return Result.Success(newOrder.Id);
         }
     }
 }

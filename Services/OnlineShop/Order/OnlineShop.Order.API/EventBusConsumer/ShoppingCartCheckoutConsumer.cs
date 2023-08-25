@@ -25,7 +25,7 @@ namespace OnlineShop.Order.API.EventBusConsumer
             if (result.IsSuccess)
                 await context.RespondAsync(CheckoutResultResponse.Success(result.Value));
             else
-                await context.RespondAsync(CheckoutResultResponse.Failure(result.Message));
+                await context.RespondAsync(CheckoutResultResponse.Failure(result.Value));
         }
     }
 }

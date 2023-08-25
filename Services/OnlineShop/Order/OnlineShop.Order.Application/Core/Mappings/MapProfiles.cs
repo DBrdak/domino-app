@@ -2,7 +2,9 @@
 using EventBus.Messages.Common;
 using EventBus.Messages.Events;
 using OnlineShop.Order.Application.Features.Commands.CheckoutOrder;
-using OnlineShop.Order.Domain.Entities;
+using OnlineShop.Order.Domain;
+using OnlineShop.Order.Domain.OnlineOrders;
+using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shared.Domain.Money;

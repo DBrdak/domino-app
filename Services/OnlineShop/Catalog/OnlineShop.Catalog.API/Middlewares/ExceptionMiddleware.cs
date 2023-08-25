@@ -1,6 +1,6 @@
-﻿using OnlineShop.Catalog.API.Models;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using Shared.Domain.Exceptions;
 
 namespace OnlineShop.Catalog.API.Middlewares
 {

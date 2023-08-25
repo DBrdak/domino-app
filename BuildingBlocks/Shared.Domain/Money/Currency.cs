@@ -17,7 +17,7 @@ namespace Shared.Domain.Money
 
         public static Currency FromCode(string code)
         {
-            return All.FirstOrDefault(c => c.Code == code) ??
+            return All.FirstOrDefault(c => c.Code.ToLower() == code.ToLower()) ??
                    throw new ApplicationException("The currency code is invalid");
         }
 

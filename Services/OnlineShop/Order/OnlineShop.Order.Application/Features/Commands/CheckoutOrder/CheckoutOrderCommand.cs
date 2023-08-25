@@ -1,15 +1,9 @@
-﻿using OnlineShop.Order.Application.Core;
-using OnlineShop.Order.Application.Core.Interfaces;
-using OnlineShop.Order.Domain.Entities;
+﻿using OnlineShop.Order.Application.Abstractions.Messaging;
+using OnlineShop.Order.Application.Core;
+using OnlineShop.Order.Domain;
+using OnlineShop.Order.Domain.OnlineOrders;
 
 namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder
 {
-    public class CheckoutOrderCommand : ICommand<Result<string>>
-    {
-        public OnlineOrder CheckoutOrder { get; set; }
-
-        public CheckoutOrderCommand()
-        {
-        }
-    }
+    public sealed record CheckoutOrderCommand(OnlineOrder CheckoutOrder) : ICommand<string>;
 }

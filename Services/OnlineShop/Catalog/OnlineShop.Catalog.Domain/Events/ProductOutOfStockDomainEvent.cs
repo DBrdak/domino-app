@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shared.Domain.Abstractions;
+﻿using Shared.Domain.Abstractions;
 
-namespace OnlineShop.Catalog.Domain.DomainEvents
+namespace OnlineShop.Catalog.Domain.Events
 {
     public sealed record ProductOutOfStockDomainEvent(string Id) : IDomainEvent
     {

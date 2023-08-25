@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Catalog.API.Repositories
+﻿namespace Shared.Domain.Photo
 {
     public interface IPhotoRepository
     {

@@ -1,5 +1,5 @@
-﻿using OnlineShop.Catalog.API.Data;
-using OnlineShop.Catalog.API.Repositories;
+﻿using OnlineShop.Catalog.Application;
+using OnlineShop.Catalog.Infrastructure;
 
 namespace OnlineShop.Catalog.API.Extensions
 {
@@ -9,8 +9,8 @@ namespace OnlineShop.Catalog.API.Extensions
         {
             services.AddControllers();
 
-            services.AddScoped<ICatalogContext, CatalogContext>();
-            services.AddScoped<IProductRepository, ProductRepository>();
+            services.InjectApplication();
+            services.InjectInfrastructure(configuration);
 
             services.AddCors(options =>
             {

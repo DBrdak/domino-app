@@ -1,29 +1,31 @@
 ﻿using MongoDB.Driver;
-using OnlineShop.Catalog.API.Data;
-using OnlineShop.Catalog.API.Entities;
-using OnlineShop.Catalog.API.Extensions;
-using OnlineShop.Catalog.API.Models;
+using OnlineShop.Catalog.Domain;
+using OnlineShop.Catalog.Domain.Common;
+using Shared.Domain.Money;
+using Shared.Domain.ResponseTypes;
+using System.Globalization;
+using System.Text;
 
-namespace OnlineShop.Catalog.API.Repositories
+namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ICatalogContext _context;
+        private readonly CatalogContext _context;
 
-        public ProductRepository(ICatalogContext context)
+        public ProductRepository(CatalogContext context)
         {
             _context = context;
         }
 
         public async Task<PagedList<Product>> GetProductsAsync
             (int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
-                decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
+                decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, CancellationToken cancellationToken = default)
         {
             var filter = ApplyFiltering(category, subcategory, minPrice, maxPrice, isAvailable, isDiscounted);
 
             var options = ApplySorting(sortOrder, sortBy);
 
-            var products = await (await _context.Products.FindAsync(filter, options)).ToListAsync();
+            var products = await (await _context.Products.FindAsync(filter, options, cancellationToken)).ToListAsync();
 
             products = ApplySearch(name, products);
 
@@ -58,13 +60,13 @@ namespace OnlineShop.Catalog.API.Repositories
 
         private static List<Product> ApplySearch(string name, List<Product> products)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
                 return products;
 
             return products.Where(p =>
             {
-                name = name.ToLower().RemovePolishAccents();
-                var productName = p.Name.ToLower().RemovePolishAccents();
+                name = RemovePolishAccents(name.ToLower());
+                var productName = RemovePolishAccents(p.Name.ToLower());
 
                 if (productName.Contains(" "))
                 {
@@ -89,7 +91,11 @@ namespace OnlineShop.Catalog.API.Repositories
 
             if (category.ToLower() == "meat" || category.ToLower() == "sausage")
             {
-                filter &= Builders<Product>.Filter.Where(p => p.Category.ToLower() == category.ToLower());
+                filter &= Builders<Product>.Filter.Eq(p => p.Category, Category.FromValue(category));
+            }
+            else
+            {
+                throw new ApplicationException("Category is required");
             }
 
             if (!string.IsNullOrWhiteSpace(subcategory))
@@ -99,25 +105,46 @@ namespace OnlineShop.Catalog.API.Repositories
 
             if (minPrice is > 0)
             {
-                filter &= Builders<Product>.Filter.Gte(p => p.Price.Amount, minPrice.Value);
+                filter &= Builders<Product>.Filter.Where(
+                    p => p.DiscountedPrice == null ? p.Price.Amount >= minPrice : p.DiscountedPrice.Amount >= minPrice);
             }
 
             if (maxPrice is > 0 && maxPrice > minPrice)
             {
-                filter &= Builders<Product>.Filter.Lte(p => p.Price.Amount, maxPrice.Value);
+                filter &= Builders<Product>.Filter.Where(
+                    p => p.DiscountedPrice == null ? p.Price.Amount <= maxPrice : p.DiscountedPrice.Amount <= maxPrice);
             }
 
             if (isDiscounted == true)
             {
-                filter &= Builders<Product>.Filter.Eq(p => p.IsDiscounted, true);
+                filter &= Builders<Product>.Filter.Eq(p => p.Details.IsDiscounted, true);
             }
 
             if (isAvailable == true)
             {
-                filter &= Builders<Product>.Filter.Eq(p => p.IsAvailable, true);
+                filter &= Builders<Product>.Filter.Eq(p => p.Details.IsAvailable, true);
             }
 
             return filter;
+        }
+
+        private static string RemovePolishAccents(string input)
+        {
+            string normalized = input.Normalize(NormalizationForm.FormD);
+            StringBuilder result = new StringBuilder();
+
+            for (int i = 0; i < normalized.Length; i++)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(normalized[i]) != UnicodeCategory.NonSpacingMark)
+                {
+                    if (normalized[i] != 322)
+                        result.Append(normalized[i]);
+                    else
+                        result.Append('l');
+                }
+            }
+
+            return result.ToString();
         }
 
         // Development Feature
@@ -132,29 +159,29 @@ namespace OnlineShop.Catalog.API.Repositories
             var meatNames = new[] { "Kark", "Żebro", "Schab", "Szynka Górny Zraz", "Szynka Dolny Zraz", "Polędwiczka", "Podgardle", "Pachwina", "Golonka Tylnia", "Golonka Przednia" };
             var subcategoriesSausage = new[] { "Szynka", "Kiełbasa gruba", "Kiełbasa cienka", "Podroby" };
 
-            var products = sausageNames.Select((name, index) => new Product
-            {
-                Name = name,
-                Description = "Przykładowy opis wędliny",
-                Category = "Sausage",
-                Subcategory = subcategoriesSausage[random.Next(subcategoriesSausage.Length)],
-                Image = "/assets/examples/bokmar.jpg",
-                Price = new Money(Math.Round(random.Next(15, 40) + (decimal)random.NextDouble())),
-                IsAvailable = random.Next(2) == 0,
-                IsDiscounted = random.Next(5) == 0,
-                QuantityModifier = new QuantityModifier(null)
-            }).Concat(meatNames.Select((name, index) => new Product
-            {
-                Name = name,
-                Description = "Przykładowy opis mięsa",
-                Category = "Meat",
-                Subcategory = "",
-                Image = "/assets/examples/kark.jpg",
-                Price = new Money(Math.Round(random.Next(15, 40) + (decimal)random.NextDouble())),
-                IsAvailable = random.Next(2) == 0,
-                IsDiscounted = random.Next(5) == 0,
-                QuantityModifier = random.Next(2) == 0 ? new QuantityModifier((decimal)random.NextDouble() * (decimal)(3 - 0.7) + 0.7m) : new QuantityModifier(null)
-            })).ToArray();
+            var products = sausageNames.Select((name, index) => Product.Create(
+                name,
+                "Przykładowy opis wędliny",
+                "Wędlina",
+                subcategoriesSausage[random.Next(subcategoriesSausage.Length)],
+                "/assets/examples/bokmar.jpg",
+                Math.Round(random.Next(15, 40) + (decimal)random.NextDouble()),
+                "PLN",
+                "kg",
+                random.Next(3) == 0,
+                (decimal)random.NextDouble() * (decimal)(3 - 0.7) + 0.7m))
+                .Concat(meatNames.Select((name, index) => Product.Create(
+                    name,
+                    "Przykładowy opis mięsa",
+                    "Mięso",
+                    subcategoriesSausage[random.Next(subcategoriesSausage.Length)],
+                    "/assets/examples/kark.jpeg",
+                    Math.Round(random.Next(15, 40) + (decimal)random.NextDouble()),
+                    "PLN",
+                    "kg",
+                    random.Next(3) == 0,
+                    (decimal)random.NextDouble() * (decimal)(3 - 0.7) + 0.7m))
+                .ToArray());
 
             var tasks = new List<Task>();
 

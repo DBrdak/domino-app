@@ -1,10 +1,12 @@
-﻿using OnlineShop.Order.Application.Contracts;
+﻿using OnlineShop.Order.Application.Abstractions.Messaging;
 using OnlineShop.Order.Application.Core;
-using OnlineShop.Order.Application.Core.Interfaces;
+using OnlineShop.Order.Domain.OnlineOrders;
+using Shared.Domain.Errors;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Order.Application.Features.Commands.CancelOrder
 {
-    public class CancelOrderCommandHandler : ICommandHandler<CancelOrderCommand, Result<bool>>
+    public class CancelOrderCommandHandler : ICommandHandler<CancelOrderCommand, bool>
     {
         private readonly IOrderRepository _repository;
 
@@ -18,9 +20,9 @@ namespace OnlineShop.Order.Application.Features.Commands.CancelOrder
             var result = await _repository.CancelOrder(request.Order);
 
             if (result is false)
-                return Result<bool>.Failure($"Problem while cancelling order with ID: {request.Order.OrderId}");
+                return Result.Failure<bool>(Error.InvalidRequest($"Problem while cancelling order with ID: {request.Order.Id}"));
 
-            return Result<bool>.Success(true);
+            return Result.Success(true);
         }
     }
 }

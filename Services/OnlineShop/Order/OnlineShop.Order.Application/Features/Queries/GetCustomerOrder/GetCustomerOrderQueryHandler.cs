@@ -1,11 +1,13 @@
-﻿using OnlineShop.Order.Application.Contracts;
+﻿using OnlineShop.Order.Application.Abstractions.Messaging;
 using OnlineShop.Order.Application.Core;
-using OnlineShop.Order.Application.Core.Interfaces;
-using OnlineShop.Order.Domain.Entities;
+using OnlineShop.Order.Domain;
+using OnlineShop.Order.Domain.OnlineOrders;
+using Shared.Domain.Errors;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Order.Application.Features.Queries.GetCustomerOrder
 {
-    public class GetCustomerOrderQueryHandler : IQueryHandler<GetCustomerOrderQuery, Result<OnlineOrder>>
+    public class GetCustomerOrderQueryHandler : IQueryHandler<GetCustomerOrderQuery, OnlineOrder>
     {
         private readonly IOrderRepository _repository;
 
@@ -19,9 +21,9 @@ namespace OnlineShop.Order.Application.Features.Queries.GetCustomerOrder
             var order = await _repository.GetCustomerOrders(request.PhoneNumber, request.OrderId);
 
             if (order is null)
-                return Result<OnlineOrder>.Failure("Problem while retriving orders from database");
+                return Result.Failure<OnlineOrder>(Error.NullValue);
 
-            return Result<OnlineOrder>.Success(order);
+            return Result.Success(order);
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.API.Entities;
-using OnlineShop.Catalog.API.Models;
-using OnlineShop.Catalog.API.Repositories;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Catalog.Application.Features;
+using OnlineShop.Catalog.Application.Features.GetProducts;
 
 namespace OnlineShop.Catalog.API.Controllers
 {
@@ -9,39 +9,53 @@ namespace OnlineShop.Catalog.API.Controllers
     [Route("api/v1/onlineshop/catalog")]
     public sealed class CatalogController : ControllerBase
     {
-        private readonly IProductRepository _repository;
+        private readonly ISender _sender;
 
-        public CatalogController(IProductRepository repository)
+        public CatalogController(ISender sender)
         {
-            _repository = repository;
+            _sender = sender;
         }
 
         [HttpGet("{category}")]
-        public async Task<ActionResult<PagedList<Product>>> GetProducts(
+        public async Task<IActionResult> GetProducts(
             [FromRoute] string category,
+            CancellationToken cancellationToken,
             [FromQuery] int page = 1,
             [FromQuery] string sortOrder = "asc",
-            [FromQuery] string sortBy = "Name",
+            [FromQuery] string sortBy = "name",
             [FromQuery] int pageSize = 12,
-            [FromQuery] string searchPhrase = null,
-            [FromQuery] string subcategory = null,
+            [FromQuery] string searchPhrase = "",
+            [FromQuery] string subcategory = "",
             [FromQuery] decimal minPrice = 0,
-            [FromQuery] decimal maxPrice = decimal.MaxValue,
-            [FromQuery] bool? isAvailable = null,
-            [FromQuery] bool? isDiscounted = null)
+            [FromQuery] decimal maxPrice = 0,
+            [FromQuery] bool isAvailable = false,
+            [FromQuery] bool isDiscounted = false)
         {
-            return await _repository.GetProductsAsync(
-                page, sortOrder, sortBy, pageSize, category, subcategory, searchPhrase,
-                minPrice, maxPrice, isAvailable, isDiscounted);
+            var query = new GetProductsQuery(
+                category,
+                page,
+                sortOrder,
+                sortBy,
+                pageSize,
+                searchPhrase,
+                subcategory,
+                minPrice,
+                maxPrice,
+                isAvailable,
+                isDiscounted);
+
+            var response = await _sender.Send(query, cancellationToken);
+
+            return Ok(response);
         }
 
         [HttpPost("seed")]
         [EndpointDescription("Development endpoint")]
         public async Task<IActionResult> Seed()
         {
-            var result = await _repository.Seed();
+            var response = await _sender.Send(new SeedCommand());
 
-            return result ? Ok() : BadRequest("Database already contains data");
+            return response.Value ? Ok() : BadRequest("Database already contains data");
         }
 
         //TODO

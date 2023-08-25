@@ -7,7 +7,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 using OnlineShop.Catalog.Domain.Common;
-using OnlineShop.Catalog.Domain.DomainEvents;
+using OnlineShop.Catalog.Domain.Events;
 using Shared.Domain.Abstractions;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
@@ -16,10 +16,6 @@ namespace OnlineShop.Catalog.Domain
 {
     public sealed class Product : Entity
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public override string Id { get; init; }
-
         public string Name { get; init; }
         public string Description { get; init; }
         public Category Category { get; init; }
@@ -37,9 +33,8 @@ namespace OnlineShop.Catalog.Domain
             string subcategory,
             Photo image,
             Money price,
-            ProductDetails details)
+            ProductDetails details) : base(ObjectId.GenerateNewId().ToString())
         {
-            Id = ObjectId.GenerateNewId().ToString();
             Name = name;
             Description = description;
             Category = category;
@@ -53,10 +48,10 @@ namespace OnlineShop.Catalog.Domain
                 null;
         }
 
-        public Product Create(
+        public static Product Create(
             string name,
             string description,
-            Category category,
+            string category,
             string subcategory,
             string image,
             decimal priceAmount,
@@ -77,7 +72,7 @@ namespace OnlineShop.Catalog.Domain
             return new(
                 name,
                 description,
-                category,
+                Category.FromValue(category),
                 subcategory,
                 new(image),
                 price,
@@ -87,7 +82,7 @@ namespace OnlineShop.Catalog.Domain
         public void StartDiscount(decimal newPriceAmount)
         {
             Details.StartDiscount();
-            var newPrice = new Money(newPriceAmount, Price.Currency, Price.Unit);
+            var newPrice = Price with { Amount = newPriceAmount };
 
             RaiseDomainEvent(new ProductDiscountStartDomainEvent(Id, newPrice));
 

@@ -12,7 +12,7 @@
             IsAvailable = isAvailable;
             IsDiscounted = isDiscounted;
             IsWeightSwitchAllowed = isWeightSwitchAllowed;
-            SingleWeight = singleWeight;
+            SingleWeight = isWeightSwitchAllowed ? singleWeight : null;
         }
 
         public void StartDiscount() => IsDiscounted = true;

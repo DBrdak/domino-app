@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineShop.Order.Domain.Entities;
+using OnlineShop.Order.Domain;
+using OnlineShop.Order.Domain.OnlineOrders;
+using OnlineShop.Order.Domain.OrderItems;
 
 namespace OnlineShop.Order.Infrastructure.Persistence
 {
@@ -26,7 +28,7 @@ namespace OnlineShop.Order.Infrastructure.Persistence
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OnlineOrder>()
-                .HasKey(o => o.OrderId);
+                .HasKey(o => o.Id);
 
             modelBuilder.Entity<OnlineOrder>()
                 .OwnsOne(o => o.DeliveryDate);

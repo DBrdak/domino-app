@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.Application.Contracts;
-using OnlineShop.Order.Domain.Entities;
+using OnlineShop.Order.Domain;
+using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Infrastructure.Persistence;
 
 namespace OnlineShop.Order.Infrastructure.Repositories
@@ -19,7 +20,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
             return await _context.Set<OnlineOrder>()
                 .Include(o => o.Items)
                 .FirstOrDefaultAsync(o => o.PhoneNumber == phoneNumber
-                                          && o.OrderId == orderId);
+                                          && o.Id == orderId);
         }
 
         public async Task<OnlineOrder> CreateOrder(OnlineOrder order)
@@ -35,18 +36,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
         public async Task<bool> CancelOrder(OnlineOrder order)
         {
-            var orderInDb = await _context.Set<OnlineOrder>()
-                .Include(o => o.Items)
-                .FirstOrDefaultAsync(o => o.OrderId == order.OrderId);
-
-            if (order is null)
-                return false;
-
-            orderInDb.IsCanceled = true;
-            orderInDb.Status = "Anulowane";
-            var result = await _context.SaveChangesAsync();
-
-            return result > 0;
+            return false;
         }
     }
 }

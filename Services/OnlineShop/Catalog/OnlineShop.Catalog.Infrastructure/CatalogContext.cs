@@ -1,16 +1,15 @@
-﻿using MongoDB.Driver;
-using OnlineShop.Catalog.API.Entities;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using OnlineShop.Catalog.Domain;
 
-namespace OnlineShop.Catalog.API.Data
+namespace OnlineShop.Catalog.Infrastructure
 {
-    public sealed class CatalogContext : ICatalogContext
+    public sealed class CatalogContext
     {
-        private readonly IWebHostEnvironment _env;
+        public IMongoCollection<Product> Products { get; }
 
-        public CatalogContext(IConfiguration config, IWebHostEnvironment env)
+        public CatalogContext(IConfiguration config)
         {
-            _env = env;
-
             var client = new MongoClient(
                 config.GetValue<string>("DatabaseSettings:ConnectionString"));
             var database = client.GetDatabase(
@@ -19,7 +18,5 @@ namespace OnlineShop.Catalog.API.Data
             Products = database.GetCollection<Product>(
                 config.GetValue<string>("DatabaseSettings:CollectionName"));
         }
-
-        public IMongoCollection<Product> Products { get; }
     }
 }

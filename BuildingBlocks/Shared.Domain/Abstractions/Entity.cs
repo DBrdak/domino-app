@@ -8,13 +8,13 @@ namespace Shared.Domain.Abstractions
 {
     public abstract class Entity : IEntity
     {
-        public virtual string Id { get; init; }
+        public string Id { get; protected set; }
 
         private readonly List<IDomainEvent> _domainEvents = new();
 
-        protected Entity(Guid id)
+        protected Entity(string id)
         {
-            Id = id.ToString();
+            Id = id;
         }
 
         protected Entity()

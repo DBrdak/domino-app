@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineShop.Order.Application.Contracts;
+using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Infrastructure.Persistence;
 using OnlineShop.Order.Infrastructure.Repositories;
 

@@ -1,21 +1,15 @@
 ﻿using CloudinaryDotNet;
 using Microsoft.Extensions.Options;
-using OnlineShop.Catalog.API.Models;
+using Shared.Domain.Photo;
 
-namespace OnlineShop.Catalog.API.Repositories
+namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
     public class PhotoRepository : IPhotoRepository
     {
-        private readonly Cloudinary _cloudinary;
+        //private readonly Cloudinary _cloudinary;
 
-        public PhotoRepository(IOptions<CloudinarySettings> config)
+        public PhotoRepository()
         {
-            var account = new Account(
-                config.Value.CloudName,
-                config.Value.ApiKey,
-                config.Value.ApiSecret
-            );
-            _cloudinary = new Cloudinary(account);
         }
 
         //public async Task<PhotoUploadResult> AddPhoto(IFormFile file)
