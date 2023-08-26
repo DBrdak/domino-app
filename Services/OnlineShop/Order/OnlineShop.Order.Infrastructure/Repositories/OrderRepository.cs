@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineShop.Order.Application.Contracts;
 using OnlineShop.Order.Domain;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Infrastructure.Persistence;

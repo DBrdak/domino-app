@@ -11,18 +11,15 @@ namespace Shared.Domain.DateTimeRange
         public DateTime Start { get; init; }
         public DateTime End { get; init; }
 
-        public static DateTimeRange Create(DateTime start, DateTime end)
+        public DateTimeRange(DateTime start, DateTime end)
         {
             if (start > end)
             {
                 throw new ApplicationException("End date precedes start date");
             }
 
-            return new DateTimeRange
-            {
-                Start = start,
-                End = end
-            };
+            Start = start;
+            End = end;
         }
     }
 }

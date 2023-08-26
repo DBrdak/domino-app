@@ -1,4 +1,6 @@
-﻿using OnlineShop.ShoppingCart.API.Entities;
+﻿using OnlineShop.ShoppingCart.API.Controllers.Requests;
+using OnlineShop.ShoppingCart.API.Entities;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.ShoppingCart.API.Repositories
 {
@@ -10,6 +12,6 @@ namespace OnlineShop.ShoppingCart.API.Repositories
 
         Task DeleteShoppingCart(string cartId);
 
-        Task<string> Checkout(ShoppingCartCheckout shoppingCartCheckout);
+        Task<Result<string>> Checkout(ShoppingCartCheckoutRequest request);
     }
 }

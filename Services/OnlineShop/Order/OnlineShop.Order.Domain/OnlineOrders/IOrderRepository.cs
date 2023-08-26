@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.Order.Domain.OnlineOrders
 {
-    internal interface IOrderRepository
+    public interface IOrderRepository
     {
+        Task<OnlineOrder> GetCustomerOrders(string phoneNumber, string orderId);
+
+        Task<OnlineOrder> CreateOrder(OnlineOrder order);
+
+        Task<bool> CancelOrder(OnlineOrder order);
     }
 }

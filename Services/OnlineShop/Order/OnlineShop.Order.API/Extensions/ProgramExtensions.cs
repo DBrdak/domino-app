@@ -1,4 +1,4 @@
-﻿using EventBus.Messages.Common;
+﻿using EventBus.Domain.Common;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.API.EventBusConsumer;
@@ -57,9 +57,6 @@ namespace OnlineShop.Order.API.Extensions
             {
                 var context = services.GetRequiredService<OrderContext>();
                 await context.Database.MigrateAsync();
-
-                if (env.IsDevelopment())
-                    context.Seed();
             }
             catch (Exception ex)
             {

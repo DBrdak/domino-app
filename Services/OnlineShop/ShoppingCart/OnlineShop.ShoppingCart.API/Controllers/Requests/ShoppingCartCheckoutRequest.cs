@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using EventBus.Domain.Common;
+using OnlineShop.ShoppingCart.API.Entities;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shared.Domain.Money;
 
-namespace EventBus.Domain.Events
+namespace OnlineShop.ShoppingCart.API.Controllers.Requests
 {
-    public sealed record ShoppingCartCheckoutEvent(
-        string ShoppingCartId,
-        Money TotalPrice,
-        List<ShoppingCartCheckoutItem> Items,
+    public sealed record ShoppingCartCheckoutRequest(
+        Entities.ShoppingCart ShoppingCart,
         string PhoneNumber,
         string FirstName,
         string LastName,

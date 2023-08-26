@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Application.Abstractions.Messaging
+namespace OnlineShop.Order.Application.Abstractions.Messaging
 {
     public interface ICommand : IRequest<Result>, IBaseCommand
     {

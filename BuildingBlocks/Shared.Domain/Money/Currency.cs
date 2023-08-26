@@ -11,6 +11,9 @@ namespace Shared.Domain.Money
         internal static readonly Currency None = new("");
         public static readonly Currency Pln = new("PLN");
 
+        public Currency()
+        { }
+
         private Currency(string code) => Code = code;
 
         public string Code { get; init; }

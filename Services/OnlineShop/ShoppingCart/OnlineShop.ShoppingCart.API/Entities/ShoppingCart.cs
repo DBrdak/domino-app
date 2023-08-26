@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using Shared.Domain.Money;
+﻿using Shared.Domain.Money;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace OnlineShop.ShoppingCart.API.Entities
 {
@@ -13,10 +13,7 @@ namespace OnlineShop.ShoppingCart.API.Entities
         {
             get
             {
-                if (Items is null)
-                    throw new ArgumentException("No list present");
-
-                if (!Items.Any())
+                if (Items is null || !Items.Any())
                     return new(0, Currency.Pln);
 
                 var currency = Items.FirstOrDefault()?.Price.Currency;
@@ -33,12 +30,19 @@ namespace OnlineShop.ShoppingCart.API.Entities
             }
         }
 
-        public ShoppingCart(string shoppingCartId) => ShoppingCartId = shoppingCartId;
+        public ShoppingCart(string shoppingCartId)
+        {
+            ShoppingCartId = shoppingCartId;
+            Items = new List<ShoppingCartItem>();
+        }
 
         public ShoppingCart(string shoppingCartId, List<ShoppingCartItem> items)
         {
             ShoppingCartId = shoppingCartId;
             Items = items;
         }
+
+        public ShoppingCart()
+        { }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.ShoppingCart.API.Controllers.Requests;
 using OnlineShop.ShoppingCart.API.Entities;
 using OnlineShop.ShoppingCart.API.Repositories;
 
@@ -16,14 +17,14 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         }
 
         [HttpGet("{shoppingCartId}")]
-        public async Task<ActionResult<Entities.ShoppingCart>> GetShoppingCart(string shoppingCartId)
+        public async Task<IActionResult> GetShoppingCart(string shoppingCartId)
         {
             var shoppingCart = await _repository.GetShoppingCart(shoppingCartId);
             return Ok(shoppingCart);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Entities.ShoppingCart>> UpdateShoppingCart(
+        public async Task<IActionResult> UpdateShoppingCart(
             [FromBody] Entities.ShoppingCart shoppingCart)
         {
             var updatedShoppingCart = await _repository.UpdateShoppingCart(shoppingCart);
@@ -38,13 +39,13 @@ namespace OnlineShop.ShoppingCart.API.Controllers
         }
 
         [HttpPost("checkout")]
-        public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckout shoppingCartCheckout)
+        public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckoutRequest request)
         {
-            var orderId = await _repository.Checkout(shoppingCartCheckout);
+            var result = await _repository.Checkout(request);
 
-            return orderId != null ?
-                Ok(orderId) :
-                BadRequest();
+            return result.IsSuccess ?
+                Ok(result.Value) :
+                BadRequest(result.Error);
         }
     }
 }

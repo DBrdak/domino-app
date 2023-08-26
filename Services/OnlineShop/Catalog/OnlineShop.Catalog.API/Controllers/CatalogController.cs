@@ -46,7 +46,7 @@ namespace OnlineShop.Catalog.API.Controllers
 
             var response = await _sender.Send(query, cancellationToken);
 
-            return Ok(response);
+            return Ok(response.Value);
         }
 
         [HttpPost("seed")]

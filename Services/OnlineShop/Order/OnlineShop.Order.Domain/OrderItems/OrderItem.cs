@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Runtime.InteropServices.JavaScript;
+using EventBus.Domain.Common;
+using EventBus.Domain.Events;
 using Shared.Domain.Abstractions;
 using Shared.Domain.Money;
 using Shared.Domain.Quantity;
@@ -13,6 +15,9 @@ public class OrderItem : Entity
     public Money Price { get; init; }
     public string ProductName { get; init; }
     public Money TotalValue { get; init; }
+
+    public OrderItem()
+    { }
 
     private OrderItem(
         string orderId,
@@ -29,38 +34,14 @@ public class OrderItem : Entity
         TotalValue = totalValue;
     }
 
-    public static IReadOnlyList<OrderItem> CreateItemList(
-        string orderId,
-        Quantity[] quantities,
-        Money[] prices,
-        string[] productsNames,
-        Money[] totalValues)
+    public static List<OrderItem> CreateFromShoppingCartItems(string orderId, List<ShoppingCartCheckoutItem> shoppingCartItems)
     {
-        if (AllArraysLengthEqual(new List<object[]>() { quantities, prices, productsNames, totalValues }))
-        {
-            throw new ArgumentException("All property values arrays must have the same length.");
-        }
-
-        var items = new List<OrderItem>();
-        var count = quantities.Length;
-
-        for (int i = 0; i < count; i++)
-        {
-            items.Add(new(orderId, quantities[i], prices[i], productsNames[i], totalValues[i]));
-        }
-
-        if (items.Count != count)
-        {
-            throw new ApplicationException("Order items cannot be mapped");
-        }
-
-        return items;
-    }
-
-    private static bool AllArraysLengthEqual(List<object[]> arrays)
-    {
-        var expectedLength = arrays[0].Length;
-
-        return arrays.All(a => a.Length == expectedLength);
+        return shoppingCartItems.Select(i =>
+            new OrderItem(
+                    orderId,
+                    i.Quantity,
+                    i.Price,
+                    i.ProductName,
+                    i.TotalValue)).ToList();
     }
 }

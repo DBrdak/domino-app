@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EventBus.Domain.Common;
+using EventBus.Domain.Events;
 using OnlineShop.Order.Domain.OnlineOrders.Events;
 using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Abstractions;
@@ -33,11 +35,15 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public DateTime CreatedDate { get; private set; }
         public DateTime? CompletionDate { get; private set; }
+        public DateTime? ExpiryDate => CompletionDate?.AddDays(28);
         public OrderStatus Status { get; private set; }
+
+        public OnlineOrder()
+        { }
 
         private OnlineOrder(
             Money totalPrice,
-            List<OrderItem> items,
+            List<ShoppingCartCheckoutItem> items,
             string phoneNumber,
             string firstName,
             string lastName,
@@ -50,7 +56,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             ) : base(orderId)
         {
             TotalPrice = totalPrice;
-            Items = items;
+            Items = OrderItem.CreateFromShoppingCartItems(orderId, items);
             PhoneNumber = phoneNumber;
             FirstName = firstName;
             LastName = lastName;
@@ -110,23 +116,16 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Modify(modifiedOrder, OrderStatus.Modified);
         }
 
-        public static OnlineOrder Create(
-            Money totalPrice,
-            List<OrderItem> items,
-            string phoneNumber,
-            string firstName,
-            string lastName,
-            Location deliveryLocation,
-            DateTimeRange deliveryDate)
+        public static OnlineOrder Create(ShoppingCartCheckoutEvent shoppingCart)
         {
             var order = new OnlineOrder(
-                totalPrice,
-                items,
-                phoneNumber,
-                firstName,
-                lastName,
-                deliveryLocation,
-                deliveryDate,
+                shoppingCart.TotalPrice,
+                shoppingCart.Items,
+                shoppingCart.PhoneNumber,
+                shoppingCart.FirstName,
+                shoppingCart.LastName,
+                shoppingCart.DeliveryLocation,
+                shoppingCart.DeliveryDate,
                 GenerateId(),
                 DateTimeService.UtcNow,
                 null,

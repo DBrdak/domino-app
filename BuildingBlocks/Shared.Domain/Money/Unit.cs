@@ -20,6 +20,9 @@ namespace Shared.Domain.Money
             Pcs
         };
 
+        public Unit()
+        { }
+
         private Unit(string code) => Code = code;
 
         public Unit AlternativeUnit() => this == Kg ? Pcs : Kg;

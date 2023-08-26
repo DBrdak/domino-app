@@ -18,7 +18,7 @@ namespace OnlineShop.ShoppingCart.API.Middlewares
         }
 
         public async Task InvokeAsync(HttpContext context)
-        {
+        { //TODO Cancellation tokeny i rabbitmq
             try
             {
                 await _next(context);

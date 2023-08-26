@@ -4,27 +4,11 @@ using Shared.Domain.Quantity;
 
 namespace OnlineShop.ShoppingCart.API.Entities
 {
-    public class ShoppingCartItem
-    {
-        public Quantity Quantity { get; init; }
-        public Money Price { get; init; }
-        public Money TotalValue { get; init; }
-        public string ProductId { get; init; }
-        public string ProductName { get; init; }
-        public Photo ProductImage { get; init; }
-
-        public ShoppingCartItem(
-            Quantity quantity,
-            Money price,
-            string productId,
-            string productName,
-            Photo productImage)
-        {
-            Quantity = quantity;
-            Price = price;
-            ProductId = productId;
-            ProductName = productName;
-            ProductImage = productImage;
-        }
-    }
+    public sealed record ShoppingCartItem(
+    Quantity Quantity,
+    Money Price,
+    Money TotalValue,
+    string ProductId,
+    string ProductName,
+    Photo ProductImage);
 }

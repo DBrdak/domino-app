@@ -6,7 +6,7 @@ using OnlineShop.Order.Application.Features.Queries.GetCustomerOrder;
 namespace OnlineShop.Order.API.Controllers
 {
     [Route("api/v1/onlineshop/order")]
-    public class OrderController : BaseOrderController
+    public class OrderController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace OnlineShop.Order.API.Controllers
         {
             var result = await _mediator.Send(new GetCustomerOrderQuery(phoneNumber, orderId));
 
-            return HandleResult(result);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpPut("cancel")]
@@ -28,7 +28,7 @@ namespace OnlineShop.Order.API.Controllers
         {
             var result = await _mediator.Send(command);
 
-            return HandleResult(result);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
 
         //TODO

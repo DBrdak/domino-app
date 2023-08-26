@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
-using EventBus.Messages.Events;
+using EventBus.Domain.Common;
+using EventBus.Domain.Events;
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using OnlineShop.ShoppingCart.API.Controllers.Requests;
 using OnlineShop.ShoppingCart.API.Entities;
+using Shared.Domain.ResponseTypes;
+using ShoppingCartItem = EventBus.Domain.Common.ShoppingCartCheckoutItem;
 
 namespace OnlineShop.ShoppingCart.API.Repositories
 {
@@ -11,12 +15,10 @@ namespace OnlineShop.ShoppingCart.API.Repositories
     {
         private readonly IDistributedCache _cache;
         private readonly IBus _bus;
-        private readonly IMapper _mapper;
 
-        public ShoppingCartRepository(IDistributedCache cache, IPublishEndpoint publishEndpoint, IMapper mapper, IBus bus)
+        public ShoppingCartRepository(IDistributedCache cache, IPublishEndpoint publishEndpoint, IBus bus)
         {
             _cache = cache;
-            _mapper = mapper;
             _bus = bus;
         }
 
@@ -45,23 +47,30 @@ namespace OnlineShop.ShoppingCart.API.Repositories
             await _cache.RemoveAsync(cartId);
         }
 
-        public async Task<string> Checkout(ShoppingCartCheckout shoppingCartCheckout)
+        public async Task<Result<string>> Checkout(ShoppingCartCheckoutRequest request)
         {
-            var cart = await GetShoppingCart(shoppingCartCheckout.ShoppingCartId);
+            var cart = await GetShoppingCart(request.ShoppingCart.ShoppingCartId);
 
             if (cart is null)
                 return null;
 
-            var eventMessage = _mapper.Map<ShoppingCartCheckoutEvent>(shoppingCartCheckout);
+            var eventMessage = new ShoppingCartCheckoutEvent(
+                request.ShoppingCart.ShoppingCartId,
+                request.ShoppingCart.TotalPrice,
+                request.ShoppingCart.Items.Select(i => new ShoppingCartCheckoutItem(
+                    i.Quantity, i.Price, i.TotalValue, i.ProductId, i.ProductName)).ToList(),
+                request.PhoneNumber,
+                request.FirstName,
+                request.LastName,
+                request.DeliveryLocation,
+                request.DeliveryDate);
+
             var client = _bus.CreateRequestClient<ShoppingCartCheckoutEvent>();
-            var response = await client.GetResponse<CheckoutResultResponse>(eventMessage);
+            var response = await client.GetResponse<Result<string>>(eventMessage);
 
-            if (!response.Message.IsSuccess)
-                return response.Message.Message;
+            await DeleteShoppingCart(request.ShoppingCart.ShoppingCartId);
 
-            await DeleteShoppingCart(shoppingCartCheckout.ShoppingCartId);
-
-            return response.Message.Message;
+            return response.Message.Value;
         }
     }
 }

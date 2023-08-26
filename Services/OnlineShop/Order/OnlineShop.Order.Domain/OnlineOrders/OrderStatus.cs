@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineShop.Order.Domain.OrderItems
+﻿namespace OnlineShop.Order.Domain.OnlineOrders
 {
     public sealed record OrderStatus
     {
         public string StatusMessage { get; set; }
         private readonly int _code;
+
+        private OrderStatus()
+        { }
 
         private OrderStatus(int code, string status)
         {
