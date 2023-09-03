@@ -8,6 +8,7 @@ import ShoppingCartListItem from './ShoppingCartListItem';
 import { ShoppingCartItem } from '../../../global/models/shoppingCart';
 import { usePreventNavigation } from '../../../global/router/routeProtection';
 import { setPageTitle } from '../../../global/utils/pageTitle';
+import { Quantity } from '../../../global/models/common';
 
 const ShoppingCartPage: React.FC = () => {
   const {shoppingCartStore, catalogStore} = useStore()
@@ -28,7 +29,7 @@ const ShoppingCartPage: React.FC = () => {
   )
  }
 
-  function handleQuantityChange(newQuantity: number, productId: string): void {
+  function handleQuantityChange(newQuantity: Quantity, productId: string): void {
     shoppingCartStore.editShoppingItem(newQuantity, productId)
   }
 
@@ -48,12 +49,13 @@ const ShoppingCartPage: React.FC = () => {
     </AppBar>
     {shoppingCart?.items.map(i => 
       <ShoppingCartListItem item={i} key={i.productId} 
-      onQuantityChange={(newQuantity) => handleQuantityChange(newQuantity, i.productId)} 
+      onQuantityChange={(newQuantity) => handleQuantityChange({unit: i.quantity.unit, value: newQuantity}, i.productId)} 
       onRemove={() => handleRemove(i)} />)
     }
     <Typography variant="h6" style={{ marginTop: '10px' }}>
       Przewidywany koszt zamówienia: {}
-        {shoppingCart && shoppingCart.totalPrice && shoppingCart.currency && `${Number(shoppingCart.totalPrice.toFixed(1))} ${shoppingCart.currency}`}
+        {shoppingCart && shoppingCart.totalPrice && shoppingCart.totalPrice.currency && 
+        `${Number(shoppingCart.totalPrice.amount.toFixed(1))} ${shoppingCart.totalPrice.currency.code}`}
     </Typography>
     <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
       <Link to={`/produkty`}>

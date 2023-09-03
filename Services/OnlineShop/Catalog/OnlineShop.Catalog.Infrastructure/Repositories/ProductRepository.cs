@@ -175,7 +175,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                     "Przykładowy opis mięsa",
                     "Mięso",
                     subcategoriesSausage[random.Next(subcategoriesSausage.Length)],
-                    "/assets/examples/kark.jpeg",
+                    "/assets/examples/kark.jpg",
                     Math.Round(random.Next(15, 40) + (decimal)random.NextDouble()),
                     "PLN",
                     "kg",

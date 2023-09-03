@@ -87,25 +87,25 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         public void Validate(bool isValidationSucceed) =>
             Status = isValidationSucceed ? OrderStatus.Waiting : OrderStatus.Rejected;
 
-        public void Canceled()
+        public void Cancel()
         {
             CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Cancelled;
         }
 
-        public void Rejected()
+        public void Reject()
         {
             CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Rejected;
         }
 
-        public void Received()
+        public void Receive()
         {
             CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Received;
         }
 
-        public void Accepted(OnlineOrder? modifiedOrder)
+        public void Accept(OnlineOrder? modifiedOrder)
         {
             if (modifiedOrder is null)
             {

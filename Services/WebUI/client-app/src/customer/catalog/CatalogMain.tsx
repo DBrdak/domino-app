@@ -38,14 +38,13 @@ function CatalogMain({category}: Props) {
     catalogStore.loadProducts(category!)
   }
 
-  //TODO Dodać animację dodania do koszyka + po dodaniu wyświetlać pencil zamiast koszyka
   return (
     !category ?
       <CategorySelection />
     :
     <div style={{backgroundColor: '#E4E4E4', width: '99.5vw', overflowX: 'hidden'}}>
       <NavBar />
-      <div style={{marginTop: '20px', width: '100%', display: 'flex', justifyContent: 'center'}}>  
+      <div style={{margin: '20px 0px 20px 0px', width: '100%', display: 'flex', justifyContent: 'center'}}>  
         <Grid container spacing={2} style={{width:'100%'}}>
             <Grid item xs={12} md={12} lg={2}>
               <ResetCategoryButton />

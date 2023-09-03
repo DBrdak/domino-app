@@ -1,3 +1,4 @@
+
 export interface Location {
   name: string
   longitude: string
@@ -11,13 +12,21 @@ export interface DateTimeRange{
 
 export interface Money {
   amount: number
-  currency: string
-  unit: string
+  currency: Currency
+  unit?: Unit
 }
 
-export interface QuantityModifier {
-  isPcsAllowed: boolean
-  kgPerPcs: number | null
+export interface Quantity {
+  value: number
+  unit: Unit
+}
+
+export interface Currency {
+  code: string
+}
+
+export interface Unit {
+  code: string
 }
 
 export interface PersonalInfo {
@@ -29,4 +38,8 @@ export interface PersonalInfo {
 export interface DeliveryInfo {
   deliveryDate: DateTimeRange
   deliveryLocation: Location
+}
+
+export interface Photo {
+  url: string
 }

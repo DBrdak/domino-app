@@ -15,7 +15,7 @@ const AboutMain: React.FC = () => {
     <>
       <NavBar />
       {isMobile ? 
-      <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 0px 0px'}}>
+      <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 20px 0px'}}>
         <Box maxWidth="lg">
           <Paper style={{width: '100%', padding: '20px'}}>
             <Typography variant='h3' textAlign={'center'}>Kilka słów o naszej firmie</Typography>
@@ -47,7 +47,7 @@ const AboutMain: React.FC = () => {
         </Box>
       </div>
       :
-      <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 0px 0px'}}>
+      <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 20px 0px'}}>
         <Box maxWidth="lg">
           <Paper style={{width: '100%', padding: '20px'}}>
             <Typography variant='h3' textAlign={'center'}>Kilka słów o naszej firmie</Typography>

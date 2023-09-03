@@ -36,14 +36,14 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
 
   return (
     <Card style={{padding: '15px', position: 'relative', height: '400px'}}>
-        {product.isDiscounted && (
+        {product.details.isDiscounted && (
         <Chip 
         label="Promocja" 
         color="primary" 
         style={{ position: 'absolute', top: '5px', left: '5px', zIndex: 1}}
         />
         )}
-      <CardMedia component="img" height="200" image={product.image} alt={product.name} />
+      <CardMedia component="img" height="200" image={product.image.url} alt={product.name} />
       {showCompletionMark ?
         <CardContent style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <CompletionMark />
@@ -60,15 +60,15 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
                 {product.description}
               </Typography>
               <div style={{margin: '10px 0px 0px 0px', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                {product.isDiscounted ?
+                {product.details.isDiscounted ?
                 <Typography textAlign={'center'} 
                 style={{width: '70%', borderRadius: '30px', color: '#FFFFFF', backgroundColor: '#C32B28', padding: '6px 0px 6px 0px'}}>
-                  {product.price.amount} {product.price.currency}/{product.price.unit}
+                  {product.price.amount} {product.price.currency.code}/{product.price.unit?.code}
                 </Typography>
                 :
                 <Typography textAlign={'center'} 
                 style={{width: '70%', borderRadius: '30px', color: '#C32B28', border: '1px', borderColor: '#C32B28', padding: '6px 0px 6px 0px'}}>
-                  {product.price.amount} {product.price.currency}/{product.price.unit}
+                  {product.price.amount} {product.price.currency.code}/{product.price.unit?.code}
                 </Typography>
                 }
               </div>
@@ -79,16 +79,16 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
             <>
               {isMobile ?
               <>
-                {product.isAvailable ? 
+                {product.details.isAvailable ? 
                 <>
                   { shoppingCartStore.shoppingCart?.items.some(i => i.productId === product.id) ?
                   <IconButton color="secondary" style={{backgroundColor: '#06992d', width: '50%', borderRadius: '20px'}}
-                  onClick={() => handleQuantityModeEnter()} disabled={!product.isAvailable}>
+                  onClick={() => handleQuantityModeEnter()} disabled={!product.details.isAvailable}>
                     <Edit />
                   </IconButton>
                   :
                   <IconButton color="secondary" style={{backgroundColor: '#C32B28', width: '50%', borderRadius: '20px'}}
-                  onClick={() => handleQuantityModeEnter()} disabled={!product.isAvailable}>
+                  onClick={() => handleQuantityModeEnter()} disabled={!product.details.isAvailable}>
                     <AddShoppingCart />
                   </IconButton>}
                 </>
@@ -100,16 +100,16 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
                 }
               </> :
               <>
-                {product.isAvailable ? 
+                {product.details.isAvailable ? 
                 <>
                   { shoppingCartStore.shoppingCart?.items.some(i => i.productId === product.id) ?
                   <IconButton color="secondary" style={{backgroundColor: '#06992d'}} 
-                  onClick={() => handleQuantityModeEnter()} disabled={!product.isAvailable}>
+                  onClick={() => handleQuantityModeEnter()} disabled={!product.details.isAvailable}>
                     <Edit />
                   </IconButton>
                   :
                   <IconButton color="secondary" style={{backgroundColor: '#C32B28'}} 
-                  onClick={() => handleQuantityModeEnter()} disabled={!product.isAvailable}>
+                  onClick={() => handleQuantityModeEnter()} disabled={!product.details.isAvailable}>
                     <AddShoppingCart />
                   </IconButton>}
                 </>
@@ -125,7 +125,7 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
             </>
             :
             <Stack direction={'row'} style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-              <QuantityInput isPcsAllowed={product.quantityModifier.isPcsAllowed} onInputSubmit={() => handleAddToShoppingCart()}/>
+              <QuantityInput isPcsAllowed={product.details.isWeightSwitchAllowed} onInputSubmit={() => handleAddToShoppingCart()}/>
             </Stack>
             }
           </CardActions>

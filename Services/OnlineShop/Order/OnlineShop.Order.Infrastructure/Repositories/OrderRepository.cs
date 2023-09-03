@@ -33,9 +33,18 @@ namespace OnlineShop.Order.Infrastructure.Repositories
             return order;
         }
 
-        public async Task<bool> CancelOrder(OnlineOrder order)
+        public async Task<bool> CancelOrder(string orderId)
         {
-            return false;
+            var order = await _context.Set<OnlineOrder>()
+                .SingleOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+                return false;
+
+            order.Cancel();
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }

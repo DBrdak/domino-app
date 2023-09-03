@@ -32,14 +32,16 @@ axios.interceptors.response.use(async response => {
       if(data.errors) {
         const modalStateErrors = [];
         for (const key in data.errors){
-          if(data.errors[key]) {
-            modalStateErrors.push(data.errors[key]);
+          if(data.name) {
+            modalStateErrors.push(data.name);
           }
         }
         throw modalStateErrors.flat();
       }else {
-        toast.error(data);
+        toast.error(data.name);
       }
+      toast.error(data.name);
+
       break;
     case 401:
       if(headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')){
@@ -80,7 +82,7 @@ const shoppingCart ={
 
 const order = {
   get: (params: URLSearchParams) => axios.get<OnlineOrderRead>('/onlineshop/order', {params}).then(responseBody),
-  cancel: (order: OnlineOrder) => axios.put('/onlineshop/order/cancel', {order})
+  cancel: (orderId: string) => axios.put('/onlineshop/order/cancel', {orderId})
 }
 
 const agent = {

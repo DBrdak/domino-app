@@ -1,22 +1,19 @@
 import { object } from "yup";
-import { DateTimeRange, Location, Money } from "./common";
+import { DateTimeRange, Location, Money, Quantity } from "./common";
 import { ShoppingCart, ShoppingCartCheckout, ShoppingCartItem } from "./shoppingCart";
 
 export interface OrderItem {
   id: string | null
   orderId: string | null
   price: Money
-  quantity: number
-  unit: string
-  totalValue: number
+  quantity: Quantity
+  totalValue: Money 
   productName: string
-  status: string | null
 }
 
 export interface OnlineOrder {
   // Shopping Cart Info
-  totalPrice: number;
-  currency: string
+  totalPrice: Money;
   items: OrderItem[];
 
   // Personal Info
@@ -29,64 +26,58 @@ export interface OnlineOrder {
   deliveryDate: DateTimeRange;
 
   // Order Info
-  orderId: string | null;
+  id: string | null;
   createdDate: Date | null;
-  isCanceled: boolean | null;
-  status: string | null;
-  isConfirmed: boolean | null;
-  isRejected: boolean | null;
+  completionDate: Date | null;
+  expiryDate: Date | null;
+  status: OrderStatus | null;
 }
 
 export class OnlineOrderRead implements OnlineOrder {
   constructor(init: OnlineOrder) {
     Object.assign(this, init)
   }
-  totalPrice!: number;
-  currency!: string;
+  totalPrice!: Money;
   items!: OrderItem[];
   phoneNumber!: string;
   firstName!: string;
   lastName!: string;
   deliveryLocation!: Location;
   deliveryDate!: DateTimeRange;
-  orderId!: string;
+  id!: string;
   createdDate!: Date;
-  isCanceled!: boolean;
-  status!: string;
-  isConfirmed!: boolean;
-  isRejected!: boolean;
+  completionDate!: Date | null;
+  expiryDate!: Date | null;
+  status!: OrderStatus;
 }
 
 export class OnlineOrderCreate implements OnlineOrder {
-  totalPrice: number;
-  currency!: string;
+  totalPrice: Money;
   items: OrderItem[];
   phoneNumber: string;
   firstName: string;
   lastName: string;
   deliveryLocation: Location;
   deliveryDate: DateTimeRange;
-  orderId: null;
-  createdDate: null;
-  isCanceled: null;
-  status: null;
-  isConfirmed: null;
-  isRejected: null
+  id!: null;
+  createdDate!: null;
+  completionDate!: null;
+  expiryDate!: null;
+  status!: null;
 
   constructor(init: ShoppingCartCheckout) {
-    this.totalPrice = init.totalPrice;
-    this.items = this.convertToOrderItems(init.items);
+    this.totalPrice = init.shoppingCart.totalPrice;
+    this.items = this.convertToOrderItems(init.shoppingCart.items);
     this.phoneNumber = init.phoneNumber;
     this.firstName = init.firstName;
     this.lastName = init.lastName;
     this.deliveryLocation = init.deliveryLocation;
     this.deliveryDate = init.deliveryDate;
-    this.orderId = null
+    this.id = null
     this.createdDate = null
-    this.isCanceled = null
+    this.completionDate = null
+    this.expiryDate = null
     this.status = null
-    this.isConfirmed = null
-    this.isRejected = null
   }
 
   private convertToOrderItems(shoppingCartItems: ShoppingCartItem[]): OrderItem[] {
@@ -104,19 +95,22 @@ export class OrderItem implements OrderItem {
   id: string | null;
   orderId: string | null;
   price!: Money;
-  totalValue!: number;
+  totalValue!: Money;
+  quantity!: Quantity
   productName!: string;
-  status: string | null;
 
   constructor(init: ShoppingCartItem){
     Object.assign(this, init)
     this.id = null
     this.orderId = null
-    this.status = null
   }
 }
 
 export interface OrderCredentials {
   phoneNumber: string
   orderId: string
+}
+
+export interface OrderStatus {
+  statusMessage: string
 }

@@ -20,10 +20,10 @@ namespace OnlineShop.Catalog.Domain
             }
 
             var convertedPriceAmount = sourcePrice.Unit.Code == "kg" ?
-                sourcePrice.Amount * details.SingleWeight :
-                sourcePrice.Amount / details.SingleWeight;
+                sourcePrice.Amount * details.SingleWeight.Value :
+                sourcePrice.Amount / details.SingleWeight.Value;
 
-            return new(convertedPriceAmount.Value, sourcePrice.Currency, destinationUnit);
+            return new(convertedPriceAmount, sourcePrice.Currency, destinationUnit);
         }
     }
 }

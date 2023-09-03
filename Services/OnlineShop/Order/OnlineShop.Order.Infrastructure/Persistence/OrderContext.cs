@@ -17,65 +17,8 @@ namespace OnlineShop.Order.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderContext).Assembly);
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<OrderItem>()
-                .HasKey(i => i.Id);
-
-            modelBuilder.Entity<OrderItem>()
-                .OwnsOne(o => o.Price, builder =>
-                    {
-                        builder.Property(m => m.Currency)
-                            .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
-                        builder.Property(m => m.Unit)
-                            .HasConversion(u => u.Code, code => Unit.FromCode(code));
-                    }
-                );
-
-            modelBuilder.Entity<OrderItem>()
-                .OwnsOne(i => i.TotalValue, builder =>
-                    {
-                        builder.Property(m => m.Currency)
-                            .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
-                        builder.Property(m => m.Unit)
-                            .HasConversion(u => u.Code, code => Unit.FromCode(code));
-                    }
-                );
-
-            modelBuilder.Entity<OrderItem>()
-                .OwnsOne(i => i.Quantity, builder =>
-                    {
-                        builder.Property(q => q.Unit)
-                            .HasConversion(u => u.Code, code => Unit.FromCode(code));
-                    }
-                );
-
-            modelBuilder.Entity<OnlineOrder>()
-                .HasMany(o => o.Items)
-                .WithOne()
-                .HasForeignKey(i => i.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<OnlineOrder>()
-                .HasKey(o => o.Id);
-
-            modelBuilder.Entity<OnlineOrder>()
-                .OwnsOne(o => o.DeliveryDate);
-
-            modelBuilder.Entity<OnlineOrder>()
-                .OwnsOne(o => o.DeliveryLocation);
-
-            modelBuilder.Entity<OnlineOrder>()
-                .OwnsOne(o => o.TotalPrice, builder =>
-                {
-                    builder.Property(m => m.Currency)
-                        .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
-                    builder.Property(m => m.Unit)
-                        .HasConversion(u => u.Code, code => Unit.FromCode(code));
-                });
-
-            modelBuilder.Entity<OnlineOrder>()
-                .OwnsOne(o => o.Status);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

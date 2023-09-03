@@ -9,6 +9,8 @@ WORKDIR /src
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.API/OnlineShop.Order.API.csproj", "Services/OnlineShop/Order/OnlineShop.Order.API/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Application/OnlineShop.Order.Application.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Application/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Domain/OnlineShop.Order.Domain.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Domain/"]
+COPY ["BuildingBlocks/EventBus.Messages/EventBus.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
+COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Infrastructure/OnlineShop.Order.Infrastructure.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Infrastructure/"]
 RUN dotnet restore "Services/OnlineShop/Order/OnlineShop.Order.API/OnlineShop.Order.API.csproj"
 COPY . .

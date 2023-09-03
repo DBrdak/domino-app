@@ -17,10 +17,10 @@ namespace OnlineShop.Order.Application.Features.Commands.CancelOrder
 
         public async Task<Result<bool>> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
         {
-            var result = await _repository.CancelOrder(request.Order);
+            var result = await _repository.CancelOrder(request.OrderId);
 
             if (result is false)
-                return Result.Failure<bool>(Error.InvalidRequest($"Problem while cancelling order with ID: {request.Order.Id}"));
+                return Result.Failure<bool>(Error.InvalidRequest($"Anulowanie nie powiodło się, spróbuj ponownie później"));
 
             return Result.Success(true);
         }

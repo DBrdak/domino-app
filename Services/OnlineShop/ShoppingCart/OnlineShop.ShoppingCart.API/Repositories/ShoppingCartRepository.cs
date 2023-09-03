@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using EventBus.Domain.Common;
+﻿using EventBus.Domain.Common;
 using EventBus.Domain.Events;
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
@@ -66,11 +65,11 @@ namespace OnlineShop.ShoppingCart.API.Repositories
                 request.DeliveryDate);
 
             var client = _bus.CreateRequestClient<ShoppingCartCheckoutEvent>();
-            var response = await client.GetResponse<Result<string>>(eventMessage);
+            var response = await client.GetResponse<CheckoutResult>(eventMessage);
 
             await DeleteShoppingCart(request.ShoppingCart.ShoppingCartId);
 
-            return response.Message.Value;
+            return response.Message.OrderId;
         }
     }
 }

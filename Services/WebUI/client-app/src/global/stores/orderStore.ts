@@ -58,7 +58,7 @@ export default class OrderStore {
       if(!this.order){
         await this.loadOrder()
       }
-      const result = this.order && await agent.order.cancel(this.order)
+      this.order?.id && await agent.order.cancel(this.order.id)
       await this.loadOrder()
     } catch(error) {
       console.log(error)

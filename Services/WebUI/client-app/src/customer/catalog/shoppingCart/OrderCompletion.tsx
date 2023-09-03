@@ -53,11 +53,11 @@ const OrderCompletion: React.FC = observer(() => {
           <Typography variant="subtitle1">Miejsce odbioru: {order?.deliveryLocation.name}</Typography>
           <Typography variant="subtitle1">Czas odbioru: {<DateTimeRangeDisplay date={order.deliveryDate}/>}
           </Typography>
-          <Typography variant="subtitle1">Numer zamówienia: {order?.orderId}</Typography>
+          <Typography variant="subtitle1">Numer zamówienia: {order?.id}</Typography>
           <CompletionMark />
           <Typography>Dziękujemy!</Typography>
           <Stack width={'100%'} direction={'column'} style={{ marginTop: 20}}>
-            <Link to={`/zamówienie/${order.orderId}`} >
+            <Link to={`/zamówienie/${order.id}`} >
               <Button variant="contained" color="primary" style={{ width: '100%' }}>Zobacz zamówienie</Button>
             </Link>
             <Link to={'/'} >

@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import { observer } from 'mobx-react-lite';
 import { AddShoppingCart, Undo } from '@mui/icons-material';
 import { useStore } from '../../global/stores/store';
+import { Quantity } from '../../global/models/common';
 
 interface Props {
   isPcsAllowed: boolean
@@ -14,19 +15,20 @@ interface Props {
 }
 
 function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
-  const [unit, setUnit] = useState('kg');
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const {shoppingCartStore, catalogStore} = useStore()
+  const initialUnit = shoppingCartStore.shoppingCart?.items.find(i => i.productId === catalogStore.quantityMode)?.quantity.unit.code
+  const [unit, setUnit] = useState(initialUnit ? initialUnit : 'kg');
 
   const handleQuantityChange = (newQuantity:number) => {
-    if (newQuantity && newQuantity >= 0 && (unit === 'kg' || unit === 'szt')) {
-      shoppingCartStore.setQuantity(newQuantity, unit)
+    if (newQuantity && newQuantity > 0 && (unit === 'kg' || unit === 'szt')) {
+      shoppingCartStore.setQuantity({value: newQuantity, unit: {code: unit}})
       onInputSubmit()
     }
   };
 
   function getQty(): number | string {
-    const qty = shoppingCartStore.shoppingCart?.items.find(i => i.productId === catalogStore.quantityMode)?.quantity
+    const qty = shoppingCartStore.shoppingCart?.items.find(i => i.productId === catalogStore.quantityMode)?.quantity.value
     return qty ? qty : ''
   }
 
@@ -34,12 +36,11 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
     if(event.target.checked) setUnit('szt');
     else setUnit('kg')
   };
-
   function getMaxQ(): number | undefined {
     if(unit === 'kg') {
       return 50
     } else {
-      return Number((50 / catalogStore.products.find(p => p.id === catalogStore.quantityMode)?.quantityModifier.kgPerPcs!).toFixed(0))
+      return Number((50 / catalogStore.products.find(p => p.id === catalogStore.quantityMode)?.details.singleWeight?.value!).toFixed(0))
     }
   }
 

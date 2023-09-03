@@ -31,13 +31,6 @@ namespace OnlineShop.ShoppingCart.API.Controllers
             return Ok(updatedShoppingCart);
         }
 
-        [HttpDelete("{shoppingCartId}")]
-        public async Task<IActionResult> DeleteShoppingCart(string shoppingCartId)
-        {
-            await _repository.DeleteShoppingCart(shoppingCartId);
-            return Ok();
-        }
-
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] ShoppingCartCheckoutRequest request)
         {

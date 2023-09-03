@@ -20,7 +20,7 @@ const ContactMain: React.FC = () => {
     return (
       <>
         <NavBar />
-        <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 0px 0px'}}>
+        <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0px 20px 0px'}}>
         <Box maxWidth="lg">
           <Paper style={{width: '100%', padding: '60px'}}>
             <Typography textAlign={'center'} width={'100%'} variant="h3">Skontaktuj się z nami</Typography>

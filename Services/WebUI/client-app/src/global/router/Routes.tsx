@@ -13,12 +13,15 @@ import OrderCompletion from "../../customer/catalog/shoppingCart/OrderCompletion
 import DeliveryInfo from "../../customer/catalog/shoppingCart/DeliveryInfoStep";
 import OrderPage from "../../customer/catalog/order/OrderPage";
 import NotFoundPage from "../../components/NotFoundPage";
+import LoginPage from "../../admin/home/LoginPage";
+import AdminMain from "../../admin/home/AdminMain";
 
 export const routes: RouteObject[] = [
   {
     path: '/',
     element: <App />,
     children: [
+      // Customer
       {path: '', element: <HomePage />},
       {path: 'produkty', element: <CatalogMain category={null} />},
       {path: 'produkty/mięso', element: <CatalogMain category={'meat'} />},
@@ -31,6 +34,9 @@ export const routes: RouteObject[] = [
       {path: 'o-nas', element: <AboutMain />},
       {path: 'dla-firm', element: <ContractorsMain />},
       {path: 'kontakt', element: <ContactMain />},
+      // Admin
+      {path: 'admin', element: <LoginPage />},
+      {path: 'admin/główna', element: <AdminMain />},
       {path: '*', element: <NotFoundPage text={'Nie znaleziono szukanej zawartości 😔'} />}
     ]
   }

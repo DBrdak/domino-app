@@ -17,7 +17,6 @@ namespace OnlineShop.ShoppingCart.API.Extensions
                 opt.Configuration = configuration["CacheSettings:ConnectionString"];
             });
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
             services.AddMassTransit(config =>

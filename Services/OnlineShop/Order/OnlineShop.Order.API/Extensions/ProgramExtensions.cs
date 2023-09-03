@@ -26,7 +26,8 @@ namespace OnlineShop.Order.API.Extensions
                 {
                     configMq.Host(configuration["EventBusSettings:HostAddress"]);
                     configMq.ReceiveEndpoint(EventBusConstants.ShoppingCartCheckoutQueue,
-                        configEndpoint => { configEndpoint.ConfigureConsumer<ShoppingCartCheckoutConsumer>(context); });
+                        configEndpoint =>
+                            configEndpoint.ConfigureConsumer<ShoppingCartCheckoutConsumer>(context));
                 });
             });
 

@@ -16,8 +16,6 @@ namespace OnlineShop.Order.API
             app.UseCors("DefaultPolicy");
             app.UseRouting();
             app.MapControllers();
-            app.UseAuthentication();
-            app.UseAuthorization();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             await app.MigrateDatabase(app.Environment);
             await app.RunAsync();

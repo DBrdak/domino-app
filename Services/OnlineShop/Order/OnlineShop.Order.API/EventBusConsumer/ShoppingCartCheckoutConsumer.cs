@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using EventBus.Domain.Events;
+﻿using EventBus.Domain.Events;
 using MassTransit;
 using MediatR;
 using OnlineShop.Order.Application.Features.Commands.CheckoutOrder;

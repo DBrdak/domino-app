@@ -3,14 +3,14 @@ import { Product } from "../models/product";
 import { ShoppingCart, ShoppingCartCheckout, ShoppingCartItem } from "../models/shoppingCart";
 import agent from "../api/agent";
 import {v4 as uuid} from 'uuid'
-import { DeliveryInfo, PersonalInfo } from "../models/common";
+import { DeliveryInfo, PersonalInfo, Quantity } from "../models/common";
 import OrderStore from "./orderStore";
 import { store } from "./store";
 
 export default class ShoppingCartStore {
   shoppingCart: ShoppingCart | null = null
   newProduct: Product | null = null
-  newProductQuantity: {quantity: number, unit: string} | null = null  
+  newProductQuantity: Quantity | null = null  
   newShoppingCartItem: ShoppingCartItem | null = null
   personalInfo: PersonalInfo | null = null
   deliveryInfo: DeliveryInfo | null = null
@@ -72,8 +72,8 @@ export default class ShoppingCartStore {
     this.newProduct = product
   }
 
-  setQuantity(quantity: number, unit: string) {
-    this.newProductQuantity = {quantity,unit}
+  setQuantity(quantity: Quantity) {
+    this.newProductQuantity = quantity
   }
 
   setPersonalInfo(personalInfo: PersonalInfo) {
@@ -98,7 +98,7 @@ export default class ShoppingCartStore {
     }
   }
 
-  editShoppingItem = async (newQuantity: number, productId: string) => {
+  editShoppingItem = async (newQuantity: Quantity, productId: string) => {
     this.setSubLoading(true)
     try {
       if(!this.shoppingCart) {
