@@ -11,7 +11,7 @@ const SideNavbar: React.FC = () => {
     <Box
     sx={{
       height: '100vh',
-      width: '320px',
+      width: '300px',  
       backgroundColor: '#5d5d5d',
       display: 'flex',
       flexDirection: 'column',

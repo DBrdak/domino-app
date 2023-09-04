@@ -6,7 +6,7 @@ function SideNavbarBtnList() {
   return (
     <Box>
       <SideNavbarBtn content='sklep online'/>
-      <SideNavbarBtn content='sprzedaż'/>
+      <SideNavbarBtn content='sprzedaż' path={'sprzedaz'}/>
       <SideNavbarBtn content='cenniki'/>
       <SideNavbarBtn content='sklepy'/>
       <SideNavbarBtn content='paliwo'/>

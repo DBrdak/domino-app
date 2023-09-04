@@ -15,6 +15,16 @@ import OrderPage from "../../customer/catalog/order/OrderPage";
 import NotFoundPage from "../../components/NotFoundPage";
 import LoginPage from "../../admin/home/LoginPage";
 import AdminMain from "../../admin/home/AdminMain";
+import OnlineShopPanel from "../../admin/onlineShop/OnlineShopPanel";
+import SalesPanel from "../../admin/sales/SalesPanel";
+import PricelistsPanel from "../../admin/pricelists/PricelistsPanel";
+import ShopsPanel from "../../admin/shops/ShopsPanel";
+import FuelPanel from "../../admin/fuel/FuelPanel";
+import FleetPanel from "../../admin/fleet/FleetPanel";
+import ContractorsPanel from "../../admin/contractors/ContractorsPanel";
+import ButcheryPanel from "../../admin/butchery/ButcheryPanel";
+import StatsPanel from "../../admin/stats/StatsPanel";
+import CalculatorsPanel from "../../admin/calculators/CalculatorsPanel";
 
 export const routes: RouteObject[] = [
   {
@@ -37,6 +47,16 @@ export const routes: RouteObject[] = [
       // Admin
       {path: 'admin', element: <LoginPage />},
       {path: 'admin/główna', element: <AdminMain />},
+      {path: 'admin/sklep-online', element: <OnlineShopPanel />},
+      {path: 'admin/sprzedaz', element: <SalesPanel />},
+      {path: 'admin/cenniki', element: <PricelistsPanel />},
+      {path: 'admin/sklepy', element: <ShopsPanel />},
+      {path: 'admin/paliwo', element: <FuelPanel />},
+      {path: 'admin/flota', element: <FleetPanel />},
+      {path: 'admin/kontrahenci', element: <ContractorsPanel />},
+      {path: 'admin/masarnia', element: <ButcheryPanel />},
+      {path: 'admin/statystyki', element: <StatsPanel />},
+      {path: 'admin/kalkulatory', element: <CalculatorsPanel />},
       {path: '*', element: <NotFoundPage text={'Nie znaleziono szukanej zawartości 😔'} />}
     ]
   }
