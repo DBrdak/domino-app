@@ -7,7 +7,7 @@ using OnlineShop.Catalog.Application.Abstractions.Messaging;
 using OnlineShop.Catalog.Domain;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Application.Features.GetProducts
+namespace OnlineShop.Catalog.Application.Features.Customer.GetProducts
 {
     public sealed record GetProductsQuery(
         string Category,
@@ -20,7 +20,5 @@ namespace OnlineShop.Catalog.Application.Features.GetProducts
         decimal MinPrice = 0,
         decimal MaxPrice = decimal.MaxValue,
         bool IsAvailable = false,
-        bool IsDiscounted = false) : IQuery<PagedList<Product>>
-    {
-    }
+        bool IsDiscounted = false) : IQuery<PagedList<Product>>;
 }

@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
-import SideNavbar from './SideNavbar/SideNavbar'
-import TopNavbar from './TopNavbar/TopNavbar'
+import SideNavbar from './sideNavbar/SideNavbar'
+import TopNavbar from './topNavbar/TopNavbar'
 import { Grid, Paper } from '@mui/material'
 import styled from '@emotion/styled'
 

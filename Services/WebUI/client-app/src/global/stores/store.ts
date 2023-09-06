@@ -1,9 +1,10 @@
 import { createContext, useContext } from "react";
 import ModalStore from "./modalStore";
-import ShoppingCartStore from "./shoppingCartStore";
-import CatalogStore from "./catalogStore";
-import OrderStore from "./orderStore";
-import AdminLayoutStore from "./adminLayoutStore";
+import ShoppingCartStore from "./customer/shoppingCartStore";
+import CatalogStore from "./customer/catalogStore";
+import OrderStore from "./customer/orderStore";
+import AdminLayoutStore from "./admin/adminLayoutStore";
+import AdminCatalogStore from "./admin/adminCatalogStore";
 
 interface Store {
   modalStore: ModalStore
@@ -11,6 +12,7 @@ interface Store {
   catalogStore: CatalogStore
   orderStore: OrderStore
   adminLayoutStore: AdminLayoutStore
+  adminCatalogStore: AdminCatalogStore
 }
 
 export const store: Store = {
@@ -18,7 +20,8 @@ export const store: Store = {
   shoppingCartStore: new ShoppingCartStore(),
   catalogStore: new CatalogStore(),
   orderStore: new OrderStore(),
-  adminLayoutStore: new AdminLayoutStore()
+  adminLayoutStore: new AdminLayoutStore(),
+  adminCatalogStore: new AdminCatalogStore(),
 }
 
 export const StoreContext = createContext(store);

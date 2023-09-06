@@ -1,8 +1,9 @@
 import { Button, Stack } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import ProductList from '../../onlineShop/ProductList'
-import TopNavbarBtn from './TopNavbarBtn'
+import ProductList from '../../onlineShop/productList/ProductList'
+import TopNavbarBtn from '../topNavbar/TopNavbarBtn'
+import ProductListSection from '../../onlineShop/productList/ProductListSection'
 
 function TopNavbarBtnList() {
   const location = useLocation()
@@ -12,8 +13,7 @@ function TopNavbarBtnList() {
     switch(location.pathname){
       case '/admin/sklep-online':
         setContent([
-          {content: <ProductList />, text: 'lista produktów' },
-          {content: <ProductList />, text: 'promocje' },
+          {content: <ProductListSection />, text: 'lista produktów' },
           {content: <ProductList />, text: 'zamówienia' },
         ])
         break

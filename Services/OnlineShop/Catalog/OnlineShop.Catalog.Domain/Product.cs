@@ -81,6 +81,11 @@ namespace OnlineShop.Catalog.Domain
 
         public void StartDiscount(decimal newPriceAmount)
         {
+            if (newPriceAmount >= Price.Amount)
+            {
+                throw new ApplicationException("Discount price must be lower than regular price");
+            }
+
             Details.StartDiscount();
             var newPrice = Price with { Amount = newPriceAmount };
 

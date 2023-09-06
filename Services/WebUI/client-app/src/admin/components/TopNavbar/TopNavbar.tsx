@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Stack } from '@mui/material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import TopNavbarBtnList from './TopNavbarBtnList'
+import TopNavbarBtnList from '../topNavbar/TopNavbarBtnList'
 
 function TopNavbar() {
   const navigate = useNavigate()

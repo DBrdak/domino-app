@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import SideNavbarBtn from './SideNavbarBtn'
+import SideNavbarBtn from '../sideNavbar/SideNavbarBtn'
 
 function SideNavbarBtnList() {
   return (

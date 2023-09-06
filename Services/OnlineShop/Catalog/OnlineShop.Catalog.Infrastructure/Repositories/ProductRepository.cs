@@ -1,10 +1,13 @@
-﻿using MongoDB.Driver;
+﻿using CloudinaryDotNet.Actions;
+using MongoDB.Driver;
 using OnlineShop.Catalog.Domain;
 using OnlineShop.Catalog.Domain.Common;
 using Shared.Domain.Money;
 using Shared.Domain.ResponseTypes;
 using System.Globalization;
 using System.Text;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
@@ -21,130 +24,23 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             (int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
                 decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, CancellationToken cancellationToken = default)
         {
-            var filter = ApplyFiltering(category, subcategory, minPrice, maxPrice, isAvailable, isDiscounted);
+            var filter = SearchEngine.ApplyFiltering(category, subcategory, minPrice, maxPrice, isAvailable, isDiscounted);
 
-            var options = ApplySorting(sortOrder, sortBy);
+            var options = SearchEngine.ApplySorting(sortOrder, sortBy);
 
-            var products = await (await _context.Products.FindAsync(filter, options, cancellationToken)).ToListAsync();
+            var products = await (await _context.Products.FindAsync(filter, options)).ToListAsync(cancellationToken);
 
-            products = ApplySearch(name, products);
+            products = SearchEngine.ApplySearch(name, products);
 
             return await PagedList<Product>.CreateAsync(products, page, pageSize);
         }
 
-        private static FindOptions<Product> ApplySorting(string sortOrder, string sortBy)
+        public async Task<List<Product>> GetProductsAsync(string searchPhrase, CancellationToken cancellationToken = default)
         {
-            sortBy = NormailzeSortPropertyName(sortBy);
+            var products = await _context.Products.Find(_ => true).ToListAsync(cancellationToken);
+            products = SearchEngine.ApplySearch(searchPhrase, products);
 
-            var sort = sortOrder == "asc"
-                ? Builders<Product>.Sort.Ascending(sortBy)
-                : Builders<Product>.Sort.Descending(sortBy);
-            var options = new FindOptions<Product>
-            {
-                Sort = sort
-            };
-            return options;
-        }
-
-        private static string NormailzeSortPropertyName(string sortBy)
-        {
-            var normailzedSortBy = string.Empty;
-
-            for (int i = 0; i < sortBy.Length; i++)
-            {
-                normailzedSortBy += i == 0 ? sortBy[i].ToString().ToUpper() : sortBy[i];
-            }
-
-            return normailzedSortBy;
-        }
-
-        private static List<Product> ApplySearch(string name, List<Product> products)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return products;
-
-            return products.Where(p =>
-            {
-                name = RemovePolishAccents(name.ToLower());
-                var productName = RemovePolishAccents(p.Name.ToLower());
-
-                if (productName.Contains(" "))
-                {
-                    var words = productName.Split(" ");
-                    var result = new bool[words.Length];
-
-                    for (int i = 0; i < words.Length; i++)
-                    {
-                        result[i] = words[i].StartsWith(name);
-                    }
-
-                    return result.Any(r => r == true);
-                }
-
-                return productName.StartsWith(name);
-            }).ToList();
-        }
-
-        private FilterDefinition<Product> ApplyFiltering(string category, string subcategory, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
-        {
-            var filter = FilterDefinition<Product>.Empty;
-
-            if (category.ToLower() == "meat" || category.ToLower() == "sausage")
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.Category, Category.FromValue(category));
-            }
-            else
-            {
-                throw new ApplicationException("Category is required");
-            }
-
-            if (!string.IsNullOrWhiteSpace(subcategory))
-            {
-                filter &= Builders<Product>.Filter.Where(p => p.Subcategory == subcategory);
-            }
-
-            if (minPrice is > 0)
-            {
-                filter &= Builders<Product>.Filter.Where(
-                    p => p.DiscountedPrice == null ? p.Price.Amount >= minPrice : p.DiscountedPrice.Amount >= minPrice);
-            }
-
-            if (maxPrice is > 0 && maxPrice > minPrice)
-            {
-                filter &= Builders<Product>.Filter.Where(
-                    p => p.DiscountedPrice == null ? p.Price.Amount <= maxPrice : p.DiscountedPrice.Amount <= maxPrice);
-            }
-
-            if (isDiscounted == true)
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.Details.IsDiscounted, true);
-            }
-
-            if (isAvailable == true)
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.Details.IsAvailable, true);
-            }
-
-            return filter;
-        }
-
-        private static string RemovePolishAccents(string input)
-        {
-            string normalized = input.Normalize(NormalizationForm.FormD);
-            StringBuilder result = new StringBuilder();
-
-            for (int i = 0; i < normalized.Length; i++)
-            {
-                if (CharUnicodeInfo.GetUnicodeCategory(normalized[i]) != UnicodeCategory.NonSpacingMark)
-                {
-                    if (normalized[i] != 322)
-                        result.Append(normalized[i]);
-                    else
-                        result.Append('l');
-                }
-            }
-
-            return result.ToString();
+            return products;
         }
 
         // Development Feature
@@ -181,7 +77,15 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                     "kg",
                     random.Next(3) == 0,
                     (decimal)random.NextDouble() * (decimal)(3 - 0.7) + 0.7m))
-                .ToArray());
+                .ToArray()).ToList();
+
+            var discountedProduct = products[0];
+            discountedProduct.StartDiscount(7);
+            products[0] = discountedProduct;
+
+            var outOfStockProduct = products[2];
+            outOfStockProduct.OutOfStock();
+            products[2] = outOfStockProduct;
 
             var tasks = new List<Task>();
 

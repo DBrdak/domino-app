@@ -1,17 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Catalog.Application.Features;
-using OnlineShop.Catalog.Application.Features.GetProducts;
+using OnlineShop.Catalog.Application.Features.Customer.GetProducts;
 
 namespace OnlineShop.Catalog.API.Controllers
 {
     [ApiController]
     [Route("api/v1/onlineshop/catalog")]
-    public sealed class CatalogController : ControllerBase
+    public sealed class CatalogCustomerController : ControllerBase
     {
         private readonly ISender _sender;
 
-        public CatalogController(ISender sender)
+        public CatalogCustomerController(ISender sender)
         {
             _sender = sender;
         }

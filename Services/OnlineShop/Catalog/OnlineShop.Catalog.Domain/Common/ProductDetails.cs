@@ -30,6 +30,6 @@ namespace OnlineShop.Catalog.Domain.Common
 
         public void Available() => IsAvailable = true;
 
-        public void Unavailable() => IsDiscounted = false;
+        public void Unavailable() => IsAvailable = false;
     }
 }

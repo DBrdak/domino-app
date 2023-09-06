@@ -3,7 +3,7 @@ import NavbarLayout from '../components/NavbarLayout'
 import { useStore } from '../../global/stores/store'
 import { observer } from 'mobx-react-lite'
 
-function OnlineShopPanel() {
+function PricelistsPanel() {
   const {adminLayoutStore} = useStore()
 
   return (
@@ -13,4 +13,4 @@ function OnlineShopPanel() {
   )
 }
 
-export default observer(OnlineShopPanel)
+export default observer(PricelistsPanel)

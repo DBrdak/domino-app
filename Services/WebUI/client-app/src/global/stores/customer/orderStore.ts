@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import { OnlineOrder, OrderCredentials } from "../models/order";
-import { ShoppingCart, ShoppingCartCheckout } from "../models/shoppingCart";
-import agent from "../api/agent";
+import agent from "../../api/agent";
+import { OnlineOrder } from "../../models/order";
 
 export default class OrderStore {
   order: OnlineOrder | null = null

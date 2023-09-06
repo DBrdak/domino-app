@@ -14,6 +14,19 @@
       "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 0 }
     },
+    {
+      "DownstreamPathTemplate": "/api/v1/onlineshop/catalog",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineshop.catalog.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/onlineshop/catalog",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
     // OnlineShop.ShoppingCart.API
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/shoppingcart",

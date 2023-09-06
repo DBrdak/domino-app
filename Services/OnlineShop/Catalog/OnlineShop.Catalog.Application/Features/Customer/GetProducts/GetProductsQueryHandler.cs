@@ -8,7 +8,7 @@ using OnlineShop.Catalog.Domain;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Application.Features.GetProducts
+namespace OnlineShop.Catalog.Application.Features.Customer.GetProducts
 {
     internal sealed class GetProductsQueryHandler : IQueryHandler<GetProductsQuery, PagedList<Product>>
     {

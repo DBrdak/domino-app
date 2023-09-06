@@ -1,11 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import { Product } from "../models/product";
-import { ShoppingCart, ShoppingCartCheckout, ShoppingCartItem } from "../models/shoppingCart";
-import agent from "../api/agent";
+import { Product } from "../../models/product";
+import { ShoppingCart, ShoppingCartCheckout, ShoppingCartItem } from "../../models/shoppingCart";
+import agent from "../../api/agent";
 import {v4 as uuid} from 'uuid'
-import { DeliveryInfo, PersonalInfo, Quantity } from "../models/common";
+import { DeliveryInfo, PersonalInfo, Quantity } from "../../models/common";
 import OrderStore from "./orderStore";
-import { store } from "./store";
+import { store } from "../store";
 
 export default class ShoppingCartStore {
   shoppingCart: ShoppingCart | null = null

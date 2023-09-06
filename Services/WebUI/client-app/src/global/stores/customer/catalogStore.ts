@@ -1,10 +1,8 @@
-import { makeAutoObservable, reaction } from "mobx";
-import { Product } from "../models/product";
-import { Pagination, PagingParams } from "../models/pagination";
-import { FilterOptions } from "../models/filterOptions";
-import agent from "../api/agent";
-import { useMediaQuery } from "@mui/material";
-import theme from "../layout/theme";
+import { makeAutoObservable,} from "mobx";
+import agent from "../../api/agent";
+import { FilterOptions } from "../../models/filterOptions";
+import { Pagination, PagingParams } from "../../models/pagination";
+import { Product } from "../../models/product";
 
 export default class CatalogStore {
   productsRegistry = new Map<string, Product>()

@@ -70,7 +70,8 @@ const requests = {
 }
 
 const catalog = {
-  products: (category: string, params: URLSearchParams) => axios.get<PaginatedResult<Product[]>>(`/onlineshop/catalog/${category}`, {params}).then(responseBody)
+  products: (category: string, params: URLSearchParams) => axios.get<PaginatedResult<Product[]>>(`/onlineshop/catalog/${category}`, {params}).then(responseBody),
+  productsAdmin: (params: URLSearchParams) => axios.get<Product[]>(`/onlineshop/catalog`, {params}).then(responseBody)
 }
 
 const shoppingCart ={
