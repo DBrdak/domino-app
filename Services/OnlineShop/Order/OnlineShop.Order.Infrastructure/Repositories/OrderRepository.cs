@@ -46,5 +46,14 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
             return result > 0;
         }
+
+        public async Task<List<OnlineOrder>> GetAllOrders(CancellationToken cancellationToken)
+        {
+            return _context.Orders.ToListAsync(cancellationToken);
+        }
+
+        public async Task UpdateOrder(string orderStatus)
+        {
+        }
     }
 }

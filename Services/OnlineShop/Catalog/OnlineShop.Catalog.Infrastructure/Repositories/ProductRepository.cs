@@ -14,10 +14,12 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly CatalogContext _context;
+        private readonly PhotoRepository _photoRepository;
 
-        public ProductRepository(CatalogContext context)
+        public ProductRepository(CatalogContext context, PhotoRepository photoRepository)
         {
             _context = context;
+            _photoRepository = photoRepository;
         }
 
         public async Task<PagedList<Product>> GetProductsAsync
@@ -41,6 +43,52 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             products = SearchEngine.ApplySearch(searchPhrase, products);
 
             return products;
+        }
+
+        public async Task<Product?> UpdateProduct(UpdateValues newValues, CancellationToken cancellationToken = default)
+        {
+            var product = (await _context.Products.FindAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, newValues.Id), null,
+                cancellationToken)).FirstOrDefault();
+
+            if (product is null)
+            {
+                return null;
+            }
+
+            if (newValues.ImageUrl != product.Image.Url)
+            {
+#pragma warning disable CS4014
+                _photoRepository.DeletePhoto(product.Image.Url);
+#pragma warning restore CS4014
+            }
+
+            product.Update(newValues);
+            var result = await _context.Products.ReplaceOneAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, newValues.Id),
+                product);
+
+            return result.IsAcknowledged && result.ModifiedCount > 0 ? product : null;
+        }
+
+        public async Task<Product?> Add(CreateValues values, CancellationToken cancellationToken = default)
+        {
+            var product = Product.Create(values);
+
+            await _context.Products.InsertOneAsync(product);
+
+            return product;
+        }
+
+        public async Task Delete(string productId, CancellationToken cancellationToken)
+        {
+            var product = await _context.Products.FindOneAndDeleteAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, productId),
+                null, cancellationToken);
+
+#pragma warning disable CS4014
+            _photoRepository.DeletePhoto(product.Image.Url);
+#pragma warning restore CS4014
         }
 
         // Development Feature

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
@@ -11,20 +12,21 @@ using OnlineShop.Catalog.Domain.Events;
 using Shared.Domain.Abstractions;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OnlineShop.Catalog.Domain
 {
     public sealed class Product : Entity
     {
-        public string Name { get; init; }
-        public string Description { get; init; }
-        public Category Category { get; init; }
-        public string Subcategory { get; init; }
-        public Photo Image { get; init; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public Category Category { get; private set; }
+        public string Subcategory { get; private set; }
+        public Photo Image { get; private set; }
         public Money Price { get; init; }
-        public ProductDetails Details { get; init; }
+        public ProductDetails Details { get; private set; }
         public Money? DiscountedPrice { get; private set; }
-        public Money? AlternativeUnitPrice { get; init; }
+        public Money? AlternativeUnitPrice { get; private set; }
 
         private Product(
             string name,
@@ -115,6 +117,45 @@ namespace OnlineShop.Catalog.Domain
             Details.Available();
 
             RaiseDomainEvent(new ProductInStockDomainEvent(Id));
+        }
+
+        public void Update(UpdateValues newValues)
+        {
+            Name = newValues.Name;
+            Description = newValues.Description;
+            Subcategory = newValues.Subcategory;
+            Category = Category.FromValue(newValues.Category);
+            Image = new(newValues.ImageUrl);
+
+            if (newValues.SingleWeight.HasValue && newValues.IsWeightSwitchAllowed)
+            {
+                Details.AllowWeightSwitch(newValues.SingleWeight.Value, Price.Unit!.AlternativeUnit());
+                AlternativeUnitPrice = PricingService.CalculatePrice(Price, Details, Price.Unit.AlternativeUnit());
+            }
+            else
+            {
+                Details.ForbidWeightSwitch();
+            }
+
+            if (newValues.IsAvailable)
+                Details.Available();
+            else
+                Details.Unavailable();
+        }
+
+        public static Product Create(CreateValues requestValues)
+        {
+            return Create(
+                requestValues.Name,
+                requestValues.Description,
+                requestValues.Category,
+                requestValues.Subcategory,
+                requestValues.Image,
+                requestValues.PriceAmount,
+                requestValues.CurrencyCode,
+                requestValues.UnitCode,
+                requestValues.IsWeightSwitchAllowed,
+                requestValues.SingleWeight);
         }
     }
 }

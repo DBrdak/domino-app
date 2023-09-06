@@ -1,4 +1,6 @@
 ﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Shared.Domain.Photo;
 
@@ -6,45 +8,51 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
     public class PhotoRepository : IPhotoRepository
     {
-        //private readonly Cloudinary _cloudinary;
+        private readonly Cloudinary _cloudinary;
 
-        public PhotoRepository()
+        public PhotoRepository(IOptions<CloudinarySettings> config)
         {
+            var account = new Account(
+                config.Value.CloudName,
+                config.Value.ApiKey,
+                config.Value.ApiSecret
+            );
+            _cloudinary = new Cloudinary(account);
         }
 
-        //public async Task<PhotoUploadResult> AddPhoto(IFormFile file)
-        //{
-        //    if (file.Length == 0)
-        //    {
-        //        return null;
-        //    }
+        public async Task<PhotoUploadResult?> UploadPhoto(IFormFile file, CancellationToken cancellationToken = default)
+        {
+            if (file.Length == 0)
+            {
+                return null;
+            }
 
-        //    await using var stream = file.OpenReadStream();
-        //    var uploadParams = new ImageUploadParams
-        //    {
-        //        File = new FileDescription(file.FileName, stream),
-        //        Transformation = new Transformation().Height(500).Width(500).Crop("fill")
-        //    };
+            await using var stream = file.OpenReadStream();
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(file.FileName, stream),
+                Transformation = new Transformation().Height(500).Width(500).Crop("fill")
+            };
 
-        //    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams, cancellationToken);
 
-        //    if (uploadResult.Error != null)
-        //    {
-        //        throw new Exception(uploadResult.Error.Message);
-        //    }
+            if (uploadResult.Error != null)
+            {
+                throw new ApplicationException(uploadResult.Error.Message);
+            }
 
-        //    return new PhotoUploadResult
-        //    {
-        //        PublicId = uploadResult.PublicId,
-        //        Url = uploadResult.SecureUrl.ToString(),
-        //    };
-        //}
+            return new PhotoUploadResult(
+                uploadResult.SecureUrl.ToString(),
+                uploadResult.PublicId);
+        }
 
-        //public async Task<string> DeletePhoto(string publicId)
-        //{
-        //    var deleteParams = new DeletionParams(publicId);
-        //    var result = await _cloudinary.DestroyAsync(deleteParams);
-        //    return result.Result == "ok" ? result.Result : null;
-        //}
+        public async Task<bool> DeletePhoto(string photoId)
+        {
+            var deleteParams = new DeletionParams(photoId);
+
+            var result = await _cloudinary.DestroyAsync(deleteParams);
+
+            return result.Result == "ok";
+        }
     }
 }

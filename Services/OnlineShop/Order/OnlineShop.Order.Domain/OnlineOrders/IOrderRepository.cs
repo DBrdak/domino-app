@@ -13,5 +13,9 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         Task<OnlineOrder> CreateOrder(OnlineOrder order);
 
         Task<bool> CancelOrder(string orderId);
+
+        Task<List<OnlineOrder>> GetAllOrders(CancellationToken cancellationToken);
+
+        Task UpdateOrder(string orderStatus);
     }
 }

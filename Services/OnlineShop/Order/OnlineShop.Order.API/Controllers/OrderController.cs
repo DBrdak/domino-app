@@ -5,6 +5,7 @@ using OnlineShop.Order.Application.Features.Queries.GetCustomerOrder;
 
 namespace OnlineShop.Order.API.Controllers
 {
+    [ApiController]
     [Route("api/v1/onlineshop/order")]
     public class OrderController : ControllerBase
     {

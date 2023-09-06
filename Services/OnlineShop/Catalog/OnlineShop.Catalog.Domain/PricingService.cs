@@ -8,9 +8,9 @@ using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain
 {
-    public static class PricingService
+    internal static class PricingService
     {
-        public static Money CalculatePrice(Money sourcePrice, ProductDetails details, Unit destinationUnit)
+        internal static Money CalculatePrice(Money sourcePrice, ProductDetails details, Unit destinationUnit)
         {
             if (sourcePrice.Unit == destinationUnit ||
                 !details.IsWeightSwitchAllowed ||

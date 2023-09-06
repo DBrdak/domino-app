@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OnlineShop.Catalog.Domain.Common;
 using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Domain
@@ -14,6 +15,12 @@ namespace OnlineShop.Catalog.Domain
             decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, CancellationToken cancellationToken = default);
 
         public Task<List<Product>> GetProductsAsync(string searchPhrase, CancellationToken cancellationToken = default);
+
+        public Task<Product?> UpdateProduct(UpdateValues newValues, CancellationToken cancellationToken = default);
+
+        public Task<Product?> Add(CreateValues values, CancellationToken cancellationToken = default);
+
+        public Task Delete(string productId, CancellationToken cancellationToken = default);
 
         //TEMP
         public Task<bool> Seed();

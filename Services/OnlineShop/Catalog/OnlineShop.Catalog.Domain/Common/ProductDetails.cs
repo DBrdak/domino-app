@@ -7,10 +7,10 @@ namespace OnlineShop.Catalog.Domain.Common
     {
         public bool IsAvailable { get; private set; }
         public bool IsDiscounted { get; private set; }
-        public bool IsWeightSwitchAllowed { get; init; }
-        public Quantity? SingleWeight { get; init; }
+        public bool IsWeightSwitchAllowed { get; private set; }
+        public Quantity? SingleWeight { get; private set; }
 
-        public ProductDetails(bool isAvailable, bool isDiscounted, bool isWeightSwitchAllowed, decimal? singleWeight)
+        internal ProductDetails(bool isAvailable, bool isDiscounted, bool isWeightSwitchAllowed, decimal? singleWeight)
         {
             IsAvailable = isAvailable;
             IsDiscounted = isDiscounted;
@@ -31,5 +31,17 @@ namespace OnlineShop.Catalog.Domain.Common
         public void Available() => IsAvailable = true;
 
         public void Unavailable() => IsAvailable = false;
+
+        public void AllowWeightSwitch(decimal weight, Unit unit)
+        {
+            IsWeightSwitchAllowed = true;
+            SingleWeight = new(weight, unit);
+        }
+
+        public void ForbidWeightSwitch()
+        {
+            IsWeightSwitchAllowed = false;
+            SingleWeight = null;
+        }
     }
 }
