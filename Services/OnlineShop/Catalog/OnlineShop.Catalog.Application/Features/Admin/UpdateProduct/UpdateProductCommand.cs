@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OnlineShop.Catalog.Application.Abstractions.Messaging;
 using OnlineShop.Catalog.Domain;
-using OnlineShop.Catalog.Domain.Common;
+using OnlineShop.Catalog.Domain.Products;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.UpdateProduct
 {

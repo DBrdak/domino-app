@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Catalog.Domain.Common
+namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed class UpdateValues
     {
@@ -28,20 +28,20 @@ namespace OnlineShop.Catalog.Domain.Common
             decimal? singleWeight,
             bool isAvailable)
         {
-            this.Id = id;
-            this.Name = name;
-            this.Description = description;
-            this.Subcategory = subcategory;
-            this.Category = category;
-            this.ImageUrl = imageUrl;
-            this.IsWeightSwitchAllowed = isWeightSwitchAllowed;
-            this.SingleWeight = singleWeight;
-            this.IsAvailable = isAvailable;
+            Id = id;
+            Name = name;
+            Description = description;
+            Subcategory = subcategory;
+            Category = category;
+            ImageUrl = imageUrl;
+            IsWeightSwitchAllowed = isWeightSwitchAllowed;
+            SingleWeight = singleWeight;
+            IsAvailable = isAvailable;
         }
 
         public void UpdatePhoto(string imageUrl)
         {
-            this.ImageUrl = imageUrl;
+            ImageUrl = imageUrl;
         }
     }
 }

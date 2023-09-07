@@ -6,6 +6,9 @@ using Shared.Domain.Photo;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Products;
+
 namespace OnlineShop.Catalog.Infrastructure
 {
     public static class InfrastructureInjector
@@ -19,6 +22,7 @@ namespace OnlineShop.Catalog.Infrastructure
 
             services.AddScoped<CatalogContext>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IPriceListRepository, PriceListRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
 
             return services;

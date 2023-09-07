@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using OnlineShop.Catalog.Domain.Common;
 using OnlineShop.Catalog.Domain;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OnlineShop.Catalog.Domain.Products;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {

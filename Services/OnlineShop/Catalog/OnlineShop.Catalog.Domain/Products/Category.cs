@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace OnlineShop.Catalog.Domain.Common
+namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed record Category
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OnlineShop.Catalog.Domain.Common;
+using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain

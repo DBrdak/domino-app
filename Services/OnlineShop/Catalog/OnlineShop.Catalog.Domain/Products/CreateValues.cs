@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Catalog.Domain.Common
+namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed class CreateValues
     {
@@ -30,16 +30,16 @@ namespace OnlineShop.Catalog.Domain.Common
             bool isWeightSwitchAllowed,
             decimal? singleWeight)
         {
-            this.Name = name;
-            this.Description = description;
-            this.Category = category;
-            this.Subcategory = subcategory;
-            this.Image = image;
-            this.PriceAmount = priceAmount;
-            this.CurrencyCode = currencyCode;
-            this.UnitCode = unitCode;
-            this.IsWeightSwitchAllowed = isWeightSwitchAllowed;
-            this.SingleWeight = singleWeight;
+            Name = name;
+            Description = description;
+            Category = category;
+            Subcategory = subcategory;
+            Image = image;
+            PriceAmount = priceAmount;
+            CurrencyCode = currencyCode;
+            UnitCode = unitCode;
+            IsWeightSwitchAllowed = isWeightSwitchAllowed;
+            SingleWeight = singleWeight;
         }
 
         public void AttachImage(string image)

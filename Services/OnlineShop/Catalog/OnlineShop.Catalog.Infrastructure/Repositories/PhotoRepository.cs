@@ -6,7 +6,7 @@ using Shared.Domain.Photo;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
-    public class PhotoRepository : IPhotoRepository
+    public sealed class PhotoRepository : IPhotoRepository
     {
         private readonly Cloudinary _cloudinary;
 

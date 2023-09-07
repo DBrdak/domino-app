@@ -49,7 +49,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
         public async Task<List<OnlineOrder>> GetAllOrders(CancellationToken cancellationToken)
         {
-            return _context.Orders.ToListAsync(cancellationToken);
+            return await _context.Orders.ToListAsync(cancellationToken);
         }
 
         public async Task UpdateOrder(string orderStatus)

@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Money;
 using Shared.Domain.Quantity;
 
-namespace OnlineShop.Catalog.Domain.Common
+namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed class ProductDetails
     {

@@ -7,14 +7,14 @@ using System.Xml.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
-using OnlineShop.Catalog.Domain.Common;
-using OnlineShop.Catalog.Domain.Events;
+using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Products.Events;
 using Shared.Domain.Abstractions;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace OnlineShop.Catalog.Domain
+namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed class Product : Entity
     {
@@ -35,8 +35,9 @@ namespace OnlineShop.Catalog.Domain
             string subcategory,
             Photo image,
             Money price,
-            ProductDetails details) : base(ObjectId.GenerateNewId().ToString())
+            ProductDetails details)
         {
+            Id = ObjectId.GenerateNewId().ToString();
             Name = name;
             Description = description;
             Category = category;

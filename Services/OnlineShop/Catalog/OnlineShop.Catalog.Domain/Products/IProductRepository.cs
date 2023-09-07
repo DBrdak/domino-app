@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OnlineShop.Catalog.Domain.Common;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Domain
+namespace OnlineShop.Catalog.Domain.Products
 {
     public interface IProductRepository
     {

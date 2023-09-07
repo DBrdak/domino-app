@@ -1,7 +1,7 @@
 ﻿using CloudinaryDotNet.Actions;
 using MongoDB.Driver;
 using OnlineShop.Catalog.Domain;
-using OnlineShop.Catalog.Domain.Common;
+using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Money;
 using Shared.Domain.ResponseTypes;
 using System.Globalization;
@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public sealed class ProductRepository : IProductRepository
     {
         private readonly CatalogContext _context;
         private readonly PhotoRepository _photoRepository;

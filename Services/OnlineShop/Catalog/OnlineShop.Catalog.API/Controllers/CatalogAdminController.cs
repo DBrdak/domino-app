@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Catalog.Application.Features.Admin.AddProduct;
 using OnlineShop.Catalog.Application.Features.Admin.DeleteProduct;
 using OnlineShop.Catalog.Application.Features.Admin.GetProducts;
-using OnlineShop.Catalog.Domain.Common;
 using OnlineShop.Catalog.Application.Features.Admin.UpdateProduct;
+using OnlineShop.Catalog.Domain.Products;
 
 namespace OnlineShop.Catalog.API.Controllers
 {
