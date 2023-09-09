@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Domain.Money;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,22 +9,32 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 {
     public interface IPriceListRepository
     {
-        Task<List<PriceList>> GetPriceListsAsync();
+        Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken);
 
-        Task<PriceList> GetRetailPriceList();
+        Task<PriceList> GetRetailPriceList(CancellationToken cancellationToken);
 
-        Task AddPriceList(PriceList priceList);
+        Task AddPriceList(PriceList priceList, CancellationToken cancellationToken);
 
-        Task RemovePriceList(PriceList priceList);
+        Task<bool> RemovePriceList(PriceList priceList, CancellationToken cancellationToken);
 
-        Task RemoveLineItem(string priceListId, string lineItemName);
+        Task<bool> RemoveLineItem(
+            string priceListId,
+            string lineItemName,
+            CancellationToken cancellationToken);
 
-        Task UpdateLineItemPrice(string priceListId, string lineItemName);
+        Task<bool> UpdateLineItemPrice(
+            string priceListId,
+            string lineItemName,
+            Money newPrice,
+            CancellationToken cancellationToken);
 
-        Task AddLineItem(string priceListId, LineItem lineItem);
+        Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken);
 
-        Task<LineItem> GetLineItemForProduct(string productId);
+        Task AggregateLineItemWithProduct(
+            string productId,
+            string lineItemName,
+            CancellationToken cancellationToken);
 
-        Task AggregateLineItemWithProduct(string productId, string lineItemName);
+        Task<LineItem> GetLineItemForProduct(string productId, CancellationToken cancellationToken);
     }
 }
