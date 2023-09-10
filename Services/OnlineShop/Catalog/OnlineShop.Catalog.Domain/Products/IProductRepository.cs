@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Domain.Products
@@ -17,7 +18,7 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public Task<Product?> UpdateProduct(UpdateValues newValues, CancellationToken cancellationToken = default);
 
-        public Task<Product?> Add(CreateValues values, CancellationToken cancellationToken = default);
+        public Task<Product?> Add(CreateValues values, IFormFile ProductPhoto, CancellationToken cancellationToken = default);
 
         public Task Delete(string productId, CancellationToken cancellationToken = default);
 

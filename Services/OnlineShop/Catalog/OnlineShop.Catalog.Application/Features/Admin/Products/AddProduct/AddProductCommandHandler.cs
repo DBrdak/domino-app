@@ -10,31 +10,25 @@ using Shared.Domain.Errors;
 using Shared.Domain.Photo;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.AddProduct
+namespace OnlineShop.Catalog.Application.Features.Admin.Products.AddProduct
 {
     internal sealed class AddProductCommandHandler : ICommandHandler<AddProductCommand, Product>
     {
         private readonly IProductRepository _productRepository;
-        private readonly IPhotoRepository _photoRepository;
 
         public AddProductCommandHandler(IProductRepository productRepository, IPhotoRepository photoRepository)
         {
             _productRepository = productRepository;
-            _photoRepository = photoRepository;
         }
 
         public async Task<Result<Product>> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            var uploadResult = await _photoRepository.UploadPhoto(request.PhotoFile);
+            var result = await _productRepository.Add(request.Values, request.PhotoFile, cancellationToken);
 
-            if (uploadResult is null)
+            if (result is null)
             {
-                return Result.Failure<Product>(Error.TaskFailed("Photo upload failed"));
+                Result.Failure<Product>(Error.TaskFailed("Product create proccess failed due to photo upload"));
             }
-
-            request.Values.AttachImage(uploadResult.PhotoUrl);
-
-            var result = await _productRepository.Add(request.Values, cancellationToken);
 
             return result;
         }

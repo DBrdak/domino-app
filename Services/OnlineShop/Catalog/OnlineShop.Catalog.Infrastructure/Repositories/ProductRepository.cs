@@ -8,6 +8,10 @@ using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
+using OnlineShop.Catalog.Domain.PriceLists;
+using Error = Shared.Domain.Errors.Error;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
@@ -15,11 +19,13 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
     {
         private readonly CatalogContext _context;
         private readonly PhotoRepository _photoRepository;
+        private readonly IPriceListRepository _priceListRepository;
 
-        public ProductRepository(CatalogContext context, PhotoRepository photoRepository)
+        public ProductRepository(CatalogContext context, PhotoRepository photoRepository, IPriceListRepository priceListRepository)
         {
             _context = context;
             _photoRepository = photoRepository;
+            _priceListRepository = priceListRepository;
         }
 
         public async Task<PagedList<Product>> GetProductsAsync
@@ -65,30 +71,68 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             product.Update(newValues);
             var result = await _context.Products.ReplaceOneAsync(
-                Builders<Product>.Filter.Eq(p => p.Id, newValues.Id),
+                Builders<Product>.Filter.Eq(p => p.Id, product.Id),
                 product);
 
             return result.IsAcknowledged && result.ModifiedCount > 0 ? product : null;
         }
 
-        public async Task<Product?> Add(CreateValues values, CancellationToken cancellationToken = default)
+        public async Task<Product?> Add(CreateValues values, IFormFile photoFile, CancellationToken cancellationToken = default)
         {
-            var product = Product.Create(values);
+            var productId = ObjectId.GenerateNewId().ToString();
+
+            var updateResult = await _priceListRepository.AggregateLineItemWithProduct(
+                productId,
+                values.Name,
+                cancellationToken);
+
+            var uploadResult = await _photoRepository.UploadPhoto(photoFile);
+
+            if (uploadResult is null ||
+                updateResult is false)
+            {
+                return null;
+            }
+
+            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId, cancellationToken);
+
+            values.AttachPrice(priceListLineItem.Price);
+
+            values.AttachImage(uploadResult.PhotoUrl);
+
+            var product = Product.Create(values, productId);
 
             await _context.Products.InsertOneAsync(product);
 
             return product;
         }
 
-        public async Task Delete(string productId, CancellationToken cancellationToken)
+        public async Task<bool> Delete(string productId, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.FindOneAndDeleteAsync(
-                Builders<Product>.Filter.Eq(p => p.Id, productId),
-                null, cancellationToken);
+            var isSuccesfullySplitedFromPriceList = await _priceListRepository.SplitLineItemFromProduct(productId, cancellationToken);
 
-#pragma warning disable CS4014
-            _photoRepository.DeletePhoto(product.Image.Url);
-#pragma warning restore CS4014
+            if (!isSuccesfullySplitedFromPriceList)
+            {
+                throw new ApplicationException("Cannot delete product due to it aggregation with price list");
+            }
+
+            var product = (await _context.Products.FindAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, productId),
+                null, cancellationToken)).Single();
+
+            var isSuccesfullyDeletedPhoto = await _photoRepository.DeletePhoto(product.Image.Url);
+
+            if (!isSuccesfullyDeletedPhoto)
+            {
+                throw new ApplicationException("Cannot delete product due to unsuccesfull photo deletion");
+            }
+
+            var result = await _context.Products.DeleteOneAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, productId),
+                null,
+                cancellationToken);
+
+            return result.IsAcknowledged && result.DeletedCount > 0;
         }
 
         // Development Feature

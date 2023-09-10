@@ -38,21 +38,18 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         public async Task AddPriceList(PriceList priceList, CancellationToken cancellationToken)
         {
             if (priceList.Contractor == Contractor.Retail &&
-                CheckForRetailDuplicates(cancellationToken))
+                CheckForRetailDuplicates(priceList.Id, cancellationToken))
             {
-                throw new ApplicationException("Retail price list already exists");
+                throw new ApplicationException($"Price list for contractor {priceList.Contractor.Name} already exists");
             }
 
             await _context.PriceLists.InsertOneAsync(priceList, null, cancellationToken);
         }
 
-        private bool CheckForRetailDuplicates(CancellationToken cancellationToken) =>
-            _context.PriceLists
-                .FindAsync(pl => pl.Contractor == Contractor.Retail, null, cancellationToken)
-                .Result.ToList().Any();
-
-        public async Task<bool> RemovePriceList(PriceList priceList, CancellationToken cancellationToken)
+        public async Task<bool> RemovePriceList(string priceListId, CancellationToken cancellationToken)
         {
+            var priceList = await GetPriceList(priceListId, cancellationToken);
+
             if (priceList.Contractor == Contractor.Retail)
             {
                 throw new ApplicationException("Retail price list cannot be deleted");
@@ -99,7 +96,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        public async Task AggregateLineItemWithProduct(
+        public async Task<bool> AggregateLineItemWithProduct(
             string productId,
             string lineItemName,
             CancellationToken cancellationToken)
@@ -118,10 +115,14 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }
 
             var update = Builders<PriceList>.Update
-                .Set(pl => pl.LineItems.Single(li => li.Name == lineItemName).ProductId, productId);
+                .Set(pl =>
+                    pl.LineItems.Single(li => li.Name.ToLower() == lineItemName.ToLower()).ProductId,
+                    productId);
 
             var result = await _context.PriceLists.UpdateOneAsync(
                 pl => pl.Id == priceList.Id, update, null, cancellationToken);
+
+            return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
         public async Task<LineItem> GetLineItemForProduct(string productId, CancellationToken cancellationToken)
@@ -142,6 +143,34 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             return priceList.LineItems.Single(li => li.ProductId == productId);
         }
+
+        public async Task<bool> SplitLineItemFromProduct(string productId, CancellationToken cancellationToken)
+        {
+            var priceList = await GetRetailPriceList(cancellationToken);
+
+            if (priceList is null)
+            {
+                throw new ApplicationException("Retail price list not found");
+            }
+
+            var update = Builders<PriceList>.Update
+                .Set(pl =>
+                        pl.LineItems.Single(li => li.ProductId == productId).ProductId,
+                    null);
+
+            var result = await _context.PriceLists.UpdateOneAsync(
+                pl => pl.Id == priceList.Id, update, null, cancellationToken);
+
+            return result.IsAcknowledged && result.ModifiedCount > 0;
+        }
+
+        private bool CheckForRetailDuplicates(string priceListId, CancellationToken cancellationToken) =>
+            _context.PriceLists
+                .FindAsync(_ => true, null, cancellationToken)
+                .Result.ToList().Any(pl => pl.Id == priceListId);
+
+        private async Task<PriceList> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
+            GetPriceListsAsync(cancellationToken).Result.Single(pl => pl.Id == priceListId);
 
         //TODO Kontrahent się loguje -> tworzy się cennik na podstawie retailu -> admin edytuje -> cennika nie można usunąć dopóki istnieje kontrahent
     }

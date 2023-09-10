@@ -35,9 +35,10 @@ namespace OnlineShop.Catalog.Domain.Products
             string subcategory,
             Photo image,
             Money price,
-            ProductDetails details)
+            ProductDetails details,
+            string? id)
         {
-            Id = ObjectId.GenerateNewId().ToString();
+            Id = id ?? ObjectId.GenerateNewId().ToString();
             Name = name;
             Description = description;
             Category = category;
@@ -61,7 +62,8 @@ namespace OnlineShop.Catalog.Domain.Products
             string currencyCode,
             string unitCode,
             bool isWeightSwitchAllowed,
-            decimal? singleWeight)
+            decimal? singleWeight,
+            string? id = null)
         {
             var price = new Money(priceAmount, Currency.FromCode(currencyCode), Unit.FromCode(unitCode));
 
@@ -79,7 +81,8 @@ namespace OnlineShop.Catalog.Domain.Products
                 subcategory,
                 new(image),
                 price,
-                details);
+                details,
+                id);
         }
 
         public void StartDiscount(decimal newPriceAmount)
@@ -144,19 +147,26 @@ namespace OnlineShop.Catalog.Domain.Products
                 Details.Unavailable();
         }
 
-        public static Product Create(CreateValues requestValues)
+        public static Product Create(CreateValues requestValues, string? id = null)
         {
+            if (requestValues.Price is null ||
+                string.IsNullOrWhiteSpace(requestValues.Image))
+            {
+                throw new ApplicationException("Image and price is required");
+            }
+
             return Create(
                 requestValues.Name,
                 requestValues.Description,
                 requestValues.Category,
                 requestValues.Subcategory,
                 requestValues.Image,
-                requestValues.PriceAmount,
-                requestValues.CurrencyCode,
-                requestValues.UnitCode,
+                requestValues.Price.Amount,
+                requestValues.Price.Currency.Code,
+                requestValues.Price.Unit.Code,
                 requestValues.IsWeightSwitchAllowed,
-                requestValues.SingleWeight);
+                requestValues.SingleWeight,
+                id);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
         Task AddPriceList(PriceList priceList, CancellationToken cancellationToken);
 
-        Task<bool> RemovePriceList(PriceList priceList, CancellationToken cancellationToken);
+        Task<bool> RemovePriceList(string priceListId, CancellationToken cancellationToken);
 
         Task<bool> RemoveLineItem(
             string priceListId,
@@ -29,6 +29,8 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             CancellationToken cancellationToken);
 
         Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken);
+
+        // Internal use for products
 
         Task AggregateLineItemWithProduct(
             string productId,

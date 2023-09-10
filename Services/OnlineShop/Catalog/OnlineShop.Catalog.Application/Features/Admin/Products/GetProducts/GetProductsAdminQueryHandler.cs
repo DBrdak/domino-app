@@ -8,7 +8,7 @@ using OnlineShop.Catalog.Domain;
 using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.GetProducts
+namespace OnlineShop.Catalog.Application.Features.Admin.Products.GetProducts
 {
     public sealed class GetProductsAdminQueryHandler : IQueryHandler<GetProductsAdminQuery, List<Product>>
     {

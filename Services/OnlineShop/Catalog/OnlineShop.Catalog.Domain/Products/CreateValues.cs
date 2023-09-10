@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.Products
 {
@@ -12,10 +13,8 @@ namespace OnlineShop.Catalog.Domain.Products
         public string Description { get; init; }
         public string Category { get; init; }
         public string Subcategory { get; init; }
-        public string Image { get; private set; }
-        public decimal PriceAmount { get; init; }
-        public string CurrencyCode { get; init; }
-        public string UnitCode { get; init; }
+        public string? Image { get; private set; }
+        public Money? Price { get; private set; }
         public bool IsWeightSwitchAllowed { get; init; }
         public decimal? SingleWeight { get; init; }
 
@@ -23,10 +22,6 @@ namespace OnlineShop.Catalog.Domain.Products
             string description,
             string category,
             string subcategory,
-            string image,
-            decimal priceAmount,
-            string currencyCode,
-            string unitCode,
             bool isWeightSwitchAllowed,
             decimal? singleWeight)
         {
@@ -34,10 +29,6 @@ namespace OnlineShop.Catalog.Domain.Products
             Description = description;
             Category = category;
             Subcategory = subcategory;
-            Image = image;
-            PriceAmount = priceAmount;
-            CurrencyCode = currencyCode;
-            UnitCode = unitCode;
             IsWeightSwitchAllowed = isWeightSwitchAllowed;
             SingleWeight = singleWeight;
         }
@@ -45,6 +36,11 @@ namespace OnlineShop.Catalog.Domain.Products
         public void AttachImage(string image)
         {
             Image = image;
+        }
+
+        public void AttachPrice(Money productPrice)
+        {
+            Price = productPrice;
         }
     }
 }

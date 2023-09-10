@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.Application.Features.Admin.AddProduct;
-using OnlineShop.Catalog.Application.Features.Admin.DeleteProduct;
-using OnlineShop.Catalog.Application.Features.Admin.GetProducts;
-using OnlineShop.Catalog.Application.Features.Admin.UpdateProduct;
+using OnlineShop.Catalog.Application.Features.Admin.Products.AddProduct;
+using OnlineShop.Catalog.Application.Features.Admin.Products.DeleteProduct;
+using OnlineShop.Catalog.Application.Features.Admin.Products.GetProducts;
+using OnlineShop.Catalog.Application.Features.Admin.Products.UpdateProduct;
 using OnlineShop.Catalog.Domain.Products;
 
 namespace OnlineShop.Catalog.API.Controllers

@@ -61,9 +61,6 @@ namespace OnlineShop.Catalog.API.Controllers
         //TODO
         //Jak narazie zawieszam feature podkategorii, w przyszłości trzeba zrobić oddzielną kolekcję przechowującą podkategorie
         //Dodawanie produktu z ceną z cennika, jeżeli nie znaleziono, to wtedy z ustaloną, po czym dodaję do cennika
-        //Usuwanie produktu
-        //Edytowanie produktu z integracją ceny w cenniku, jeżeli dodam promocję tu to i tam
-        //Get dla admina (w formie tabeli, może zrobić to agregatem z cennikiem?)
-        //Możliwość ustawienia jednostki podglądowej jako sztuka (dla customera)
+        // Następne robię endpointy dla cennika + aktualizuję endpoind dodawania dla produktu, potem domain eventy, potem rozkminić jak zwrócić listę
     }
 }

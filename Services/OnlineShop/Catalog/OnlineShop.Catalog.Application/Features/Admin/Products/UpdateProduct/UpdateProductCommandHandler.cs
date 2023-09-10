@@ -10,7 +10,7 @@ using Shared.Domain.Errors;
 using Shared.Domain.Photo;
 using Shared.Domain.ResponseTypes;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.UpdateProduct
+namespace OnlineShop.Catalog.Application.Features.Admin.Products.UpdateProduct
 {
     internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, Product>
     {

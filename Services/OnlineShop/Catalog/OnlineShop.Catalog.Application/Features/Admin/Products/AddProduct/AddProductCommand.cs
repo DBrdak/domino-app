@@ -8,7 +8,7 @@ using OnlineShop.Catalog.Application.Abstractions.Messaging;
 using OnlineShop.Catalog.Domain;
 using OnlineShop.Catalog.Domain.Products;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.UpdateProduct
+namespace OnlineShop.Catalog.Application.Features.Admin.Products.AddProduct
 {
-    public sealed record UpdateProductCommand(UpdateValues NewValues, IFormFile? PhotoFile) : ICommand<Product>;
+    public sealed record AddProductCommand(CreateValues Values, IFormFile PhotoFile) : ICommand<Product>;
 }

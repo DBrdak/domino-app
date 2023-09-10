@@ -22,9 +22,9 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             LineItems = new();
         }
 
-        public PriceList CreateRetail(string name) => new(name, Contractor.Retail);
+        public static PriceList CreateRetail(string name) => new(name, Contractor.Retail);
 
-        public PriceList CreateBusiness(string name, string contractorName) =>
+        public static PriceList CreateBusiness(string name, string contractorName) =>
             new(name, Contractor.Business(contractorName));
 
         public void AddLineItem(LineItem lineItem)

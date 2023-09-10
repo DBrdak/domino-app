@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OnlineShop.Catalog.Application.Abstractions.Messaging;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.DeleteProduct
+namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddRetailPriceList
 {
-    public sealed record DeleteProductCommand(string ProductId) : ICommand;
+    public sealed record AddRetailPriceListCommand() : ICommand;
 }
