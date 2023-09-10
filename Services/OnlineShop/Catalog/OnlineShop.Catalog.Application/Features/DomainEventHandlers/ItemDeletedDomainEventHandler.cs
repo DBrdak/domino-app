@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using OnlineShop.Catalog.Domain.PriceLists.Events;
 using Shared.Domain.Abstractions;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists
+namespace OnlineShop.Catalog.Application.Features.DomainEventHandlers
 {
-    internal class ItemDeletedDomainEventHandler : IDomainEventHandler<ItemDeletedDomainEvent>
+    internal sealed class ItemDeletedDomainEventHandler : IDomainEventHandler<ItemDeletedDomainEvent>
     {
         public async Task Handle(ItemDeletedDomainEvent notification, CancellationToken cancellationToken)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OnlineShop.Catalog.Domain.Products.Events;
 using Shared.Domain.Abstractions;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.DomainEventHandlers
+namespace OnlineShop.Catalog.Application.Features.DomainEventHandlers
 {
     internal sealed class ProductOutOfStockDomainEventHandler : IDomainEventHandler<ProductOutOfStockDomainEvent>
     {

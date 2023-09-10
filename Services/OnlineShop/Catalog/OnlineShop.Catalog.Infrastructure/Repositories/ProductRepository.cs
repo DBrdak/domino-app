@@ -81,15 +81,19 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var productId = ObjectId.GenerateNewId().ToString();
 
-            var updateResult = await _priceListRepository.AggregateLineItemWithProduct(
+            var aggregationResult = await _priceListRepository.AggregateLineItemWithProduct(
                 productId,
                 values.Name,
                 cancellationToken);
 
+            if (aggregationResult is false)
+            {
+                return null;
+            }
+
             var uploadResult = await _photoRepository.UploadPhoto(photoFile);
 
-            if (uploadResult is null ||
-                updateResult is false)
+            if (uploadResult is null)
             {
                 return null;
             }

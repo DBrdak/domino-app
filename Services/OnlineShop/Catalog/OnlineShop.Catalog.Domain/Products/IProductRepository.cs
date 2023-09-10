@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public Task<Product?> Add(CreateValues values, IFormFile ProductPhoto, CancellationToken cancellationToken = default);
 
-        public Task Delete(string productId, CancellationToken cancellationToken = default);
+        public Task<bool> Delete(string productId, CancellationToken cancellationToken = default);
 
         //TEMP
         public Task<bool> Seed();

@@ -102,16 +102,10 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             CancellationToken cancellationToken)
         {
             var priceList = await GetRetailPriceList(cancellationToken);
-            var product = (await _context.Products.FindAsync(p => p.Id == productId)).SingleOrDefault(cancellationToken);
 
             if (priceList is null)
             {
                 throw new ApplicationException("Retail price list not found");
-            }
-
-            if (product is null)
-            {
-                throw new ApplicationException($"Product with ID {productId} not found");
             }
 
             var update = Builders<PriceList>.Update

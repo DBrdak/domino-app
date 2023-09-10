@@ -32,11 +32,13 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
         // Internal use for products
 
-        Task AggregateLineItemWithProduct(
+        Task<bool> AggregateLineItemWithProduct(
             string productId,
             string lineItemName,
             CancellationToken cancellationToken);
 
         Task<LineItem> GetLineItemForProduct(string productId, CancellationToken cancellationToken);
+
+        Task<bool> SplitLineItemFromProduct(string productId, CancellationToken cancellationToken);
     }
 }

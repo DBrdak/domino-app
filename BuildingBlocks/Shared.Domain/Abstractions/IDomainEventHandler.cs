@@ -7,7 +7,8 @@ using MediatR;
 
 namespace Shared.Domain.Abstractions
 {
-    internal interface IDomainEventHandler : INotificationHandler<>
+    public interface IDomainEventHandler<TDomainEvent> : INotificationHandler<TDomainEvent>
+        where TDomainEvent : IDomainEvent
     {
     }
 }
