@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Domain.Photo
+﻿namespace Shared.Domain.Photo
 {
-    public sealed record CloudinarySettings(string CloudName, string ApiKey, string ApiSecret);
+    public sealed class CloudinarySettings
+    {
+        public string CloudName { get; set; }
+        public string ApiKey { get; set; }
+        public string ApiSecret { get; set; }
+    }
 }

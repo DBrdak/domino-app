@@ -43,7 +43,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings__ConnectionString=mongodb://catalogdb:27017"
-      - "Cloudinary__CloudName=domino-app"
+      - "Cloudinary__CloudName=dw0bfgpfj"
       - "Cloudinary__ApiKey=437459292324761"
       - "Cloudinary__ApiSecret=n0gv4Vn8gbc2ao-lr4RjHSj6MRM"
     depends_on:

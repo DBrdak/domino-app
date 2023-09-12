@@ -18,6 +18,10 @@ namespace OnlineShop.Catalog.Domain.Products
         public bool IsWeightSwitchAllowed { get; init; }
         public decimal? SingleWeight { get; init; }
 
+        public CreateValues()
+        {
+        }
+
         public CreateValues(string name,
             string description,
             string category,

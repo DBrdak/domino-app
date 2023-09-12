@@ -50,7 +50,7 @@ namespace OnlineShop.Catalog.API.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddProduct(
-            [FromBody] CreateValues values,
+            [FromForm] CreateValues values,
             [FromForm] IFormFile photo,
             CancellationToken cancellationToken)
         {

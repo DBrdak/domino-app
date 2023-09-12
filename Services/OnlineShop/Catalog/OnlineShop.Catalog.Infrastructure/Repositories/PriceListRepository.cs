@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Money;
 using Shared.Domain.ResponseTypes;
 
@@ -27,7 +28,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return await priceListsCursor.ToListAsync(cancellationToken);
         }
 
-        public async Task<PriceList> GetRetailPriceList(CancellationToken cancellationToken)
+        public async Task<PriceList?> GetRetailPriceList(CancellationToken cancellationToken)
         {
             var retailPriceListCursor = await _context.PriceLists.FindAsync(
                 pl => pl.Contractor == Contractor.Retail);
@@ -50,6 +51,11 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
+            if (priceList is null)
+            {
+                return false;
+            }
+
             if (priceList.Contractor == Contractor.Retail)
             {
                 throw new ApplicationException("Retail price list cannot be deleted");
@@ -66,12 +72,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
+            if (priceList is null)
+            {
+                return false;
+            }
+
             priceList.DeleteLineItem(lineItemName);
 
-            var update = Builders<PriceList>.Update.Set(p => p, priceList);
-
-            var result = await _context.PriceLists.UpdateOneAsync(
-                pl => pl.Id == priceListId, update, null, cancellationToken);
+            var result = await _context.PriceLists.ReplaceOneAsync(
+                pl => pl.Id == priceListId,
+                priceList, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
@@ -80,13 +90,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
+            if (priceList is null)
+            {
+                return false;
+            }
+
             priceList.UpdateLineItemPrice(lineItemName, newPrice);
 
-            var update = Builders<PriceList>.Update
-                .Set(pl => pl, priceList);
-
-            var result = await _context.PriceLists.UpdateOneAsync(
-                            pl => pl.Id == priceListId, update, null, cancellationToken);
+            var result = await _context.PriceLists.ReplaceOneAsync(
+                pl => pl.Id == priceListId,
+                priceList, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
@@ -95,13 +108,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
+            if (priceList == null)
+            {
+                return false;
+            }
+
             priceList.AddLineItem(lineItem);
 
-            var update = Builders<PriceList>.Update
-                .Set(pl => pl, priceList);
-
-            var result = await _context.PriceLists.UpdateOneAsync(
-                pl => pl.Id == priceListId, update, null, cancellationToken);
+            var result = await _context.PriceLists.ReplaceOneAsync(
+                pl => pl.Id == priceListId,
+                priceList, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
@@ -115,25 +131,23 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (priceList is null)
             {
-                throw new ApplicationException("Retail price list not found");
+                return false;
             }
 
-            var update = Builders<PriceList>.Update
-                .Set(pl =>
-                    pl.LineItems.Single(li => li.Name.ToLower() == lineItemName.ToLower()).ProductId,
-                    productId);
+            priceList.AggregateLineItemWithProduct(lineItemName, productId);
 
-            var result = await _context.PriceLists.UpdateOneAsync(
-                pl => pl.Id == priceList.Id, update, null, cancellationToken);
+            var result = await _context.PriceLists.ReplaceOneAsync(
+                pl => pl.Id == priceList.Id,
+                priceList, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        public async Task<LineItem> GetLineItemForProduct(string productId, CancellationToken cancellationToken)
+        public async Task<LineItem?> GetLineItemForProduct(string productId, CancellationToken cancellationToken, bool isProductInDb = false)
         {
-            var product = (await _context.Products.FindAsync(p => p.Id == productId)).SingleOrDefault(cancellationToken);
+            var product = (await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken)).SingleOrDefault();
 
-            if (product is null)
+            if (isProductInDb && product is null)
             {
                 throw new ApplicationException($"Product with ID {productId} not found");
             }
@@ -142,7 +156,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (priceList is null)
             {
-                throw new ApplicationException("Retail price list not found");
+                return null;
             }
 
             return priceList.LineItems.Single(li => li.ProductId == productId);
@@ -154,7 +168,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (priceList is null)
             {
-                throw new ApplicationException("Retail price list not found");
+                return false;
             }
 
             var update = Builders<PriceList>.Update
@@ -173,8 +187,8 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 .FindAsync(pl => pl.Contractor.Name == Contractor.Retail.Name, null, cancellationToken)
                 .Result.ToList().Any();
 
-        private async Task<PriceList> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
-            GetPriceListsAsync(cancellationToken).Result.Single(pl => pl.Id == priceListId);
+        private async Task<PriceList?> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
+            GetPriceListsAsync(cancellationToken).Result.SingleOrDefault(pl => pl.Id == priceListId);
 
         //TODO Kontrahent się loguje -> tworzy się cennik na podstawie retailu -> admin edytuje -> cennika nie można usunąć dopóki istnieje kontrahent
     }

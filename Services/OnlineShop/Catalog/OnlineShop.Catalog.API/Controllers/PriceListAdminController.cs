@@ -26,7 +26,7 @@ namespace OnlineShop.Catalog.API.Controllers
         public async Task<IActionResult> GetPriceLists(CancellationToken cancellationToken)
         {
             var result = await _sender.Send(new GetPriceListsQuery(), cancellationToken);
-
+            
             return Ok(result.Value);
         }
 

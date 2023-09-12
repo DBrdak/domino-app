@@ -11,7 +11,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
     {
         Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken);
 
-        Task<PriceList> GetRetailPriceList(CancellationToken cancellationToken);
+        Task<PriceList?> GetRetailPriceList(CancellationToken cancellationToken);
 
         Task AddPriceList(PriceList priceList, CancellationToken cancellationToken);
 
@@ -37,7 +37,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             string lineItemName,
             CancellationToken cancellationToken);
 
-        Task<LineItem> GetLineItemForProduct(string productId, CancellationToken cancellationToken);
+        Task<LineItem?> GetLineItemForProduct(string productId, CancellationToken cancellationToken, bool isProductInDb = false);
 
         Task<bool> SplitLineItemFromProduct(string productId, CancellationToken cancellationToken);
     }

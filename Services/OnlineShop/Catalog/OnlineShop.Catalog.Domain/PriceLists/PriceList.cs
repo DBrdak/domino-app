@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using OnlineShop.Catalog.Domain.PriceLists.Events;
 using Shared.Domain.Abstractions;
 using Shared.Domain.Money;
@@ -15,7 +16,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
         public List<LineItem> LineItems { get; init; }
         public Contractor Contractor { get; init; }
 
-        private PriceList(string name, Contractor contractor)
+        private PriceList(string name, Contractor contractor) : base(ObjectId.GenerateNewId().ToString())
         {
             Name = name;
             Contractor = contractor;
