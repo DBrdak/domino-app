@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OnlineShop.Catalog.Application.Abstractions.Messaging;
 using OnlineShop.Catalog.Domain;
 using OnlineShop.Catalog.Domain.Products;
+using Shared.Domain.Abstractions;
 using Shared.Domain.Errors;
 using Shared.Domain.Photo;
 using Shared.Domain.ResponseTypes;

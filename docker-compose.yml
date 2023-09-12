@@ -41,8 +41,12 @@ services:
       context: .
       dockerfile: ApiGateways/OcelotApiGateway/Dockerfile
 
-#Volumes
+#Others
 volumes:
   mongo_data:
-  postgres_data:
+  order_data:
+
+networks:
+  default:
+
 

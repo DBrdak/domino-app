@@ -10,7 +10,7 @@ namespace OnlineShop.Order.API.EventBusConsumer
     {
         private readonly IMediator _mediator;
 
-        public ShoppingCartCheckoutConsumer(IMediator mediator, IPublishEndpoint publishEndpoint)
+        public ShoppingCartCheckoutConsumer(IMediator mediator)
         {
             _mediator = mediator;
         }

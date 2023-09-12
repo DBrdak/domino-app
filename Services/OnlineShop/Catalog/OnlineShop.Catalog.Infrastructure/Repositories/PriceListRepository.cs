@@ -38,7 +38,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         public async Task AddPriceList(PriceList priceList, CancellationToken cancellationToken)
         {
             if (priceList.Contractor == Contractor.Retail &&
-                CheckForRetailDuplicates(priceList.Id, cancellationToken))
+                CheckForRetailDuplicates(cancellationToken))
             {
                 throw new ApplicationException($"Price list for contractor {priceList.Contractor.Name} already exists");
             }
@@ -64,20 +64,26 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> RemoveLineItem(string priceListId, string lineItemName, CancellationToken cancellationToken)
         {
-            //TODO Sprawdzam czy istnieje powiązany produkt
+            var priceList = await GetPriceList(priceListId, cancellationToken);
 
-            var update = Builders<PriceList>.Update.PullFilter(pl => pl.LineItems, li => li.Name == lineItemName);
+            priceList.DeleteLineItem(lineItemName);
+
+            var update = Builders<PriceList>.Update.Set(p => p, priceList);
 
             var result = await _context.PriceLists.UpdateOneAsync(
-                            pl => pl.Id == priceListId, update, null, cancellationToken);
+                pl => pl.Id == priceListId, update, null, cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
         public async Task<bool> UpdateLineItemPrice(string priceListId, string lineItemName, Money newPrice, CancellationToken cancellationToken)
         {
+            var priceList = await GetPriceList(priceListId, cancellationToken);
+
+            priceList.UpdateLineItemPrice(lineItemName, newPrice);
+
             var update = Builders<PriceList>.Update
-                .Set(pl => pl.LineItems.Single(li => li.Name == lineItemName).Price, newPrice);
+                .Set(pl => pl, priceList);
 
             var result = await _context.PriceLists.UpdateOneAsync(
                             pl => pl.Id == priceListId, update, null, cancellationToken);
@@ -87,8 +93,12 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken)
         {
+            var priceList = await GetPriceList(priceListId, cancellationToken);
+
+            priceList.AddLineItem(lineItem);
+
             var update = Builders<PriceList>.Update
-                .Push(pl => pl.LineItems, lineItem);
+                .Set(pl => pl, priceList);
 
             var result = await _context.PriceLists.UpdateOneAsync(
                 pl => pl.Id == priceListId, update, null, cancellationToken);
@@ -158,10 +168,10 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        private bool CheckForRetailDuplicates(string priceListId, CancellationToken cancellationToken) =>
+        private bool CheckForRetailDuplicates(CancellationToken cancellationToken) =>
             _context.PriceLists
-                .FindAsync(_ => true, null, cancellationToken)
-                .Result.ToList().Any(pl => pl.Id == priceListId);
+                .FindAsync(pl => pl.Contractor.Name == Contractor.Retail.Name, null, cancellationToken)
+                .Result.ToList().Any();
 
         private async Task<PriceList> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
             GetPriceListsAsync(cancellationToken).Result.Single(pl => pl.Id == priceListId);

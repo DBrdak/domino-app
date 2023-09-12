@@ -7,6 +7,6 @@ using Shared.Domain.Abstractions;
 
 namespace OnlineShop.Catalog.Domain.PriceLists.Events
 {
-    public sealed record PriceUpdatedDomainEvent(string ProductId) : IDomainEvent;
+    public sealed record LineItemPriceUpdatedDomainEvent(string ProductId) : IDomainEvent;
     //TODO Updating ProductPrice
 }

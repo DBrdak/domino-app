@@ -22,7 +22,9 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public Task<bool> Delete(string productId, CancellationToken cancellationToken = default);
 
+        public Task<bool> RefreshPrice(string productId, CancellationToken cancellationToken = default);
+
         //TEMP
-        public Task<bool> Seed();
+        //public Task<bool> Seed();
     }
 }

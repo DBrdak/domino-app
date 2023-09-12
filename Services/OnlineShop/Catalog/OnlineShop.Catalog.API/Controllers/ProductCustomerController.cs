@@ -6,12 +6,12 @@ using OnlineShop.Catalog.Application.Features.Customer.GetProducts;
 namespace OnlineShop.Catalog.API.Controllers
 {
     [ApiController]
-    [Route("api/v1/onlineshop/catalog")]
-    public sealed class CatalogCustomerController : ControllerBase
+    [Route("api/v1/onlineshop/product")]
+    public sealed class ProductCustomerController : ControllerBase
     {
         private readonly ISender _sender;
 
-        public CatalogCustomerController(ISender sender)
+        public ProductCustomerController(ISender sender)
         {
             _sender = sender;
         }
@@ -53,9 +53,10 @@ namespace OnlineShop.Catalog.API.Controllers
         [EndpointDescription("Development endpoint")]
         public async Task<IActionResult> Seed()
         {
-            var response = await _sender.Send(new SeedCommand());
+            //var response = await _sender.Send(new SeedCommand());
 
-            return response.Value ? Ok() : BadRequest("Database already contains data");
+            //return response.Value ? Ok() : BadRequest("Database already contains data");
+            return StatusCode(405);
         }
 
         //TODO

@@ -11,12 +11,12 @@ namespace OnlineShop.Catalog.API.Controllers
 {
     //[Authorize]
     [ApiController]
-    [Route("api/v1/onlineshop/catalog")]
-    public class CatalogAdminController : ControllerBase
+    [Route("api/v1/onlineshop/product")]
+    public class ProductAdminController : ControllerBase
     {
         private readonly ISender _sender;
 
-        public CatalogAdminController(ISender sender)
+        public ProductAdminController(ISender sender)
         {
             _sender = sender;
         }

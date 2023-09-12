@@ -23,7 +23,7 @@ namespace OnlineShop.Catalog.Domain.Products
         public Category Category { get; private set; }
         public string Subcategory { get; private set; }
         public Photo Image { get; private set; }
-        public Money Price { get; init; }
+        public Money Price { get; private set; }
         public ProductDetails Details { get; private set; }
         public Money? DiscountedPrice { get; private set; }
         public Money? AlternativeUnitPrice { get; private set; }
@@ -121,6 +121,14 @@ namespace OnlineShop.Catalog.Domain.Products
             Details.Available();
 
             RaiseDomainEvent(new ProductInStockDomainEvent(Id));
+        }
+
+        public void UpdatePrice(Money price)
+        {
+            Price = price;
+            AlternativeUnitPrice = Details.IsWeightSwitchAllowed ?
+                PricingService.CalculatePrice(Price, Details, Price.Unit.AlternativeUnit()) :
+                null;
         }
 
         public void Update(UpdateValues newValues)

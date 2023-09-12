@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OnlineShop.Catalog.Application.Abstractions.Messaging;
 using OnlineShop.Catalog.Domain;
 using OnlineShop.Catalog.Domain.Products;
+using Shared.Domain.Abstractions;
 using Shared.Domain.Errors;
 using Shared.Domain.Photo;
 using Shared.Domain.ResponseTypes;
@@ -16,7 +17,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.AddProduct
     {
         private readonly IProductRepository _productRepository;
 
-        public AddProductCommandHandler(IProductRepository productRepository, IPhotoRepository photoRepository)
+        public AddProductCommandHandler(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
@@ -27,7 +28,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.AddProduct
 
             if (result is null)
             {
-                Result.Failure<Product>(Error.TaskFailed("Product create proccess failed due to photo upload"));
+                return Result.Failure<Product>(Error.TaskFailed("Product create proccess failed"));
             }
 
             return result;

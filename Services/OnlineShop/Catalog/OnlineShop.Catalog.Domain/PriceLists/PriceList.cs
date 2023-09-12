@@ -55,7 +55,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             if (Contractor == Contractor.Retail &&
                 lineItemToDelete.ProductId is not null)
             {
-                RaiseDomainEvent(new ItemDeletedDomainEvent(lineItemToDelete.ProductId));
+                RaiseDomainEvent(new LineItemDeletedDomainEvent(lineItemToDelete.ProductId));
             }
         }
 
@@ -74,7 +74,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             if (Contractor == Contractor.Retail &&
                 lineItemToUpdate.ProductId is not null)
             {
-                RaiseDomainEvent(new PriceUpdatedDomainEvent(lineItemToUpdate.ProductId));
+                RaiseDomainEvent(new LineItemPriceUpdatedDomainEvent(lineItemToUpdate.ProductId));
             }
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OnlineShop.Catalog.Application.Abstractions.Messaging;
 using OnlineShop.Catalog.Domain.PriceLists;
+using Shared.Domain.Abstractions;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 
@@ -24,7 +25,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemoveLineIte
             var isSuccess = await _priceListRepository.RemoveLineItem(
                 request.PriceListId,
                 request.LineItemName,
-                cancellationToken);
+            cancellationToken);
 
             return isSuccess ?
                     Result.Success() :

@@ -14,7 +14,6 @@ namespace OnlineShop.Catalog.API
             var app = builder.Build();
 
             app.UseRouting();
-
             app.UseMiddleware<ExceptionMiddleware>();
             app.MapControllers();
             app.UseCors("DefaultPolicy");

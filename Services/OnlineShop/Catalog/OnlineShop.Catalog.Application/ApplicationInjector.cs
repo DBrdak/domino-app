@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OnlineShop.Catalog.Application.Behaviors;
 using OnlineShop.Catalog.Domain;
 
 namespace OnlineShop.Catalog.Application
@@ -10,6 +11,8 @@ namespace OnlineShop.Catalog.Application
             services.AddMediatR(configuration =>
             {
                 configuration.RegisterServicesFromAssembly(typeof(ApplicationInjector).Assembly);
+
+                //configuration.AddOpenBehavior(typeof(DomainEventPublishBehavior<,>));
             });
 
             return services;
