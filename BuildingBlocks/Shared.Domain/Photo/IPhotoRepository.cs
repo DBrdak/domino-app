@@ -6,6 +6,6 @@ namespace Shared.Domain.Photo
     {
         public Task<PhotoUploadResult?> UploadPhoto(IFormFile file, CancellationToken cancellationToken = default);
 
-        public Task<bool> DeletePhoto(string photoId);
+        public Task<bool> DeletePhoto(string photoUrl);
     }
 }

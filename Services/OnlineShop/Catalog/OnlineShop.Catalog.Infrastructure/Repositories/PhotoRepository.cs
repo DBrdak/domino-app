@@ -31,8 +31,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(file.FileName, stream),
-                Transformation = new Transformation().Height(500).Width(500).Crop("fill")
+                Transformation = new Transformation().Height(500).Width(500).Crop("fill"),
+                Tags = $"{file.FileName}"
             };
+
+            var resourceInCloud = await CheckIsAlreadyUploaded(uploadParams.Tags);
+
+            if (resourceInCloud is not null)
+            {
+                return resourceInCloud;
+            }
 
             var uploadResult = await _cloudinary.UploadAsync(uploadParams, cancellationToken);
 
@@ -46,13 +54,40 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 uploadResult.PublicId);
         }
 
-        public async Task<bool> DeletePhoto(string photoId)
+        public async Task<bool> DeletePhoto(string photoUrl)
         {
-            var deleteParams = new DeletionParams(photoId);
+            var photosInCloud = await _cloudinary.ListResourcesAsync();
+
+            var photoInCloud = photosInCloud
+                .Resources
+                .ToList()
+                .FirstOrDefault(p => p.SecureUrl.AbsoluteUri == photoUrl);
+
+            if (photoInCloud is null)
+            {
+                return true;
+            }
+
+            var deleteParams = new DeletionParams(photoInCloud.PublicId);
 
             var result = await _cloudinary.DestroyAsync(deleteParams);
 
             return result.Result == "ok";
+        }
+
+        private async Task<PhotoUploadResult?> CheckIsAlreadyUploaded(string tag)
+        {
+            var resourceList = await _cloudinary.ListResourcesByTagAsync(tag);
+            var resource = resourceList.Resources.FirstOrDefault();
+
+            if (resource is null)
+            {
+                return null;
+            }
+
+            return new PhotoUploadResult(
+                resource.SecureUrl.ToString(),
+                resource.PublicId);
         }
     }
 }

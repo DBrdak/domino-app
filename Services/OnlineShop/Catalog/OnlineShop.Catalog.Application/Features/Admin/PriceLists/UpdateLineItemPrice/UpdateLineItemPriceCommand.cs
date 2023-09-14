@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OnlineShop.Catalog.Application.Abstractions.Messaging;
+using OnlineShop.Catalog.Domain.PriceLists;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice
@@ -11,5 +12,5 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineIte
     public sealed record UpdateLineItemPriceCommand(
         string LineItemName,
         Money NewPrice,
-        string PriceListId) : ICommand;
+        string PriceListId) : ICommand<PriceList>;
 }

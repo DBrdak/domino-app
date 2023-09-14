@@ -58,7 +58,9 @@ namespace OnlineShop.Catalog.API.Controllers
 
             var response = await _sender.Send(command, cancellationToken);
 
-            return Ok(response.Value);
+            return response.IsSuccess ?
+                    Ok(response.Value) :
+                    BadRequest(response.Error);
         }
 
         [HttpDelete("{productId}")]

@@ -17,12 +17,12 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
         Task<bool> RemovePriceList(string priceListId, CancellationToken cancellationToken);
 
-        Task<bool> RemoveLineItem(
+        Task<PriceList?> RemoveLineItem(
             string priceListId,
             string lineItemName,
             CancellationToken cancellationToken);
 
-        Task<bool> UpdateLineItemPrice(
+        Task<PriceList?> UpdateLineItemPrice(
             string priceListId,
             string lineItemName,
             Money newPrice,

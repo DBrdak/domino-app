@@ -18,7 +18,7 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public Task<Product?> UpdateProduct(UpdateValues newValues, CancellationToken cancellationToken = default);
 
-        public Task<Product?> Add(CreateValues values, IFormFile ProductPhoto, CancellationToken cancellationToken = default);
+        public Task<Product?> Add(CreateValues values, IFormFile productPhoto, CancellationToken cancellationToken = default);
 
         public Task<bool> Delete(string productId, CancellationToken cancellationToken = default);
 

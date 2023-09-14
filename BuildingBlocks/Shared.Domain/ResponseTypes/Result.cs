@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Shared.Domain.Abstractions;
 using Shared.Domain.Errors;
 
 namespace Shared.Domain.ResponseTypes;

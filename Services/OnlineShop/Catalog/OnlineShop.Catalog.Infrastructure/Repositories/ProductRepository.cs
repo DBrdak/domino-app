@@ -92,16 +92,21 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 return null;
             }
 
+            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId, cancellationToken);
+
+            if (priceListLineItem is null)
+            {
+                return null;
+            }
+
+            values.AttachPrice(priceListLineItem.Price);
+
             var uploadResult = await _photoRepository.UploadPhoto(photoFile);
 
             if (uploadResult is null)
             {
                 return null;
             }
-
-            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId, cancellationToken);
-
-            values.AttachPrice(priceListLineItem.Price);
 
             values.AttachImage(uploadResult.PhotoUrl);
 

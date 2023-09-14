@@ -12,7 +12,7 @@ namespace OnlineShop.Catalog.Application
             {
                 configuration.RegisterServicesFromAssembly(typeof(ApplicationInjector).Assembly);
 
-                //configuration.AddOpenBehavior(typeof(DomainEventPublishBehavior<,>));
+                configuration.AddOpenBehavior(typeof(DomainEventPublishBehavior<,>));
             });
 
             return services;

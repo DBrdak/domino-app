@@ -10,7 +10,7 @@ namespace Shared.Domain.Abstractions
     {
         public string Id { get; protected set; }
 
-        private readonly List<IDomainEvent> _domainEvents = new();
+        private List<IDomainEvent> _domainEvents = new();
 
         protected Entity(string id)
         {
@@ -23,17 +23,31 @@ namespace Shared.Domain.Abstractions
 
         public IReadOnlyList<IDomainEvent> GetDomainEvents()
         {
-            return _domainEvents.ToList();
+            InitializeDomainEventsList();
+
+            return _domainEvents;
         }
 
         public void ClearDomainEvents()
         {
+            InitializeDomainEventsList();
+
             _domainEvents.Clear();
         }
 
         protected void RaiseDomainEvent(IDomainEvent domainEvent)
         {
+            InitializeDomainEventsList();
+
             _domainEvents.Add(domainEvent);
+        }
+
+        private void InitializeDomainEventsList()
+        {
+            if (_domainEvents is null)
+            {
+                _domainEvents = new();
+            }
         }
     }
 }

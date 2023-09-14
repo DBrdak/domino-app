@@ -11,7 +11,7 @@ using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice
 {
-    internal sealed class UpdateLineItemPriceCommandHandler : ICommandHandler<UpdateLineItemPriceCommand>
+    internal sealed class UpdateLineItemPriceCommandHandler : ICommandHandler<UpdateLineItemPriceCommand, PriceList>
     {
         private readonly IPriceListRepository _priceListRepository;
 
@@ -20,17 +20,17 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineIte
             _priceListRepository = priceListRepository;
         }
 
-        public async Task<Result> Handle(UpdateLineItemPriceCommand request, CancellationToken cancellationToken)
+        public async Task<Result<PriceList>> Handle(UpdateLineItemPriceCommand request, CancellationToken cancellationToken)
         {
-            var isSuccess = await _priceListRepository.UpdateLineItemPrice(
+            var priceListBeforeUpdate = await _priceListRepository.UpdateLineItemPrice(
                 request.PriceListId,
                 request.LineItemName,
                 request.NewPrice,
                 cancellationToken);
 
-            return isSuccess ?
-                    Result.Success() :
-                    Result.Failure(Error.InvalidRequest(
+            return priceListBeforeUpdate is not null ?
+                    Result.Success(priceListBeforeUpdate) :
+                    Result.Failure<PriceList>(Error.InvalidRequest(
                         $"Cannot update price of line item named {request.LineItemName} to value {request.NewPrice} in price list with ID {request.PriceListId}"));
         }
     }

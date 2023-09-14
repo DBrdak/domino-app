@@ -8,5 +8,4 @@ using Shared.Domain.Abstractions;
 namespace OnlineShop.Catalog.Domain.PriceLists.Events
 {
     public sealed record LineItemDeletedDomainEvent(string ProductId) : IDomainEvent;
-    //TODO Deleting Product
 }

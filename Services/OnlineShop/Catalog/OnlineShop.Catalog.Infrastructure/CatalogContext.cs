@@ -25,5 +25,9 @@ namespace OnlineShop.Catalog.Infrastructure
             PriceLists = database.GetCollection<PriceList>(
                 config.GetValue<string>("DatabaseSettings:Collections:PriceLists"));
         }
+
+        //public async Task<List<IDomainEvent>> RetriveAllDomainEvents()
+        //{
+        //}
     }
 }

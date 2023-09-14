@@ -22,5 +22,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
         internal void UpdatePrice(Money price) => Price = price;
 
         internal void AggregateWithProduct(string productId) => ProductId = productId;
+
+        internal void SplitFromProduct() => ProductId = null;
     }
 }

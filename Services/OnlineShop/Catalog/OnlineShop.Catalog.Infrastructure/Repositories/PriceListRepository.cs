@@ -68,13 +68,13 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
 
-        public async Task<bool> RemoveLineItem(string priceListId, string lineItemName, CancellationToken cancellationToken)
+        public async Task<PriceList?> RemoveLineItem(string priceListId, string lineItemName, CancellationToken cancellationToken)
         {
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
             if (priceList is null)
             {
-                return false;
+                return null;
             }
 
             priceList.DeleteLineItem(lineItemName);
@@ -83,16 +83,21 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 pl => pl.Id == priceListId,
                 priceList, new ReplaceOptions(), cancellationToken);
 
-            return result.IsAcknowledged && result.ModifiedCount > 0;
+            if (!result.IsAcknowledged && !(result.ModifiedCount > 0))
+            {
+                return null;
+            }
+
+            return priceList;
         }
 
-        public async Task<bool> UpdateLineItemPrice(string priceListId, string lineItemName, Money newPrice, CancellationToken cancellationToken)
+        public async Task<PriceList?> UpdateLineItemPrice(string priceListId, string lineItemName, Money newPrice, CancellationToken cancellationToken)
         {
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
             if (priceList is null)
             {
-                return false;
+                return null;
             }
 
             priceList.UpdateLineItemPrice(lineItemName, newPrice);
@@ -101,7 +106,12 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 pl => pl.Id == priceListId,
                 priceList, new ReplaceOptions(), cancellationToken);
 
-            return result.IsAcknowledged && result.ModifiedCount > 0;
+            if (!result.IsAcknowledged && !(result.ModifiedCount > 0))
+            {
+                return null;
+            }
+
+            return priceList;
         }
 
         public async Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken)
@@ -171,13 +181,18 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 return false;
             }
 
-            var update = Builders<PriceList>.Update
-                .Set(pl =>
-                        pl.LineItems.Single(li => li.ProductId == productId).ProductId,
-                    null);
+            var isExist = priceList.LineItems.SingleOrDefault(li => li.ProductId == productId) is not null;
 
-            var result = await _context.PriceLists.UpdateOneAsync(
-                pl => pl.Id == priceList.Id, update, null, cancellationToken);
+            if (!isExist)
+            {
+                return true;
+            }
+
+            priceList.SplitLineItemFromProduct(productId);
+
+            var result = await _context.PriceLists.ReplaceOneAsync(
+                pl => pl.Id == priceList.Id,
+                priceList, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }

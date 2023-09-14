@@ -16,6 +16,10 @@ namespace OnlineShop.Catalog.Domain.PriceLists
         public List<LineItem> LineItems { get; init; }
         public Contractor Contractor { get; init; }
 
+        private PriceList()
+        {
+        }
+
         private PriceList(string name, Contractor contractor) : base(ObjectId.GenerateNewId().ToString())
         {
             Name = name;
@@ -39,6 +43,18 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             }
 
             LineItems.Add(lineItem);
+        }
+
+        public void SplitLineItemFromProduct(string productId)
+        {
+            var lineItemToUpdate = LineItems.SingleOrDefault(li => li.ProductId == productId);
+
+            if (lineItemToUpdate is null)
+            {
+                throw new ApplicationException($"No line item found matching product with ID: {productId}");
+            }
+
+            lineItemToUpdate.SplitFromProduct();
         }
 
         public void DeleteLineItem(string lineItemName)
@@ -92,6 +108,12 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             if (lineItemToUpdate is null)
             {
                 throw new ApplicationException($"Given line item do not exist in price list {Name}");
+            }
+
+            if (lineItemToUpdate.ProductId is not null)
+            {
+                throw new ApplicationException(
+                    $"Given line item is already aggregated with product with ID {lineItemToUpdate.ProductId}");
             }
 
             lineItemToUpdate.AggregateWithProduct(productId);
