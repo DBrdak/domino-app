@@ -139,7 +139,7 @@ namespace OnlineShop.Catalog.Domain.Products
             Category = Category.FromValue(newValues.Category);
             Image = new(newValues.ImageUrl);
 
-            if (newValues.SingleWeight.HasValue && newValues.IsWeightSwitchAllowed)
+            if (newValues.IsWeightSwitchAllowed && newValues.SingleWeight.HasValue)
             {
                 Details.AllowWeightSwitch(newValues.SingleWeight.Value, Price.Unit!.AlternativeUnit());
                 AlternativeUnitPrice = PricingService.CalculatePrice(Price, Details, Price.Unit.AlternativeUnit());

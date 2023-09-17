@@ -28,7 +28,7 @@ namespace OnlineShop.Catalog.Application.Behaviors
         {
             var response = await next();
 
-            var domainEvents = RetriveDomainEvents(response) as List<IDomainEvent>;
+            var domainEvents = RetriveDomainEvents(response);
 
             if (domainEvents is null)
             {
@@ -43,37 +43,50 @@ namespace OnlineShop.Catalog.Application.Behaviors
             return response;
         }
 
-        private object? RetriveDomainEvents(object obj)
+        private List<IDomainEvent>? RetriveDomainEvents(object obj)
         {
-            var valueProperty = obj.GetType().GetProperty("Value");
+            var valueProperty = GetValueProperty(obj);
 
             if (valueProperty is null)
             {
                 return null;
             }
 
-            var value = valueProperty.GetValue(obj);
+            var value = GetValueFromValueProperty(obj, valueProperty);
 
             if (value is null)
             {
                 return null;
             }
 
-            var isEntity = value.GetType().IsSubclassOf(typeof(Entity));
+            var isEntity = IsEntityType(value);
 
             if (!isEntity)
             {
                 return null;
             }
 
-            var domainEvents = value.GetType().GetMethod("GetDomainEvents");
+            var domainEventsMethod = GetDomainEventsMethod(value);
 
-            if (domainEvents is null)
+            if (domainEventsMethod is null)
             {
                 return null;
             }
 
-            return domainEvents.Invoke(value, null);
+            var domainEvents = GetDomainEvents(domainEventsMethod, value);
+
+            return domainEvents;
         }
+
+        private static List<IDomainEvent>? GetDomainEvents(MethodInfo domainEventsMethod, object value) =>
+            domainEventsMethod.Invoke(value, null) as List<IDomainEvent>;
+
+        private static MethodInfo? GetDomainEventsMethod(object value) => value.GetType().GetMethod("GetDomainEvents");
+
+        private static bool IsEntityType(object value) => value.GetType().IsSubclassOf(typeof(Entity));
+
+        private static object? GetValueFromValueProperty(object obj, PropertyInfo valueProperty) => valueProperty.GetValue(obj);
+
+        private static PropertyInfo? GetValueProperty(object obj) => obj.GetType().GetProperty("Value");
     }
 }

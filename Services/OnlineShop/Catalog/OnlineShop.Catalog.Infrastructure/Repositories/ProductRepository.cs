@@ -68,9 +68,11 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 #pragma warning disable CS4014
                 _photoRepository.DeletePhoto(product.Image.Url);
 #pragma warning restore CS4014
+                //await _photoRepository.UploadPhoto(newValues.ImageUrl);
             }
 
             product.Update(newValues);
+
             var result = await _context.Products.ReplaceOneAsync(
                 Builders<Product>.Filter.Eq(p => p.Id, product.Id),
                 product);
@@ -163,7 +165,11 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             product.UpdatePrice(price);
 
-            return true;
+            var result = await _context.Products.ReplaceOneAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, product.Id),
+                product);
+
+            return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
         // Development Feature
