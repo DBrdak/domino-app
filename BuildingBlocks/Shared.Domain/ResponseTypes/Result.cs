@@ -1,6 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Shared.Domain.Abstractions;
-using Shared.Domain.Errors;
+﻿using Shared.Domain.Errors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Shared.Domain.ResponseTypes;
 

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EventBus.Domain.Common;
+﻿using EventBus.Domain.Common;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shared.Domain.Money;

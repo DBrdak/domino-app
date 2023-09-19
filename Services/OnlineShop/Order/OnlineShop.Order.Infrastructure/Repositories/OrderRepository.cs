@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineShop.Order.Domain;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Infrastructure.Persistence;
 
@@ -18,6 +17,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
         {
             return await _context.Set<OnlineOrder>()
                 .Include(o => o.Items)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(o => o.PhoneNumber == phoneNumber
                                           && o.Id == orderId);
         }
@@ -49,11 +49,29 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
         public async Task<List<OnlineOrder>> GetAllOrders(CancellationToken cancellationToken)
         {
-            return await _context.Orders.ToListAsync(cancellationToken);
+            return await _context.Set<OnlineOrder>()
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task UpdateOrder(string orderStatus)
+        public async Task<bool> UpdateOrder(
+            string orderId,
+            string orderStatus,
+            CancellationToken cancellationToken,
+            OnlineOrder? modifiedOrder = null)
         {
+            var order = await _context.Set<OnlineOrder>()
+                .SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+
+            if (order is null)
+            {
+                return false;
+            }
+
+            order.UpdateStatus(orderStatus, modifiedOrder);
+            var result = await _context.SaveChangesAsync(cancellationToken);
+
+            return result > 0;
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using OnlineShop.Catalog.Application.Abstractions.Messaging;
-using OnlineShop.Catalog.Domain;
-using OnlineShop.Catalog.Domain.Products;
-using Shared.Domain.ResponseTypes;
+﻿using OnlineShop.Catalog.Domain.Products;
+using Shared.Domain.Abstractions.Messaging;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.Products.GetProducts
 {

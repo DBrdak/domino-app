@@ -1,6 +1,5 @@
-﻿using OnlineShop.Order.Application.Abstractions.Messaging;
-using OnlineShop.Order.Application.Core;
-using OnlineShop.Order.Domain.OnlineOrders;
+﻿using OnlineShop.Order.Domain.OnlineOrders;
+using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 

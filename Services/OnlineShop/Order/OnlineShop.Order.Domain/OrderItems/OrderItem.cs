@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Runtime.InteropServices.JavaScript;
-using EventBus.Domain.Common;
-using EventBus.Domain.Events;
-using Shared.Domain.Abstractions;
+﻿using EventBus.Domain.Common;
+using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Quantity;
 

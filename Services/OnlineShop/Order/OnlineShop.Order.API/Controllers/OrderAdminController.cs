@@ -1,9 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Order.Application.Features.Commands.CancelOrder;
 using OnlineShop.Order.Application.Features.Commands.UpdateOrder;
-using OnlineShop.Order.Application.Features.Queries.GetCustomerOrder;
 using OnlineShop.Order.Application.Features.Queries.GetOrders;
 
 namespace OnlineShop.Order.API.Controllers
@@ -20,12 +17,14 @@ namespace OnlineShop.Order.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<IActionResult> GetOrders(CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GetOrdersQuery(), cancellationToken);
 
-            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
+            return result.IsSuccess ?
+                Ok(result.Value) :
+                NotFound(result.Error);
         }
 
         [HttpPut]
@@ -35,12 +34,9 @@ namespace OnlineShop.Order.API.Controllers
         {
             var result = await _mediator.Send(command, cancellationToken);
 
-            return result.IsSuccess ? Ok() : BadRequest();
+            return result.IsSuccess ?
+                Ok() :
+                BadRequest(result.Error);
         }
-
-        //TODO
-        // Zapobieganie powielaniu zamówień
-        // Get dla admina - pobieranie wszystkich orderów
-        // Put dla admina - zmienianie statusów ordera/ów
     }
 }

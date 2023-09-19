@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Catalog.Application.Features.Admin.Products.AddProduct;
 using OnlineShop.Catalog.Application.Features.Admin.Products.DeleteProduct;

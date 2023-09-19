@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OnlineShop.Catalog.Application.Abstractions.Messaging;
-using OnlineShop.Catalog.Domain;
-using OnlineShop.Catalog.Domain.Products;
-using Shared.Domain.Errors;
+﻿using OnlineShop.Catalog.Domain.Products;
+using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Application.Features.Customer.GetProducts

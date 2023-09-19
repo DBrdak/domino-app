@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MediatR;
 
-namespace Shared.Domain.Abstractions
+namespace Shops.Domain.Shops
 {
-    public interface IDomainEvent : INotification
+    public class SalePoint
     {
     }
 }

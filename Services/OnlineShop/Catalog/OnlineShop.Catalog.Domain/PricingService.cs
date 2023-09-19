@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OnlineShop.Catalog.Domain.Products;
+﻿using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain
@@ -19,7 +14,7 @@ namespace OnlineShop.Catalog.Domain
                 return sourcePrice;
             }
 
-            var convertedPriceAmount = sourcePrice.Unit.Code == "kg" ?
+            var convertedPriceAmount = sourcePrice.Unit?.Code == "kg" ?
                 sourcePrice.Amount * details.SingleWeight.Value :
                 sourcePrice.Amount / details.SingleWeight.Value;
 

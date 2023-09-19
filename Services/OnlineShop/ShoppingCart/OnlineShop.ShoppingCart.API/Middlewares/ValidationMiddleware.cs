@@ -31,8 +31,8 @@
 
                         var errors = validationResult.Errors.Select(error => new
                         {
-                            PropertyName = error.PropertyName,
-                            ErrorMessage = error.ErrorMessage
+                            error.PropertyName,
+                            error.ErrorMessage
                         });
 
                         await context.Response.WriteAsJsonAsync(new

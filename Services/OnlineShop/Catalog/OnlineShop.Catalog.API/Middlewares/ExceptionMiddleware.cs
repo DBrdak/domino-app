@@ -1,6 +1,5 @@
-﻿using System.Net;
+﻿using Shared.Domain.Exceptions;
 using System.Text.Json;
-using Shared.Domain.Exceptions;
 
 namespace OnlineShop.Catalog.API.Middlewares
 {
@@ -9,7 +8,7 @@ namespace OnlineShop.Catalog.API.Middlewares
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly IHostEnvironment _env;
-        private const string contentType = "application/json";
+        private const string _contentType = "application/json";
 
         public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env)
         {
@@ -35,15 +34,15 @@ namespace OnlineShop.Catalog.API.Middlewares
         private async Task CatchError<TException>(TException exception, HttpContext context)
             where TException : Exception
         {
-            context.Response.ContentType = contentType;
+            context.Response.ContentType = _contentType;
             int statusCode = GetStatusCodeFromException(exception);
 
-            var json = GetResponseMessgage(exception, context, statusCode);
+            var json = GetResponseMessgage(exception, statusCode);
 
             await context.Response.WriteAsync(json);
         }
 
-        private string GetResponseMessgage<TException>(TException exception, HttpContext context, int statusCode)
+        private string GetResponseMessgage<TException>(TException exception, int statusCode)
             where TException : Exception
         {
             var response = _env.IsDevelopment()
@@ -60,7 +59,7 @@ namespace OnlineShop.Catalog.API.Middlewares
             return json;
         }
 
-        private int GetStatusCodeFromException<TException>(TException exception) where TException : Exception
+        private static int GetStatusCodeFromException<TException>(TException exception) where TException : Exception
         {
             //TODO Exception types
 

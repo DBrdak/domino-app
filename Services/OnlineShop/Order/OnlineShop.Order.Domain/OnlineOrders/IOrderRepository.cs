@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineShop.Order.Domain.OnlineOrders
+﻿namespace OnlineShop.Order.Domain.OnlineOrders
 {
     public interface IOrderRepository
     {
@@ -16,6 +10,6 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         Task<List<OnlineOrder>> GetAllOrders(CancellationToken cancellationToken);
 
-        Task UpdateOrder(string orderStatus);
+        Task<bool> UpdateOrder(string orderId, string orderStatus, CancellationToken cancellationToken, OnlineOrder? modifiedOrder = null);
     }
 }

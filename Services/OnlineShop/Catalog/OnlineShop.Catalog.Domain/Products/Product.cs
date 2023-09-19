@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.IdGenerators;
-using OnlineShop.Catalog.Domain.PriceLists;
+﻿using MongoDB.Bson;
 using OnlineShop.Catalog.Domain.Products.Events;
-using Shared.Domain.Abstractions;
+using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace OnlineShop.Catalog.Domain.Products
 {
@@ -48,7 +38,7 @@ namespace OnlineShop.Catalog.Domain.Products
             Details = details;
             DiscountedPrice = null;
             AlternativeUnitPrice = Details.IsWeightSwitchAllowed ?
-                PricingService.CalculatePrice(Price, Details, Price.Unit.AlternativeUnit()) :
+                PricingService.CalculatePrice(Price, Details, Price.Unit!.AlternativeUnit()) :
                 null;
         }
 
@@ -127,7 +117,7 @@ namespace OnlineShop.Catalog.Domain.Products
         {
             Price = price;
             AlternativeUnitPrice = Details.IsWeightSwitchAllowed ?
-                PricingService.CalculatePrice(Price, Details, Price.Unit.AlternativeUnit()) :
+                PricingService.CalculatePrice(Price, Details, Price.Unit!.AlternativeUnit()) :
                 null;
         }
 
@@ -171,7 +161,7 @@ namespace OnlineShop.Catalog.Domain.Products
                 requestValues.Image,
                 requestValues.Price.Amount,
                 requestValues.Price.Currency.Code,
-                requestValues.Price.Unit.Code,
+                requestValues.Price.Unit!.Code,
                 requestValues.IsWeightSwitchAllowed,
                 requestValues.SingleWeight,
                 id);

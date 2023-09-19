@@ -1,4 +1,4 @@
-﻿using Shared.Domain.Abstractions;
+﻿using Shared.Domain.Abstractions.Entities;
 
 namespace OnlineShop.Catalog.Domain.Products.Events
 {

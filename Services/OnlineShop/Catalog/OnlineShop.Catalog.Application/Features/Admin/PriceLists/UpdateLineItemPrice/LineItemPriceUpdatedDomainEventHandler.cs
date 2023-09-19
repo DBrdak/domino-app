@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using OnlineShop.Catalog.Domain.PriceLists.Events;
+﻿using OnlineShop.Catalog.Domain.PriceLists.Events;
 using OnlineShop.Catalog.Domain.Products;
-using Shared.Domain.Abstractions;
+using Shared.Domain.Abstractions.Entities;
 
-namespace OnlineShop.Catalog.Application.Features.DomainEventHandlers
+namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice
 {
     internal sealed class LineItemPriceUpdatedDomainEventHandler : IDomainEventHandler<LineItemPriceUpdatedDomainEvent>
     {

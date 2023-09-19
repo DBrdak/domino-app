@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
-using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Money;
-using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
@@ -23,7 +15,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken)
         {
-            var priceListsCursor = await _context.PriceLists.FindAsync(_ => true);
+            var priceListsCursor = await _context.PriceLists.FindAsync(_ => true, null, cancellationToken);
 
             return await priceListsCursor.ToListAsync(cancellationToken);
         }
@@ -31,7 +23,8 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         public async Task<PriceList?> GetRetailPriceList(CancellationToken cancellationToken)
         {
             var retailPriceListCursor = await _context.PriceLists.FindAsync(
-                pl => pl.Contractor == Contractor.Retail);
+                pl => pl.Contractor == Contractor.Retail,
+                null, cancellationToken);
 
             return await retailPriceListCursor.SingleOrDefaultAsync(cancellationToken);
         }
@@ -203,7 +196,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 .Result.ToList().Any();
 
         private async Task<PriceList?> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
-            GetPriceListsAsync(cancellationToken).Result.SingleOrDefault(pl => pl.Id == priceListId);
+            (await GetPriceListsAsync(cancellationToken)).SingleOrDefault(pl => pl.Id == priceListId);
 
         //TODO Kontrahent się loguje -> tworzy się cennik na podstawie retailu -> admin edytuje -> cennika nie można usunąć dopóki istnieje kontrahent
     }

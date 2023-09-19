@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineShop.Catalog.Infrastructure.Repositories;
-using Shared.Domain.Photo;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Infrastructure.Repositories;
+using Shared.Domain.Photo;
 
 namespace OnlineShop.Catalog.Infrastructure
 {

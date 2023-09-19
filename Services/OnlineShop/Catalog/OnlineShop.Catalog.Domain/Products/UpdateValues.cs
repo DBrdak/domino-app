@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineShop.Catalog.Domain.Products
+﻿namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed class UpdateValues
     {

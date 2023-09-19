@@ -223,6 +223,32 @@
       "UpstreamPathTemplate": "/onlineshop/order/cancel",
       "UpstreamHttpMethod": [ "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 0 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/onlineshop/order/all",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineshop.order.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/onlineshop/order/all",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/onlineshop/order",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineshop.order.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/onlineshop/order",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
     }
   ]
 }

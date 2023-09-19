@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EventBus.Domain.Common;
+﻿using EventBus.Domain.Common;
 using EventBus.Domain.Events;
 using OnlineShop.Order.Domain.OnlineOrders.Events;
 using OnlineShop.Order.Domain.OrderItems;
-using Shared.Domain.Abstractions;
+using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shared.Domain.Money;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShop.Order.Domain.OnlineOrders
 {
@@ -78,7 +78,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             DeliveryDate = order.DeliveryDate;
             Id = order.Id;
             CreatedDate = order.CreatedDate;
-            CompletionDate = order.CompletionDate;
+            CompletionDate = CompletionDate = DateTimeService.UtcNow;
             Status = status;
         }
 
@@ -86,6 +86,26 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public void Validate(bool isValidationSucceed) =>
             Status = isValidationSucceed ? OrderStatus.Waiting : OrderStatus.Rejected;
+
+        public void UpdateStatus(string status, OnlineOrder? modifiedOrder)
+        {
+            var actions = new Dictionary<OrderStatus, Action>()
+            {
+                {OrderStatus.Accepted, () => Accept(null)},
+                {OrderStatus.Received, Receive},
+                {OrderStatus.Rejected, Reject},
+                {OrderStatus.Modified, () => Accept(modifiedOrder)},
+            };
+
+            if (actions.TryGetValue(OrderStatus.FromMessage(status), out Action updateAction))
+            {
+                updateAction.Invoke();
+            }
+            else
+            {
+                throw new ApplicationException("Wrong order status provided");
+            }
+        }
 
         public void Cancel()
         {
@@ -109,6 +129,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (modifiedOrder is null)
             {
+                CompletionDate = DateTimeService.UtcNow;
                 Status = OrderStatus.Accepted;
                 return;
             }

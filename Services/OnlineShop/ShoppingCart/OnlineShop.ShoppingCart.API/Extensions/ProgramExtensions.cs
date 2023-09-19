@@ -1,8 +1,6 @@
-﻿using MassTransit;
+﻿using EventBus.Domain.Common;
+using MassTransit;
 using OnlineShop.ShoppingCart.API.Repositories;
-using System.Reflection;
-using Shared.Domain.ResponseTypes;
-using EventBus.Domain.Common;
 
 namespace OnlineShop.ShoppingCart.API.Extensions
 {

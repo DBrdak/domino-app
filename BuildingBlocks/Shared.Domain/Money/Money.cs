@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-
-namespace Shared.Domain.Money
+﻿namespace Shared.Domain.Money
 {
     public sealed record Money(decimal Amount, Currency Currency, Unit? Unit = null)
     {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineShop.Order.Domain;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;
-using Shared.Domain.Money;
 
 namespace OnlineShop.Order.Infrastructure.Persistence
 {

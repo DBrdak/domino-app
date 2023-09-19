@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using Shared.Domain.Exceptions;
+using System.Net;
 using System.Text.Json;
-using Shared.Domain.Exceptions;
 
 namespace OnlineShop.ShoppingCart.API.Middlewares
 {

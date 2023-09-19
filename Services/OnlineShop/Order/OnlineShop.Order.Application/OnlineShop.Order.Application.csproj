@@ -17,4 +17,8 @@
     <ProjectReference Include="..\OnlineShop.Order.Domain\OnlineShop.Order.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+  </ItemGroup>
+
 </Project>

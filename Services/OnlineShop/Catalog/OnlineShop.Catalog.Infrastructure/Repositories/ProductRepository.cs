@@ -1,18 +1,10 @@
-﻿using CloudinaryDotNet.Actions;
-using MongoDB.Driver;
-using OnlineShop.Catalog.Domain;
-using OnlineShop.Catalog.Domain.Products;
-using Shared.Domain.Money;
-using Shared.Domain.ResponseTypes;
-using System.Globalization;
-using System.Text;
-using System.Threading;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Photo;
-using Error = Shared.Domain.Errors.Error;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
@@ -37,11 +29,11 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var options = SearchEngine.ApplySorting(sortOrder, sortBy);
 
-            var products = await (await _context.Products.FindAsync(filter, options)).ToListAsync(cancellationToken);
+            var products = await (await _context.Products.FindAsync(filter, options, cancellationToken)).ToListAsync(cancellationToken);
 
             products = SearchEngine.ApplySearch(name, products);
 
-            return await PagedList<Product>.CreateAsync(products, page, pageSize);
+            return PagedList<Product>.CreateAsync(products, page, pageSize);
         }
 
         public async Task<List<Product>> GetProductsAsync(string searchPhrase, CancellationToken cancellationToken = default)
@@ -56,7 +48,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var product = (await _context.Products.FindAsync(
                 Builders<Product>.Filter.Eq(p => p.Id, newValues.Id), null,
-                cancellationToken)).FirstOrDefault();
+                cancellationToken)).FirstOrDefault(cancellationToken);
 
             if (product is null)
             {
@@ -114,7 +106,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var product = Product.Create(values, productId);
 
-            await _context.Products.InsertOneAsync(product);
+            await _context.Products.InsertOneAsync(product, null, cancellationToken);
 
             return product;
         }
@@ -151,6 +143,11 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var priceList = await _priceListRepository.GetRetailPriceList(cancellationToken);
 
+            if (priceList is null)
+            {
+                return false;
+            }
+
             var lineItem = priceList.LineItems.FirstOrDefault(li => li.ProductId == productId);
 
             if (lineItem is null)
@@ -160,7 +157,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var price = lineItem.Price;
 
-            var product = await _context.Products.FindAsync(p => p.Id == productId).Result
+            var product = await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken).Result
                 .SingleOrDefaultAsync(cancellationToken);
 
             product.UpdatePrice(price);

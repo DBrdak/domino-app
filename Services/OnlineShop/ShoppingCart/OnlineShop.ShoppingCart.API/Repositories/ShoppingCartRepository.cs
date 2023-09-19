@@ -4,9 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using OnlineShop.ShoppingCart.API.Controllers.Requests;
-using OnlineShop.ShoppingCart.API.Entities;
 using Shared.Domain.ResponseTypes;
-using ShoppingCartItem = EventBus.Domain.Common.ShoppingCartCheckoutItem;
 
 namespace OnlineShop.ShoppingCart.API.Repositories
 {
@@ -15,7 +13,7 @@ namespace OnlineShop.ShoppingCart.API.Repositories
         private readonly IDistributedCache _cache;
         private readonly IBus _bus;
 
-        public ShoppingCartRepository(IDistributedCache cache, IPublishEndpoint publishEndpoint, IBus bus)
+        public ShoppingCartRepository(IDistributedCache cache, IBus bus)
         {
             _cache = cache;
             _bus = bus;

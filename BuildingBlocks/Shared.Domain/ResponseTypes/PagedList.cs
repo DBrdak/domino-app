@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Domain.ResponseTypes
+﻿namespace Shared.Domain.ResponseTypes
 {
     public class PagedList<T>
     {
@@ -24,10 +18,10 @@ namespace Shared.Domain.ResponseTypes
             TotalCount = totalCount;
         }
 
-        public static async Task<PagedList<T>> CreateAsync(
+        public static PagedList<T> CreateAsync(
             List<T> collection, int page, int pageSize)
         {
-            var totalCount = collection.Count();
+            var totalCount = collection.Count;
 
             var skipAmount = (page - 1) * pageSize;
 

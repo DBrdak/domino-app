@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using OnlineShop.Catalog.Application.Abstractions.Messaging;
-using Shared.Domain.Abstractions;
+﻿using MediatR;
+using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.ResponseTypes;
+using System.Reflection;
+using Shared.Domain.Abstractions.Messaging;
 
 namespace OnlineShop.Catalog.Application.Behaviors
 {
@@ -43,7 +37,7 @@ namespace OnlineShop.Catalog.Application.Behaviors
             return response;
         }
 
-        private List<IDomainEvent>? RetriveDomainEvents(object obj)
+        private static List<IDomainEvent>? RetriveDomainEvents(object obj)
         {
             var valueProperty = GetValueProperty(obj);
 

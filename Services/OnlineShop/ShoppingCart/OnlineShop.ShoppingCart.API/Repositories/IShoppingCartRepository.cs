@@ -1,5 +1,4 @@
 ﻿using OnlineShop.ShoppingCart.API.Controllers.Requests;
-using OnlineShop.ShoppingCart.API.Entities;
 using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.ShoppingCart.API.Repositories

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddLineItem;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddPriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddRetailPriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.GetPriceLists;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemoveLineItem;

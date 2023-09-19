@@ -1,6 +1,4 @@
 ﻿using Shared.Domain.Money;
-using System.Linq;
-using Newtonsoft.Json;
 
 namespace OnlineShop.ShoppingCart.API.Entities
 {
@@ -16,10 +14,8 @@ namespace OnlineShop.ShoppingCart.API.Entities
                 if (Items is null || !Items.Any())
                     return new(0, Currency.Pln);
 
-                var currency = Items.FirstOrDefault()?.Price.Currency;
-
-                if (currency is null)
-                    throw new ArgumentException("Items currency not provided");
+                var currency = Items.FirstOrDefault()?.Price.Currency ??
+                               throw new ArgumentException("Items currency not provided");
 
                 if (Items.Any(i => i.Price.Currency != currency))
                     throw new ArgumentException("Items currency inconsistency");

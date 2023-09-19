@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using OnlineShop.Catalog.Domain.PriceLists.Events;
-using Shared.Domain.Abstractions;
+using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.PriceLists
@@ -103,12 +98,8 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             }
 
             var lineItemToUpdate = LineItems.FirstOrDefault(li =>
-                li.Name.ToLower() == lineItemName.ToLower());
-
-            if (lineItemToUpdate is null)
-            {
-                throw new ApplicationException($"Given line item do not exist in price list {Name}");
-            }
+                li.Name.ToLower() == lineItemName.ToLower()) ??
+                                   throw new ApplicationException($"Given line item do not exist in price list {Name}");
 
             if (lineItemToUpdate.ProductId is not null)
             {

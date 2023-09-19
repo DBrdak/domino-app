@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OnlineShop.Catalog.Application.Abstractions.Messaging;
+﻿using Shared.Domain.Abstractions.Messaging;
 
-namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddPriceList
+namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPriceList
 {
     public sealed record AddBusinessPriceListCommand(
         string Name,

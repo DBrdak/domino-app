@@ -1,6 +1,4 @@
-﻿using Shared.Domain.Money;
-
-namespace OnlineShop.Catalog.Domain.PriceLists;
+﻿namespace OnlineShop.Catalog.Domain.PriceLists;
 
 public sealed record Contractor
 {

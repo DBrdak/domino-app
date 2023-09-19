@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineShop.Order.Domain.OrderItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Order.Infrastructure.Configurations

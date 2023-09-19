@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.Application.Features;
 using OnlineShop.Catalog.Application.Features.Customer.GetProducts;
 
 namespace OnlineShop.Catalog.API.Controllers
@@ -61,7 +60,5 @@ namespace OnlineShop.Catalog.API.Controllers
 
         //TODO
         //Jak narazie zawieszam feature podkategorii, w przyszłości trzeba zrobić oddzielną kolekcję przechowującą podkategorie
-        //Dodawanie produktu z ceną z cennika, jeżeli nie znaleziono, to wtedy z ustaloną, po czym dodaję do cennika
-        // Następne robię endpointy dla cennika + aktualizuję endpoind dodawania dla produktu, potem domain eventy, potem rozkminić jak zwrócić listę
     }
 }

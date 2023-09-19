@@ -17,8 +17,7 @@ namespace OcelotApiGateway
             builder.Services.AddOcelot()
                 .AddCacheManager(settings => settings.WithDictionaryHandle());
 
-            builder.WebHost.ConfigureAppConfiguration((hc, cfg) =>
-                cfg.AddJsonFile($"ocelot.{hc.HostingEnvironment.EnvironmentName}.json", true, true));
+            builder.Configuration.AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", true, true);
 
             builder.Services.AddCors(options =>
             {

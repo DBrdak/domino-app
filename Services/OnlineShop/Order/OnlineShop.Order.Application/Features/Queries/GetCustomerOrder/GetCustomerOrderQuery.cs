@@ -1,7 +1,5 @@
-﻿using OnlineShop.Order.Application.Abstractions.Messaging;
-using OnlineShop.Order.Application.Core;
-using OnlineShop.Order.Domain;
-using OnlineShop.Order.Domain.OnlineOrders;
+﻿using OnlineShop.Order.Domain.OnlineOrders;
+using Shared.Domain.Abstractions.Messaging;
 
 namespace OnlineShop.Order.Application.Features.Queries.GetCustomerOrder
 {

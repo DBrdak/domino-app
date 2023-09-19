@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Domain.Date
+﻿namespace Shared.Domain.Date
 {
     /// <summary>
     /// <b>Use it instead of DateTime struct to define new date</b>

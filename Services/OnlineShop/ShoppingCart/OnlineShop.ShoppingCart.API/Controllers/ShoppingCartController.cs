@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.ShoppingCart.API.Controllers.Requests;
-using OnlineShop.ShoppingCart.API.Entities;
 using OnlineShop.ShoppingCart.API.Repositories;
 
 namespace OnlineShop.ShoppingCart.API.Controllers

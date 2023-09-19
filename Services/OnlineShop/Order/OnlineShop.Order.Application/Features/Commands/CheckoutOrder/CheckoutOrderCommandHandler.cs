@@ -1,11 +1,7 @@
 ﻿using EventBus.Domain.Common;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using OnlineShop.Order.Application.Abstractions.Messaging;
-using OnlineShop.Order.Application.Core;
 using OnlineShop.Order.Domain.OnlineOrders;
-using Shared.Domain.Errors;
-using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder
 {
@@ -13,7 +9,7 @@ namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder
     {
         private readonly IOrderRepository _repository;
 
-        public CheckoutOrderCommandHandler(IOrderRepository repository, ILogger<CheckoutOrderCommandHandler> logger)
+        public CheckoutOrderCommandHandler(IOrderRepository repository)
         {
             _repository = repository;
         }

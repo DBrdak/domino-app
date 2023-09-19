@@ -1,12 +1,7 @@
 ﻿using MongoDB.Driver;
-using OnlineShop.Catalog.Domain;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OnlineShop.Catalog.Domain.Products;
+using System.Globalization;
+using System.Text;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
@@ -48,7 +43,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 name = RemovePolishAccents(name.ToLower());
                 var productName = RemovePolishAccents(p.Name.ToLower());
 
-                if (productName.Contains(" "))
+                if (productName.Contains(' '))
                 {
                     var words = productName.Split(" ");
                     var result = new bool[words.Length];
