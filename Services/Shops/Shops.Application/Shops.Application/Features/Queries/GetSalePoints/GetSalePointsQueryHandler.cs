@@ -8,9 +8,9 @@ using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 using Shops.Domain.Shops;
 
-namespace Shops.Application.Features.Queries
+namespace Shops.Application.Features.Queries.GetSalePoints
 {
-    internal class GetSalePointsQueryHandler : IQueryHandler<GetSalePointsQuery, List<SalePoint>>
+    internal sealed class GetSalePointsQueryHandler : IQueryHandler<GetSalePointsQuery, List<SalePoint>>
     {
         private readonly IShopRepository _shopRepository;
 

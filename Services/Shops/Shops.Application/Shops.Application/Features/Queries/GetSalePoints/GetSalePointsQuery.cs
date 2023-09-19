@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Shared.Domain.Abstractions.Messaging;
 using Shops.Domain.Shops;
 
-namespace Shops.Application.Features.Queries
+namespace Shops.Application.Features.Queries.GetSalePoints
 {
-    public record GetSalePointsQuery : IQuery<List<SalePoint>>;
+    public sealed record GetSalePointsQuery : IQuery<List<SalePoint>>;
 }

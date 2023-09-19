@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shops.Application.Features.Queries;
+using Shops.Application.Features.Queries.GetSalePoints;
 
 namespace Shops.API.Controllers
 {

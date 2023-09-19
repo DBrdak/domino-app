@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shops.Domain.Shops
 {
-    public class SalePoint
+    public sealed class SalePoint
     {
     }
 }
