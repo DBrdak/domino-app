@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;
+using Shared.Domain.Date;
 
 namespace OnlineShop.Order.Infrastructure.Persistence
 {
@@ -22,19 +23,27 @@ namespace OnlineShop.Order.Infrastructure.Persistence
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             RemoveExpiredOrders();
+            RejectNotAcceptedOrders();
             return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void RejectNotAcceptedOrders()
+        {
+            var notAcceptedOrders = Orders
+                .Where(o => o.DeliveryDate.Start < DateTimeService.UtcNow
+                            && (o.Status != OrderStatus.Accepted || o.Status != OrderStatus.Received))
+                .ToList();
+
+            notAcceptedOrders.ForEach(o => o.Reject());
         }
 
         private void RemoveExpiredOrders()
         {
-            var expiredOrders = ChangeTracker.Entries<OnlineOrder>()
-                .Where(e => e.Entity.ExpiryDate <= DateTime.UtcNow && e.State != EntityState.Deleted)
+            var expiredOrders = Orders
+                .Where(o => o.ExpiryDate <= DateTimeService.UtcNow)
                 .ToList();
 
-            foreach (var entry in expiredOrders)
-            {
-                entry.State = EntityState.Deleted;
-            }
+            Orders.RemoveRange(expiredOrders);
         }
     }
 }

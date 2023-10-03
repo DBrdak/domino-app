@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
-using Shops.Domain.Shops;
+using Shops.Domain.Abstractions;
+using Shops.Domain.MobileShops;
 
 namespace Shops.Application.Features.Commands.UpdateShop
 {
@@ -21,9 +22,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
 
         public async Task<Result<Shop>> Handle(UpdateShopCommand request, CancellationToken cancellationToken)
         {
-            var updatedShop = Shop.Create(
-                //TODO request values
-                );
+            var updatedShop = new MobileShop("dasf", "adfs");
 
             var result = await _shopRepository.UpdateShop(updatedShop, cancellationToken);
 

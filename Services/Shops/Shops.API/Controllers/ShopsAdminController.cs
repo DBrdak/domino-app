@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shops.Application.Features.Commands.AddShop;
+using Shops.Application.Features.Commands.DeleteShop;
 using Shops.Application.Features.Commands.UpdateShop;
 using Shops.Application.Features.Queries.GetShops;
 
@@ -52,7 +53,7 @@ namespace Shops.API.Controllers
         {
             var result = await _mediator.Send(new DeleteShopCommand(shopId), cancellationToken);
 
-            return result ?
+            return result.IsSuccess ?
                 Ok() :
                 BadRequest(result.Error);
         }

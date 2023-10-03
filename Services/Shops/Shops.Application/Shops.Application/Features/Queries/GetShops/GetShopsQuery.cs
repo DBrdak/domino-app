@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Domain.Abstractions.Messaging;
-using Shops.Domain.Shops;
+using Shops.Domain.Abstractions;
 
 namespace Shops.Application.Features.Queries.GetShops
 {

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shops.Domain.Shops
+namespace Shops.Domain.Shared
 {
-    public sealed class SalePoint
-    {
-    }
+    public sealed record Seller(string FirstName, string LastName, string PhoneNumber);
 }

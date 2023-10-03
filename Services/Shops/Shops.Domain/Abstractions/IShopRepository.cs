@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Domain.ResponseTypes;
+using Shops.Domain.MobileShops;
+using Shops.Domain.Shared;
 
-namespace Shops.Domain.Shops
+namespace Shops.Domain.Abstractions
 {
     public interface IShopRepository
     {
-        Task<List<SalePoint>> GetSalePoints(CancellationToken cancellationToken);
-
         Task<List<Shop>> GetShops(CancellationToken cancellationToken);
 
         Task<Shop?> AddShop(Shop newShop, CancellationToken cancellationToken);

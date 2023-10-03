@@ -63,11 +63,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Catalog.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Domain", "BuildingBlocks\Shared.Domain\Shared.Domain.csproj", "{D54C6304-DE9C-43E0-8DE2-BF282A39CA5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shops.API", "Services\Shops\Shops.API\Shops.API.csproj", "{006B558E-95E3-4712-A753-49ACEFE5716F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shops.API", "Services\Shops\Shops.API\Shops.API.csproj", "{006B558E-95E3-4712-A753-49ACEFE5716F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shops.Application", "Services\Shops\Shops.Application\Shops.Application\Shops.Application.csproj", "{28DF229A-C177-4760-8108-E2C80E7528C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shops.Application", "Services\Shops\Shops.Application\Shops.Application\Shops.Application.csproj", "{28DF229A-C177-4760-8108-E2C80E7528C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shops.Domain", "Services\Shops\Shops.Domain\Shops.Domain.csproj", "{C5792EA4-DB44-4177-9367-B6A7D0A6A468}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shops.Domain", "Services\Shops\Shops.Domain\Shops.Domain.csproj", "{C5792EA4-DB44-4177-9367-B6A7D0A6A468}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shops.Infrastructure", "Services\Shops\Shops.Infrastructure\Shops.Infrastructure.csproj", "{1E1A840D-E490-412A-A43E-312DC50CC8BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,10 @@ Global
 		{C5792EA4-DB44-4177-9367-B6A7D0A6A468}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5792EA4-DB44-4177-9367-B6A7D0A6A468}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5792EA4-DB44-4177-9367-B6A7D0A6A468}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1A840D-E490-412A-A43E-312DC50CC8BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1A840D-E490-412A-A43E-312DC50CC8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1A840D-E490-412A-A43E-312DC50CC8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1A840D-E490-412A-A43E-312DC50CC8BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{006B558E-95E3-4712-A753-49ACEFE5716F} = {EC5870EC-4E19-451B-8036-CF95F8CC0336}
 		{28DF229A-C177-4760-8108-E2C80E7528C6} = {EC5870EC-4E19-451B-8036-CF95F8CC0336}
 		{C5792EA4-DB44-4177-9367-B6A7D0A6A468} = {EC5870EC-4E19-451B-8036-CF95F8CC0336}
+		{1E1A840D-E490-412A-A43E-312DC50CC8BF} = {EC5870EC-4E19-451B-8036-CF95F8CC0336}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23EBFCAC-E8DC-4B92-BCAC-E5FA2B1CD3B2}

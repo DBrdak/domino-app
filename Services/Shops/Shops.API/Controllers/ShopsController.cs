@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shops.Application.Features.Queries;
-using Shops.Application.Features.Queries.GetSalePoints;
+using Shops.Application.Features.Queries.GetDeliveryPoints;
 
 namespace Shops.API.Controllers
 {
@@ -19,9 +19,9 @@ namespace Shops.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSalePoints(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetDeliveryPoints(CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetSalePointsQuery(), cancellationToken);
+            var result = await _mediator.Send(new GetDeliveryPointsQuery(), cancellationToken);
 
             return Ok(result.Value);
         }
