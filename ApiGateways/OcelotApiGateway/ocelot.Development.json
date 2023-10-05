@@ -1,6 +1,6 @@
 {
   "Routes": [
-    // OnlineShop.product.API
+    // OnlineShop.Catalog.API
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/product/{category}",
       "DownstreamScheme": "http",
@@ -248,6 +248,46 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/order",
       "UpstreamHttpMethod": [ "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
+    //Shops.API
+    {
+      "DownstreamPathTemplate": "/api/v1/shops",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "shops.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/shops",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/shops/{shopId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "shops.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/shops/{shopId}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/shops/delivery-points",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "shops.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/shops/delivery-points",
+      "UpstreamHttpMethod": [ "GET" ],
       "FileCacheOptions": { "TtlSeconds": 0 }
     }
   ]

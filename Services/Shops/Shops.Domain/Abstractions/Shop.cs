@@ -1,8 +1,18 @@
-﻿using Shared.Domain.Abstractions.Entities;
+﻿using System.Text.Json.Serialization;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Money;
+using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
+using Shops.Domain.StationaryShops;
 
 namespace Shops.Domain.Abstractions
 {
+    [BsonDiscriminator(RootClass = true)]
+    [BsonKnownTypes(typeof(MobileShop), typeof(StationaryShop))]
+    [JsonDerivedType(typeof(MobileShop))]
+    [JsonDerivedType(typeof(StationaryShop))]
     public abstract class Shop : Entity
     {
         public string ShopName { get; init; }
@@ -10,17 +20,36 @@ namespace Shops.Domain.Abstractions
 
         protected Shop(string shopName)
         {
+            Id = ObjectId.GenerateNewId().ToString();
             ShopName = shopName;
             Sellers = new();
         }
 
         public void AddSeller(Seller seller)
         {
+            if (Sellers.Any(s => s == seller))
+            {
+                throw new ApplicationException(string.Concat(
+                    $"Seller with data: ",
+                    $"[First name: {seller.FirstName}, Last name:{seller.LastName}, Phone number: {seller.PhoneNumber}], ",
+                    $"is already binded to shop {ShopName}"
+                    ));
+            }
+
             Sellers.Add(seller);
         }
 
         public void RemoveSeller(Seller seller)
         {
+            if (Sellers.All(s => s != seller))
+            {
+                throw new ApplicationException(string.Concat(
+                    $"Seller with data: ",
+                    $"[First name: {seller.FirstName}, Last name:{seller.LastName}, Phone number: {seller.PhoneNumber}], ",
+                    $"is not binded to shop {ShopName}"
+                ));
+            }
+
             Sellers.Remove(seller);
         }
     }

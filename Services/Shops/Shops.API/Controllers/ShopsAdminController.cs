@@ -49,6 +49,7 @@ namespace Shops.API.Controllers
                 BadRequest(result.Error);
         }
 
+        [HttpDelete("{shopId}")]
         public async Task<IActionResult> DeleteShop(string shopId, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new DeleteShopCommand(shopId), cancellationToken);

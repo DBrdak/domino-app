@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>64b8e5a7-c947-414f-945e-4bf75fe3a97a</ProjectGuid>
+    <ProjectGuid>33045e50-b0ca-4054-aecd-661776b8e6eb</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>onlineshop.catalog.api</DockerServiceName>

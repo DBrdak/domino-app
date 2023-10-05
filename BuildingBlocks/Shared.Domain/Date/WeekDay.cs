@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,35 +43,27 @@ namespace Shared.Domain.Date
             {
                 case DayOfWeek.Monday:
                     return Monday;
-                    break;
 
                 case DayOfWeek.Tuesday:
                     return Tuesday;
-                    break;
 
                 case DayOfWeek.Wednesday:
                     return Wednesday;
-                    break;
 
                 case DayOfWeek.Thursday:
                     return Thursday;
-                    break;
 
                 case DayOfWeek.Friday:
                     return Friday;
-                    break;
 
                 case DayOfWeek.Saturday:
                     return Saturday;
-                    break;
 
                 case DayOfWeek.Sunday:
                     return Sunday;
-                    break;
 
                 default:
                     throw new ApplicationException($"Cannot convert {dayOfWeek} to WeekDay type");
-                    break;
             }
         }
 

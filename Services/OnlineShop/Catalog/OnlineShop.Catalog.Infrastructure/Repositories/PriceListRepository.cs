@@ -193,7 +193,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         private bool CheckForRetailDuplicates(CancellationToken cancellationToken) =>
             _context.PriceLists
                 .FindAsync(pl => pl.Contractor.Name == Contractor.Retail.Name, null, cancellationToken)
-                .Result.ToList().Any();
+                .Result.ToList(cancellationToken).Any();
 
         private async Task<PriceList?> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
             (await GetPriceListsAsync(cancellationToken)).SingleOrDefault(pl => pl.Id == priceListId);

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
 using Shops.Domain.MobileShops;
+using Shops.Domain.Shared;
 
 namespace Shops.Domain.StationaryShops
 {
+    [BsonDiscriminator(nameof(StationaryShop))]
     public sealed class StationaryShop : Shop
     {
         public ShopWorkingDay[] WeekSchedule { get; init; }
@@ -40,7 +44,7 @@ namespace Shops.Domain.StationaryShops
 
         public void CreateWeekSchedule(List<ShopWorkingDay> weekSchedule)
         {
-            if (weekSchedule.Any(wd => wd.OpenHours is not null))
+            if (WeekSchedule.Any(wd => wd.OpenHours is not null))
             {
                 throw new ApplicationException($"Week schedule for shop with name {ShopName} already exists");
             }

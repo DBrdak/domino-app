@@ -1,20 +1,14 @@
-﻿using Shared.Domain.Date;
+﻿using System.Text.Json.Serialization;
+using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace Shops.Domain.StationaryShops
+namespace Shops.Domain.Shared
 {
     public sealed record ShopWorkingDay
     {
         public WeekDay WeekDay { get; init; }
         public TimeRange? OpenHours { get; private set; }
-        [JsonInclude]
-        private TimeRange? _cachedOpenHours;
+        public TimeRange? CachedOpenHours { get; private set; }
         public bool IsClosed { get; private set; }
 
         public ShopWorkingDay(string weekDay, TimeRange openHours)
@@ -24,6 +18,7 @@ namespace Shops.Domain.StationaryShops
             IsClosed = false;
         }
 
+        [JsonConstructor]
         public ShopWorkingDay(WeekDay weekDay, TimeRange openHours)
         {
             WeekDay = weekDay;
@@ -57,16 +52,26 @@ namespace Shops.Domain.StationaryShops
 
         internal void Close()
         {
+            if (IsClosed)
+            {
+                return;
+            }
+
             IsClosed = true;
-            _cachedOpenHours = OpenHours;
+            CachedOpenHours = OpenHours;
             OpenHours = null;
         }
 
         internal void Open()
         {
+            if (!IsClosed)
+            {
+                return;
+            }
+
             IsClosed = false;
-            OpenHours = _cachedOpenHours;
-            _cachedOpenHours = null;
+            OpenHours = CachedOpenHours;
+            CachedOpenHours = null;
         }
     }
 }

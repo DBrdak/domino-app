@@ -7,7 +7,6 @@ using Shops.Application.Features.Queries.GetDeliveryPoints;
 namespace Shops.API.Controllers
 {
     [ApiController]
-    //[Authorize]
     [Route("api/v1/shops")]
     public class ShopsController : ControllerBase
     {
@@ -18,7 +17,7 @@ namespace Shops.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet("delivery-points")]
         public async Task<IActionResult> GetDeliveryPoints(CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GetDeliveryPointsQuery(), cancellationToken);

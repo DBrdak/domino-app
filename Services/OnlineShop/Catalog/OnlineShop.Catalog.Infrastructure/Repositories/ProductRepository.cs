@@ -67,7 +67,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var result = await _context.Products.ReplaceOneAsync(
                 Builders<Product>.Filter.Eq(p => p.Id, product.Id),
-                product);
+                product, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0 ? product : null;
         }
@@ -95,7 +95,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachPrice(priceListLineItem.Price);
 
-            var uploadResult = await _photoRepository.UploadPhoto(photoFile);
+            var uploadResult = await _photoRepository.UploadPhoto(photoFile, cancellationToken);
 
             if (uploadResult is null)
             {
@@ -122,7 +122,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var product = (await _context.Products.FindAsync(
                 Builders<Product>.Filter.Eq(p => p.Id, productId),
-                null, cancellationToken)).Single();
+                null, cancellationToken)).Single(cancellationToken);
 
             var isSuccesfullyDeletedPhoto = await _photoRepository.DeletePhoto(product.Image.Url);
 
@@ -164,7 +164,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var result = await _context.Products.ReplaceOneAsync(
                 Builders<Product>.Filter.Eq(p => p.Id, product.Id),
-                product);
+                product, new ReplaceOptions(), cancellationToken);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }

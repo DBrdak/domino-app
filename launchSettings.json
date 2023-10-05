@@ -9,7 +9,8 @@
         "onlineshop.shoppingcart.api": "StartDebugging",
         "onlineshop.order.api": "StartDebugging",
         "ocelotapigateway": "StartDebugging",
-        "outbox.grpc": "StartDebugging"
+        "outbox.grpc": "StartDebugging",
+        "shops.api": "StartDebugging"
       }
     }
   }

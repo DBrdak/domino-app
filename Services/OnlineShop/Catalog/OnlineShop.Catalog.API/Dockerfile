@@ -7,9 +7,10 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Services/OnlineShop/Catalog/OnlineShop.Catalog.API/OnlineShop.Catalog.API.csproj", "Services/OnlineShop/Catalog/OnlineShop.Catalog.API/"]
+COPY ["BuildingBlocks/EventBus.Messages/EventBus.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
+COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 COPY ["Services/OnlineShop/Catalog/OnlineShop.Catalog.Application/OnlineShop.Catalog.Application.csproj", "Services/OnlineShop/Catalog/OnlineShop.Catalog.Application/"]
 COPY ["Services/OnlineShop/Catalog/OnlineShop.Catalog.Domain/OnlineShop.Catalog.Domain.csproj", "Services/OnlineShop/Catalog/OnlineShop.Catalog.Domain/"]
-COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 COPY ["Services/OnlineShop/Catalog/OnlineShop.Catalog.Infrastructure/OnlineShop.Catalog.Infrastructure.csproj", "Services/OnlineShop/Catalog/OnlineShop.Catalog.Infrastructure/"]
 RUN dotnet restore "Services/OnlineShop/Catalog/OnlineShop.Catalog.API/OnlineShop.Catalog.API.csproj"
 COPY . .

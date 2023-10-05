@@ -3,6 +3,7 @@ using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
 using Shops.Domain.MobileShops;
+using Shops.Domain.Shared;
 using Shops.Domain.StationaryShops;
 
 namespace Shops.Application.Features.Queries.GetDeliveryPoints;
@@ -82,7 +83,7 @@ public sealed record DeliveryPoint(Location Location, ShopWorkingDay[] WorkingDa
         {
             deliveryPoints.Add(new DeliveryPoint(
                 group.Key,
-                group.Select(sp => new ShopWorkingDay(sp.WeekDay, sp.OpenHours)).ToArray()));
+                group.Select(sp => new ShopWorkingDay(sp.WeekDay, sp.OpenHours!)).ToArray()));
         }
 
         return deliveryPoints;

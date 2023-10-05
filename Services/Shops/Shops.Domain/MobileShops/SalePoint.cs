@@ -1,29 +1,50 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Text.Json.Serialization;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 
 namespace Shops.Domain.MobileShops
 {
-    public sealed record SalePoint(Location Location, TimeRange? OpenHours, WeekDay WeekDay)
+    public sealed record SalePoint
     {
+        public Location Location { get; init; }
+        public WeekDay WeekDay { get; init; }
         public bool IsClosed { get; private set; }
         public TimeRange? OpenHours { get; private set; }
-        [JsonInclude]
-        private TimeRange? _cachedOpenHours;
+        public TimeRange? CachedOpenHours { get; private set; }
+
+        public SalePoint(Location location, TimeRange openHours, WeekDay weekDay)
+        {
+            Location = location;
+            OpenHours = openHours;
+            WeekDay = weekDay;
+            IsClosed = false;
+            CachedOpenHours = null;
+        }
 
         internal void Close()
         {
+            if (IsClosed)
+            {
+                return;
+            }
+
             IsClosed = true;
-            _cachedOpenHours = OpenHours;
+            CachedOpenHours = OpenHours;
             OpenHours = null;
         }
 
         internal void Open()
         {
+            if (!IsClosed)
+            {
+                return;
+            }
+
             IsClosed = false;
-            OpenHours = _cachedOpenHours;
-            _cachedOpenHours = null;
+            OpenHours = CachedOpenHours;
+            CachedOpenHours = null;
         }
     }
 }

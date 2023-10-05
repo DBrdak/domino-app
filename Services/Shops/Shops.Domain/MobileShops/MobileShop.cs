@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
+using Shops.Domain.Shared;
 
 namespace Shops.Domain.MobileShops
 {
+    [BsonDiscriminator(nameof(MobileShop))]
     public sealed class MobileShop : Shop
     {
         public List<SalePoint> SalePoints { get; init; }
@@ -23,34 +27,58 @@ namespace Shops.Domain.MobileShops
 
         public void AddSalePoint(Location location, TimeRange openHours, string weekDay)
         {
+            if (SalePoints.FirstOrDefault(s => s.Location == location && s.WeekDay.Code == weekDay && s.OpenHours == openHours) is {} salePointToUpdate)
+            {
+                UpdateSalePoint(salePointToUpdate, location, openHours,weekDay);
+            }
+
+            SalePoints.Add(new(location, openHours, WeekDay.FromCode(weekDay)));
+        }
+
+        private void UpdateSalePoint(SalePoint salePointToUpdate, Location location, TimeRange openHours, string weekDay)
+        {
+            SalePoints.Remove(salePointToUpdate);
             SalePoints.Add(new(location, openHours, WeekDay.FromCode(weekDay)));
         }
 
         public void RemoveSalePoint(SalePoint salePoint)
         {
+            if (!SalePoints.Any(s => s.Location == salePoint.Location && s.WeekDay == salePoint.WeekDay && s.OpenHours == salePoint.OpenHours))
+            {
+                throw new ApplicationException($"Sale point doesn't exists for location: {salePoint.Location}");
+            }
+
             SalePoints.Remove(salePoint);
         }
 
         public void DisableSalePoint(SalePoint salePoint)
         {
-            var salePointToDisable = SalePoints.FirstOrDefault(sp => sp == salePoint) ??
-                                     throw new ApplicationException($"No sale point [{salePoint}] find for shop named {ShopName}");
+            var salePointToDisable = SalePoints.FirstOrDefault(
+                                         s => s.Location == salePoint.Location &&
+                                              s.WeekDay == salePoint.WeekDay &&
+                                              s.OpenHours == salePoint.OpenHours) ??
+                                     throw new ApplicationException(
+                                         $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
             salePointToDisable.Close();
         }
 
         public void EnableSalePoint(SalePoint salePoint)
         {
-            var salePointToEnable = SalePoints.FirstOrDefault(sp => sp == salePoint) ??
-                                     throw new ApplicationException($"No sale point [{salePoint}] find for shop named {ShopName}");
+            var salePointToEnable = SalePoints.FirstOrDefault(
+                                        s => s.Location == salePoint.Location &&
+                                             s.WeekDay == salePoint.WeekDay &&
+                                             s.OpenHours == salePoint.OpenHours) ??
+                                    throw new ApplicationException(
+                                        $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
             salePointToEnable.Open();
         }
 
-        public DateTimeRange? GetNextAvailabilityInSalePoint(SalePoint wantedSalePoint)
+        public DateTimeRange? GetNextAvailabilityInSalePoint(SalePoint querySalePoint)
         {
-            var salePoint = SalePoints.FirstOrDefault(sp => sp == wantedSalePoint) ??
-                            throw new ApplicationException($"No sale point [{wantedSalePoint}] find for shop named {ShopName}");
+            var salePoint = SalePoints.FirstOrDefault(sp => sp == querySalePoint) ??
+                            throw new ApplicationException($"No sale point in location {querySalePoint.Location} find for shop named {ShopName}");
 
             if (salePoint.IsClosed)
             {

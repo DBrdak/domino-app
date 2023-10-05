@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
 #Databases
-  catalogdb:
+  mongodb:
     image: mongo
 
   shoppingcartdb:
@@ -31,6 +31,12 @@ services:
       context: .
       dockerfile: Services/OnlineShop/Order/OnlineShop.Order.API/Dockerfile
 
+  shops.api:
+    image: ${DOCKER_REGISTRY-}shopsapi
+    build:
+      context: .
+      dockerfile: Services/Shops/Shops.API/Dockerfile
+
 #Tools
   rabbitmq:
     image: rabbitmq:3.12-management-alpine
@@ -42,11 +48,10 @@ services:
       dockerfile: ApiGateways/OcelotApiGateway/Dockerfile
 
 #Others
+
 volumes:
   mongo_data:
   order_data:
 
 networks:
   default:
-
-

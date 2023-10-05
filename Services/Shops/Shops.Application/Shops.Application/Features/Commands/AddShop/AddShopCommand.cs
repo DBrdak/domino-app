@@ -9,6 +9,8 @@ using Shops.Domain.Abstractions;
 namespace Shops.Application.Features.Commands.AddShop
 {
     public sealed record AddShopCommand(
-        //TODO Shop Data
+        string ShopName,
+        MobileShopDto? MobileShopData,
+        StationaryShopDto? StationaryShopData
         ) : ICommand<Shop>;
 }

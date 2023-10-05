@@ -1,4 +1,5 @@
 ﻿using Shops.Application;
+using Shops.Infrastructure;
 
 namespace Shops.API.Extensions
 {
@@ -9,7 +10,7 @@ namespace Shops.API.Extensions
             services.AddControllers();
 
             services.InjectApplication();
-            //services.InjectInfrastructure(configuration);
+            services.InjectInfrastructure();
 
             services.AddCors(options =>
             {

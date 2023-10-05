@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shops.Infrastructure.Data
+namespace Shops.Application.Features.Commands.AddShop
 {
-    public sealed class ShopsContext
-    {
-    }
+    public sealed record MobileShopDto(string VehiclePlateNumber);
 }
