@@ -13,7 +13,7 @@ namespace Shops.Domain.Shared
 
         public ShopWorkingDay(string weekDay, TimeRange openHours)
         {
-            WeekDay = WeekDay.FromCode(weekDay);
+            WeekDay = WeekDay.FromValue(weekDay);
             OpenHours = openHours;
             IsClosed = false;
         }
@@ -28,7 +28,7 @@ namespace Shops.Domain.Shared
 
         internal ShopWorkingDay(string weekDay)
         {
-            WeekDay = WeekDay.FromCode(weekDay);
+            WeekDay = WeekDay.FromValue(weekDay);
             OpenHours = null;
             IsClosed = true;
         }

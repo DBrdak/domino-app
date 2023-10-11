@@ -27,18 +27,18 @@ namespace Shops.Domain.MobileShops
 
         public void AddSalePoint(Location location, TimeRange openHours, string weekDay)
         {
-            if (SalePoints.FirstOrDefault(s => s.Location == location && s.WeekDay.Code == weekDay && s.OpenHours == openHours) is {} salePointToUpdate)
+            if (SalePoints.FirstOrDefault(s => s.Location == location && s.WeekDay.Value == weekDay && s.OpenHours == openHours) is {} salePointToUpdate)
             {
                 UpdateSalePoint(salePointToUpdate, location, openHours,weekDay);
             }
 
-            SalePoints.Add(new(location, openHours, WeekDay.FromCode(weekDay)));
+            SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));
         }
 
         private void UpdateSalePoint(SalePoint salePointToUpdate, Location location, TimeRange openHours, string weekDay)
         {
             SalePoints.Remove(salePointToUpdate);
-            SalePoints.Add(new(location, openHours, WeekDay.FromCode(weekDay)));
+            SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));
         }
 
         public void RemoveSalePoint(SalePoint salePoint)

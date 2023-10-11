@@ -21,20 +21,20 @@ namespace Shared.Domain.Date
         public WeekDay()
         { }
 
-        private WeekDay(string code)
+        private WeekDay(string value)
         {
-            Code = code;
+            Value = value;
         }
 
-        public string Code { get; init; }
+        public string Value { get; init; }
 
-        public static int GetIndex(string weekDay) => All.ToList().IndexOf(FromCode(weekDay));
+        public static int GetIndex(string weekDay) => All.ToList().IndexOf(FromValue(weekDay));
         public static int GetIndex(WeekDay weekDay) => All.ToList().IndexOf(weekDay);
 
-        public static WeekDay FromCode(string code)
+        public static WeekDay FromValue(string code)
         {
-            return All.FirstOrDefault(c => c.Code.ToLower() == code.ToLower()) ??
-                   throw new ApplicationException("The week day code is invalid");
+            return All.FirstOrDefault(c => c.Value.ToLower() == code.ToLower()) ??
+                   throw new ApplicationException("The week day value is invalid");
         }
 
         public static WeekDay FromDayOfWeekEnum(DayOfWeek dayOfWeek)

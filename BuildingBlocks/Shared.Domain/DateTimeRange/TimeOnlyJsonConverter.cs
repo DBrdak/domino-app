@@ -18,7 +18,7 @@ namespace Shared.Domain.DateTimeRange
 
         public TimeOnlyJsonConverter(string? serializationFormat = null)
         {
-            this._serializationFormat = serializationFormat ?? "HH:mm:ss.fff";
+            this._serializationFormat = serializationFormat ?? "HH:mm";
         }
 
         public override TimeOnly Read(ref Utf8JsonReader reader,
