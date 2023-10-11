@@ -1,4 +1,3 @@
-
 export interface Location {
   name: string
   longitude: string
@@ -42,4 +41,13 @@ export interface DeliveryInfo {
 
 export interface Photo {
   url: string
+}
+
+export interface WeekDay {
+  value: string
+}
+
+export interface TimeRange {
+  start: string
+  end: string
 }

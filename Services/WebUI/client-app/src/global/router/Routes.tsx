@@ -41,6 +41,7 @@ export const routes: RouteObject[] = [
       {path: 'koszyk/dane-wysyłki', element: <DeliveryInfo />},
       {path: 'koszyk/zamówienie', element: <OrderCompletion />},
       {path: `zamówienie/:id`, element: <OrderPage/>},
+      {path: `zamówienie/undefined`, element: <NotFoundPage text="Nie mamy tego zamówienia 😔"/>},
       {path: 'o-nas', element: <AboutMain />},
       {path: 'dla-firm', element: <ContractorsMain />},
       {path: 'kontakt', element: <ContactMain />},
@@ -57,7 +58,7 @@ export const routes: RouteObject[] = [
       {path: 'admin/masarnia', element: <ButcheryPanel />},
       {path: 'admin/statystyki', element: <StatsPanel />},
       {path: 'admin/kalkulatory', element: <CalculatorsPanel />},
-      {path: '*', element: <NotFoundPage text={'Nie znaleziono szukanej zawartości 😔'} />}
+      {path: '*', element: <NotFoundPage />}
     ]
   }
 ]

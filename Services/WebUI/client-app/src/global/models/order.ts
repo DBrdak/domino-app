@@ -114,3 +114,10 @@ export interface OrderCredentials {
 export interface OrderStatus {
   statusMessage: string
 }
+
+export interface OrderUpdateValues {
+  orderId: string
+  status: string
+  smsMessage: string | null
+  modifiedOrder: OnlineOrder | null
+}

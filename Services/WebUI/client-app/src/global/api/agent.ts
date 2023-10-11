@@ -1,12 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { router } from "../router/Routes";
-import { store } from "../stores/store";
-import { request } from "http";
 import { PaginatedResult } from "../models/pagination";
-import { Product } from "../models/product";
+import {Product, ProductCreateValues, ProductUpdateValues} from "../models/product";
 import { ShoppingCart, ShoppingCartCheckout } from "../models/shoppingCart";
-import { OnlineOrder, OnlineOrderRead, OrderCredentials } from "../models/order";
+import {OnlineOrderRead, OrderUpdateValues} from "../models/order";
+import {BusinessPriceListCreateValues, LineItemCreateValues, PriceList} from "../models/priceList";
+import {DeliveryPoint, Shop, ShopCreateValues, ShopUpdateValues} from "../models/shop";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -53,7 +53,6 @@ axios.interceptors.response.use(async response => {
       toast.error('forbidden')
       break;
     case 404:
-      router.navigate('/not-found')
       break;
     case 500:
       router.navigate('/server-error');
@@ -70,8 +69,43 @@ const requests = {
 }
 
 const catalog = {
-  products: (category: string, params: URLSearchParams) => axios.get<PaginatedResult<Product[]>>(`/onlineshop/catalog/${category}`, {params}).then(responseBody),
-  productsAdmin: (params: URLSearchParams) => axios.get<Product[]>(`/onlineshop/catalog`, {params}).then(responseBody)
+  products: (category: string, params: URLSearchParams) => axios.get<PaginatedResult<Product[]>>(`/onlineshop/product/${category}`, {params}).then(responseBody),
+  productsAdmin: (params: URLSearchParams) => axios.get<Product[]>(`/onlineshop/product`, {params}).then(responseBody),
+  updateProduct: (newValues: ProductUpdateValues, photo: Blob | null) => {
+    const formData = new FormData()
+    photo && formData.append('Photo', photo)
+    formData.append('Id', newValues.id)
+    formData.append('Name', newValues.name)
+    formData.append('Description', newValues.description)
+    formData.append('Category', newValues.category)
+    formData.append('Subcategory', newValues.subcategory)
+    formData.append('IsAvailable', `${newValues.isAvailable}`)
+    formData.append('IsWeightSwitchAllowed', `${newValues.isWeightSwitchAllowed}`)
+    formData.append('SingleWeight', `${newValues.singleWeight}`)
+
+    return axios.put<Product>(`/onlineshop/product`, formData).then(responseBody)
+  },
+  createProduct: (values: ProductCreateValues, photo: Blob) => {
+    const formData = new FormData()
+    photo && formData.append('Photo', photo)
+    formData.append('Name', values.name)
+    formData.append('Description', values.description)
+    formData.append('Category', values.category)
+    formData.append('Subcategory', values.subcategory)
+    //formData.append('Price', null)
+    formData.append('IsWeightSwitchAllowed', `${values.isWeightSwitchAllowed}`)
+    formData.append('SingleWeight', `${values.singleWeight}`)
+
+    return axios.post<Product>(`/onlineshop/product`, formData).then(responseBody)
+  },
+  deleteProduct: (productId: string) => axios.delete(`/onlineshop/product/${productId}`),
+  getPriceLists: () => axios.get<PriceList[]>('/onlineshop/pricelist').then(responseBody),
+  createRetailPriceList: () => axios.post('/onlineshop/pricelist/retail'),
+  createBusinessPriceList: (command: BusinessPriceListCreateValues) => axios.post(`/onlineshop/pricelist/${command.contractorName}`),
+  removePriceList: (priceListId: string) => axios.delete(`/onlineshop/pricelist/${priceListId}`),
+  priceListAddLineItem: (request: LineItemCreateValues, priceListId: string) => axios.put(`/onlineshop/pricelist/${priceListId}/add`, request),
+  priceListUpdateLineItem: (request: LineItemCreateValues, priceListId: string) => axios.put(`/onlineshop/pricelist/${priceListId}/update`, request),
+  priceListRemoveLineItem: (priceListId: string, lineItemName: string) => axios.put(`/onlineshop/pricelist/${priceListId}/remove/${lineItemName}`),
 }
 
 const shoppingCart ={
@@ -83,7 +117,17 @@ const shoppingCart ={
 
 const order = {
   get: (params: URLSearchParams) => axios.get<OnlineOrderRead>('/onlineshop/order', {params}).then(responseBody),
-  cancel: (orderId: string) => axios.put('/onlineshop/order/cancel', {orderId})
+  cancel: (orderId: string) => axios.put('/onlineshop/order/cancel', {orderId}),
+  getAll: () => axios.get<OnlineOrderRead[]>('/onlineshop/order/all'),
+  updateOrder: (command: OrderUpdateValues) => axios.put('/onlineshop/order', command)
+}
+
+const shops = {
+  getDeliveryPoints: () => axios.get<DeliveryPoint[]>('/shops/delivery-points').then(responseBody),
+  getShops: () => axios.get<Shop[]>('/shops').then(responseBody),
+  addShop: (command: ShopCreateValues) => axios.post<Shop>('/shops', command).then(responseBody),
+  updateShop: (command: ShopUpdateValues) => axios.put<Shop>('/shops', command).then(responseBody),
+  removeShop: (shopId: string) => axios.delete(`/shops/${shopId}`),
 }
 
 const agent = {
