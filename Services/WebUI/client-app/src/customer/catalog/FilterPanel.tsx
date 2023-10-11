@@ -26,10 +26,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
   const [debouncedSearchPhrase, setDebouncedSearchPhrase] = useState<string | null>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
-  const {catalogStore} = useStore()
+  const {productStore} = useStore()
 
   useEffect(() => {
-    catalogStore.filterParams = filterOptions
+    productStore.filterParams = filterOptions
   }, [filterOptions])
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
           <Paper style={{padding: '40px'}}>
           <Typography variant='h5' paddingBottom={'20px'} textAlign={'center'}>Wyszukiwanie</Typography>
             <TextField
-              disabled={catalogStore.loading}
+              disabled={productStore.loading}
               style={{marginBottom: '15px'}}
               fullWidth
               label="Nazwa produktu"

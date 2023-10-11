@@ -4,7 +4,7 @@ import { FilterOptions } from "../../models/filterOptions";
 import { Pagination, PagingParams } from "../../models/pagination";
 import { Product } from "../../models/product";
 
-export default class CatalogStore {
+export default class ProductStore {
   productsRegistry = new Map<string, Product>()
   quantityMode: string | null = null
   pagination: Pagination | null = null

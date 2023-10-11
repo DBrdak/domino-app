@@ -11,7 +11,7 @@ import { setPageTitle } from '../../../global/utils/pageTitle';
 import { Quantity } from '../../../global/models/common';
 
 const ShoppingCartPage: React.FC = () => {
-  const {shoppingCartStore, catalogStore} = useStore()
+  const {shoppingCartStore, productStore} = useStore()
   const {shoppingCart} = shoppingCartStore
   const navigate = useNavigate()
 

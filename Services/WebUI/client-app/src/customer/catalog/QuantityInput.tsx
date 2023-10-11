@@ -16,8 +16,8 @@ interface Props {
 
 function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
-  const {shoppingCartStore, catalogStore} = useStore()
-  const initialUnit = shoppingCartStore.shoppingCart?.items.find(i => i.productId === catalogStore.quantityMode)?.quantity.unit.code
+  const {shoppingCartStore, productStore} = useStore()
+  const initialUnit = shoppingCartStore.shoppingCart?.items.find(i => i.productId === productStore.quantityMode)?.quantity.unit.code
   const [unit, setUnit] = useState(initialUnit ? initialUnit : 'kg');
 
   const handleQuantityChange = (newQuantity:number) => {
@@ -28,7 +28,7 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
   };
 
   function getQty(): number | string {
-    const qty = shoppingCartStore.shoppingCart?.items.find(i => i.productId === catalogStore.quantityMode)?.quantity.value
+    const qty = shoppingCartStore.shoppingCart?.items.find(i => i.productId === productStore.quantityMode)?.quantity.value
     return qty ? qty : ''
   }
 
@@ -40,7 +40,7 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
     if(unit === 'kg') {
       return 50
     } else {
-      return Number((50 / catalogStore.products.find(p => p.id === catalogStore.quantityMode)?.details.singleWeight?.value!).toFixed(0))
+      return Number((50 / productStore.products.find(p => p.id === productStore.quantityMode)?.details.singleWeight?.value!).toFixed(0))
     }
   }
 
@@ -80,7 +80,7 @@ function QuantityInput({isPcsAllowed, onInputSubmit}: Props) {
                   <AddShoppingCart />
                 </IconButton>
                 <IconButton color='primary' style={{width: '50%', borderRadius: '6px'}}
-                onClick={() => catalogStore.resetQuantityMode()}>
+                onClick={() => productStore.resetQuantityMode()}>
                   <Undo />
                 </IconButton>
               </Stack>

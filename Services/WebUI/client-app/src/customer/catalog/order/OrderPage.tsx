@@ -21,10 +21,6 @@ const OrderPage: React.FC = () => {
   useEffect(() => {
     const getOrder = async () => {
       await orderStore.loadOrder()
-      console.log(orderStore.order)
-      if(!orderStore.order) {
-        <NotFoundPage text='Nie znaleźliśmy podanego zamówienia' />
-      }
       navigate(`/zamówienie/${order?.id}`)
     }
     getOrder()

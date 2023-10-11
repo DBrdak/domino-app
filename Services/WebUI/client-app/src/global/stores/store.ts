@@ -1,27 +1,36 @@
 import { createContext, useContext } from "react";
 import ModalStore from "./modalStore";
 import ShoppingCartStore from "./customer/shoppingCartStore";
-import CatalogStore from "./customer/catalogStore";
+import ProductStore from "./customer/productStore";
 import OrderStore from "./customer/orderStore";
 import AdminLayoutStore from "./admin/adminLayoutStore";
-import AdminCatalogStore from "./admin/adminCatalogStore";
+import AdminProductStore from "./admin/adminProductStore";
+import AdminPriceListStore from "./admin/adminPriceListStore";
+import AdminShopStore from "./admin/adminShopStore";
+import AdminOrderStore from "./admin/adminOrderStore";
 
 interface Store {
   modalStore: ModalStore
   shoppingCartStore: ShoppingCartStore,
-  catalogStore: CatalogStore
+  productStore: ProductStore
   orderStore: OrderStore
   adminLayoutStore: AdminLayoutStore
-  adminCatalogStore: AdminCatalogStore
+  adminProductStore: AdminProductStore
+  adminPriceListStore: AdminPriceListStore
+  adminShopStore: AdminShopStore
+  adminOrderStore: AdminOrderStore
 }
 
 export const store: Store = {
   modalStore: new ModalStore(),
   shoppingCartStore: new ShoppingCartStore(),
-  catalogStore: new CatalogStore(),
+  productStore: new ProductStore(),
   orderStore: new OrderStore(),
   adminLayoutStore: new AdminLayoutStore(),
-  adminCatalogStore: new AdminCatalogStore(),
+  adminProductStore: new AdminProductStore(),
+  adminPriceListStore: new AdminPriceListStore(),
+  adminShopStore: new AdminShopStore(),
+  adminOrderStore: new AdminOrderStore(),
 }
 
 export const StoreContext = createContext(store);

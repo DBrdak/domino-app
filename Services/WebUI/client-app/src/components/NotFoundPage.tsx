@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import theme from '../global/layout/theme';
 
 interface NotFoundPageProps {
-  text: string;
+  text?: string;
 }
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ text }) => {

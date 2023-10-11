@@ -58,7 +58,7 @@ export const routes: RouteObject[] = [
       {path: 'admin/masarnia', element: <ButcheryPanel />},
       {path: 'admin/statystyki', element: <StatsPanel />},
       {path: 'admin/kalkulatory', element: <CalculatorsPanel />},
-      {path: '*', element: <NotFoundPage />}
+      {path: '*', element: <NotFoundPage text={'Nie znaleźliśmy szukanej zawarości 😔'} />}
     ]
   }
 ]

@@ -16,16 +16,16 @@ interface Props {
 const ProductCard: React.FC<Props> = ({product}: Props) => {
   const [showCompletionMark, setShowCompletionMark] = useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const {shoppingCartStore, catalogStore} = useStore()
+  const {shoppingCartStore, productStore} = useStore()
 
   function handleQuantityModeEnter(): void {
-    catalogStore.setQuantityModeFor(product.id)
+    productStore.setQuantityModeFor(product.id)
     shoppingCartStore.setProduct(product)
   }
 
   function handleAddToShoppingCart(): void {
     shoppingCartStore.addShoppingItem();
-    catalogStore.resetQuantityMode();
+    productStore.resetQuantityMode();
 
     setShowCompletionMark(true);
 
@@ -54,7 +54,7 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
             <Typography variant="h6">
               {product.name}
             </Typography>
-            {catalogStore.quantityMode !== product.id && 
+            {productStore.quantityMode !== product.id &&
             <>
               <Typography variant="body2" color="textSecondary">
                 {product.description}
@@ -75,7 +75,7 @@ const ProductCard: React.FC<Props> = ({product}: Props) => {
             </>}
           </CardContent>
           <CardActions style={{justifyContent: 'center'}}>
-            {catalogStore.quantityMode !== product.id ?
+            {productStore.quantityMode !== product.id ?
             <>
               {isMobile ?
               <>

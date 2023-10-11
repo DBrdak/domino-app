@@ -90,7 +90,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
                 mobileShopToUpdate.AddSalePoint(
                     values.NewSalePoint.Location,
                     values.NewSalePoint.OpenHours!,
-                    values.NewSalePoint.WeekDay.Code);
+                    values.NewSalePoint.WeekDay.Value);
             }
             if (values.SalePointToRemove is not null)
             {

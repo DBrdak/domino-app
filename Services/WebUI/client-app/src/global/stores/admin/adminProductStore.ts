@@ -4,7 +4,7 @@ import { FilterOptions } from "../../models/filterOptions";
 import { Pagination, PagingParams } from "../../models/pagination";
 import {Product, ProductCreateValues, ProductUpdateValues} from "../../models/product";
 
-export default class AdminCatalogStore {
+export default class AdminProductStore {
   productsRegistry = new Map<string, Product>()
   searchPhrase: string = ''
   newProductValues: ProductCreateValues | null = null

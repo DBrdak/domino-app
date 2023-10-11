@@ -4,10 +4,10 @@ import { useStore } from '../../global/stores/store'
 import { observer } from 'mobx-react-lite'
 
 function OnlineShopPanel() {
-  const {adminLayoutStore, adminCatalogStore} = useStore()
+  const {adminLayoutStore, adminProductStore} = useStore()
 
   useEffect(() => {
-    adminCatalogStore.loadProducts()
+    adminProductStore.loadProducts()
   }, [])
 
   return (

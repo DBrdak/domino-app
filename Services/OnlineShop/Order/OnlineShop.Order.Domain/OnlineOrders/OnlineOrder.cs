@@ -78,7 +78,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             DeliveryDate = order.DeliveryDate;
             Id = order.Id;
             CreatedDate = order.CreatedDate;
-            CompletionDate = CompletionDate = DateTimeService.UtcNow;
+            CompletionDate = DateTimeService.UtcNow;
             Status = status;
         }
 

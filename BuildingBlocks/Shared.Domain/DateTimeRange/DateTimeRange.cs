@@ -5,6 +5,11 @@
         public DateTime Start { get; init; }
         public DateTime End { get; init; }
 
+        public DateTimeRange()
+        {
+            
+        }
+
         public DateTimeRange(DateTime start, DateTime end)
         {
             if (start > end)

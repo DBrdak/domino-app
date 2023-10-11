@@ -12,9 +12,7 @@ export interface Product {
   discountedPrice: Money | null;
   alternativeUnitPrice: Money | null;
 }
-
-// Define custom types if necessary.
-interface Category {
+export interface Category {
   value: string
 }
 
@@ -43,15 +41,15 @@ export interface ProductCreateValues {
 }
 
 export class ProductCreateValues implements ProductCreateValues {
-  constructor(init: ProductCreateValues) {
-    this.name = init.name
-    this.description = init.description
-    this.category = init.category
-    this.subcategory = init.subcategory
+  constructor(init: ProductCreateValues | null) {
+    this.name = init ? init.name : ''
+    this.description = init ? init.description : ''
+    this.category = init ? init.category : ''
+    this.subcategory = init ? init.subcategory : ''
     this.image = null
     this.price = null
-    this.isWeightSwitchAllowed = init.isWeightSwitchAllowed
-    this.singleWeight = init.isWeightSwitchAllowed ? init.singleWeight : null
+    this.isWeightSwitchAllowed = init ? init.isWeightSwitchAllowed : false
+    this.singleWeight = init ? init.singleWeight : 0
   }
 }
 

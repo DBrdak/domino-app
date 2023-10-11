@@ -118,7 +118,7 @@ const shoppingCart ={
 const order = {
   get: (params: URLSearchParams) => axios.get<OnlineOrderRead>('/onlineshop/order', {params}).then(responseBody),
   cancel: (orderId: string) => axios.put('/onlineshop/order/cancel', {orderId}),
-  getAll: () => axios.get<OnlineOrderRead[]>('/onlineshop/order/all'),
+  getAll: () => axios.get<OnlineOrderRead[]>('/onlineshop/order/all').then(responseBody),
   updateOrder: (command: OrderUpdateValues) => axios.put('/onlineshop/order', command)
 }
 

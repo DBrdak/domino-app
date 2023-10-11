@@ -6,8 +6,8 @@ import { observer } from 'mobx-react-lite'
 import ProductListItem from './ProductListItem'
 
 function ProductList() {
-  const {adminCatalogStore} = useStore()
-  const {products} = adminCatalogStore  
+  const {adminProductStore} = useStore()
+  const {products} = adminProductStore
 
   return (
     <TableContainer>

@@ -17,7 +17,7 @@ interface Props {
 }
 
 function CatalogMain({category}: Props) {
-  const {shoppingCartStore, catalogStore} = useStore()
+  const {shoppingCartStore, productStore} = useStore()
   
   useEffect(() => {
     setPageTitle('Produkty')
@@ -25,17 +25,17 @@ function CatalogMain({category}: Props) {
   }, [])
   
   useEffect(() => {
-    category && catalogStore.loadProducts(category)
+    category && productStore.loadProducts(category)
   }, [category])
 
   function handleApplySearch(name: string | null): void {
-    catalogStore.filterParams!.searchPhrase = name
-    catalogStore.loadProducts(category!)
+    productStore.filterParams!.searchPhrase = name
+    productStore.loadProducts(category!)
   }
 
   function handleApplyFilter(filterOptions: FilterOptions): void {
-    catalogStore.setFilter(filterOptions)
-    catalogStore.loadProducts(category!)
+    productStore.setFilter(filterOptions)
+    productStore.loadProducts(category!)
   }
 
   return (
@@ -52,7 +52,7 @@ function CatalogMain({category}: Props) {
               onApplySearch={(name) => handleApplySearch(name)}/>
             </Grid>
             <Grid item xs={12} md={12} lg={10} style={{textAlign: 'center'}}>
-              <ProductCatalog products={catalogStore.products} isLoading={catalogStore.loading} />
+              <ProductCatalog products={productStore.products} isLoading={productStore.loading} />
             </Grid>
             <ShoppingCartBadge />
         </Grid>
