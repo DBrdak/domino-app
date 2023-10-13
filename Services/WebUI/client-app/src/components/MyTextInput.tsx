@@ -13,9 +13,10 @@ interface Props {
     minValue?: number;
     inputProps?: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>
     style?: React.CSSProperties
+    disabled?: boolean
 }
 
-const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, inputProps, type, style, ...props }) => {
+const MyTextInput: React.FC<Props> = ({ disabled, showErrors, maxValue, minValue, inputProps, type, style, ...props }) => {
     const [field, meta, helpers] = useField(props.name);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +52,7 @@ const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, inputPro
                 <TextField
                     {...field}
                     {...props}
+                    disabled={disabled}
                     onChange={handleChange}
                     label={props.label}
                     variant="outlined"
@@ -65,6 +67,7 @@ const MyTextInput: React.FC<Props> = ({ showErrors, maxValue, minValue, inputPro
             <TextField
                 {...field}
                 {...props}
+                disabled={disabled}
                 onChange={handleChange}
                 label={props.label}
                 variant="outlined"

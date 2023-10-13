@@ -39,14 +39,28 @@ namespace OnlineShop.Catalog.Application.Behaviors
 
         private static List<IDomainEvent>? RetriveDomainEvents(object obj)
         {
-            var valueProperty = GetValueProperty(obj);
+            var isSuccessProperty = GetProperty(obj, "IsSuccess");
+
+            if (isSuccessProperty is null)
+            {
+                return null;
+            }
+
+            var isSuccess = (bool)GetValueFromProperty(obj, isSuccessProperty);
+
+            if (!isSuccess)
+            {
+                return null;
+            }
+
+            var valueProperty = GetProperty(obj, "Value");
 
             if (valueProperty is null)
             {
                 return null;
             }
 
-            var value = GetValueFromValueProperty(obj, valueProperty);
+            var value = GetValueFromProperty(obj, valueProperty);
 
             if (value is null)
             {
@@ -79,8 +93,8 @@ namespace OnlineShop.Catalog.Application.Behaviors
 
         private static bool IsEntityType(object value) => value.GetType().IsSubclassOf(typeof(Entity));
 
-        private static object? GetValueFromValueProperty(object obj, PropertyInfo valueProperty) => valueProperty.GetValue(obj);
+        private static object? GetValueFromProperty(object obj, PropertyInfo property) => property.GetValue(obj);
 
-        private static PropertyInfo? GetValueProperty(object obj) => obj.GetType().GetProperty("Value");
+        private static PropertyInfo? GetProperty(object obj, string propName) => obj.GetType().GetProperty(propName);
     }
 }

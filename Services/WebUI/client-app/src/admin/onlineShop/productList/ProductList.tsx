@@ -4,6 +4,8 @@ import { useStore } from '../../../global/stores/store'
 import { Product } from '../../../global/models/product'
 import { observer } from 'mobx-react-lite'
 import ProductListItem from './ProductListItem'
+import LoadingTableRow from "../../../components/LoadingTableRow";
+import PriceListListItem from "../../pricelists/priceListList/PriceListListItem";
 
 function ProductList() {
   const {adminProductStore} = useStore()
@@ -23,10 +25,15 @@ function ProductList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products &&
-            products.map((p) => (
-              <ProductListItem key={p.id} product={p} />
-            ))}
+          {
+            adminProductStore.loading ?
+                <LoadingTableRow rows={4} cells={3} />
+                :
+                products &&
+                products.map((p) => (
+                    <ProductListItem key={p.id} product={p} />
+                ))
+          }
         </TableBody>
       </Table>
     </TableContainer>

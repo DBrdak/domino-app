@@ -1,6 +1,6 @@
 import {ProductCreateValues} from "../../../global/models/product";
-import {Form, Formik} from "formik";
-import { Button, FormControl, InputLabel, MenuItem, Stack, Switch, Select, Typography} from "@mui/material";
+import {Field, Form, Formik} from "formik";
+import {Button, FormControl, InputLabel, MenuItem, Stack, Switch, Select, Typography, makeStyles} from "@mui/material";
 import MyTextInput from "../../../components/MyTextInput";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup";
@@ -8,16 +8,15 @@ import PhotoUploadWidget from "../../../components/photo/PhotoUploadWidget";
 import {useStore} from "../../../global/stores/store";
 import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
+import LoadingComponent from "../../../components/LoadingComponent";
+import {values} from "mobx";
 
 
 function ProductCreateForm() {
     const {adminProductStore, adminPriceListStore, modalStore} = useStore()
-    const {loading} = adminProductStore
-    const [productCreateValues, setProductCreateValues] = useState(new ProductCreateValues(null));
-    const [isWeightSwitchAllowed, setIsWeightSwitchAllowed] = useState(false)
+    const productCreateValues = new ProductCreateValues(null)
     const [productNames, setProductNames] = useState<string[]>([])
     const [newPhoto, setNewPhoto] = useState<Blob | null>(null)
-    const [isValidCustom, setIsValidCustom] = useState(false)
 
     useEffect(() => {
         const getNames = async () => setProductNames(await adminPriceListStore.getNonAggregatedProductNames())
@@ -25,71 +24,42 @@ function ProductCreateForm() {
     }, [])
 
     const validationSchema = yup.object({
+        name: yup.string().required( 'Nazwa produktu jest wymagana'),
         description: yup.string().required( 'Opis produktu jest wymagany'),
+        category: yup.string().oneOf( ['Mięso', 'Wędlina'], 'Niewłaściwa kategoria '),
         subcategory: yup.string().required('Podkategoria jest wymagana'),
     });
 
-    const handleFormSubmit = (values:ProductCreateValues) => {
-        if(!(productCreateValues.category === 'Wędlina' || productCreateValues.category === 'Mięso')
-            /*|| productCreateValues.name.length < 1*/) {
-            toast.error('Proszę podać wszystkie wymagane dane')
-            return
-        }
-
+    const handleFormSubmit = async (values:ProductCreateValues) => {
         if(!newPhoto) {
             toast.error('Proszę dodać zdjęcie produktu')
             return
         }
-
+        console.log(values)
         adminProductStore.setPhoto(newPhoto)
-        adminProductStore.setNewProductValues({
-            ...values,
-            isWeightSwitchAllowed: productCreateValues.isWeightSwitchAllowed,
-            category: productCreateValues.category,
-            name: productCreateValues.name})
-        console.log(adminProductStore.newProductValues)
-        adminProductStore.addProduct()
+        adminProductStore.setNewProductValues(values)
         modalStore.closeModal()
+        await adminProductStore.addProduct()
     }
-
-    useEffect(() => {
-        setProductCreateValues({...productCreateValues, isWeightSwitchAllowed: isWeightSwitchAllowed})
-    }, [isWeightSwitchAllowed])
-
-    const handleNameSelectChange = (name: string) => {
-        setProductCreateValues({...productCreateValues, name: name})
-    }
-
-    const handleCategorySelectChange = (category: string) => {
-        setProductCreateValues({...productCreateValues, category: category})
-    }
-
-    useEffect(() => {
-        if((productCreateValues.category === 'Wędlina' || productCreateValues.category === 'Mięso')
-            && /*productCreateValues.name.length > 0 && */ newPhoto) {
-            setIsValidCustom(true)
-        } else {
-            setIsValidCustom(false)
-        }
-    }, [productCreateValues])
 
     return (
         <Formik
             validationSchema={validationSchema}
             initialValues={productCreateValues}
-            onSubmit={(values) => handleFormSubmit(values)}
+            onSubmit={async (values) => await handleFormSubmit(values)}
             validateOnMount={true}>
-            {({handleSubmit, isValid}) => (
+            {({handleSubmit, handleChange, isValid, values}) => (
                 <Form style={{width: '100%'}} onSubmit={handleSubmit} autoComplete='off'>
                     <Stack direction={'column'} spacing={2}
                            style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <FormControl fullWidth>
                             <InputLabel>Nazwa produktu</InputLabel>
                             <Select
+                                id={'name'}
                                 name={'name'}
-                                value={productCreateValues.name}
+                                value={values.name}
                                 label="Nazwa produktu"
-                                onChange={(e) => handleNameSelectChange(e.target.value)}
+                                onChange={handleChange}
                             >
                                 {productNames.map(n => (
                                     <MenuItem key={n} value={n}>{n}</MenuItem>
@@ -101,13 +71,14 @@ function ProductCreateForm() {
                             name={'description'}
                             showErrors
                         />
-                        <FormControl fullWidth>
+                        <FormControl fullWidth >
                             <InputLabel>Kategoria</InputLabel>
                             <Select
+                                id={'name'}
                                 name={'category'}
-                                value={productCreateValues.category}
+                                value={values.category}
                                 label="Kategoria"
-                                onChange={(e) => handleCategorySelectChange(e.target.value)}
+                                onChange={handleChange}
                             >
                                 <MenuItem value='Wędlina'>Wędlina</MenuItem>
                                 <MenuItem value='Mięso'>Mięso</MenuItem>
@@ -122,11 +93,11 @@ function ProductCreateForm() {
                             <Typography variant={'h6'}>Jednostka alternatywna?</Typography>
                             <Switch
                                 name={'isWeightSwitchAllowed'}
-                                checked={isWeightSwitchAllowed}
-                                onChange={() => setIsWeightSwitchAllowed(!isWeightSwitchAllowed)}
+                                checked={values.isWeightSwitchAllowed}
+                                onChange={handleChange}
                             />
                         </Stack>
-                        {isWeightSwitchAllowed &&
+                        {values.isWeightSwitchAllowed &&
                             <MyTextInput
                                 placeholder={'Waga jednostkowa'}
                                 name={'singleWeight'}
@@ -134,9 +105,14 @@ function ProductCreateForm() {
                                 type={'number'}
                             />
                         }
-                        <PhotoUploadWidget uploadPhoto={(photo) => setNewPhoto(photo)} loading={loading} />
-                        <Button disabled={adminProductStore.loading || adminPriceListStore.loading || !isValid || !isValidCustom}
-                                type={'submit'} onClick={() => handleSubmit} variant={'contained'}>Dodaj produkt</Button>
+                        <PhotoUploadWidget uploadPhoto={(photo) => setNewPhoto(photo)} />
+                        <Button
+                            disabled={!isValid || !newPhoto}
+                            type={'submit'} onClick={() => handleSubmit} variant={'contained'}>
+                            {adminProductStore.loading || adminPriceListStore.loading ?
+                                <LoadingComponent /> : <Typography>Dodaj produkt</Typography>
+                            }
+                        </Button>
                     </Stack>
                 </Form>
             )}

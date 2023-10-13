@@ -62,7 +62,7 @@
           "Port": "80"
         }
       ],
-      "UpstreamPathTemplate": "/onlineshop/product",
+      "UpstreamPathTemplate": "/onlineshop/product/{productId}",
       "UpstreamHttpMethod": [ "DELETE" ],
       "FileCacheOptions": { "TtlSeconds": 0 }
     },

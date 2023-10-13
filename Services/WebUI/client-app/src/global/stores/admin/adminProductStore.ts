@@ -77,7 +77,7 @@ export default class AdminProductStore {
     try {
       const result = this.newProductValues && this.photo &&
           await agent.catalog.createProduct(this.newProductValues, this.photo)
-      result && this.setProduct(result)
+      this.loadProducts()
     } catch (e) {
       console.log(e)
     } finally {

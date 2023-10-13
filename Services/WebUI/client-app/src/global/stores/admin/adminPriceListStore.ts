@@ -4,9 +4,11 @@ import {toast} from "react-toastify";
 import loading = toast.loading;
 import agent from "../../api/agent";
 import {common} from "@mui/material/colors";
+import {cleanup} from "@testing-library/react";
 
 export default class AdminPriceListStore {
-    priceLists: PriceList[] = []
+    priceListsRegistry: Map<string, PriceList> = new Map<string, PriceList>()
+    selectedPriceList: PriceList | null = null
     private nonAggregatedProductNames: string[] = []
     loading: boolean = false
 
@@ -14,12 +16,29 @@ export default class AdminPriceListStore {
         makeAutoObservable(this)
     }
 
+    get priceLists() {
+        return Array.from(this.priceListsRegistry.values())
+    }
+
+    private refreshSelectedPriceList() {
+        this.setSelectedPriceList(this.selectedPriceList)
+    }
+
+    setSelectedPriceList(priceList: PriceList | null) {
+        if(priceList === null) {
+            this.selectedPriceList = null
+            return
+        }
+
+        this.selectedPriceList = this.priceLists.find(pl => pl.id === priceList.id)!
+    }
+
     private setLoading(state: boolean) {
         this.loading = state
     }
 
-    setPriceList(priceList: PriceList) {
-        this.priceLists.push(priceList)
+    private setPriceList(priceList: PriceList) {
+        this.priceListsRegistry.set(priceList.id, priceList)
     }
 
     private setNonAgregatedProductName(name: string) {
@@ -33,6 +52,7 @@ export default class AdminPriceListStore {
 
     async loadPriceLists() {
         this.setLoading(true)
+        this.priceListsRegistry.clear()
         try {
             const result = await agent.catalog.getPriceLists()
             result.forEach(pl => this.setPriceList(pl))
@@ -84,6 +104,7 @@ export default class AdminPriceListStore {
         try {
             await agent.catalog.priceListAddLineItem(newLineItem, priceListId)
             await this.loadPriceLists()
+            this.refreshSelectedPriceList()
         } catch (e) {
             console.log(e)
         } finally {
@@ -96,6 +117,7 @@ export default class AdminPriceListStore {
         try {
             await agent.catalog.priceListUpdateLineItem(values, priceListId)
             await this.loadPriceLists()
+            this.refreshSelectedPriceList()
         } catch (e) {
             console.log(e)
         } finally {
@@ -108,6 +130,7 @@ export default class AdminPriceListStore {
         try {
             await agent.catalog.priceListRemoveLineItem(priceListId, lineItemName)
             await this.loadPriceLists()
+            this.refreshSelectedPriceList()
         } catch (e) {
             console.log(e)
         } finally {

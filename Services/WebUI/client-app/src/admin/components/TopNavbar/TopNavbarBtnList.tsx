@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import ProductList from '../../onlineShop/productList/ProductList'
 import TopNavbarBtn from '../topNavbar/TopNavbarBtn'
 import ProductListSection from '../../onlineShop/productList/ProductListSection'
+import PriceListsSection from "../../pricelists/priceListList/PriceListsSection";
 
 function TopNavbarBtnList() {
   const location = useLocation()
@@ -24,7 +25,7 @@ function TopNavbarBtnList() {
         break
       case '/admin/cenniki':
         setContent([
-          {content: <ProductList />, text: 'lista cenników' },
+          {content: <PriceListsSection />, text: 'lista cenników' },
         ])
         break
       case '/admin/sklepy':

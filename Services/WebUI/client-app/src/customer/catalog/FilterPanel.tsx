@@ -146,7 +146,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
                 }
               >
                 <MenuItem value="name">Nazwa produktu</MenuItem>
-                <MenuItem value="price">Cena</MenuItem>
+                <MenuItem value="newPrice">Cena</MenuItem>
               </Select>
             </FormControl>
             <IconButton onClick={() => handleSortDirChange()}>
@@ -241,7 +241,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
               }
             >
               <MenuItem value="name">Nazwa produktu</MenuItem>
-              <MenuItem value="price">Cena</MenuItem>
+              <MenuItem value="newPrice">Cena</MenuItem>
             </Select>
           </FormControl>
           <IconButton onClick={() => handleSortDirChange()}>

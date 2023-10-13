@@ -71,7 +71,7 @@ namespace OnlineShop.Catalog.API.Controllers
             CancellationToken cancellationToken)
         {
             var result = await _sender.Send(
-                new AddLineItemCommand(priceListId, request.LineItemName, request.Price),
+                new AddLineItemCommand(priceListId, request.LineItemName, request.NewPrice),
                 cancellationToken);
 
             return result.IsSuccess ?

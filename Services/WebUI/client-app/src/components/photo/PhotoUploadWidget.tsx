@@ -6,24 +6,17 @@ import {Check, CheckBox, CheckCircle, CheckOutlined} from "@mui/icons-material";
 
 interface Props {
     uploadPhoto:(file: Blob) => void
-    loading: boolean
 }
 
-function PhotoUploadWidget({uploadPhoto, loading}: Props) {
-    const [isAccepted, setIsAccepted] = useState(false)
+function PhotoUploadWidget({uploadPhoto}: Props) {
     const [files, setFiles] = useState<any>([])
     const [cropper, setCropper] = useState<Cropper>()
 
     function onCrop() {
         if(cropper && cropper.getCroppedCanvas()) {
-            console.log('dfsa')
             cropper.getCroppedCanvas().toBlob(blob => uploadPhoto(blob!))
         }
     }
-
-    useEffect(() => {
-        onCrop()
-    }, [isAccepted])
 
     useEffect(() => {
         return () => {
@@ -45,7 +38,7 @@ function PhotoUploadWidget({uploadPhoto, loading}: Props) {
             </Stack>
             {files.length > 0 &&
                 (<IconButton color={'secondary'} style={{backgroundColor: '#C32B28', borderRadius: 10, width: '75px'}}
-                         onClick={() => setIsAccepted(!isAccepted)}>
+                         onClick={() => onCrop()}>
                     <Check/>
                 </IconButton>)
             }

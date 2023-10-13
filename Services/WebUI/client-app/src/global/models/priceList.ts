@@ -1,6 +1,7 @@
 import { Money } from "./common"
 
 export interface PriceList {
+  id:string
   name: string
   lineItems: LineItem[]
   contractor: Contractor
@@ -18,7 +19,7 @@ export interface Contractor {
 
 export interface LineItemCreateValues  {
   lineItemName: string
-  price: Money
+  newPrice: Money
 }
 
 export interface BusinessPriceListCreateValues {

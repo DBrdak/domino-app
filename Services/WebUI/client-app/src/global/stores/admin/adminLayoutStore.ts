@@ -16,4 +16,8 @@ export default class AdminLayoutStore {
   setSection = (content: JSX.Element) => {
     this.content.body = content;
   }
+
+  clearSection = () => {
+    this.content.body = null;
+  }
 }

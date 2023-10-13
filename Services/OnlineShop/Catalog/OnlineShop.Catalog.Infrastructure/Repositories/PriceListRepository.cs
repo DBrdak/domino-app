@@ -17,7 +17,17 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var priceListsCursor = await _context.PriceLists.FindAsync(_ => true, null, cancellationToken);
 
-            return await priceListsCursor.ToListAsync(cancellationToken);
+            var priceLists = await priceListsCursor.ToListAsync(cancellationToken);
+
+            var isRetailPriceListExist = priceLists.Any(pl => pl.Contractor == Contractor.Retail);
+
+            if (!isRetailPriceListExist)
+            {
+                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny"), cancellationToken);
+                await GetPriceListsAsync(cancellationToken);
+            }
+
+            return priceLists;
         }
 
         public async Task<PriceList?> GetRetailPriceList(CancellationToken cancellationToken)
