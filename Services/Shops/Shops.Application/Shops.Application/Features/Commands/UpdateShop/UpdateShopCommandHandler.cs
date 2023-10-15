@@ -45,7 +45,14 @@ namespace Shops.Application.Features.Commands.UpdateShop
 
                 _result = result;
             }
-            //TODO Remove seller
+
+            if (request.SellerToDelete is not null)
+            {
+                shopToUpdate.RemoveSeller(request.SellerToDelete);
+                var result = await _shopRepository.UpdateShop(shopToUpdate, cancellationToken);
+
+                _result = result;
+            } 
 
             if (request.MobileShopUpdateValues is not null)
             {

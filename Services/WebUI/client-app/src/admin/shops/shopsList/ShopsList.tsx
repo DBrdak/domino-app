@@ -2,8 +2,9 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typogr
 import LoadingTableRow from "../../../components/LoadingTableRow";
 import React from "react";
 import {Shop} from "../../../global/models/shop";
-import StationaryShopListItem from "./listItems/StationaryShopListItem";
-import MobileShopListItem from "./listItems/MobileShopListItem";
+import StationaryShopListItem from "./listItems/StationaryShopListItemActions";
+import MobileShopListItem from "./listItems/MobileShopListItemActions";
+import ShopListItem from "./listItems/ShopListItem";
 
 interface Props {
     shops: Shop[]
@@ -28,11 +29,11 @@ export function ShopsList({shops, loading}: Props) {
                 <TableBody>
                     {
                         loading ?
-                            <LoadingTableRow rows={4} cells={3} />
+                            <LoadingTableRow rows={4} cells={2} />
                             :
                             shops &&
                             shops.map((p:any) => (
-                                p.location ? <StationaryShopListItem shop={p} /> : <MobileShopListItem shop={p} />
+                                <ShopListItem key={p.id} shop={p} />
                             ))
                     }
                 </TableBody>

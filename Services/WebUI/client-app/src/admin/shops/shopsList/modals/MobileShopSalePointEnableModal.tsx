@@ -1,0 +1,5 @@
+export function MobileShopSalePointEnableModal() {
+    return (
+        <></>
+    );
+}

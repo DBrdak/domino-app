@@ -8,6 +8,7 @@ export default class AdminShopStore {
     mobileShopCreateValues: ShopCreateValues | null = null
     stationaryShopCreateValues: ShopCreateValues | null = null
     shopToUpdateId: string | null = null
+    shopUpdateValues: ShopUpdateValues | null = null
     mobileShopUpdateValues: ShopUpdateValues | null = null
     stationaryShopUpdateValues: ShopUpdateValues | null = null
     loading: boolean = false
@@ -35,6 +36,7 @@ export default class AdminShopStore {
 
     private resetUpdateValues() {
         this.shopToUpdateId = null
+        this.shopUpdateValues = null
         this.mobileShopUpdateValues = null
         this.stationaryShopUpdateValues = null
     }
@@ -59,17 +61,32 @@ export default class AdminShopStore {
         this.shopToUpdateId = id
     }
 
-    setMobileShopUpdateValues(
+    setShopUpdateValues(
         newSeller: Seller | null,
-        sellerToRemove: Seller | null,
+        sellerToRemove: Seller | null) {
+        this.shopUpdateValues = this.shopToUpdateId ? {
+            shopToUpdateId: this.shopToUpdateId,
+            newSeller,
+            sellerToDelete: sellerToRemove,
+            mobileShopUpdateValues: null,
+            stationaryShopUpdateValues: null
+        } : null
+    }
+
+    setMobileShopUpdateValues(
         newSalePoint: SalePoint | null,
         salePointToRemove: SalePoint | null,
         salePointToDisable: SalePoint | null,
         salePointToEnable: SalePoint | null) {
-        this.mobileShopUpdateValues = this.shopToUpdateId ? {
-            shopToUpdateId: this.shopToUpdateId,
-            newSeller,
-            sellerToRemove,
+
+        if(!this.shopUpdateValues) {
+            this.shopToUpdateId && this.setShopUpdateValues(null, null)
+        }
+
+        this.mobileShopUpdateValues = this.shopUpdateValues ? {
+            shopToUpdateId: this.shopUpdateValues.shopToUpdateId,
+            newSeller: this.shopUpdateValues.newSeller,
+            sellerToDelete:  this.shopUpdateValues.sellerToDelete,
             mobileShopUpdateValues: {
                 newSalePoint,
                 salePointToRemove,
@@ -81,17 +98,20 @@ export default class AdminShopStore {
     }
 
     setStationaryShopUpdateValues(
-        newSeller: Seller | null,
-        sellerToRemove: Seller | null,
-        initWeekSchedule: ShopWorkingDay[],
-        weekDayToUpdate: WeekDay,
-        newWorkingHoursInWeekDay: TimeRange,
-        weekDayAsHoliday: WeekDay,
-        weekDayAsWorkingDay: WeekDay) {
-        this.stationaryShopUpdateValues = this.shopToUpdateId ? {
-            shopToUpdateId: this.shopToUpdateId,
-            newSeller,
-            sellerToRemove,
+        initWeekSchedule: ShopWorkingDay[] | null,
+        weekDayToUpdate: WeekDay | null,
+        newWorkingHoursInWeekDay: TimeRange | null,
+        weekDayAsHoliday: WeekDay | null,
+        weekDayAsWorkingDay: WeekDay | null) {
+
+        if(!this.shopUpdateValues) {
+            this.shopToUpdateId && this.setShopUpdateValues(null, null)
+        }
+
+        this.stationaryShopUpdateValues = this.shopUpdateValues ? {
+            shopToUpdateId: this.shopUpdateValues.shopToUpdateId,
+            newSeller: this.shopUpdateValues.newSeller,
+            sellerToDelete:  this.shopUpdateValues.sellerToDelete,
             mobileShopUpdateValues: null,
             stationaryShopUpdateValues: {
                 initWeekSchedule,
@@ -103,13 +123,14 @@ export default class AdminShopStore {
         }   : null
     }
 
+
+
     async loadShops() {
         this.setLoading(true)
         this.shopsRegistry.clear()
         try {
             const result = await agent.shops.getShops()
             result.forEach(s => this.setShop(s))
-            console.log(result)
         } catch (e) {
             console.log(e)
         } finally {
@@ -135,9 +156,13 @@ export default class AdminShopStore {
     async updateShop() {
         this.setLoading(true)
         try {
-            this.stationaryShopUpdateValues ?
-                await agent.shops.updateShop(this.stationaryShopUpdateValues) :
-                this.mobileShopUpdateValues && await agent.shops.updateShop(this.mobileShopUpdateValues)
+            if(this.stationaryShopUpdateValues && !this.mobileShopUpdateValues) {
+                await agent.shops.updateShop(this.stationaryShopUpdateValues)
+            } else if(!this.stationaryShopUpdateValues && this.mobileShopUpdateValues) {
+                await agent.shops.updateShop(this.mobileShopUpdateValues)
+            } else if(!this.stationaryShopUpdateValues && !this.mobileShopUpdateValues && this.shopUpdateValues) {
+                await agent.shops.updateShop(this.shopUpdateValues)
+            }
             await this.loadShops()
         } catch (e) {
             console.log(e)

@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Shops.Domain.Shared
 {
-    public sealed record Seller(string FirstName, string LastName, string PhoneNumber);
+    public sealed record Seller(string FirstName, string LastName, string? PhoneNumber);
 }

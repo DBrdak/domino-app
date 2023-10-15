@@ -37,11 +37,11 @@ export interface StationaryShopDto {
 }
 
 export interface StationaryShopUpdateValues {
-    initWeekSchedule: ShopWorkingDay[]
-    weekDayToUpdate: WeekDay
-    newWorkingHoursInWeekDay: TimeRange
-    weekDayAsHoliday: WeekDay
-    weekDayAsWorkingDay: WeekDay
+    initWeekSchedule: ShopWorkingDay[] | null
+    weekDayToUpdate: WeekDay | null
+    newWorkingHoursInWeekDay: TimeRange | null
+    weekDayAsHoliday: WeekDay | null
+    weekDayAsWorkingDay: WeekDay | null
 }
 
 export interface MobileShopUpdateValues {
@@ -60,7 +60,7 @@ export interface ShopCreateValues {
 export interface  ShopUpdateValues {
     shopToUpdateId: string
     newSeller: Seller | null
-    sellerToRemove: Seller | null
+    sellerToDelete: Seller | null
     mobileShopUpdateValues: MobileShopUpdateValues | null
     stationaryShopUpdateValues: StationaryShopUpdateValues | null
 }

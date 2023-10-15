@@ -42,8 +42,8 @@ const ShopCreateModal: React.FC = () => {
         } if(shopType === 'mobile' && !values.vehiclePlateNumber) {
             toasting && toast.error('Numery rejestracyjne sklepu obwoźnego są wymagane')
             return false
-        } if(!values.vehiclePlateNumber?.match(/[A-Z]{2,3}\s[A-Z0-9]{4,5}/)) {
-            toasting && toast.error('Numery rejestracyjne sklepu obwoźnego są wymagane')
+        } if(shopType === 'mobile' && !values.vehiclePlateNumber?.match(/[A-Z]{2,3}\s[A-Z0-9]{4,5}/)) {
+            toasting && toast.error('Nieprawidłowy format numeru rejestracyjnego pojazdu')
             return false
         } if(shopType === '') {
             toasting && toast.error('Rodzaj sklepu jest wymagany')
@@ -53,8 +53,14 @@ const ShopCreateModal: React.FC = () => {
     }
 
     const handleSubmit = (values: FormValues) => {
-        validate(values,true) && shopType === 'stationary' && adminShopStore.setStationaryShopCreateValues(values.shopName, values.location!)
-        validate(values,true) && shopType === 'mobile' && adminShopStore.setMobileShopCreateValues(values.shopName, values.vehiclePlateNumber!)
+        const validationSuccess = validate(values,true)
+
+        if(!validationSuccess) {
+            return
+        }
+
+        shopType === 'stationary' && adminShopStore.setStationaryShopCreateValues(values.shopName, values.location!)
+        shopType === 'mobile' && adminShopStore.setMobileShopCreateValues(values.shopName, values.vehiclePlateNumber!)
         modalStore.closeModal()
         adminShopStore.createShop()
     }
@@ -97,7 +103,7 @@ const ShopCreateModal: React.FC = () => {
                             <MyTextInput name='vehiclePlateNumber' placeholder={'Numer rejestracyjny pojazdu'}
                                          label='Numer rejestracyjny pojazdu'/>}
                         <Button
-                            disabled={adminShopStore.loading || !validate(values, false)}
+                            disabled={adminShopStore.loading}
                             type={'submit'} onClick={() => handleSubmit} variant={'contained'}>
                             {adminShopStore.loading ?
                                 <LoadingComponent /> : <Typography>Dodaj</Typography>
