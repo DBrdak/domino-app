@@ -2,7 +2,7 @@ import React from 'react'
 import {PriceList} from "../../../global/models/priceList";
 import {useStore} from "../../../global/stores/store";
 import {IconButton, Stack, TableCell, TableRow, Typography} from "@mui/material";
-import ProductEditModal from "../../onlineShop/productList/ProductEditModal";
+import ProductEditModal from "../../onlineShop/productCreation/ProductEditModal";
 import {Delete, Edit, Https, NoEncryption, Preview, Visibility} from "@mui/icons-material";
 import ConfirmModal from "../../../components/ConfirmModal";
 import {observer} from "mobx-react-lite";

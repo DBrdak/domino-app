@@ -7,9 +7,12 @@ import ProductListItem from './ProductListItem'
 import LoadingTableRow from "../../../components/LoadingTableRow";
 import PriceListListItem from "../../pricelists/priceListList/PriceListListItem";
 
-function ProductList() {
-  const {adminProductStore} = useStore()
-  const {products} = adminProductStore
+interface Props {
+  products: Product[]
+  loading: boolean
+}
+
+function ProductList({products, loading}: Props) {
 
   return (
     <TableContainer>
@@ -26,7 +29,7 @@ function ProductList() {
         </TableHead>
         <TableBody>
           {
-            adminProductStore.loading ?
+            loading ?
                 <LoadingTableRow rows={4} cells={3} />
                 :
                 products &&
@@ -40,4 +43,4 @@ function ProductList() {
   )
 }
 
-export default observer(ProductList)
+export default ProductList

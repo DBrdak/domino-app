@@ -1,4 +1,4 @@
-import {DateTimeRange, TimeRange, WeekDay} from "./common";
+import {DateTimeRange, TimeRange, WeekDay, Location} from "./common";
 import {bool} from "yup";
 
 export interface DeliveryPoint {
@@ -77,7 +77,21 @@ export interface MobileShop extends Shop {
     salePoints: SalePoint[]
 }
 
+export class MobileShop implements MobileShop {
+    constructor(init:ShopCreateValues) {
+        this.shopName = init.shopName
+        this.vehiclePlateNumber = init.mobileShopData!.vehiclePlateNumber
+    }
+}
+
 export interface StationaryShop extends Shop {
     location: Location
     weekSchedule: ShopWorkingDay[]
+}
+
+export class StationaryShop implements StationaryShop {
+    constructor(init:ShopCreateValues) {
+        this.shopName = init.shopName
+        this.location = init.stationaryShopData!.location
+    }
 }

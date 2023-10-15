@@ -2,6 +2,7 @@ import { Button, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {useStore} from "../../../global/stores/store";
+import {observer} from "mobx-react-lite";
 
 interface Props {
   path?: string | null
@@ -31,4 +32,4 @@ function SideNavbarBtn(props: Props) {
   )
 }
 
-export default SideNavbarBtn
+export default observer(SideNavbarBtn)

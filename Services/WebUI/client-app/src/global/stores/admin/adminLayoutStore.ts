@@ -13,11 +13,11 @@ export default class AdminLayoutStore {
     makeAutoObservable(this);
   }
 
-  setSection = (content: JSX.Element) => {
+  setSection = (content: JSX.Element | null) => {
     this.content.body = content;
   }
 
   clearSection = () => {
-    this.content.body = null;
+    this.setSection(null);
   }
 }

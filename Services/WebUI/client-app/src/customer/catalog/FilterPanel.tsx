@@ -43,7 +43,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
   }, [searchPhrase]);
 
   useEffect(() => {
-    console.log(debouncedSearchPhrase)
     onApplySearch(debouncedSearchPhrase);
   }, [debouncedSearchPhrase]);
 
@@ -52,7 +51,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onApplyFilter, onApplySearch 
   };
 
   const handleApplySearch = (productName: string | null) => {
-    console.log(productName)
     setSearchPhrase(productName)
   }
 

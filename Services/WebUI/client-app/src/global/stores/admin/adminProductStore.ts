@@ -3,6 +3,7 @@ import agent from "../../api/agent";
 import { FilterOptions } from "../../models/filterOptions";
 import { Pagination, PagingParams } from "../../models/pagination";
 import {Product, ProductCreateValues, ProductUpdateValues} from "../../models/product";
+import {bool} from "yup";
 
 export default class AdminProductStore {
   productsRegistry = new Map<string, Product>()
@@ -30,8 +31,8 @@ export default class AdminProductStore {
     this.loading = state
   }
 
-  setSearchPhrase(searchPhrase: string) {
-    this.searchPhrase = searchPhrase
+  setSearchPhrase(searchPhrase: string | null) {
+    this.searchPhrase = searchPhrase ? searchPhrase : ''
   }
 
   setNewProductValues(newProductValues: ProductCreateValues) {
@@ -45,8 +46,8 @@ export default class AdminProductStore {
     this.productsRegistry.set(product.id, product)
   }
 
-  setProductUpdateValues(values: ProductUpdateValues) {
-    this.productUpdateValues = new ProductUpdateValues(values)
+  setProductUpdateValues(product: Product, isAvailable: boolean | null) {
+    this.productUpdateValues = new ProductUpdateValues(product, isAvailable)
   }
 
   resetCreateValues() {
@@ -61,7 +62,7 @@ export default class AdminProductStore {
 
   loadProducts = async () => {
     this.setLoading(true)
-    this.productsRegistry = new Map<string, Product>()
+    this.productsRegistry.clear()
     try {
       const result = await agent.catalog.productsAdmin(this.axiosParams)
       result.forEach(i => this.setProduct(i))
@@ -75,9 +76,9 @@ export default class AdminProductStore {
   async addProduct() {
     this.setLoading(true)
     try {
-      const result = this.newProductValues && this.photo &&
+      this.newProductValues && this.photo &&
           await agent.catalog.createProduct(this.newProductValues, this.photo)
-      this.loadProducts()
+      await this.loadProducts()
     } catch (e) {
       console.log(e)
     } finally {

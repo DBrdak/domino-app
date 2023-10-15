@@ -34,7 +34,7 @@ namespace OnlineShop.Catalog.API.Controllers
 
         [HttpPut]
         public async Task<IActionResult> UpdateProduct(
-            [FromBody] UpdateValues newValues,
+            [FromForm] UpdateValues newValues,
             CancellationToken cancellationToken,
             [FromForm] IFormFile photo = null)
         {

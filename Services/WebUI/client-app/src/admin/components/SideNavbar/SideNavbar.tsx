@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import SideNavbarBtnList from '../sideNavbar/SideNavbarBtnList';
 
 const SideNavbar: React.FC = () => {
-  const navigate = useNavigate()
   return (
     <Box
     sx={{

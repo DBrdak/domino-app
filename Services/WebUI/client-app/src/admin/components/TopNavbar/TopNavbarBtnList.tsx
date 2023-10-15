@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import ProductList from '../../onlineShop/productList/ProductList'
 import TopNavbarBtn from '../topNavbar/TopNavbarBtn'
-import ProductListSection from '../../onlineShop/productList/ProductListSection'
 import PriceListsSection from "../../pricelists/priceListList/PriceListsSection";
+import ProductListSection from "../../onlineShop/ProductListSection";
+import ShopsListSection from "../../shops/shopsList/ShopsListSection";
 
 function TopNavbarBtnList() {
   const location = useLocation()
@@ -15,12 +16,12 @@ function TopNavbarBtnList() {
       case '/admin/sklep-online':
         setContent([
           {content: <ProductListSection />, text: 'lista produktów' },
-          {content: <ProductList />, text: 'zamówienia' },
+          {content: <PriceListsSection />, text: 'zamówienia' },
         ])
         break
       case '/admin/sprzedaz':
         setContent([
-          {content: <ProductList />, text: 'raporty' },
+          {content: <PriceListsSection />, text: 'raporty' },
         ])
         break
       case '/admin/cenniki':
@@ -30,39 +31,39 @@ function TopNavbarBtnList() {
         break
       case '/admin/sklepy':
         setContent([
-          {content: <ProductList />, text: 'lista sklepów' },
-          {content: <ProductList />, text: 'punkty sprzedaży' },
+          {content: <ShopsListSection />, text: 'lista sklepów' },
+          {content: <PriceListsSection />, text: 'punkty sprzedaży' },
         ])
         break
       case '/admin/paliwo':
         setContent([
-          {content: <ProductList />, text: 'raporty' },
-          {content: <ProductList />, text: 'dostawy' },
+          {content: <PriceListsSection />, text: 'raporty' },
+          {content: <PriceListsSection />, text: 'dostawy' },
         ])
         break
       case '/admin/flota':
         setContent([
-          {content: <ProductList />, text: 'pojazdy' },
+          {content: <PriceListsSection />, text: 'pojazdy' },
         ])
         break
       case '/admin/kontrahenci':
         setContent([
-          {content: <ProductList />, text: 'wkrótce' },
+          {content: <PriceListsSection />, text: 'wkrótce' },
         ])
         break
       case '/admin/masarnia':
         setContent([
-          {content: <ProductList />, text: 'wkrótce' },
+          {content: <PriceListsSection />, text: 'wkrótce' },
         ])
         break 
       case '/admin/statystyki':
         setContent([
-          {content: <ProductList />, text: 'wkrótce' },
+          {content: <PriceListsSection />, text: 'wkrótce' },
         ])
         break 
       case '/admin/kalkulatory':
         setContent([
-          {content: <ProductList />, text: 'wkrótce' },
+          {content: <PriceListsSection />, text: 'wkrótce' },
         ])
         break 
     }

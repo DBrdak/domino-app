@@ -3,18 +3,44 @@ import {IconButton, Stack} from "@mui/material";
 import PhotoWidgetDropzone from "./PhotoUploadDropzone";
 import PhotoWidgetCropper from "./PhotoCropper";
 import {Check, CheckBox, CheckCircle, CheckOutlined} from "@mui/icons-material";
+import imageCompression from "browser-image-compression";
+import {bool} from "yup";
 
 interface Props {
     uploadPhoto:(file: Blob) => void
+    setLoading: (state: boolean) => void
 }
 
-function PhotoUploadWidget({uploadPhoto}: Props) {
+function PhotoUploadWidget({uploadPhoto,setLoading}: Props) {
     const [files, setFiles] = useState<any>([])
     const [cropper, setCropper] = useState<Cropper>()
 
-    function onCrop() {
+    async function onCrop() {
         if(cropper && cropper.getCroppedCanvas()) {
-            cropper.getCroppedCanvas().toBlob(blob => uploadPhoto(blob!))
+            setLoading(true)
+            cropper.getCroppedCanvas().toBlob(async b => {
+                const file = new File([b!], 'file', {type: 'image/png'})
+
+                if(file.size < 10485760) {
+                    await uploadPhoto(file);
+                    setLoading(false)
+                    return
+                }
+
+                const options = {
+                    maxSizeMB: 10,
+                    useWebWorker: true,
+                }
+
+                try {
+                    const compressedFile = await imageCompression(file, options);
+                    await uploadPhoto(compressedFile);
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    setLoading(false)
+                }
+            })
         }
     }
 
@@ -38,7 +64,7 @@ function PhotoUploadWidget({uploadPhoto}: Props) {
             </Stack>
             {files.length > 0 &&
                 (<IconButton color={'secondary'} style={{backgroundColor: '#C32B28', borderRadius: 10, width: '75px'}}
-                         onClick={() => onCrop()}>
+                         onClick={async () => await onCrop()}>
                     <Check/>
                 </IconButton>)
             }

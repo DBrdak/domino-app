@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -17,7 +18,10 @@ namespace Shops.Domain.MobileShops
     public sealed class MobileShop : Shop
     {
         public List<SalePoint> SalePoints { get; init; }
+        [RegularExpression(polishVehiclePlateNumberRegex)]
         public string VehiclePlateNumber { get; init; }
+
+        private const string polishVehiclePlateNumberRegex = "^[A-Z]{2,3}\\s[A-Z0-9]{4,5}$";
 
         public MobileShop(string shopName, string vehiclePlateNumber) : base(shopName)
         {

@@ -9,7 +9,6 @@ import {cleanup} from "@testing-library/react";
 export default class AdminPriceListStore {
     priceListsRegistry: Map<string, PriceList> = new Map<string, PriceList>()
     selectedPriceList: PriceList | null = null
-    private nonAggregatedProductNames: string[] = []
     loading: boolean = false
 
     constructor() {
@@ -39,15 +38,6 @@ export default class AdminPriceListStore {
 
     private setPriceList(priceList: PriceList) {
         this.priceListsRegistry.set(priceList.id, priceList)
-    }
-
-    private setNonAgregatedProductName(name: string) {
-        this.nonAggregatedProductNames.push(name)
-    }
-
-    async getNonAggregatedProductNames() {
-        await this.loadNonAggregatedProductNames()
-        return this.nonAggregatedProductNames
     }
 
     async loadPriceLists() {
@@ -131,24 +121,6 @@ export default class AdminPriceListStore {
             await agent.catalog.priceListRemoveLineItem(priceListId, lineItemName)
             await this.loadPriceLists()
             this.refreshSelectedPriceList()
-        } catch (e) {
-            console.log(e)
-        } finally {
-            this.setLoading(false)
-        }
-    }
-
-    async loadNonAggregatedProductNames() {
-        this.setLoading(true)
-        this.nonAggregatedProductNames = []
-        try {
-            await this.loadPriceLists()
-            const retailPriceList = this.priceLists.find(pl => pl.contractor.name === 'Retail')
-            const nonAggregatedLineItems = retailPriceList &&
-                retailPriceList.lineItems.filter(li => li.productId === null)
-            const nonAggregatedProductNames = nonAggregatedLineItems &&
-                nonAggregatedLineItems.map(li => li.name)
-            nonAggregatedProductNames && nonAggregatedProductNames.forEach(n => this.setNonAgregatedProductName(n))
         } catch (e) {
             console.log(e)
         } finally {

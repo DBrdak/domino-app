@@ -11,7 +11,7 @@ function PhotoWidgetCropper({setCropper, imagePreview} : Props) {
     return (
         <Cropper
             src={imagePreview}
-            style={{height: 200, width: '100%'}}
+            style={{height: 200, width: 200}}
             initialAspectRatio={1}
             aspectRatio={1}
             preview='.img-preview'

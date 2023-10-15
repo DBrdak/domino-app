@@ -6,7 +6,7 @@ import {Product, ProductCreateValues, ProductUpdateValues} from "../models/produ
 import { ShoppingCart, ShoppingCartCheckout } from "../models/shoppingCart";
 import {OnlineOrderRead, OrderUpdateValues} from "../models/order";
 import {BusinessPriceListCreateValues, LineItemCreateValues, PriceList} from "../models/priceList";
-import {DeliveryPoint, Shop, ShopCreateValues, ShopUpdateValues} from "../models/shop";
+import {DeliveryPoint, MobileShop, Shop, ShopCreateValues, ShopUpdateValues, StationaryShop} from "../models/shop";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -73,26 +73,25 @@ const catalog = {
   productsAdmin: (params: URLSearchParams) => axios.get<Product[]>(`/onlineshop/product`, {params}).then(responseBody),
   updateProduct: (newValues: ProductUpdateValues, photo: Blob | null) => {
     const formData = new FormData()
-    photo && formData.append('Photo', photo)
     formData.append('Id', newValues.id)
-    formData.append('Name', newValues.name)
     formData.append('Description', newValues.description)
     formData.append('Category', newValues.category)
     formData.append('Subcategory', newValues.subcategory)
     formData.append('IsAvailable', `${newValues.isAvailable}`)
+    formData.append('ImageUrl', `${newValues.imageUrl}`)
     formData.append('IsWeightSwitchAllowed', `${newValues.isWeightSwitchAllowed}`)
-    formData.append('SingleWeight', `${newValues.singleWeight}`)
-
+    newValues.singleWeight && formData.append('SingleWeight', `${newValues.singleWeight}` )
+    formData.append('Photo', photo ? photo : 'null')
+    console.log({key: Array.from(formData.keys()), value: Array.from(formData.values())})
     return axios.put<Product>(`/onlineshop/product`, formData).then(responseBody)
   },
   createProduct: (values: ProductCreateValues, photo: Blob) => {
     const formData = new FormData()
-    photo && formData.append('Photo', photo)
+    photo && formData.append('Photo', photo, values.name)
     formData.append('Name', values.name)
     formData.append('Description', values.description)
     formData.append('Category', values.category)
     formData.append('Subcategory', values.subcategory)
-    //formData.append('Price', null)
     formData.append('IsWeightSwitchAllowed', `${values.isWeightSwitchAllowed}`)
     formData.append('SingleWeight', `${values.singleWeight}`)
 
@@ -133,7 +132,8 @@ const shops = {
 const agent = {
   catalog,
   shoppingCart,
-  order
+  order,
+  shops
 }
 
 export default agent;

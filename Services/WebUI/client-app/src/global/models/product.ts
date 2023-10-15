@@ -59,22 +59,22 @@ export interface ProductUpdateValues {
   description: string;
   category: string;
   subcategory: string;
-  imageUrl: string | null;
+  imageUrl: string;
   isWeightSwitchAllowed: boolean;
   singleWeight: number | null;
   isAvailable: boolean;
 }
 
 export class ProductUpdateValues implements ProductUpdateValues {
-  constructor(init: ProductUpdateValues) {
-    this.id = init.id
-    this.name = init.name
-    this.description = init.description
-    this.category = init.category
-    this.subcategory = init.subcategory
-    this.imageUrl = null
-    this.isWeightSwitchAllowed = init.isWeightSwitchAllowed
-    this.singleWeight = init.isWeightSwitchAllowed ? init.singleWeight : null
-    this.isAvailable = init.isAvailable
+  constructor(product: Product, isAvailable: boolean | null) {
+    this.id = product.id
+    this.name = product.name
+    this.description = product.description
+    this.category = product.category.value
+    this.subcategory = product.subcategory
+    this.imageUrl = product.image.url
+    this.isWeightSwitchAllowed = product.details.isWeightSwitchAllowed
+    this.singleWeight = product.details.isWeightSwitchAllowed ? (product.details.singleWeight && product.details.singleWeight.value) : null
+    this.isAvailable = isAvailable !== null ? isAvailable : product.details.isAvailable
   }
 }

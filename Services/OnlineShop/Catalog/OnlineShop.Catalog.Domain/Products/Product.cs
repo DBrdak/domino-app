@@ -123,7 +123,6 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public void Update(UpdateValues newValues)
         {
-            Name = newValues.Name;
             Description = newValues.Description;
             Subcategory = newValues.Subcategory;
             Category = Category.FromValue(newValues.Category);

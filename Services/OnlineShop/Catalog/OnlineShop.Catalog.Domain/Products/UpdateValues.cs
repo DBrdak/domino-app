@@ -3,17 +3,20 @@
     public sealed class UpdateValues
     {
         public string Id { get; init; }
-        public string Name { get; init; }
         public string Description { get; init; }
         public string Subcategory { get; init; }
         public string Category { get; init; }
-        public string ImageUrl { get; private set; }
+        public string ImageUrl { get; set; }
         public bool IsWeightSwitchAllowed { get; init; }
         public decimal? SingleWeight { get; init; }
         public bool IsAvailable { get; init; }
 
+        public UpdateValues()
+        {
+            
+        }
+
         public UpdateValues(string id,
-            string name,
             string description,
             string subcategory,
             string category,
@@ -23,7 +26,6 @@
             bool isAvailable)
         {
             Id = id;
-            Name = name;
             Description = description;
             Subcategory = subcategory;
             Category = category;

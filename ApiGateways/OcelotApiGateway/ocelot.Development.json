@@ -24,33 +24,7 @@
         }
       ],
       "UpstreamPathTemplate": "/onlineshop/product",
-      "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 0 }
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/onlineshop/product",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "onlineshop.catalog.api",
-          "Port": "80"
-        }
-      ],
-      "UpstreamPathTemplate": "/onlineshop/product",
-      "UpstreamHttpMethod": [ "PUT" ],
-      "FileCacheOptions": { "TtlSeconds": 0 }
-    },
-    {
-      "DownstreamPathTemplate": "/api/v1/onlineshop/product",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "onlineshop.catalog.api",
-          "Port": "80"
-        }
-      ],
-      "UpstreamPathTemplate": "/onlineshop/product",
-      "UpstreamHttpMethod": [ "POST" ],
+      "UpstreamHttpMethod": [ "PUT", "POST", "GET" ],
       "FileCacheOptions": { "TtlSeconds": 0 }
     },
     {

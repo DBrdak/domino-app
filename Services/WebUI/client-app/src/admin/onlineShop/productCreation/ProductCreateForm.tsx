@@ -11,17 +11,16 @@ import {toast} from "react-toastify";
 import LoadingComponent from "../../../components/LoadingComponent";
 import {values} from "mobx";
 
+interface Props {
+    names: string[]
+    setNames: (names: string[]) => void
+}
 
-function ProductCreateForm() {
+function ProductCreateForm({names, setNames}: Props) {
     const {adminProductStore, adminPriceListStore, modalStore} = useStore()
     const productCreateValues = new ProductCreateValues(null)
-    const [productNames, setProductNames] = useState<string[]>([])
     const [newPhoto, setNewPhoto] = useState<Blob | null>(null)
-
-    useEffect(() => {
-        const getNames = async () => setProductNames(await adminPriceListStore.getNonAggregatedProductNames())
-        getNames()
-    }, [])
+    const [loading, setLoading] = useState(false)
 
     const validationSchema = yup.object({
         name: yup.string().required( 'Nazwa produktu jest wymagana'),
@@ -35,10 +34,11 @@ function ProductCreateForm() {
             toast.error('Proszę dodać zdjęcie produktu')
             return
         }
-        console.log(values)
+
         adminProductStore.setPhoto(newPhoto)
         adminProductStore.setNewProductValues(values)
         modalStore.closeModal()
+        setNames(names.filter(n => n !== values.name))
         await adminProductStore.addProduct()
     }
 
@@ -61,7 +61,7 @@ function ProductCreateForm() {
                                 label="Nazwa produktu"
                                 onChange={handleChange}
                             >
-                                {productNames.map(n => (
+                                {names.map(n => (
                                     <MenuItem key={n} value={n}>{n}</MenuItem>
                                 ))}
                             </Select>
@@ -105,11 +105,11 @@ function ProductCreateForm() {
                                 type={'number'}
                             />
                         }
-                        <PhotoUploadWidget uploadPhoto={(photo) => setNewPhoto(photo)} />
+                        <PhotoUploadWidget uploadPhoto={(photo) => setNewPhoto(photo)} setLoading={(state) => setLoading(state)} />
                         <Button
-                            disabled={!isValid || !newPhoto}
+                            disabled={!isValid || !newPhoto || adminProductStore.loading || adminPriceListStore.loading || loading}
                             type={'submit'} onClick={() => handleSubmit} variant={'contained'}>
-                            {adminProductStore.loading || adminPriceListStore.loading ?
+                            {adminProductStore.loading || adminPriceListStore.loading || loading ?
                                 <LoadingComponent /> : <Typography>Dodaj produkt</Typography>
                             }
                         </Button>

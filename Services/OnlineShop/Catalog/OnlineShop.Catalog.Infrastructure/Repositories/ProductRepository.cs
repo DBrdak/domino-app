@@ -69,7 +69,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 Builders<Product>.Filter.Eq(p => p.Id, product.Id),
                 product, new ReplaceOptions(), cancellationToken);
 
-            return result.IsAcknowledged && result.ModifiedCount > 0 ? product : null;
+            return result.IsAcknowledged && result.MatchedCount > 0 ? product : null;
         }
 
         public async Task<Product?> Add(CreateValues values, IFormFile photoFile, CancellationToken cancellationToken = default)

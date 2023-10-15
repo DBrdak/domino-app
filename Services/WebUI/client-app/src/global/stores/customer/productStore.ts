@@ -49,7 +49,7 @@ export default class ProductStore {
 
   loadProducts = async (category: string) => {
     this.setLoading(true)
-    this.productsRegistry = new Map<string, Product>()
+    this.productsRegistry.clear()
     try {
       const result = await agent.catalog.products(category, this.axiosParams)
       result.items.forEach(i => this.setProduct(i))

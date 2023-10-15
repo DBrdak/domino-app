@@ -1,33 +1,51 @@
 import React from 'react'
 import { Product } from '../../../global/models/product'
 import { IconButton, ListItem, ListItemText, Stack, TableCell, TableRow, Typography } from '@mui/material'
-import { Block, Discount, DiscountTwoTone, Done, Edit, EditTwoTone, Https, NoEncryption, RemoveShoppingCart } from '@mui/icons-material'
+import {
+  Block,
+  Delete,
+  Discount,
+  DiscountTwoTone,
+  Done,
+  Edit,
+  EditTwoTone,
+  Https,
+  NoEncryption,
+  RemoveShoppingCart
+} from '@mui/icons-material'
 import { useStore } from '../../../global/stores/store'
 import { observer } from 'mobx-react-lite'
 import ConfirmModal from '../../../components/ConfirmModal'
-import ProductEditModal from './ProductEditModal'
+import ProductEditModal from '../productCreation/ProductEditModal'
 
 interface Props {
   product: Product
 }
 
 function ProductListItem({product}: Props) {
-  const {modalStore} = useStore()
+  const {modalStore, adminProductStore} = useStore()
 
-  const handleProductUnlock = () => {
-    console.log('Hello')
+  const handleProductUnlock = async () => {
+    adminProductStore.setProductUpdateValues(product,true)
+    modalStore.closeModal()
+    await adminProductStore.updateProduct()
   }
 
-  const handleProductLock = () => {
-    console.log('Hello')
+  const handleProductLock = async () => {
+    adminProductStore.setProductUpdateValues(product,false)
+    modalStore.closeModal()
+    await adminProductStore.updateProduct()
   }
 
-  function handleProductEdit(): void {
-    console.log('Hello')
+  async function handleProductEdit(product: Product) {
+    adminProductStore.setProductUpdateValues(product, null)
+    modalStore.closeModal()
+    await adminProductStore.updateProduct()
   }
 
-  function handleProductDelete(): void {
-    console.log('Hello')
+  async function handleProductDelete() {
+    modalStore.closeModal()
+    await adminProductStore.deleteProduct(product.id)
   }
 
   return (
@@ -37,30 +55,40 @@ function ProductListItem({product}: Props) {
       </TableCell>
       <TableCell>
         <Stack direction={'row'} style={{display: 'flex', justifyContent: 'space-around'}} >
-          <IconButton style={{borderRadius: '0px', color: '#000000', flexDirection:'column', width: '50%'}} size='medium' 
+          <IconButton style={{borderRadius: '0px', color: '#000000', flexDirection:'column', width: '33%'}} size='medium'
           onClick={() => modalStore.openModal(
-          <ProductEditModal product={product} onDelete={() => handleProductDelete()} onSubmit={() => handleProductEdit()} />)}>
+          <ProductEditModal product={product}
+                            onPhotoChange={(photo) => adminProductStore.setPhoto(photo)}
+                            onSubmit={async (product) => await handleProductEdit(product)} />)}>
             <Edit />
             <Typography variant='caption'>Edytuj</Typography>
           </IconButton>
           { product.details.isAvailable ?
-          <IconButton style={{borderRadius: '0px', color: '#FF4747', flexDirection:'column', width: '50%'}} 
+          <IconButton style={{borderRadius: '0px', color: '#A0A0A0', flexDirection:'column', width: '33%'}}
           size='medium' onClick={() => modalStore.openModal(
             <ConfirmModal text={`Czy na pewno chcesz zablokować możliwość zamawiania produktu ${product.name}?`} 
-            onConfirm={() => handleProductLock()}/>)}
+            onConfirm={async () => await handleProductLock()}/>)}
           >
             <Https />
             <Typography variant='caption'>Zablokuj</Typography>
           </IconButton> :
-          <IconButton style={{borderRadius: '0px', color: '#109800', flexDirection:'column', width: '50%'}} 
+          <IconButton style={{borderRadius: '0px', color: '#109800', flexDirection:'column', width: '33%'}}
           size='medium' onClick={() => modalStore.openModal(
             <ConfirmModal text={`Czy na pewno chcesz przywrócić możliwość zamawiania produktu ${product.name}?`} 
-            onConfirm={() => handleProductUnlock()}/>)}
+            onConfirm={async () => await handleProductUnlock()}/>)}
           >
             <NoEncryption />
             <Typography variant='caption'>Odblokuj</Typography>
           </IconButton>
           }
+          <IconButton color={'primary'} style={{borderRadius: '0px', flexDirection:'column', width: '33%'}}
+                      size='medium' onClick={() => modalStore.openModal(
+              <ConfirmModal text={`Czy na pewno chcesz usunąc produkt ${product.name}?`} important={true}
+                            onConfirm={async () => await handleProductDelete()}/>)}
+          >
+            <Delete />
+            <Typography variant='caption'>Usuń</Typography>
+          </IconButton>
         </Stack>
       </TableCell>
     </TableRow>
