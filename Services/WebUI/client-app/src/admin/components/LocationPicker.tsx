@@ -33,7 +33,8 @@ function LocationPicker({locationName, onChange, existingSalePoints, setNameEdit
         }
 
 
-        if(setNameEdition && !name ){
+        if(setNameEdition && !name && !locationName ){
+            console.log('hi')
             setNameEdition(true)
             setSelectedLocation({latitude: '', longitude: '', name: ''})
             return;

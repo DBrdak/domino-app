@@ -112,7 +112,7 @@ export function ShopWorkingDayForm({onChange, weekDay}: Props) {
                                                 ...values,
                                                 openHours: {
                                                     end: values.openHours ? values.openHours.end : '',
-                                                    start: (date as Date).toLocaleTimeString()
+                                                    start: (date as Date) ? (date as Date).toLocaleTimeString() : ''
                                                 }
                                             })
                                             handleSubmit()
@@ -127,7 +127,7 @@ export function ShopWorkingDayForm({onChange, weekDay}: Props) {
                                                 ...values,
                                                 openHours: {
                                                     start: values.openHours ? values.openHours.start : '',
-                                                    end: (date as Date).toLocaleTimeString()
+                                                    end: (date as Date) ? (date as Date).toLocaleTimeString() : ''
                                                 }
                                             })
                                             handleSubmit()

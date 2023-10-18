@@ -6,6 +6,7 @@ import {v4 as uuid} from 'uuid'
 import { DeliveryInfo, PersonalInfo, Quantity } from "../../models/common";
 import OrderStore from "./orderStore";
 import { store } from "../store";
+import {DeliveryPoint} from "../../models/shop";
 
 export default class ShoppingCartStore {
   shoppingCart: ShoppingCart | null = null
@@ -13,7 +14,7 @@ export default class ShoppingCartStore {
   newProductQuantity: Quantity | null = null  
   newShoppingCartItem: ShoppingCartItem | null = null
   personalInfo: PersonalInfo | null = null
-  deliveryInfo: DeliveryInfo | null = null
+  deliveryPoint: DeliveryPoint | null = null
   shoppingCartCheckout: ShoppingCartCheckout | null = null
   loading: boolean = false
   subLoading: boolean = false
@@ -80,13 +81,13 @@ export default class ShoppingCartStore {
     this.personalInfo = personalInfo
   }
 
-  setDeliveryInfo(deliveryInfo: DeliveryInfo) {
-    this.deliveryInfo = deliveryInfo
+  setDeliveryPoint(deliveryInfo: DeliveryPoint) {
+    this.deliveryPoint = deliveryInfo
   }
 
   private createShoppingCartCheckout() {
-    if(this.shoppingCart && this.personalInfo && this.deliveryInfo){
-      this.shoppingCartCheckout = new ShoppingCartCheckout(this.shoppingCart, this.personalInfo, this.deliveryInfo)
+    if(this.shoppingCart && this.personalInfo && this.deliveryPoint){
+      this.shoppingCartCheckout = new ShoppingCartCheckout(this.shoppingCart, this.personalInfo, this.deliveryPoint)
     }
   }
 

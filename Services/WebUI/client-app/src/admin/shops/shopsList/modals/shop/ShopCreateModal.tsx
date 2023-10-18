@@ -69,7 +69,7 @@ const ShopCreateModal: React.FC = () => {
         <Formik
             initialValues={{shopName: shop.shopName, vehiclePlateNumber: '',  location: {longitude: '', latitude: '', name: ''}}}
             onSubmit={(values) => handleSubmit(values)}>
-            {({ handleSubmit, values, handleChange }) => (
+            {({ handleSubmit, values, handleChange, setValues }) => (
                 <Form>
                     <Stack direction={'column'} gap={3} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <Typography variant="h4" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} height={'75px'}>
@@ -92,11 +92,10 @@ const ShopCreateModal: React.FC = () => {
                             </FormControl>
                         }
                         {shopType === 'stationary' &&
-                            <LocationPicker
+                            <LocationPicker newMode
                                 locationName={values.shopName}
                                 onChange={(pickedLocation) => {
-                                    values.location = pickedLocation
-                                    console.log(values.location)
+                                    setValues({...values, location: pickedLocation})
                                 }}
                             />}
                         {shopType === 'mobile' &&

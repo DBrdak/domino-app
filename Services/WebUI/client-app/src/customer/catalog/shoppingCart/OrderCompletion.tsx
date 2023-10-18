@@ -15,7 +15,7 @@ const OrderCompletion: React.FC = observer(() => {
   const {orderStore, shoppingCartStore} = useStore()
 
   usePreventNavigation([
-    shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo, shoppingCartStore.deliveryInfo
+    shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo, shoppingCartStore.deliveryPoint
   ], '/koszyk')
 
   useEffect(() => {

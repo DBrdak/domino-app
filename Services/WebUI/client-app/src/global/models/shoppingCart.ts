@@ -1,6 +1,7 @@
 import { PathOptions } from "leaflet";
 import { DateTimeRange, DeliveryInfo, Location, Money, PersonalInfo, Photo, Quantity } from "./common";
 import { Product } from "./product";
+import {DeliveryPoint} from "./shop";
 
 export interface ShoppingCartItem {
   quantity: Quantity
@@ -58,12 +59,12 @@ export interface ShoppingCartCheckout {
 }
 
 export class ShoppingCartCheckout implements ShoppingCartCheckout {
-  constructor(init: ShoppingCart, personalInfo: PersonalInfo, deliveryInfo: DeliveryInfo) {
+  constructor(init: ShoppingCart, personalInfo: PersonalInfo, deliveryPoint: DeliveryPoint) {
     this.shoppingCart = init
     this.phoneNumber = personalInfo.phoneNumber
     this.firstName = personalInfo.firstName
     this.lastName = personalInfo.lastName
-    this.deliveryLocation = deliveryInfo.deliveryLocation
-    this.deliveryDate = deliveryInfo.deliveryDate
+    this.deliveryLocation = deliveryPoint.location
+    this.deliveryDate = deliveryPoint.possiblePickupDate[0]
   }
 }

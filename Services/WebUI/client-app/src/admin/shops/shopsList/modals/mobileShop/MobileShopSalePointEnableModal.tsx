@@ -35,8 +35,8 @@ export function MobileShopSalePointEnableModal({salePoints, onSubmit}: Props) {
                                 label="Punkt sprzedaży"
                                 onChange={handleChange}
                             >
-                                {salePoints.map(sp =>
-                                    <MenuItem key={sp.location.name} value={sp.location.name} >{sp.location.name}</MenuItem>
+                                {salePoints.map((sp, i) =>
+                                    <MenuItem key={i} value={sp.location.name} >{sp.location.name}</MenuItem>
                                 )}
                             </Select>
                         </FormControl>

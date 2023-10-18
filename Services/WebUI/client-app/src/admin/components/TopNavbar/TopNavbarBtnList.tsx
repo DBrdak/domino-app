@@ -8,6 +8,7 @@ import ProductListSection from "../../onlineShop/ProductListSection";
 import ShopsListSection from "../../shops/shopsList/ShopsListSection";
 import {SalePointMap} from "../../shops/salePointMap/SalePointMap";
 import SalePointMapSection from "../../shops/salePointMap/SalePointMapSection";
+import OrdersListSection from "../../onlineShop/OrdersListSection";
 
 function TopNavbarBtnList() {
   const location = useLocation()
@@ -18,7 +19,7 @@ function TopNavbarBtnList() {
       case '/admin/sklep-online':
         setContent([
           {content: <ProductListSection />, text: 'lista produktów' },
-          {content: <PriceListsSection />, text: 'zamówienia' },
+          {content: <OrdersListSection />, text: 'zamówienia' },
         ])
         break
       case '/admin/sprzedaz':

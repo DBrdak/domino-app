@@ -77,7 +77,10 @@ export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}
                             onChange={(date) => {
                                 setValues({
                                         ...values,
-                                        openHours: {end: values.openHours!.end, start: (date as Date).toLocaleTimeString()}})
+                                        openHours: {
+                                            end: values.openHours ? values.openHours.end : '',
+                                            start: (date as Date) ? (date as Date).toLocaleTimeString() : ''
+                                }})
                             }}
                         />
                         <TimeField
@@ -87,7 +90,10 @@ export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}
                             onChange={(date) => {
                                 setValues({
                                         ...values,
-                                        openHours: {start: values.openHours!.start, end: (date as Date).toLocaleTimeString()}})
+                                        openHours: {
+                                            start: values.openHours ? values.openHours.start : '',
+                                            end: (date as Date) ? (date as Date).toLocaleTimeString() : ''
+                                }})
                             }}
                         />
                     </LocalizationProvider>
@@ -96,7 +102,8 @@ export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}
                         <Typography>Dodaj punkt</Typography>
                     </Button>
                 </Stack>
-                <LocationPicker locationName={values.location.name} existingSalePoints={existingSalePoints} setNameEdition={(state) => setIsNameEditable(state)}
+                <LocationPicker locationName={values.location.name} existingSalePoints={existingSalePoints}
+                                setNameEdition={(state) => setIsNameEditable(state)}
                                 onChange={(pickedLocation) => setValues({...values, location: pickedLocation})} newMode />
             </Stack>
         </Form>}

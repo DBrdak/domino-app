@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Paper, Typography, Button, Stack, AppBar, Toolbar } from "@mui/material";
@@ -11,42 +11,25 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet-defaulticon-compatibility';
 import { getPolishDayOfWeek, getNextDay } from "./temp";
 import { usePreventNavigation } from "../../../global/router/routeProtection";
+import {DeliveryPoint} from "../../../global/models/shop";
 
 
 const DeliveryInfoStep: React.FC = () => {
-  const { shoppingCartStore } = useStore();
-  const [selectedDeliveryPoint, setSelectedDeliveryPoint] = useState<DeliveryInfo | null>(null);
+  const { shoppingCartStore, shopStore } = useStore();
+  const [selectedDeliveryPoint, setSelectedDeliveryPoint] = useState<DeliveryPoint | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    shopStore.loadDeliveryPoints()
+  }, [])
 
   usePreventNavigation([
     shoppingCartStore.shoppingCart, shoppingCartStore.personalInfo
   ], '/koszyk')
 
-  const exampleLocations: Location[] = [
-    { name: "Unieck", latitude: "52.86934621851329", longitude: "20.199904860257817" },
-    { name: "Krzeczanowo", latitude: "52.854646063625495", longitude: "20.104278953042556" },
-    { name: "Jeżewo-Wesel", latitude: "52.87918981616971", longitude: "20.162419484104024" },
-  ];
-
-  const exampleDates: DateTimeRange[] = [
-    {start: getNextDay('Środa', 8), end: getNextDay('Środa', 9, 20)},
-    {start: getNextDay('Środa', 11), end: getNextDay('Środa', 11, 40)},
-    {start: getNextDay('Środa', 9, 30), end: getNextDay('Środa', 10, 40)},
-  ]
-
-  const exampleDeliveryPoints: DeliveryInfo[] = [
-    {deliveryDate: exampleDates[0], deliveryLocation: exampleLocations[0]},
-    {deliveryDate: exampleDates[1], deliveryLocation: exampleLocations[1]},
-    {deliveryDate: exampleDates[2], deliveryLocation: exampleLocations[2]},
-  ]
-
-  const handleMarkerClick = (location: Location, date: DateTimeRange) => {
-    setSelectedDeliveryPoint({deliveryLocation:location, deliveryDate: date});
-  };
-
   function handleSubmit() {
     if (selectedDeliveryPoint) {
-      shoppingCartStore.setDeliveryInfo(selectedDeliveryPoint);
+      shoppingCartStore.setDeliveryPoint(selectedDeliveryPoint);
       navigate('/koszyk/zamówienie')
     }
   };
@@ -66,29 +49,24 @@ const DeliveryInfoStep: React.FC = () => {
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {exampleDeliveryPoints.map(({deliveryLocation: l, deliveryDate: d}) => (
+            {shopStore.deliveryPoints && shopStore.deliveryPoints.map((d,i) => (
               <Marker
-                key={l.name}
-                position={[parseFloat(l.latitude), parseFloat(l.longitude)]}
+                key={i}
+                position={[Number(d.location.latitude), Number(d.location.longitude)]}
                 eventHandlers={{
-                  click: () => handleMarkerClick(l, d),
+                  click: () => setSelectedDeliveryPoint(d),
                 }}
               >
-                <Popup>{l.name}</Popup>
+                <Popup>{d.location.name}</Popup>
               </Marker>
             ))}
           </MapContainer>
             {selectedDeliveryPoint ? 
               <Paper style={{textAlign: 'center', marginTop: '0px', padding: '10px 0px 10px 0px'}}>
                 <div style={{ marginTop: 10 }}>
-                  <Typography textAlign={'center'} fontWeight={'bold'}>{selectedDeliveryPoint.deliveryLocation.name}</Typography>
+                  <Typography textAlign={'center'} fontWeight={'bold'}>{selectedDeliveryPoint.location.name}</Typography>
                   <Typography>
-                    Czas odbioru: {}
-                    {getPolishDayOfWeek(selectedDeliveryPoint.deliveryDate.start)} {}  
-                    {selectedDeliveryPoint.deliveryDate.start.toLocaleTimeString().slice(0,5)}  
-                    {} - {}
-                    {getPolishDayOfWeek(selectedDeliveryPoint.deliveryDate.end)} {}  
-                    {selectedDeliveryPoint.deliveryDate.end.toLocaleTimeString().slice(0,5)} 
+                    {shopStore.deliveryPoints.flatMap(dp => dp.possiblePickupDate).map(d => `${d.start} - ${d.end}`)}
                     </Typography>
                 </div>
               </Paper>
