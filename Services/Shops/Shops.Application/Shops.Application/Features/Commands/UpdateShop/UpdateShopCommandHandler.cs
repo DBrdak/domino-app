@@ -111,6 +111,11 @@ namespace Shops.Application.Features.Commands.UpdateShop
             {
                 mobileShopToUpdate.DisableSalePoint(values.SalePointToDisable);
             }
+
+            if (values.UpdatedSalePoint is not null)
+            {
+                mobileShopToUpdate.UpdateSalePoint(values.UpdatedSalePoint);
+            }
         }
 
         private void UpdateStationaryShop(ref StationaryShop stationaryShopToUpdate, StationaryShopUpdateValues values)

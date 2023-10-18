@@ -1,11 +1,11 @@
-import {useStore} from "../../../../global/stores/store";
-import {BusinessPriceListCreateValues} from "../../../../global/models/priceList";
+import {useStore} from "../../../../../global/stores/store";
+import {BusinessPriceListCreateValues} from "../../../../../global/models/priceList";
 import * as yup from "yup";
 import {Form, Formik} from "formik";
 import {Button, Stack, Typography} from "@mui/material";
-import MyTextInput from "../../../../components/MyTextInput";
+import MyTextInput from "../../../../../components/MyTextInput";
 import React from "react";
-import {Seller} from "../../../../global/models/shop";
+import {Seller} from "../../../../../global/models/shop";
 
 interface Props {
     onSubmit: (seller: Seller) => void
@@ -16,7 +16,7 @@ export function SellerAddModal({onSubmit}: Props) {
     const validationSchema = yup.object({
         firstName: yup.string().required( 'Imię sprzedawcy jest wymagane'),
         lastName: yup.string().required( 'Nazwisko sprzedawcy jest wymagane'),
-        phoneNumber: yup.string().optional(),
+        phoneNumber: yup.string().optional().matches(/[0-9]{9}/),
     });
 
     return (
@@ -44,6 +44,7 @@ export function SellerAddModal({onSubmit}: Props) {
                             placeholder={'Numer telefonu'}
                             name={'phoneNumber'}
                             showErrors
+                            type={'number'}
                         />
                         <Button disabled={!isValid} type={'submit'} onClick={() => handleSubmit} variant={'contained'}>
                             <Typography>Dodaj sprzedawcę</Typography>

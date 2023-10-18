@@ -41,7 +41,7 @@ namespace Shops.API.Controllers
         public async Task<IActionResult> UpdateShopData(
             [FromBody] UpdateShopCommand command,
             CancellationToken cancellationToken)
-        {
+        { //TODO Update Sale Point
             var result = await _mediator.Send(command, cancellationToken);
 
             return result.IsSuccess ?

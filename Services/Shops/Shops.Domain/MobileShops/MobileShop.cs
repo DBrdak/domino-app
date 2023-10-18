@@ -31,18 +31,22 @@ namespace Shops.Domain.MobileShops
 
         public void AddSalePoint(Location location, TimeRange openHours, string weekDay)
         {
-            if (SalePoints.FirstOrDefault(s => s.Location == location && s.WeekDay.Value == weekDay && s.OpenHours == openHours) is {} salePointToUpdate)
+            if (SalePoints.Any(sp => sp.Location.Name == location.Name))
             {
-                UpdateSalePoint(salePointToUpdate, location, openHours,weekDay);
+                throw new ApplicationException(
+                    $"Sale point in location [{location.Name}] already exist for shop [{ShopName}]");
             }
 
             SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));
         }
 
-        private void UpdateSalePoint(SalePoint salePointToUpdate, Location location, TimeRange openHours, string weekDay)
+        public void UpdateSalePoint(SalePoint updatedSalePoint)
         {
-            SalePoints.Remove(salePointToUpdate);
-            SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));
+            var existingSalePoint = SalePoints.FirstOrDefault(sp => sp.Location == updatedSalePoint.Location) ??
+                                    throw new ApplicationException(
+                                        $"No sale point in location {updatedSalePoint.Location} find for shop named {ShopName}");
+
+            existingSalePoint.Update(updatedSalePoint);
         }
 
         public void RemoveSalePoint(SalePoint salePoint)

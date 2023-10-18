@@ -19,7 +19,7 @@ export function ShopsList({shops, loading}: Props) {
                 <TableHead>
                     <TableRow>
                         <TableCell width={'25%'} style={{textAlign: 'center'}} >
-                            <Typography variant='h5'><strong>Nazwa Sklepu</strong></Typography>
+                            <Typography variant='h5' textAlign={'center'}><strong>Nazwa Sklepu</strong></Typography>
                         </TableCell>
                         <TableCell width={'75%'} style={{textAlign: 'center'}}>
                             <Typography variant='h5'><strong>Akcje</strong></Typography>

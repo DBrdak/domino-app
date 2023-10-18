@@ -1,4 +1,4 @@
-import {Product} from "../../../../global/models/product";
+import {Product} from "../../../../../global/models/product";
 import React, {useEffect, useState} from "react";
 import * as yup from "yup";
 import {Form, Formik} from "formik";
@@ -12,12 +12,12 @@ import {
     Stack,
     Typography
 } from "@mui/material";
-import MyTextInput from "../../../../components/MyTextInput";
-import LoadingComponent from "../../../../components/LoadingComponent";
-import {Shop, ShopCreateValues} from "../../../../global/models/shop";
-import LocationPicker from "../../../components/LocationPicker";
-import {useStore} from "../../../../global/stores/store";
-import {Location} from '../../../../global/models/common'
+import MyTextInput from "../../../../../components/MyTextInput";
+import LoadingComponent from "../../../../../components/LoadingComponent";
+import {Shop, ShopCreateValues} from "../../../../../global/models/shop";
+import LocationPicker from "../../../../components/LocationPicker";
+import {useStore} from "../../../../../global/stores/store";
+import {Location} from '../../../../../global/models/common'
 import {toast} from "react-toastify";
 import {observer} from "mobx-react-lite";
 

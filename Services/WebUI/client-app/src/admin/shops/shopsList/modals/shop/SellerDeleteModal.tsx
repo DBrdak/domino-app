@@ -1,11 +1,11 @@
 import {Form, Formik} from "formik";
 import {Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
-import MyTextInput from "../../../../components/MyTextInput";
+import MyTextInput from "../../../../../components/MyTextInput";
 import React from "react";
-import {useStore} from "../../../../global/stores/store";
-import {BusinessPriceListCreateValues} from "../../../../global/models/priceList";
+import {useStore} from "../../../../../global/stores/store";
+import {BusinessPriceListCreateValues} from "../../../../../global/models/priceList";
 import * as yup from "yup";
-import {Seller} from "../../../../global/models/shop";
+import {Seller} from "../../../../../global/models/shop";
 
 interface Props {
     sellers: Seller[]

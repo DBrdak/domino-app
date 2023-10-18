@@ -5,13 +5,19 @@ import {LatLng, LeafletEvent, LeafletMouseEvent} from "leaflet";
 import {useMediaQuery} from "@mui/material";
 import theme from "../../global/layout/theme";
 import {toast} from "react-toastify";
+import {SalePoint} from "../../global/models/shop";
+import {bool} from "yup";
+import dismiss = toast.dismiss;
 
 interface LocationPickerProps {
     locationName: string
     onChange: (pickedLocation: Location) => void
+    existingSalePoints?: SalePoint[]
+    setNameEdition?: (state: boolean) => void
+    newMode?: boolean
 }
 
-function LocationPicker({locationName, onChange}: LocationPickerProps) {
+function LocationPicker({locationName, onChange, existingSalePoints, setNameEdition, newMode}: LocationPickerProps) {
     const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
     const isMobile = useMediaQuery(theme.breakpoints.down(1920))
 
@@ -19,10 +25,25 @@ function LocationPicker({locationName, onChange}: LocationPickerProps) {
         selectedLocation && onChange(selectedLocation)
     }, [selectedLocation])
 
-    function handleMapClick(coordinates: LatLng) {
-        const longitude = String(coordinates.lng)
-        const latitude = String(coordinates.lat)
-        setSelectedLocation({latitude: latitude, longitude: longitude, name: locationName})
+    function handleMapClick(lat: number | string, lng: number | string, name?: string) {
+        if(locationName.length < 1 && !name) {
+            toast.dismiss()
+            toast.error('Podaj nazwę punktu')
+            return
+        }
+
+
+        if(setNameEdition && !name ){
+            setNameEdition(true)
+            setSelectedLocation({latitude: '', longitude: '', name: ''})
+            return;
+        }
+
+        setNameEdition && name && setNameEdition(false)
+
+        const longitude = String(lng)
+        const latitude = String(lat)
+        setSelectedLocation({latitude: latitude, longitude: longitude, name: name ? name : locationName})
     }
 
     const hxw = isMobile ? 300 : 500
@@ -32,19 +53,31 @@ function LocationPicker({locationName, onChange}: LocationPickerProps) {
             <MapContainer
                 center={[52.80537130233171, 20.118007397537376]}
                 zoom={8}
-                style={{ height: hxw, width: hxw }}
+                style={{ height: hxw, width: hxw, borderRadius: '20px', boxShadow: '0px 0px 7px 0px' }}
             >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <ClickLocator onMapClick={(e) => handleMapClick(e.latlng)} />
+                {newMode && <ClickLocator onMapClick={(e) => handleMapClick(e.latlng.lat, e.latlng.lng)}/>}
                 {selectedLocation && (
                     <Marker position={{lng: Number(selectedLocation.longitude), lat: Number(selectedLocation.latitude)}}>
-                        <Popup>
+                        <Popup keepInView>
                             {locationName}
                         </Popup>
                     </Marker>
                 )}
+                {existingSalePoints && existingSalePoints.map((sp, i) => (
+                    <Marker key={i} riseOnHover eventHandlers={{
+                        click: () => {
+                            handleMapClick(sp.location.latitude, sp.location.longitude, sp.location.name)
+                        }
+                    }}
+                            position={{lng: Number(sp.location.longitude), lat: Number(sp.location.latitude)}}>
+                        <Popup keepInView>
+                            {sp.location.name}
+                        </Popup>
+                    </Marker>
+                ))}
             </MapContainer>
         </div>
     );

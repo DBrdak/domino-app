@@ -49,6 +49,7 @@ export interface MobileShopUpdateValues {
     salePointToRemove: SalePoint | null
     salePointToDisable: SalePoint | null
     salePointToEnable: SalePoint | null
+    updatedSalePoint: SalePoint | null
 }
 
 export interface ShopCreateValues {

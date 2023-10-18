@@ -6,6 +6,8 @@ import TopNavbarBtn from '../topNavbar/TopNavbarBtn'
 import PriceListsSection from "../../pricelists/priceListList/PriceListsSection";
 import ProductListSection from "../../onlineShop/ProductListSection";
 import ShopsListSection from "../../shops/shopsList/ShopsListSection";
+import {SalePointMap} from "../../shops/salePointMap/SalePointMap";
+import SalePointMapSection from "../../shops/salePointMap/SalePointMapSection";
 
 function TopNavbarBtnList() {
   const location = useLocation()
@@ -32,7 +34,7 @@ function TopNavbarBtnList() {
       case '/admin/sklepy':
         setContent([
           {content: <ShopsListSection />, text: 'lista sklepów' },
-          {content: <PriceListsSection />, text: 'punkty sprzedaży' },
+          {content: <SalePointMapSection />, text: 'punkty sprzedaży' },
         ])
         break
       case '/admin/paliwo':

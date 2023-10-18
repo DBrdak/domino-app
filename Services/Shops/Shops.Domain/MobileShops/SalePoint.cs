@@ -9,7 +9,7 @@ namespace Shops.Domain.MobileShops
     public sealed record SalePoint
     {
         public Location Location { get; init; }
-        public WeekDay WeekDay { get; init; }
+        public WeekDay WeekDay { get; private set; }
         public bool IsClosed { get; private set; }
         public TimeRange? OpenHours { get; private set; }
         public TimeRange? CachedOpenHours { get; private set; }
@@ -45,6 +45,17 @@ namespace Shops.Domain.MobileShops
             IsClosed = false;
             OpenHours = CachedOpenHours;
             CachedOpenHours = null;
+        }
+
+        public void Update(SalePoint updatedSalePoint)
+        {
+            if (IsClosed)
+            {
+                Open();
+            }
+
+            OpenHours = updatedSalePoint.OpenHours;
+            WeekDay = updatedSalePoint.WeekDay;
         }
     }
 }

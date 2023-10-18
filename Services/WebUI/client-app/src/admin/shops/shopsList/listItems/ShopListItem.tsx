@@ -1,7 +1,6 @@
 import {useStore} from "../../../../global/stores/store";
 import {MobileShop, Seller} from "../../../../global/models/shop";
 import {IconButton, Stack, TableCell, TableRow, Typography} from "@mui/material";
-import ShopEditModal from "../modals/ShopEditModal";
 import {
     AddLocationAlt,
     Delete,
@@ -16,8 +15,8 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import {observer} from "mobx-react-lite";
 import MobileShopListItem from "./MobileShopListItemActions";
 import StationaryShopListItem from "./StationaryShopListItemActions";
-import {SellerDeleteModal} from "../modals/SellerDeleteModal";
-import {SellerAddModal} from "../modals/SellerAddModal";
+import {SellerDeleteModal} from "../modals/shop/SellerDeleteModal";
+import {SellerAddModal} from "../modals/shop/SellerAddModal";
 import {useEffect} from "react";
 
 

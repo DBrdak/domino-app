@@ -3,7 +3,7 @@ import {Box, Button, IconButton, Stack, TextField} from '@mui/material'
 import React, {useEffect, useMemo, useState} from 'react'
 import { useStore } from '../../../global/stores/store'
 import { observer } from 'mobx-react-lite'
-import ShopCreateModal from "./modals/ShopCreateModal";
+import ShopCreateModal from "./modals/shop/ShopCreateModal";
 import {ShopCreateValues} from "../../../global/models/shop";
 
 function ShopsListUpperSection() {

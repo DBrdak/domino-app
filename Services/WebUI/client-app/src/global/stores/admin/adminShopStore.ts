@@ -1,5 +1,13 @@
 import { makeAutoObservable,} from "mobx";
-import {SalePoint, Seller, Shop, ShopCreateValues, ShopUpdateValues, ShopWorkingDay} from "../../models/shop";
+import {
+    MobileShop,
+    SalePoint,
+    Seller,
+    Shop,
+    ShopCreateValues,
+    ShopUpdateValues,
+    ShopWorkingDay, StationaryShop
+} from "../../models/shop";
 import agent from "../../api/agent";
 import {TimeRange, WeekDay, Location} from "../../models/common";
 
@@ -19,6 +27,29 @@ export default class AdminShopStore {
 
     get shops() {
         return Array.from(this.shopsRegistry.values())
+    }
+
+    get mobileShops() {
+        return Array.from(this.shopsRegistry.values())
+            .filter(s => (s as any).salePoints)
+            .map(ms => (ms as MobileShop))
+    }
+
+    get stationaryShops() {
+        return Array.from(this.shopsRegistry.values())
+            .filter(s => (s as any).location)
+            .map(ss => (ss as StationaryShop))
+    }
+
+    get salePoints() {
+        const salePoints = Array.from(this.shopsRegistry.values())
+            .filter(s => (s as any).salePoints)
+            .map(ms => (ms as MobileShop))
+            .flatMap(ms => ms.salePoints)
+        const uniqueSalePoints = new Map<string, SalePoint>()
+        salePoints.forEach(sp => uniqueSalePoints.set(sp.location.name, sp))
+
+        return Array.from(uniqueSalePoints.values())
     }
 
     private setLoading(state: boolean) {
@@ -77,7 +108,8 @@ export default class AdminShopStore {
         newSalePoint: SalePoint | null,
         salePointToRemove: SalePoint | null,
         salePointToDisable: SalePoint | null,
-        salePointToEnable: SalePoint | null) {
+        salePointToEnable: SalePoint | null,
+        updatedSalePoint: SalePoint | null) {
 
         if(!this.shopUpdateValues) {
             this.shopToUpdateId && this.setShopUpdateValues(null, null)
@@ -91,7 +123,8 @@ export default class AdminShopStore {
                 newSalePoint,
                 salePointToRemove,
                 salePointToDisable,
-                salePointToEnable
+                salePointToEnable,
+                updatedSalePoint
             },
             stationaryShopUpdateValues: null
         } : null
