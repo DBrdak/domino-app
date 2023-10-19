@@ -11,7 +11,7 @@ namespace Shops.Application.Features.Queries.GetDeliveryPoints;
 public sealed record DeliveryPoint(Location Location, ShopWorkingDay[] WorkingDays)
 {
     public List<DateTimeRange> PossiblePickupDate { get; private set; } = new();
-    private const int workEndHour = 12;
+    private const int utcWorkEndHour = 14;
 
     public void CalculateNextPossiblePickup()
     {
@@ -32,16 +32,21 @@ public sealed record DeliveryPoint(Location Location, ShopWorkingDay[] WorkingDa
         var availableWorkingDaysAsDate = workingDaysAsDate.Where(
                 wd =>
                 {
-                    var dayDifferenceCount = DateTimeService.Today.DayNumber - wd.Date.DayNumber;
+                    if (wd is null)
+                    {
+                        return false;
+                    }
 
-                    return DateTimeService.UtcNow.Hour >= workEndHour ?
+                    var dayDifferenceCount = wd.Date.DayNumber - DateTimeService.Today.DayNumber;
+
+                    return DateTimeService.UtcNow.Hour >= utcWorkEndHour ?
                         dayDifferenceCount >= 2 :
                         dayDifferenceCount >= 1;
                 });
 
         var availableWorkingDays = availableWorkingDaysAsDate.Select(wd => new DateTimeRange(wd.Date, wd.Time));
 
-        PossiblePickupDate = availableWorkingDays.ToList();
+        PossiblePickupDate = availableWorkingDays.OrderBy(d => d.Start).ToList();
     }
 
     public static List<DeliveryPoint> GetDeliveryPointsFromSalePoints(

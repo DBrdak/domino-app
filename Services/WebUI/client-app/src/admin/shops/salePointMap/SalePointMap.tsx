@@ -1,4 +1,4 @@
-import {MapContainer, Marker, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import React, {useState} from "react";
 import {Paper, Stack, Typography} from "@mui/material";
 import {MobileShop, SalePoint, StationaryShop} from "../../../global/models/shop";
@@ -77,7 +77,11 @@ export function SalePointMap({mobileShops, stationaryShops, locations}: Props) {
                                 position={{
                                     lng: Number(l.longitude),
                                     lat: Number(l.latitude)
-                                }}/>
+                                }}>
+                            <Popup>
+                                {l.name}
+                            </Popup>
+                        </Marker>
                     ))
                 }
                 {stationaryShops.map(ss => (
@@ -87,7 +91,11 @@ export function SalePointMap({mobileShops, stationaryShops, locations}: Props) {
                             setStationaryInfo(ss)
                         }
                     }}
-                            position={{lng: Number(ss.location.longitude), lat: Number(ss.location.latitude)}}/>
+                            position={{lng: Number(ss.location.longitude), lat: Number(ss.location.latitude)}}>
+                        <Popup>
+                            {ss.location.name}
+                        </Popup>
+                    </Marker>
                 ))
                 }
             </MapContainer>

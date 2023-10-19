@@ -167,6 +167,7 @@ export default class ShoppingCartStore {
     try {
       if(!this.shoppingCart) await this.loadShoppingCart()
       this.createShoppingCartCheckout()
+      console.log(this.shoppingCartCheckout)
       const result = this.shoppingCartCheckout && await agent.shoppingCart.checkout(this.shoppingCartCheckout)
       this.personalInfo?.phoneNumber && store.orderStore.setPhoneNumber(this.personalInfo.phoneNumber)
       result && store.orderStore.setId(result)

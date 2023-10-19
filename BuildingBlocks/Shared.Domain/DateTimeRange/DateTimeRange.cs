@@ -1,15 +1,16 @@
-﻿namespace Shared.Domain.DateTimeRange
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
+
+namespace Shared.Domain.DateTimeRange
 {
     public sealed record DateTimeRange
     {
-        public DateTime Start { get; init; }
-        public DateTime End { get; init; }
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        public DateTime Start { get; private set; }
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        public DateTime End { get; private set; }
 
-        public DateTimeRange()
-        {
-            
-        }
-
+        [JsonConstructor]
         public DateTimeRange(DateTime start, DateTime end)
         {
             if (start > end)
@@ -55,6 +56,14 @@
                 timeRange.End.Hour,
                 timeRange.End.Minute,
                 timeRange.End.Second);
+        }
+
+        public DateTimeRange ParseToUTC()
+        {
+            Start = Start.ToUniversalTime();
+            End = End.ToUniversalTime();
+
+            return this;
         }
     }
 }

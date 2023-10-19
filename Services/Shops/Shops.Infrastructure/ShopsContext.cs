@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Shops.Domain.Abstractions;
-using Shops.Domain.SalePoints;
 
 namespace Shops.Infrastructure
 {
     public sealed class ShopsContext
     {
         public IMongoCollection<Shop> Shops { get; }
-        public IMongoCollection<SalePoint> SalePoints { get; }
 
         public ShopsContext(IConfiguration config)
         {

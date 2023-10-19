@@ -3,6 +3,7 @@ import {useStore} from "../../global/stores/store";
 import {useEffect} from "react";
 import LoadingComponent from "../../components/LoadingComponent";
 import {observer} from "mobx-react-lite";
+import {Stack, Typography} from "@mui/material";
 
 function OrdersListSection() {
     const {adminOrderStore} = useStore()
@@ -13,9 +14,14 @@ function OrdersListSection() {
 
     return (
         !adminOrderStore.loading ?
-            <OrdersList orders={adminOrderStore.orders} />
+            <Stack direction={'column'} style={{justifyContent: 'center', alignItems: 'center'}} spacing={3}>
+                <Typography variant={'h4'}>Zamówienia Online</Typography>
+                <OrdersList orders={adminOrderStore.orders} />
+            </Stack>
             :
-            <LoadingComponent />
+            <div style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <LoadingComponent />
+            </div>
     );
 }
 

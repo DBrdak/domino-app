@@ -6,8 +6,6 @@ import {useMediaQuery} from "@mui/material";
 import theme from "../../global/layout/theme";
 import {toast} from "react-toastify";
 import {SalePoint} from "../../global/models/shop";
-import {bool} from "yup";
-import dismiss = toast.dismiss;
 
 interface LocationPickerProps {
     locationName: string

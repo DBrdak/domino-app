@@ -61,7 +61,7 @@ namespace OnlineShop.ShoppingCart.API.Repositories
                 request.LastName,
                 request.DeliveryLocation,
                 request.DeliveryDate);
-
+            
             var client = _bus.CreateRequestClient<ShoppingCartCheckoutEvent>();
             var response = await client.GetResponse<CheckoutResult>(eventMessage);
 

@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import LoadingTableRow from "../../../components/LoadingTableRow";
 import React from "react";
 import {Shop} from "../../../global/models/shop";
@@ -29,7 +29,16 @@ export function ShopsList({shops, loading}: Props) {
                 <TableBody>
                     {
                         loading ?
-                            <LoadingTableRow rows={4} cells={2} />
+                            new Array(4).fill(null).map((_, rowIndex) => (
+                                <TableRow key={rowIndex}>
+                                    <TableCell style={{ textAlign: 'center', width: `25%` }}>
+                                        <Skeleton variant="text" width="80%" height={30} />
+                                    </TableCell>
+                                    <TableCell style={{ textAlign: 'center', width: `75%` }}>
+                                        <Skeleton variant="text" width="80%" height={30} />
+                                    </TableCell>
+                                </TableRow>
+                            ))
                             :
                             shops &&
                             shops.map((p:any) => (

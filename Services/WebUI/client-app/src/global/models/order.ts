@@ -72,7 +72,7 @@ export class OnlineOrderCreate implements OnlineOrder {
     this.firstName = init.firstName;
     this.lastName = init.lastName;
     this.deliveryLocation = init.deliveryLocation;
-    this.deliveryDate = init.deliveryDate;
+    this.deliveryDate = {start: new Date(init.deliveryDate.start), end: new Date(init.deliveryDate.end)};
     this.id = null
     this.createdDate = null
     this.completionDate = null

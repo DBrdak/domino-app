@@ -69,6 +69,7 @@ function ProductCreateForm({names, setNames}: Props) {
                         <MyTextInput
                             placeholder={'Opis produktu'}
                             name={'description'}
+                            label={'Opis produktu'}
                             showErrors
                         />
                         <FormControl fullWidth >
@@ -87,6 +88,7 @@ function ProductCreateForm({names, setNames}: Props) {
                         <MyTextInput
                             placeholder={'Podkategoria produktu'}
                             name={'subcategory'}
+                            label={'Podkategoria produktu'}
                             showErrors
                         />
                         <Stack direction={'row'} spacing={2} style={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
@@ -103,6 +105,7 @@ function ProductCreateForm({names, setNames}: Props) {
                                 name={'singleWeight'}
                                 showErrors
                                 type={'number'}
+                                label={'Waga jednostkowa'}
                             />
                         }
                         <PhotoUploadWidget uploadPhoto={(photo) => setNewPhoto(photo)} setLoading={(state) => setLoading(state)} />

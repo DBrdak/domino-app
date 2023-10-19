@@ -2,6 +2,7 @@
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Date;
+using Shared.Domain.DateTimeRange;
 
 namespace OnlineShop.Order.Infrastructure.Persistence
 {
@@ -30,8 +31,8 @@ namespace OnlineShop.Order.Infrastructure.Persistence
         private void RejectNotAcceptedOrders()
         {
             var notAcceptedOrders = Orders
-                .Where(o => o.DeliveryDate.Start < DateTimeService.UtcNow
-                            && (o.Status != OrderStatus.Accepted || o.Status != OrderStatus.Received))
+                .Where(o => o.DeliveryDate.Start.ToUniversalTime() > DateTimeService.UtcNow
+                            && (o.Status.StatusMessage != OrderStatus.Accepted.StatusMessage|| o.Status.StatusMessage != OrderStatus.Received.StatusMessage))
                 .ToList();
 
             notAcceptedOrders.ForEach(o => o.Reject());
@@ -40,8 +41,7 @@ namespace OnlineShop.Order.Infrastructure.Persistence
         private void RemoveExpiredOrders()
         {
             var expiredOrders = Orders
-                .Where(o => o.ExpiryDate <= DateTimeService.UtcNow)
-                .ToList();
+                .Where(o => o.ExpiryDate <= DateTimeService.UtcNow);
 
             Orders.RemoveRange(expiredOrders);
         }

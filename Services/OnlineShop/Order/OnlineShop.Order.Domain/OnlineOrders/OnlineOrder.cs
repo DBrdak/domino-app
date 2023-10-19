@@ -34,8 +34,20 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         // Order Info
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? CompletionDate { get; private set; }
-        public DateTime? ExpiryDate => CompletionDate?.AddDays(28);
+
+        private DateTime? _completionDate;
+
+        public DateTime? CompletionDate
+        {
+            get => _completionDate;
+            private set
+            {
+                _completionDate = value;
+                ExpiryDate = value?.AddDays(28);
+            }
+        }
+
+        public DateTime? ExpiryDate { get; private set; }
         public OrderStatus Status { get; private set; }
 
         public OnlineOrder()
@@ -146,7 +158,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                 shoppingCart.FirstName,
                 shoppingCart.LastName,
                 shoppingCart.DeliveryLocation,
-                shoppingCart.DeliveryDate,
+                shoppingCart.DeliveryDate.ParseToUTC(),
                 GenerateId(),
                 DateTimeService.UtcNow,
                 null,

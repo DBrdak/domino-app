@@ -55,7 +55,7 @@ export interface ShoppingCartCheckout {
   firstName: string;
   lastName: string;
   deliveryLocation: Location;
-  deliveryDate: DateTimeRange;
+  deliveryDate: DateTimeRange
 }
 
 export class ShoppingCartCheckout implements ShoppingCartCheckout {
