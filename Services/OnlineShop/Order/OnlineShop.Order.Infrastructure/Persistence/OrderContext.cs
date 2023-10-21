@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Date;
@@ -6,10 +7,11 @@ using Shared.Domain.DateTimeRange;
 
 namespace OnlineShop.Order.Infrastructure.Persistence
 {
+
     public class OrderContext : DbContext
     {
-        public DbSet<OnlineOrder> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OnlineOrder>? Orders { get; set; }
+        public DbSet<OrderItem>? OrderItems { get; set; }
 
         public OrderContext(DbContextOptions options) : base(options)
         {
@@ -25,7 +27,19 @@ namespace OnlineShop.Order.Infrastructure.Persistence
         {
             RemoveExpiredOrders();
             RejectNotAcceptedOrders();
+            SafetyDeleteOrders();
+
             return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void SafetyDeleteOrders()
+        {
+            var deletedOrders = ChangeTracker.Entries<OnlineOrder>()
+                .Where(o => o.State == EntityState.Deleted)
+                .Select(x => x.Entity)
+                .ToList();
+
+            deletedOrders.ForEach(o => o.SafeDelete());
         }
 
         private void RejectNotAcceptedOrders()

@@ -1,4 +1,4 @@
-import {OrdersList} from "./ordersList/OrdersList";
+import OrdersList from "./ordersList/OrdersList";
 import {useStore} from "../../global/stores/store";
 import {useEffect} from "react";
 import LoadingComponent from "../../components/LoadingComponent";

@@ -1,9 +1,8 @@
-﻿using EventBus.Domain.Common;
-using Shared.Domain.DateTimeRange;
+﻿using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shared.Domain.Money;
 
-namespace EventBus.Domain.Events
+namespace EventBus.Domain.Events.ShoppingCartCheckout
 {
     public sealed record ShoppingCartCheckoutEvent(
         string ShoppingCartId,

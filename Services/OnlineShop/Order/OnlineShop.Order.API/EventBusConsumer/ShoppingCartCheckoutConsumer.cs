@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Events;
+﻿using EventBus.Domain.Events.ShoppingCartCheckout;
 using MassTransit;
 using MediatR;
 using OnlineShop.Order.Application.Features.Commands.CheckoutOrder;
@@ -20,10 +20,12 @@ namespace OnlineShop.Order.API.EventBusConsumer
             var command = new CheckoutOrderCommand(OnlineOrder.Create(context.Message));
             var result = await _mediator.Send(command);
 
-            if (result.IsSuccess)
-                await context.RespondAsync(result);
-            else
+            if (!result.IsSuccess)
+            {
                 throw new ApplicationException(result.Error);
+            }
+
+            await context.RespondAsync(result);
         }
     }
 }

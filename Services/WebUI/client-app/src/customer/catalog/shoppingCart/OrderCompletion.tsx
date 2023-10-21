@@ -55,7 +55,7 @@ const OrderCompletion: React.FC = observer(() => {
           <Typography variant="subtitle1">Nazwisko: {order?.lastName}</Typography>
           <Typography variant="subtitle1">Numer telefonu: {order?.phoneNumber}</Typography>
           <Typography variant="subtitle1">Miejsce odbioru: {order?.deliveryLocation.name}</Typography>
-          <Typography variant="subtitle1">Czas odbioru: {`${format(new Date(order.deliveryDate.start), 'dd.MM.yyyy HH:mm', { locale: pl })} - ${format(new Date(order.deliveryDate.end), 'dd.MM.yyyy HH:mm', {locale: pl})}`}
+          <Typography variant="subtitle1">Czas odbioru: {<DateTimeRangeDisplay date={order.deliveryDate} />}
           </Typography>
           <Typography variant="subtitle1">Numer zamówienia: {order?.id}</Typography>
           <CompletionMark />

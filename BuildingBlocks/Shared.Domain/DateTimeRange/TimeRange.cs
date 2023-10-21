@@ -24,5 +24,13 @@ namespace Shared.Domain.DateTimeRange
             Start = start;
             End = end;
         }
+
+        public TimeRange(DateTime start, DateTime end) : this(
+            new TimeOnly(start.Hour, start.Minute),
+            new TimeOnly(end.Hour, end.Minute))
+        { }
+
+        public TimeRange(DateTimeRange dateRange) : this(dateRange.Start, dateRange.End)
+        { }
     }
 }

@@ -1,11 +1,11 @@
-﻿using EventBus.Domain.Common;
+﻿using EventBus.Domain.Events.ShoppingCartCheckout;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Quantity;
 
 namespace OnlineShop.Order.Domain.OrderItems;
 
-public class OrderItem : Entity
+public sealed class OrderItem : Entity
 {
     public string OrderId { get; init; }
     public Quantity Quantity { get; init; }

@@ -1,5 +1,4 @@
-﻿using EventBus.Domain.Common;
-using EventBus.Domain.Events;
+﻿using EventBus.Domain.Events.ShoppingCartCheckout;
 using OnlineShop.Order.Domain.OnlineOrders.Events;
 using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Abstractions.Entities;
@@ -30,6 +29,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public Location DeliveryLocation { get; private set; }
         public DateTimeRange DeliveryDate { get; private set; }
+        public string? ShopId { get; private set; }
 
         // Order Info
 
@@ -77,6 +77,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             CreatedDate = createdDate;
             CompletionDate = receiveDate;
             Status = status;
+            ShopId = null;
         }
 
         private void Modify(OnlineOrder order, OrderStatus status)
@@ -149,6 +150,11 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Modify(modifiedOrder, OrderStatus.Modified);
         }
 
+        public void SetShopId(string shopId)
+        {
+            ShopId = shopId;
+        }
+
         public static OnlineOrder Create(ShoppingCartCheckoutEvent shoppingCart)
         {
             var order = new OnlineOrder(
@@ -167,6 +173,16 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             order.RaiseDomainEvent(new OrderCreatedDomainEvent(order.Id, order.PhoneNumber));
 
             return order;
+        }
+
+        public void SafeDelete()
+        {
+            if (ShopId is null)
+            {
+                return;
+            }
+
+            RaiseDomainEvent(new OrderDeletedDomainEvent(ShopId, Id));
         }
     }
 }

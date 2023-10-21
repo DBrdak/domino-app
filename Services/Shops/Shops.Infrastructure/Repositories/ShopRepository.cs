@@ -76,12 +76,30 @@ namespace Shops.Infrastructure.Repositories
 
         public async Task<bool> DeleteShop(string requestShopId, CancellationToken cancellationToken)
         {
+            var isValid = await CheckIfShopIsValidForDeletion(requestShopId, cancellationToken);
+
+            if (!isValid)
+            {
+                return false;
+            }
+
             var deletionResult = await _context.Shops.DeleteOneAsync(
                 s => s.Id == requestShopId,
                 null,
                 cancellationToken);
 
             return deletionResult.IsAcknowledged && deletionResult.DeletedCount > 0;
+        }
+
+        private async Task<bool> CheckIfShopIsValidForDeletion(string requestShopId, CancellationToken cancellationToken)
+        {
+            var shop = await (await _context.Shops.FindAsync(
+                s => s.Id == requestShopId,
+                null,
+                cancellationToken))
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return !shop.OrdersId.Any();
         }
     }
 }

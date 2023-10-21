@@ -1,5 +1,6 @@
 ﻿using EventBus.Domain.Common;
-using EventBus.Domain.Events;
+using EventBus.Domain.Events.ShoppingCartCheckout;
+using EventBus.Domain.Results;
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -63,11 +64,11 @@ namespace OnlineShop.ShoppingCart.API.Repositories
                 request.DeliveryDate);
             
             var client = _bus.CreateRequestClient<ShoppingCartCheckoutEvent>();
-            var response = await client.GetResponse<CheckoutResult>(eventMessage);
+            var responseFromOrder = await client.GetResponse<CheckoutOrderResult>(eventMessage);
 
             await DeleteShoppingCart(request.ShoppingCart.ShoppingCartId);
 
-            return response.Message.OrderId;
+            return responseFromOrder.Message.OrderId;
         }
     }
 }

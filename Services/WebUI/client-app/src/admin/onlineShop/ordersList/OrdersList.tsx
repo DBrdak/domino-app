@@ -10,17 +10,17 @@ import {
     Typography
 } from "@mui/material";
 import {useState} from "react";
-import {ExpandLess, ExpandMore, StarBorder} from "@mui/icons-material";
-import {AcceptedOrdersList} from "./AcceptedOrdersList";
+import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import {PendingOrdersList} from "./PendingOrdersList";
 import {ReceivedOrdersList} from "./ReceivedOrdersList";
 import {RejectedOrdersList} from "./RejectedOrdersList";
+import AcceptedOrdersList from "./AcceptedOrdersList";
 
 interface Props {
     orders: OnlineOrder[]
 }
 
-export function OrdersList({orders}: Props) {
+function OrdersList({orders} : Props) {
     const [openedLists, setOpenedLists] = useState<boolean[]>([false, false, false, false])
 
     return (
@@ -47,7 +47,7 @@ export function OrdersList({orders}: Props) {
                 {openedLists[1] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openedLists[1]} timeout="auto" unmountOnExit>
-                <AcceptedOrdersList />
+                <AcceptedOrdersList orders={orders} />
             </Collapse>
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], openedLists[1], !openedLists[2], openedLists[3]])}>
@@ -74,3 +74,5 @@ export function OrdersList({orders}: Props) {
         </List>
     );
 }
+
+export default OrdersList

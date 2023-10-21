@@ -20,7 +20,6 @@ import { DateTimeRange, DeliveryInfo, Location } from "../../../global/models/co
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; 
 import 'leaflet-defaulticon-compatibility';
-import { getPolishDayOfWeek, getNextDay } from "./temp";
 import { usePreventNavigation } from "../../../global/router/routeProtection";
 import {DeliveryPoint} from "../../../global/models/shop";
 import LoadingComponent from "../../../components/LoadingComponent";
@@ -95,7 +94,8 @@ const DeliveryInfoStep: React.FC = () => {
                 <Link to={'/koszyk/dane-osobowe'} >
                   <Button variant="outlined" color="primary" style={{ marginTop: 16 }}>Wróć</Button>
                 </Link>
-                <Button onClick={() => handleSubmit()} disabled={selectedDeliveryPoint === null} variant="contained" color="primary" style={{ marginTop: 16 }}>
+                <Button onClick={() => handleSubmit()} disabled={!selectedDeliveryPoint || !selectedDeliveryDate} variant="contained"
+                        color="primary" style={{ marginTop: 16 }}>
                   Wyślij zamówienie
                 </Button>
               </Stack>

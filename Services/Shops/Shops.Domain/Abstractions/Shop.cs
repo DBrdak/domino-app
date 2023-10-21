@@ -17,12 +17,14 @@ namespace Shops.Domain.Abstractions
     {
         public string ShopName { get; init; }
         public List<Seller> Sellers { get; init; }
+        public List<string> OrdersId { get; init; }
 
         protected Shop(string shopName)
         {
             Id = ObjectId.GenerateNewId().ToString();
             ShopName = shopName;
             Sellers = new();
+            OrdersId = new();
         }
 
         public void AddSeller(Seller seller)
@@ -51,6 +53,22 @@ namespace Shops.Domain.Abstractions
             }
 
             Sellers.Remove(seller);
+        }
+
+        public void AddOrder(string orderId)
+        {
+            if (OrdersId.Any(o => o == orderId))
+            {
+                throw new ApplicationException(
+                    $"Order with Id {orderId} already exists in order registry of shop {ShopName}");
+            }
+
+            OrdersId.Add(orderId);
+        }
+
+        public void RemoveOrder(string orderId)
+        {
+            OrdersId.Remove(orderId);
         }
     }
 }

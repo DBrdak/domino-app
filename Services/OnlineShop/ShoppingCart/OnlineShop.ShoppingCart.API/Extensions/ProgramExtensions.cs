@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Common;
+﻿using EventBus.Domain.Results;
 using MassTransit;
 using OnlineShop.ShoppingCart.API.Repositories;
 
@@ -19,7 +19,7 @@ namespace OnlineShop.ShoppingCart.API.Extensions
 
             services.AddMassTransit(config =>
             {
-                config.AddRequestClient<CheckoutResult>();
+                config.AddRequestClient<CheckoutOrderResult>();
                 config.UsingRabbitMq((context, configMq) =>
                 {
                     configMq.Host(configuration["EventBusSettings:HostAddress"]);
