@@ -34,10 +34,16 @@ const ProductEditModal: React.FC<Props> = ({product, onSubmit, onPhotoChange}) =
     subcategory: yup.string().required('Podkategoria jest wymagana'),
   });
 
+  const handleSubmit = (product: Product) => {
+    //TEMP
+    product.subcategory = ''
+    onSubmit(product)
+  }
+
   return (
     <Formik
       initialValues={product}
-      onSubmit={(values) => onSubmit(values)}
+      onSubmit={(values) => handleSubmit(values)}
       validateOnMount={true} validationSchema={validationSchema}
     >
       {({ handleSubmit, values, handleChange, isValid }) => (
@@ -61,7 +67,7 @@ const ProductEditModal: React.FC<Props> = ({product, onSubmit, onPhotoChange}) =
                 <MenuItem value='Mięso'>Mięso</MenuItem>
               </Select>
             </FormControl>
-            <MyTextInput name='subcategory' placeholder={'Podkategoria'} label='Podkategoria' />
+            {/*<MyTextInput name='subcategory' placeholder={'Podkategoria'} label='Podkategoria'/>*/}
             <Stack direction={'row'} spacing={2} style={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
               <Typography variant={'h6'}>Jednostka alternatywna?</Typography>
               <Switch

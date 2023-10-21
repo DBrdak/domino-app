@@ -11,7 +11,7 @@ interface Props {
 function AcceptedOrdersList({orders} : Props) {
     return (
         <List>
-            {sortedOrders.map(o=> (
+            {orders.map(o=> (
                 <ListItem key={o.id}>
                     <ListItemText primary={
                         <React.Fragment>

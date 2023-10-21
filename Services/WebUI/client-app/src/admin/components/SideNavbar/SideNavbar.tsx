@@ -2,10 +2,12 @@ import React from 'react';
 import { Button, Box, Typography, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Logout } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useNavigation} from 'react-router-dom';
 import SideNavbarBtnList from '../sideNavbar/SideNavbarBtnList';
 
 const SideNavbar: React.FC = () => {
+    const navigate = useNavigate()
+
   return (
     <Box
     sx={{
@@ -34,7 +36,8 @@ const SideNavbar: React.FC = () => {
         <Button variant="contained" 
         color="secondary" 
         fullWidth
-        style={{gap:'20px'}}>
+        style={{gap:'20px'}}
+        onClick={() => navigate('/')}>
           <Logout />
           <Typography>
             Wyloguj się

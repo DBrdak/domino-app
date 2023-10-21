@@ -3,11 +3,15 @@ import {OnlineOrder, OnlineOrderRead, OrderUpdateValues} from "../../models/orde
 import agent from "../../api/agent";
 
 export default class AdminOrderStore {
-    orders: OnlineOrderRead[] = []
+    ordersRegistry: Map<string,OnlineOrderRead> = new Map<string, OnlineOrderRead>()
     loading: boolean = false
 
     constructor() {
         makeAutoObservable(this)
+    }
+
+    get orders() {
+        return Array.from(this.ordersRegistry.values())
     }
 
     private setLoading(state: boolean) {
@@ -15,11 +19,12 @@ export default class AdminOrderStore {
     }
 
     private setOrder(order: OnlineOrderRead) {
-        this.orders.push(order)
+        this.ordersRegistry.set(order.id, order)
     }
 
     async loadOrders() {
         this.setLoading(true)
+        this.ordersRegistry.clear()
         try {
             const result = await agent.order.getAll()
             result.forEach(o => this.setOrder(o))

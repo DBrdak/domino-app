@@ -18,12 +18,17 @@ namespace Shops.API.Extensions
             services.AddMassTransit(config =>
             {
                 config.AddConsumer<OrderCreateConsumer>();
+                config.AddConsumer<OrderDeleteConsumer>();
                 config.UsingRabbitMq((context, configMq) =>
                 {
                     configMq.Host(configuration["EventBusSettings:HostAddress"]);
-                    configMq.ReceiveEndpoint(EventBusConstants.ShoppingCartCheckoutQueue,
+                    configMq.ReceiveEndpoint(
+                        EventBusConstants.ShopOrderAggregationQueue,
                         configEndpoint =>
-                            configEndpoint.ConfigureConsumer<OrderCreateConsumer>(context));
+                        {
+                            configEndpoint.ConfigureConsumer<OrderCreateConsumer>(context);
+                            configEndpoint.ConfigureConsumer<OrderDeleteConsumer>(context);
+                        });
                 });
             });
 

@@ -14,6 +14,7 @@ namespace Shared.Domain.DateTimeRange
         [JsonConverter(typeof(TimeOnlyJsonConverter))]
         public TimeOnly End { get; init; }
 
+        [JsonConstructor]
         public TimeRange(TimeOnly start, TimeOnly end)
         {
             if (start > end)

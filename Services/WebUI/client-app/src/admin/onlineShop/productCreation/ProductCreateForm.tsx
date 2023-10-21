@@ -34,6 +34,8 @@ function ProductCreateForm({names, setNames}: Props) {
             toast.error('Proszę dodać zdjęcie produktu')
             return
         }
+        //TEMP
+        values.subcategory = ''
 
         adminProductStore.setPhoto(newPhoto)
         adminProductStore.setNewProductValues(values)
@@ -85,12 +87,12 @@ function ProductCreateForm({names, setNames}: Props) {
                                 <MenuItem value='Mięso'>Mięso</MenuItem>
                             </Select>
                         </FormControl>
-                        <MyTextInput
+                        {/*<MyTextInput
                             placeholder={'Podkategoria produktu'}
                             name={'subcategory'}
                             label={'Podkategoria produktu'}
                             showErrors
-                        />
+                        />*/}
                         <Stack direction={'row'} spacing={2} style={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
                             <Typography variant={'h6'}>Jednostka alternatywna?</Typography>
                             <Switch
