@@ -31,12 +31,9 @@ const ProductEditModal: React.FC<Props> = ({product, onSubmit, onPhotoChange}) =
   const validationSchema = yup.object({
     name: yup.string().required( 'Nazwa produktu jest wymagana'),
     description: yup.string().required( 'Opis produktu jest wymagany'),
-    subcategory: yup.string().required('Podkategoria jest wymagana'),
   });
 
   const handleSubmit = (product: Product) => {
-    //TEMP
-    product.subcategory = ''
     onSubmit(product)
   }
 
@@ -67,7 +64,6 @@ const ProductEditModal: React.FC<Props> = ({product, onSubmit, onPhotoChange}) =
                 <MenuItem value='Mięso'>Mięso</MenuItem>
               </Select>
             </FormControl>
-            {/*<MyTextInput name='subcategory' placeholder={'Podkategoria'} label='Podkategoria'/>*/}
             <Stack direction={'row'} spacing={2} style={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
               <Typography variant={'h6'}>Jednostka alternatywna?</Typography>
               <Switch

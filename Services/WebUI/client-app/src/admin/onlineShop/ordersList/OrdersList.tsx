@@ -11,10 +11,7 @@ import {
 } from "@mui/material";
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {PendingOrdersList} from "./PendingOrdersList";
-import {ReceivedOrdersList} from "./ReceivedOrdersList";
-import {RejectedOrdersList} from "./RejectedOrdersList";
-import AcceptedOrdersList from "./AcceptedOrdersList";
+import OrdersTable from "./OrdersTable";
 
 interface Props {
     orders: OnlineOrder[]
@@ -31,45 +28,47 @@ function OrdersList({orders} : Props) {
                 onClick={() => setOpenedLists([!openedLists[0], openedLists[1], openedLists[2], openedLists[3]])}>
                 {openedLists[0] ? <ExpandLess /> : <ExpandMore />}
                 <ListItemText>
-                    <Typography variant={'h6'}>Oczekujące</Typography>
+                    <Typography variant={'h5'}>Oczekujące</Typography>
                 </ListItemText>
                 {openedLists[0] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openedLists[0]} timeout="auto" unmountOnExit>
-                <PendingOrdersList />
+                <OrdersTable orders={[...orders].filter(o => o.status?.statusMessage === 'Oczekuje na potwierdzenie')}/>
             </Collapse>
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], !openedLists[1], openedLists[2], openedLists[3]])}>
                 {openedLists[1] ? <ExpandLess /> : <ExpandMore />}
                 <ListItemText>
-                    <Typography variant={'h6'}>Zaakcepowane</Typography>
+                    <Typography variant={'h5'}>Zaakcepowane</Typography>
                 </ListItemText>
                 {openedLists[1] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openedLists[1]} timeout="auto" unmountOnExit>
-                <AcceptedOrdersList orders={orders} />
+                <OrdersTable orders={[...orders].filter(o =>
+                    o.status?.statusMessage === 'Potwierdzone' || o.status?.statusMessage === 'Potwierdzone ze zmianami')} />
             </Collapse>
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], openedLists[1], !openedLists[2], openedLists[3]])}>
                 {openedLists[2] ? <ExpandLess /> : <ExpandMore />}
                 <ListItemText>
-                    <Typography variant={'h6'}>Odebrane</Typography>
+                    <Typography variant={'h5'}>Odebrane</Typography>
                 </ListItemText>
                 {openedLists[2] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openedLists[2]} timeout="auto" unmountOnExit>
-                <ReceivedOrdersList />
+                <OrdersTable orders={[...orders].filter(o => o.status?.statusMessage === 'Odebrane')}/>
             </Collapse>
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], openedLists[1], openedLists[2], !openedLists[3]])}>
                 {openedLists[3] ? <ExpandLess /> : <ExpandMore />}
                 <ListItemText>
-                    <Typography variant={'h6'}>Odrzucone</Typography>
+                    <Typography variant={'h5'}>Odrzucone</Typography>
                 </ListItemText>
                 {openedLists[3] ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openedLists[3]} timeout="auto" unmountOnExit>
-                <RejectedOrdersList />
+                <OrdersTable orders={[...orders].filter(o =>
+                    o.status?.statusMessage === 'Odrzucone' || o.status?.statusMessage === 'Anulowane')} />
             </Collapse>
         </List>
     );

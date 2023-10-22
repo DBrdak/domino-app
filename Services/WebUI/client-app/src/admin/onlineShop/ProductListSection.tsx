@@ -12,7 +12,7 @@ function ProductListSection() {
 
     async function handleSearch(phrase: string | null) {
         adminProductStore.setSearchPhrase(phrase)
-        adminProductStore.loadProducts()
+        await adminProductStore.loadProducts()
     }
 
     return (

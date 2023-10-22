@@ -122,24 +122,49 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public void Cancel()
         {
+            if (Status == OrderStatus.Received || Status == OrderStatus.Rejected)
+            {
+                throw new ApplicationException(
+                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+            }
+
             CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Cancelled;
         }
 
         public void Reject()
         {
+            if (Status == OrderStatus.Received || Status == OrderStatus.Accepted || Status == OrderStatus.Modified)
+            {
+                throw new ApplicationException(
+                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+            }
+
             CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Rejected;
         }
 
         public void Receive()
         {
+            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            {
+                throw new ApplicationException(
+                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+            }
+
             CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Received;
         }
 
         public void Accept(OnlineOrder? modifiedOrder)
         {
+            Status = OrderStatus.Waiting;
+            if (Status != OrderStatus.Waiting)
+            {
+                throw new ApplicationException(
+                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+            }
+
             if (modifiedOrder is null)
             {
                 CompletionDate = DateTimeService.UtcNow;

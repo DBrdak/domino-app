@@ -5,7 +5,6 @@ export interface Product {
   name: string;
   description: string;
   category: Category;
-  subcategory: string;
   image: Photo;
   price: Money;
   details: ProductDetails;
@@ -33,7 +32,6 @@ export interface ProductCreateValues {
   name: string;
   description: string;
   category: string;
-  subcategory: string;
   image: string | null;
   price: Money | null;
   isWeightSwitchAllowed: boolean;
@@ -45,7 +43,6 @@ export class ProductCreateValues implements ProductCreateValues {
     this.name = init ? init.name : ''
     this.description = init ? init.description : ''
     this.category = init ? init.category : ''
-    this.subcategory = init ? init.subcategory : ''
     this.image = null
     this.price = null
     this.isWeightSwitchAllowed = init ? init.isWeightSwitchAllowed : false
@@ -58,7 +55,6 @@ export interface ProductUpdateValues {
   name: string;
   description: string;
   category: string;
-  subcategory: string;
   imageUrl: string;
   isWeightSwitchAllowed: boolean;
   singleWeight: number | null;
@@ -71,7 +67,6 @@ export class ProductUpdateValues implements ProductUpdateValues {
     this.name = product.name
     this.description = product.description
     this.category = product.category.value
-    this.subcategory = product.subcategory
     this.imageUrl = product.image.url
     this.isWeightSwitchAllowed = product.details.isWeightSwitchAllowed
     this.singleWeight = product.details.isWeightSwitchAllowed ? (product.details.singleWeight && product.details.singleWeight.value) : null

@@ -11,7 +11,6 @@ namespace OnlineShop.Catalog.Application.Features.Customer.GetProducts
         string SortBy = "Name",
         int PageSize = 12,
         string SearchPhrase = "",
-        string Subcategory = "",
         decimal MinPrice = 0,
         decimal MaxPrice = decimal.MaxValue,
         bool IsAvailable = false,

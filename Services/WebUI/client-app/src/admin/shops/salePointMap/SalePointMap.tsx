@@ -6,6 +6,7 @@ import {MobileSalePointInfoCard} from "./MobileSalePointInfoCard";
 import {StationarySalePointInfoCard} from "./StationarySalePointInfoCard";
 import LoadingComponent from "../../../components/LoadingComponent";
 import {Location} from '../../../global/models/common'
+import {getCenterFromShopLocations} from "../../../global/utils/locationService";
 
 interface Props {
     stationaryShops: StationaryShop[],
@@ -17,39 +18,7 @@ export function SalePointMap({mobileShops, stationaryShops, locations}: Props) {
     const [mobileInfo, setMobileInfo] = useState<{ location: Location, shops: MobileShop[] } | null>(null)
     const [stationaryInfo, setStationaryInfo] = useState<StationaryShop | null>(null)
 
-    const mobileCenter = mobileShops
-        .flatMap(ms => ms.salePoints)
-        .reduce(
-            (center, sp) => {
-                center.lat += Number(sp.location.latitude)
-                center.lng += Number(sp.location.longitude)
-                return center
-            },
-            {lat: 0, lng: 0}
-        )
-
-    const numSalePoints = mobileShops
-        .flatMap(ms => ms.salePoints)
-        .length;
-
-    mobileCenter.lat /= numSalePoints;
-    mobileCenter.lng /= numSalePoints;
-
-    const stationaryCenter = stationaryShops.reduce((center, shop) => {
-        center.lat += Number(shop.location.latitude)
-        center.lng += Number(shop.location.longitude)
-        return center
-    }, {lat: 0, lng: 0})
-
-    const numStationaryShops = stationaryShops.length
-
-    stationaryCenter.lat /= numStationaryShops;
-    stationaryCenter.lng /= numStationaryShops;
-
-    const combinedCenter = {
-        lat: (stationaryCenter.lat + mobileCenter.lat) / 2,
-        lng: (stationaryCenter.lng + mobileCenter.lng) / 2
-    }
+    const combinedCenter = getCenterFromShopLocations(stationaryShops, mobileShops)
 
     return (
         <Stack direction={'row'} style={{

@@ -45,8 +45,8 @@ namespace OnlineShop.Order.Infrastructure.Persistence
         private void RejectNotAcceptedOrders()
         {
             var notAcceptedOrders = Orders
-                .Where(o => o.DeliveryDate.Start.ToUniversalTime() > DateTimeService.UtcNow
-                            && (o.Status.StatusMessage != OrderStatus.Accepted.StatusMessage|| o.Status.StatusMessage != OrderStatus.Received.StatusMessage))
+                .Where(o => o.DeliveryDate.End.ToUniversalTime() < DateTimeService.UtcNow
+                            && (o.Status.StatusMessage != OrderStatus.Received.StatusMessage || o.Status.StatusMessage == OrderStatus.Accepted.StatusMessage || o.Status.StatusMessage == OrderStatus.Modified.StatusMessage))
                 .ToList();
 
             notAcceptedOrders.ForEach(o => o.Reject());

@@ -4,7 +4,7 @@ import {Form, Formik} from "formik";
 import {Button, FormControl, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 import MyTextInput from "../../../../../components/MyTextInput";
 import React, {useState} from "react";
-import LocationPicker from "../../../../components/LocationPicker";
+import LocationPicker from "../../../../../components/LocationPicker";
 import {LocalizationProvider, TimeField} from "@mui/x-date-pickers";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import pl from 'date-fns/locale/pl';

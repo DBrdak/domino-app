@@ -6,15 +6,15 @@ function SideNavbarBtnList() {
   return (
     <Box>
       <SideNavbarBtn content='sklep online'/>
-      <SideNavbarBtn content='sprzedaż' path={'sprzedaz'}/>
+      {/*<SideNavbarBtn content='sprzedaż' path={'sprzedaz'}/>*/}
       <SideNavbarBtn content='cenniki'/>
       <SideNavbarBtn content='sklepy'/>
-      <SideNavbarBtn content='paliwo'/>
+      {/*<SideNavbarBtn content='paliwo'/>
       <SideNavbarBtn content='flota'/>
       <SideNavbarBtn content='kontrahenci'/>
       <SideNavbarBtn content='masarnia'/>
       <SideNavbarBtn content='statystyki'/>
-      <SideNavbarBtn content='kalkulatory'/>
+      <SideNavbarBtn content='kalkulatory'/>*/}
     </Box>
   )
 }

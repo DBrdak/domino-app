@@ -22,10 +22,10 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         }
 
         public async Task<PagedList<Product>> GetProductsAsync
-            (int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
+            (int page, string sortOrder, string sortBy, int pageSize, string category, string name,
                 decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, CancellationToken cancellationToken = default)
         {
-            var filter = SearchEngine.ApplyFiltering(category, subcategory, minPrice, maxPrice, isAvailable, isDiscounted);
+            var filter = SearchEngine.ApplyFiltering(category, minPrice, maxPrice, isAvailable, isDiscounted);
 
             var options = SearchEngine.ApplySorting(sortOrder, sortBy);
 

@@ -99,14 +99,17 @@ namespace Shops.Application.Features.Commands.UpdateShop
                     values.NewSalePoint.OpenHours!,
                     values.NewSalePoint.WeekDay.Value);
             }
+
             if (values.SalePointToRemove is not null)
             {
                 mobileShopToUpdate.RemoveSalePoint(values.SalePointToRemove);
             }
+
             if (values.SalePointToEnable is not null)
             {
                 mobileShopToUpdate.EnableSalePoint(values.SalePointToEnable);
             }
+
             if (values.SalePointToDisable is not null)
             {
                 mobileShopToUpdate.DisableSalePoint(values.SalePointToDisable);
@@ -115,6 +118,11 @@ namespace Shops.Application.Features.Commands.UpdateShop
             if (values.UpdatedSalePoint is not null)
             {
                 mobileShopToUpdate.UpdateSalePoint(values.UpdatedSalePoint);
+            }
+
+            if (values.NewVehicleNumberPlate is not null)
+            {
+                mobileShopToUpdate.UpdateVehicleNumberPlate(values.NewVehicleNumberPlate);
             }
         }
 

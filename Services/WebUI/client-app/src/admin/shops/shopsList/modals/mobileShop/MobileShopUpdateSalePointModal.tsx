@@ -7,7 +7,7 @@ import MyTextInput from "../../../../../components/MyTextInput";
 import {LocalizationProvider, TimeField} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import pl from "date-fns/locale/pl";
-import LocationPicker from "../../../../components/LocationPicker";
+import LocationPicker from "../../../../../components/LocationPicker";
 
 
 interface Props {

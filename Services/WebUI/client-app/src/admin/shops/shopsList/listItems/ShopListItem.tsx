@@ -53,7 +53,7 @@ function ShopListItem({shop}: Props) {
             </TableCell>
             <TableCell>
                 <Stack direction={'row'} style={{display: 'flex', justifyContent: 'space-around'}} >
-                    <IconButton style={{borderRadius: '0px', color: '#109800', flexDirection:'column', width: '14.28%'}}
+                    <IconButton style={{borderRadius: '0px', color: '#109800', flexDirection:'column', width: '10%'}}
                                 size='medium' onClick={() => modalStore.openModal(
                         <SellerAddModal onSubmit={(seller) => handleSellerAdd(seller)} />
                     )}
@@ -61,7 +61,7 @@ function ShopListItem({shop}: Props) {
                         <PersonAdd />
                         <Typography variant='caption'>Dodaj sprzedawcę</Typography>
                     </IconButton>
-                    <IconButton style={{borderRadius: '0px', color: '#5e5e5e', flexDirection:'column', width: '14.28%'}} disabled={shop.sellers.length < 1}
+                    <IconButton style={{borderRadius: '0px', color: '#5e5e5e', flexDirection:'column', width: '10%'}} disabled={shop.sellers.length < 1}
                                 size='medium' onClick={() => modalStore.openModal(
                                     <SellerDeleteModal sellers={shop.sellers} onDelete={(seller) => handleSellerDelete(seller)} />
                     )}
@@ -69,8 +69,11 @@ function ShopListItem({shop}: Props) {
                         <PersonRemove />
                         <Typography variant='caption'>Usuń sprzedawcę</Typography>
                     </IconButton>
-                    {shop.location ? <StationaryShopListItem shop={shop}/> : <MobileShopListItem shop={shop} />}
-                    <IconButton color={'primary'} style={{borderRadius: '0px', flexDirection:'column', width: '14.28%'}}
+                    {shop.location ?
+                        <StationaryShopListItem shop={shop}/>
+                        :
+                        <MobileShopListItem shop={shop} />}
+                    <IconButton color={'primary'} style={{borderRadius: '0px', flexDirection:'column', width: '10%'}}
                                 size='medium' onClick={() => modalStore.openModal(
                         <ConfirmModal text={`Czy na pewno chcesz usunąc sklep ${shop.shopName}?`} important={true}
                                       onConfirm={() => handleShopDelete()}/>)}

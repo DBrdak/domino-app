@@ -76,7 +76,6 @@ const catalog = {
     formData.append('Id', newValues.id)
     formData.append('Description', newValues.description)
     formData.append('Category', newValues.category)
-    formData.append('Subcategory', newValues.subcategory)
     formData.append('IsAvailable', `${newValues.isAvailable}`)
     formData.append('ImageUrl', `${newValues.imageUrl}`)
     formData.append('IsWeightSwitchAllowed', `${newValues.isWeightSwitchAllowed}`)
@@ -91,7 +90,6 @@ const catalog = {
     formData.append('Name', values.name)
     formData.append('Description', values.description)
     formData.append('Category', values.category)
-    formData.append('Subcategory', values.subcategory)
     formData.append('IsWeightSwitchAllowed', `${values.isWeightSwitchAllowed}`)
     formData.append('SingleWeight', `${values.singleWeight}`)
 

@@ -6,7 +6,7 @@ namespace OnlineShop.Catalog.Domain.Products
     public interface IProductRepository
     {
         public Task<PagedList<Product>> GetProductsAsync(
-            int page, string sortOrder, string sortBy, int pageSize, string category, string subcategory, string name,
+            int page, string sortOrder, string sortBy, int pageSize, string category, string name,
             decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted, CancellationToken cancellationToken = default);
 
         public Task<List<Product>> GetProductsAsync(string searchPhrase, CancellationToken cancellationToken = default);

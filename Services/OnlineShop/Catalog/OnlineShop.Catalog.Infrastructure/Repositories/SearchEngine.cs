@@ -60,7 +60,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }).ToList();
         }
 
-        internal static FilterDefinition<Product> ApplyFiltering(string category, string subcategory, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
+        internal static FilterDefinition<Product> ApplyFiltering(string category, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
             var filter = FilterDefinition<Product>.Empty;
 
@@ -71,11 +71,6 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             else
             {
                 throw new ApplicationException("Category is required");
-            }
-
-            if (!string.IsNullOrWhiteSpace(subcategory))
-            {
-                filter &= Builders<Product>.Filter.Where(p => p.Subcategory == subcategory);
             }
 
             if (minPrice is > 0)

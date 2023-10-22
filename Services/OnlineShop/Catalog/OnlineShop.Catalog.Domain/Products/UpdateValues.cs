@@ -4,7 +4,6 @@
     {
         public string Id { get; init; }
         public string Description { get; init; }
-        public string Subcategory { get; init; }
         public string Category { get; init; }
         public string ImageUrl { get; set; }
         public bool IsWeightSwitchAllowed { get; init; }
@@ -18,7 +17,6 @@
 
         public UpdateValues(string id,
             string description,
-            string subcategory,
             string category,
             string imageUrl,
             bool isWeightSwitchAllowed,
@@ -27,7 +25,6 @@
         {
             Id = id;
             Description = description;
-            Subcategory = subcategory;
             Category = category;
             ImageUrl = imageUrl;
             IsWeightSwitchAllowed = isWeightSwitchAllowed;

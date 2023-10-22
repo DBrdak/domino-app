@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {MapContainer, TileLayer, Marker, Popup, useMapEvents, useMapEvent} from 'react-leaflet';
-import { Location } from '../../global/models/common'
+import { Location } from '../global/models/common'
 import {LatLng, LeafletEvent, LeafletMouseEvent} from "leaflet";
 import {useMediaQuery} from "@mui/material";
-import theme from "../../global/layout/theme";
+import theme from "../global/layout/theme";
 import {toast} from "react-toastify";
-import {SalePoint} from "../../global/models/shop";
+import {SalePoint} from "../global/models/shop";
 
 interface LocationPickerProps {
     locationName: string
@@ -32,7 +32,6 @@ function LocationPicker({locationName, onChange, existingSalePoints, setNameEdit
 
 
         if(setNameEdition && !name && !locationName ){
-            console.log('hi')
             setNameEdition(true)
             setSelectedLocation({latitude: '', longitude: '', name: ''})
             return;

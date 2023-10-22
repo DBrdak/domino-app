@@ -105,6 +105,7 @@ export default class AdminShopStore {
     }
 
     setMobileShopUpdateValues(
+        newVehicleNumberPlate: string | null,
         newSalePoint: SalePoint | null,
         salePointToRemove: SalePoint | null,
         salePointToDisable: SalePoint | null,
@@ -120,6 +121,7 @@ export default class AdminShopStore {
             newSeller: this.shopUpdateValues.newSeller,
             sellerToDelete:  this.shopUpdateValues.sellerToDelete,
             mobileShopUpdateValues: {
+                newVehicleNumberPlate,
                 newSalePoint,
                 salePointToRemove,
                 salePointToDisable,

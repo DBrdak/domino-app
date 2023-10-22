@@ -61,13 +61,13 @@ const PersonalInfoStep = () => {
               <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
-                    <MyTextInput name='firstName' placeholder="Imię" showErrors/>
+                    <MyTextInput name='firstName' label={'Imię'} placeholder="Imię" showErrors/>
                   </Grid>
                   <Grid item xs={6}>
-                    <MyTextInput name='lastName' placeholder="Nazwisko" showErrors />
+                    <MyTextInput name='lastName' label={'Nazwisko'} placeholder="Nazwisko" showErrors />
                   </Grid>
                   <Grid item xs={12}>
-                    <MyTextInput name='phoneNumber' placeholder="Numer telefonu" showErrors type="number" />
+                    <MyTextInput name='phoneNumber' label={'Numer telefonu'} placeholder="Numer telefonu" showErrors type="number" maxLength={9} />
                   </Grid>
                   <Grid item xs={12}>
                     <Stack width={'100%'} justifyContent={'space-between'} direction={'row'}>

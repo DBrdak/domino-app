@@ -45,6 +45,7 @@ export interface StationaryShopUpdateValues {
 }
 
 export interface MobileShopUpdateValues {
+    newVehicleNumberPlate: string | null
     newSalePoint: SalePoint | null
     salePointToRemove: SalePoint | null
     salePointToDisable: SalePoint | null

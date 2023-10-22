@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
@@ -19,7 +20,7 @@ namespace Shops.Domain.MobileShops
     {
         public List<SalePoint> SalePoints { get; init; }
         [RegularExpression(polishVehiclePlateNumberRegex)]
-        public string VehiclePlateNumber { get; init; }
+        public string VehiclePlateNumber { get; private set; }
 
         private const string polishVehiclePlateNumberRegex = "^[A-Z]{2,3}\\s[A-Z0-9]{4,5}$";
 
@@ -83,19 +84,14 @@ namespace Shops.Domain.MobileShops
             salePointToEnable.Open();
         }
 
-        public DateTimeRange? GetNextAvailabilityInSalePoint(SalePoint querySalePoint)
+        public void UpdateVehicleNumberPlate(string vehicleNumberPlate)
         {
-            var salePoint = SalePoints.FirstOrDefault(sp => sp == querySalePoint) ??
-                            throw new ApplicationException($"No sale point in location {querySalePoint.Location} find for shop named {ShopName}");
-
-            if (salePoint.IsClosed)
+            if (!Regex.IsMatch(vehicleNumberPlate, polishVehiclePlateNumberRegex))
             {
-                return null;
+                throw new ApplicationException($"{vehicleNumberPlate} is invalid plate number");
             }
 
-            var nextAvailableDate = DateTimeService.GetDateTimeForNextDayOfWeek(salePoint.WeekDay);
-
-            return new(nextAvailableDate, salePoint.OpenHours);
+            VehiclePlateNumber = vehicleNumberPlate;
         }
     }
 }

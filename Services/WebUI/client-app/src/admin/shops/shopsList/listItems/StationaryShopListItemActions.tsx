@@ -57,7 +57,7 @@ function StationaryShopListItemActions({shop}: Props) {
     return (
         <>
             {!shop.weekSchedule.find(x => (!x.isClosed && x.openHours !== null) || (x.isClosed && x.cachedOpenHours !== null)) ?
-                <IconButton style={{borderRadius: '0px', color: '#042cab', flexDirection:'column', width: '50%'}} size='medium'
+                <IconButton style={{borderRadius: '0px', color: '#042cab', flexDirection:'column', width: '70%'}} size='medium'
                             onClick={() => modalStore.openModal(
                                 <StationaryShopWorkScheduleInitModal shop={shop} onSubmit={(schedule) => handleWorkScheduleCreate(schedule)} />)}>
                     <CalendarMonth />
@@ -65,7 +65,7 @@ function StationaryShopListItemActions({shop}: Props) {
                 </IconButton>
                 :
                 <>
-                    <IconButton style={{borderRadius: '0px', color: '#042cab', flexDirection:'column', width: '16.67%'}} size='medium'
+                    <IconButton style={{borderRadius: '0px', color: '#042cab', flexDirection:'column', width: '23%'}} size='medium'
                                 onClick={() => modalStore.openModal(
                                     <StationaryShopWeekDayUpdateModal shop={shop}
                                                                       onChange={(weekDay, openHours) =>
@@ -73,7 +73,7 @@ function StationaryShopListItemActions({shop}: Props) {
                         <EditCalendar />
                         <Typography variant='caption'>Edytuj dzień pracy</Typography>
                     </IconButton>
-                    <IconButton style={{borderRadius: '0px', color: '#777777', flexDirection:'column', width: '16.67%'}} size='medium'
+                    <IconButton style={{borderRadius: '0px', color: '#777777', flexDirection:'column', width: '23%'}} size='medium'
                                 onClick={() => modalStore.openModal(
                                     <StationaryShopWeekDayDisableModal shop={shop}
                                                                        onSubmit={(weekDayToDisable) => handleWeekDayDisable(weekDayToDisable)} />)}
@@ -81,7 +81,7 @@ function StationaryShopListItemActions({shop}: Props) {
                         <EventBusy />
                         <Typography variant='caption'>Zablokuj dzień pracy</Typography>
                     </IconButton>
-                    <IconButton style={{borderRadius: '0px', color: '#00949b', flexDirection:'column', width: '16.67%'}} size='medium'
+                    <IconButton style={{borderRadius: '0px', color: '#00949b', flexDirection:'column', width: '23%'}} size='medium'
                                 onClick={() => modalStore.openModal(
                                     <StationaryShopWeekDayEnableModal shop={shop}
                                                                       onSubmit={(weekDayToEnable) => handleWeekDayEnable(weekDayToEnable)}/>)}

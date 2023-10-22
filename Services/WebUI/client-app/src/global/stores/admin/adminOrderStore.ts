@@ -1,6 +1,7 @@
-import { makeAutoObservable,} from "mobx";
-import {OnlineOrder, OnlineOrderRead, OrderUpdateValues} from "../../models/order";
+import {makeAutoObservable, runInAction,} from "mobx";
+import {OnlineOrderRead, OrderUpdateValues} from "../../models/order";
 import agent from "../../api/agent";
+import {store} from "../store";
 
 export default class AdminOrderStore {
     ordersRegistry: Map<string,OnlineOrderRead> = new Map<string, OnlineOrderRead>()
@@ -27,7 +28,14 @@ export default class AdminOrderStore {
         this.ordersRegistry.clear()
         try {
             const result = await agent.order.getAll()
-            result.forEach(o => this.setOrder(o))
+            await runInAction(async() => {
+                await store.adminShopStore.loadShops()
+                result.forEach(o => {
+                    o.shop = store.adminShopStore.shops.find(s => s.id === o.shopId) ?? null
+                    this.setOrder(o)
+                })
+            })
+            console.log(this.ordersRegistry)
         } catch (e) {
             console.log(e)
         } finally {

@@ -11,7 +11,6 @@ namespace OnlineShop.Catalog.Domain.Products
         public string Name { get; private set; }
         public string Description { get; private set; }
         public Category Category { get; private set; }
-        public string Subcategory { get; private set; }
         public Photo Image { get; private set; }
         public Money Price { get; private set; }
         public ProductDetails Details { get; private set; }
@@ -22,7 +21,6 @@ namespace OnlineShop.Catalog.Domain.Products
             string name,
             string description,
             Category category,
-            string subcategory,
             Photo image,
             Money price,
             ProductDetails details,
@@ -32,7 +30,6 @@ namespace OnlineShop.Catalog.Domain.Products
             Name = name;
             Description = description;
             Category = category;
-            Subcategory = subcategory;
             Image = image;
             Price = price;
             Details = details;
@@ -46,7 +43,6 @@ namespace OnlineShop.Catalog.Domain.Products
             string name,
             string description,
             string category,
-            string subcategory,
             string image,
             decimal priceAmount,
             string currencyCode,
@@ -68,7 +64,6 @@ namespace OnlineShop.Catalog.Domain.Products
                 name,
                 description,
                 Category.FromValue(category),
-                subcategory,
                 new(image),
                 price,
                 details,
@@ -124,7 +119,6 @@ namespace OnlineShop.Catalog.Domain.Products
         public void Update(UpdateValues newValues)
         {
             Description = newValues.Description;
-            Subcategory = newValues.Subcategory;
             Category = Category.FromValue(newValues.Category);
             Image = new(newValues.ImageUrl);
 
@@ -156,7 +150,6 @@ namespace OnlineShop.Catalog.Domain.Products
                 requestValues.Name,
                 requestValues.Description,
                 requestValues.Category,
-                requestValues.Subcategory,
                 requestValues.Image,
                 requestValues.Price.Amount,
                 requestValues.Price.Currency.Code,

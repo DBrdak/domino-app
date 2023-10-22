@@ -15,7 +15,7 @@ import {
 import MyTextInput from "../../../../../components/MyTextInput";
 import LoadingComponent from "../../../../../components/LoadingComponent";
 import {Shop, ShopCreateValues} from "../../../../../global/models/shop";
-import LocationPicker from "../../../../components/LocationPicker";
+import LocationPicker from "../../../../../components/LocationPicker";
 import {useStore} from "../../../../../global/stores/store";
 import {Location} from '../../../../../global/models/common'
 import {toast} from "react-toastify";
@@ -100,7 +100,8 @@ const ShopCreateModal: React.FC = () => {
                             />}
                         {shopType === 'mobile' &&
                             <MyTextInput name='vehiclePlateNumber' placeholder={'Numer rejestracyjny pojazdu'}
-                                         label='Numer rejestracyjny pojazdu'/>}
+                                         maxLength={9}
+                                         label={'Numer rejestracyjny pojazdu'} capitalize/>}
                         <Button
                             disabled={adminShopStore.loading}
                             type={'submit'} onClick={() => handleSubmit} variant={'contained'}>

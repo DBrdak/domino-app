@@ -21,7 +21,6 @@ namespace OnlineShop.Catalog.Application.Features.Customer.GetProducts
                 request.SortBy,
                 request.PageSize,
                 request.Category,
-                request.Subcategory,
                 request.SearchPhrase,
                 request.MinPrice,
                 request.MaxPrice,

@@ -59,6 +59,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
         public async Task<List<OnlineOrder>> GetAllOrders(CancellationToken cancellationToken)
         {
             return await _context.Set<OnlineOrder>()
+                .Include(o => o.Items)
                 .AsNoTracking()
                 .OrderBy(o => o.DeliveryDate.Start)
                 .ToListAsync(cancellationToken);

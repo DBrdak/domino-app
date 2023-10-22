@@ -14,9 +14,11 @@ interface Props {
     inputProps?: Partial<FilledInputProps> | Partial<OutlinedInputProps> | Partial<InputProps>
     style?: React.CSSProperties
     disabled?: boolean
+    maxLength?: number
+    capitalize?: boolean
 }
 
-const MyTextInput: React.FC<Props> = ({ disabled, showErrors, maxValue, minValue, inputProps, type, style, ...props }) => {
+const MyTextInput: React.FC<Props> = ({ disabled, capitalize, maxLength, showErrors, maxValue, minValue, inputProps, type, style, ...props }) => {
     const [field, meta, helpers] = useField(props.name);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +42,14 @@ const MyTextInput: React.FC<Props> = ({ disabled, showErrors, maxValue, minValue
 
         if (minValue && parseFloat(value) < minValue) {
             value = minValue.toString();
+        }
+
+        if(maxLength && value.length > maxLength) {
+             value = value.slice(0, maxLength)
+        }
+
+        if(capitalize) {
+            value = value.toUpperCase()
         }
 
         helpers.setValue(value);

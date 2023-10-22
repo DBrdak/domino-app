@@ -1,6 +1,7 @@
 import { object } from "yup";
 import { DateTimeRange, Location, Money, Quantity } from "./common";
 import { ShoppingCart, ShoppingCartCheckout, ShoppingCartItem } from "./shoppingCart";
+import {Shop} from "./shop";
 
 export interface OrderItem {
   id: string | null
@@ -31,6 +32,8 @@ export interface OnlineOrder {
   completionDate: Date | null;
   expiryDate: Date | null;
   status: OrderStatus | null;
+  shopId: string | null
+  shop: Shop | null
 }
 
 export class OnlineOrderRead implements OnlineOrder {
@@ -49,6 +52,8 @@ export class OnlineOrderRead implements OnlineOrder {
   completionDate!: Date | null;
   expiryDate!: Date | null;
   status!: OrderStatus;
+  shopId!: string
+  shop!: Shop | null
 }
 
 export class OnlineOrderCreate implements OnlineOrder {
@@ -64,6 +69,8 @@ export class OnlineOrderCreate implements OnlineOrder {
   completionDate!: null;
   expiryDate!: null;
   status!: null;
+  shopId: string | null
+  shop!: Shop | null
 
   constructor(init: ShoppingCartCheckout) {
     this.totalPrice = init.shoppingCart.totalPrice;
@@ -78,6 +85,8 @@ export class OnlineOrderCreate implements OnlineOrder {
     this.completionDate = null
     this.expiryDate = null
     this.status = null
+    this.shopId = null
+    this.shop = null
   }
 
   private convertToOrderItems(shoppingCartItems: ShoppingCartItem[]): OrderItem[] {

@@ -53,11 +53,14 @@ const OrderCredsForm: React.FC = () => {
               name={'phoneNumber'} 
               type='number' 
               showErrors
+              maxLength={9}
               />
               <MyTextInput 
               placeholder={'Numer zamówienia'} 
               name={'orderId'} 
               showErrors
+              maxLength={8}
+              capitalize
               />
               <Box mt={3}>
                 <Button variant="contained" color="primary" type='submit' disabled={!isValid}>

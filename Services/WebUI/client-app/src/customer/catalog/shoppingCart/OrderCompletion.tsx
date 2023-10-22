@@ -9,7 +9,6 @@ import { usePreventNavigation } from "../../../global/router/routeProtection";
 import LoadingComponent from "../../../components/LoadingComponent";
 import DateTimeRangeDisplay from "../../../components/DateTimeRangeDisplay";
 import { setPageTitle } from "../../../global/utils/pageTitle";
-import {format} from "date-fns";
 import pl from "date-fns/locale/pl";
 
 const OrderCompletion: React.FC = observer(() => {
@@ -30,8 +29,6 @@ const OrderCompletion: React.FC = observer(() => {
     }
     processCheckoutAndLoadOrder()
     setPageTitle('Zamówienie')
-    console.log(orderStore.order)
-    order ? console.log(format(new Date(order.deliveryDate.start), 'dd.MM.yyyy HH:mm', { locale: pl })) : console.log('sdaf')
   }, []);
 
   if (orderStore.loading || shoppingCartStore.loading) {

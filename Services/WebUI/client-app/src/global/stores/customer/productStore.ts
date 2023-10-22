@@ -23,7 +23,6 @@ export default class ProductStore {
     params.append('sortOrder', this.filterParams.sortDirection.toString())
     params.append('sortBy', this.filterParams.sortProperty.toString())
     this.filterParams?.searchPhrase && params.append('searchPhrase', this.filterParams.searchPhrase.toString())
-    //this.filterParams?.subcategory && params.append('subcategory', this.filterParams.subcategory.toString())
     this.filterParams?.minPrice && params.append('minPrice', this.filterParams.minPrice.toString())
     this.filterParams?.maxPrice && params.append('maxPrice', this.filterParams.maxPrice.toString())
     params.append('isAvailable', this.filterParams.isAvailable.toString())
@@ -41,6 +40,10 @@ export default class ProductStore {
 
   setPagination = (page: number, pageSize: number, totalCount: number, totalPages: number, hasNextPage: boolean, hasPreviousPage: boolean) => {
     this.pagination = new Pagination({page, pageSize, totalCount, totalPages, hasNextPage, hasPreviousPage})
+  }
+
+  setPagingParams = (pagingParams: PagingParams) => {
+    this.pagingParams = pagingParams
   }
 
   private setProduct = (product: Product) => {
