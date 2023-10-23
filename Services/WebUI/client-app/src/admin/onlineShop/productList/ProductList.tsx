@@ -30,7 +30,7 @@ function ProductList({products, loading}: Props) {
         <TableBody>
           {
             loading ?
-                <LoadingTableRow rows={4} cells={3} />
+                <LoadingTableRow rows={4} cells={2} />
                 :
                 products &&
                 products.map((p) => (

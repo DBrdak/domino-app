@@ -74,19 +74,30 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<Product?> Add(CreateValues values, IFormFile photoFile, CancellationToken cancellationToken = default)
         {
-            var productId = ObjectId.GenerateNewId().ToString();
+            var isDuplicate = await _context.Products.FindAsync(
+                               Builders<Product>.Filter.Eq(p => p.Name, values.Name),
+                                              null, cancellationToken);
 
-            var aggregationResult = await _priceListRepository.AggregateLineItemWithProduct(
-                productId,
-                values.Name,
-                cancellationToken);
-
-            if (aggregationResult is false)
+            if (await isDuplicate.AnyAsync(cancellationToken))
             {
                 return null;
             }
 
-            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId, cancellationToken);
+            var productId = ObjectId.GenerateNewId().ToString();
+
+            var priceList = await _priceListRepository.AggregateLineItemWithProduct(
+                productId,
+                values.Name,
+                cancellationToken);
+
+            if (priceList is null)
+            {
+                return null;
+            }
+
+            var productCategory = priceList.Category == PriceListCategory.Meat ? Category.Meat : Category.Sausage;
+
+            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId!, productCategory, cancellationToken);
 
             if (priceListLineItem is null)
             {
@@ -104,7 +115,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachImage(uploadResult.PhotoUrl);
 
-            var product = Product.Create(values, productId);
+            var product = Product.Create(values, productCategory, productId);
 
             await _context.Products.InsertOneAsync(product, null, cancellationToken);
 
@@ -113,16 +124,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> Delete(string productId, CancellationToken cancellationToken)
         {
-            var isSuccesfullySplitedFromPriceList = await _priceListRepository.SplitLineItemFromProduct(productId, cancellationToken);
+            var product = (await _context.Products.FindAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, productId),
+                null, cancellationToken)).Single(cancellationToken);
+
+            var isSuccesfullySplitedFromPriceList = await _priceListRepository.SplitLineItemFromProduct(productId, product.Category, cancellationToken);
 
             if (!isSuccesfullySplitedFromPriceList)
             {
                 throw new ApplicationException("Cannot delete product due to it aggregation with price list");
             }
-
-            var product = (await _context.Products.FindAsync(
-                Builders<Product>.Filter.Eq(p => p.Id, productId),
-                null, cancellationToken)).Single(cancellationToken);
 
             var isSuccesfullyDeletedPhoto = await _photoRepository.DeletePhoto(product.Image.Url);
 
@@ -141,7 +152,12 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> RefreshPrice(string productId, CancellationToken cancellationToken = default)
         {
-            var priceList = await _priceListRepository.GetRetailPriceList(cancellationToken);
+            var product = await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken).Result
+                .SingleOrDefaultAsync(cancellationToken);
+
+            var priceListCategory = product.Category == Category.Meat ? PriceListCategory.Meat : PriceListCategory.Sausage;
+
+            var priceList = await _priceListRepository.GetRetailPriceList(priceListCategory, cancellationToken);
 
             if (priceList is null)
             {
@@ -156,9 +172,6 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }
 
             var price = lineItem.Price;
-
-            var product = await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken).Result
-                .SingleOrDefaultAsync(cancellationToken);
 
             product.UpdatePrice(price);
 

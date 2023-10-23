@@ -24,8 +24,7 @@ function ProductCreateForm({names, setNames}: Props) {
 
     const validationSchema = yup.object({
         name: yup.string().required( 'Nazwa produktu jest wymagana'),
-        description: yup.string().required( 'Opis produktu jest wymagany'),
-        category: yup.string().oneOf( ['Mięso', 'Wędlina'], 'Niewłaściwa kategoria '),
+        description: yup.string().required( 'Opis produktu jest wymagany')
     });
 
     const handleFormSubmit = async (values:ProductCreateValues) => {
@@ -71,19 +70,6 @@ function ProductCreateForm({names, setNames}: Props) {
                             label={'Opis produktu'}
                             showErrors
                         />
-                        <FormControl fullWidth >
-                            <InputLabel>Kategoria</InputLabel>
-                            <Select
-                                id={'name'}
-                                name={'category'}
-                                value={values.category}
-                                label="Kategoria"
-                                onChange={handleChange}
-                            >
-                                <MenuItem value='Wędlina'>Wędlina</MenuItem>
-                                <MenuItem value='Mięso'>Mięso</MenuItem>
-                            </Select>
-                        </FormControl>
                         <Stack direction={'row'} spacing={2} style={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
                             <Typography variant={'h6'}>Jednostka alternatywna?</Typography>
                             <Switch

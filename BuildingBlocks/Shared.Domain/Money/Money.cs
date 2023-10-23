@@ -1,6 +1,12 @@
-﻿namespace Shared.Domain.Money
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace Shared.Domain.Money
 {
-    public sealed record Money(decimal Amount, Currency Currency, Unit? Unit = null)
+    public sealed record Money(
+        [property: BsonRepresentation(BsonType.Double)] decimal Amount,
+        Currency Currency, 
+        Unit? Unit = null)
     {
         public static Money operator +(Money first, Money second)
         {

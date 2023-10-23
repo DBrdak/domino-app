@@ -138,7 +138,7 @@ namespace OnlineShop.Catalog.Domain.Products
                 Details.Unavailable();
         }
 
-        public static Product Create(CreateValues requestValues, string? id = null)
+        public static Product Create(CreateValues requestValues, Category category, string? id = null)
         {
             if (requestValues.Price is null ||
                 string.IsNullOrWhiteSpace(requestValues.Image))
@@ -149,7 +149,7 @@ namespace OnlineShop.Catalog.Domain.Products
             return Create(
                 requestValues.Name,
                 requestValues.Description,
-                requestValues.Category,
+                category.Value,
                 requestValues.Image,
                 requestValues.Price.Amount,
                 requestValues.Price.Currency.Code,

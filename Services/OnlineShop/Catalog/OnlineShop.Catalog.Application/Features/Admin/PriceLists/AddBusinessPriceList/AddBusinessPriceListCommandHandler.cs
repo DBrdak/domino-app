@@ -16,7 +16,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPr
         public async Task<Result> Handle(AddBusinessPriceListCommand request, CancellationToken cancellationToken)
         {
             await _priceListRepository.AddPriceList(
-                PriceList.CreateBusiness(request.Name, request.ContractorName),
+                PriceList.CreateBusiness(request.Name, request.ContractorName, PriceListCategory.Meat),
                 cancellationToken);
 
             return Result.Success();

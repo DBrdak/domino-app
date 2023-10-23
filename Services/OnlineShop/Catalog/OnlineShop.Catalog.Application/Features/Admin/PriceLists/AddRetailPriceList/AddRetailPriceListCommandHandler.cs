@@ -15,7 +15,8 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddRetailPric
 
         public async Task<Result> Handle(AddRetailPriceListCommand request, CancellationToken cancellationToken)
         {
-            await _priceListRepository.AddPriceList(PriceList.CreateRetail("Cennik detaliczny"), cancellationToken);
+            await _priceListRepository.AddPriceList(PriceList.CreateRetail("Cennik detaliczny mięsa", PriceListCategory.Meat), cancellationToken);
+            await _priceListRepository.AddPriceList(PriceList.CreateRetail("Cennik detaliczny wędlin", PriceListCategory.Sausage), cancellationToken);
 
             return Result.Success();
         }

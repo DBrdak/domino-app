@@ -31,7 +31,6 @@ export class Product implements Product {
 export interface ProductCreateValues {
   name: string;
   description: string;
-  category: string;
   image: string | null;
   price: Money | null;
   isWeightSwitchAllowed: boolean;
@@ -42,7 +41,6 @@ export class ProductCreateValues implements ProductCreateValues {
   constructor(init: ProductCreateValues | null) {
     this.name = init ? init.name : ''
     this.description = init ? init.description : ''
-    this.category = init ? init.category : ''
     this.image = null
     this.price = null
     this.isWeightSwitchAllowed = init ? init.isWeightSwitchAllowed : false

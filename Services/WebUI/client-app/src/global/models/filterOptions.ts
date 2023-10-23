@@ -8,8 +8,7 @@ export interface FilterOptions {
   sortProperty: string
   sortDirection: 'asc' | 'desc';
 }
-// TODO Dodać że gdy zaznaczone isAvailable to pokazują siętylko dostępne, a gdy niezaznaczone to i te i te
-// TODO To samo dla isDiscounted
+
 export class FilterOptions implements FilterOptions {
   constructor() {
     this.searchPhrase = null

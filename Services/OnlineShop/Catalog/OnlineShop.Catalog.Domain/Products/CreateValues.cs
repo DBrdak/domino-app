@@ -6,7 +6,6 @@ namespace OnlineShop.Catalog.Domain.Products
     {
         public string Name { get; init; }
         public string Description { get; init; }
-        public string Category { get; init; }
         public string? Image { get; private set; }
         public Money? Price { get; private set; }
         public bool IsWeightSwitchAllowed { get; init; }
@@ -18,13 +17,11 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public CreateValues(string name,
             string description,
-            string category,
             bool isWeightSwitchAllowed,
             decimal? singleWeight)
         {
             Name = name;
             Description = description;
-            Category = category;
             IsWeightSwitchAllowed = isWeightSwitchAllowed;
             SingleWeight = singleWeight;
         }
