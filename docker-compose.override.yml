@@ -23,17 +23,16 @@ services:
     networks:
       - default
 
-  orderdb:
-    container_name: orderdb
+  postgresdb:
+    container_name: postgresdb
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
-      - POSTGRES_DB=OrderDb
     restart: always
     ports:
       - "5432:5432"
     volumes:
-      - order_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
     networks:
       - default
 
@@ -71,10 +70,10 @@ services:
     container_name: onlineshop.order.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings__OrderConnectionString=Server=orderdb;Port=5432;Database=OrderDb;User Id=admin;Password=admin1234"
+      - "ConnectionStrings__OrderConnectionString=Server=postgresdb;Port=5432;User Id=admin;Password=admin1234"
       - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
-      - orderdb
+      - postgresdb
       - rabbitmq
     ports:
       - "8002:80"
@@ -116,4 +115,3 @@ services:
       - "8100:80"
     networks:
       - default
-
