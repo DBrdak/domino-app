@@ -1,0 +1,27 @@
+.aboutGird {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutParagraph {
+  width: 50%;
+  padding: 15px;
+}
+
+.aboutParagraphMobile {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.aboutImgMobile {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.aboutImgDefault {
+  width: 500;
+  height: 300;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}

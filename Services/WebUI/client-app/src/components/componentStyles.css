@@ -1,0 +1,87 @@
+/* NavBar */
+.navbarMenuItem {
+  width: 94%;
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.navbarLink {
+  white-space: nowrap;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  color: #000000;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.navbarBtn {
+  color: #000000;
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  transition: transform 0.25s;
+  cursor: pointer;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.navbarBtn:not(:disabled):hover {
+  font-weight: 700;
+  text-shadow: 2px 2px 25px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0);
+  transform: scale(1.2);
+}
+
+.navbarBtn:not(:disabled):active {
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0);
+  transform: scale(0.9);
+}
+
+.navbarBtn:disabled {
+  color: darkgrey;
+  cursor: auto;
+}
+
+/* RevealButton */
+.reveal-button-container {
+  text-align: center;
+}
+
+.reveal-content {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.reveal-content {
+  opacity: 1;
+}
+
+/* CompletionMark */
+@keyframes scaleAndSpin {
+  0% {
+    transform: scale(0.3) rotate(280deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4);
+  }
+  40% {
+    box-shadow: 0 0 0 5px rgba(0, 255, 0, 0.2);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 255, 0, 0.1);
+  }
+  90% {
+    box-shadow: 0 0 0 5px rgba(0, 255, 0, 0.05);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+  }
+}

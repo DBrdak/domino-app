@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "onlineshop.basket.api": "StartDebugging",
+        "onlineshop.catalog.api": "StartDebugging",
+        "onlineshop.shoppingcart.api": "StartDebugging",
+        "onlineshop.order.api": "StartDebugging",
+        "ocelotapigateway": "StartDebugging",
+        "outbox.grpc": "StartDebugging",
+        "shops.api": "StartDebugging"
+      }
+    }
+  }
+}
