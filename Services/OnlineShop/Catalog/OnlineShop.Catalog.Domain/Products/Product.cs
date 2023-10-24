@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using OnlineShop.Catalog.Domain.Products.Events;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;

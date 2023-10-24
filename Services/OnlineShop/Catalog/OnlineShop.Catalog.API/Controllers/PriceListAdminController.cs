@@ -30,16 +30,6 @@ namespace OnlineShop.Catalog.API.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPost("retail")]
-        public async Task<IActionResult> CreateRetailPriceList(CancellationToken cancellationToken)
-        {
-            var result = await _sender.Send(new AddRetailPriceListCommand(), cancellationToken);
-
-            return result.IsSuccess ?
-                Ok() :
-                BadRequest(result.Error);
-        }
-
         [HttpPost("{contractorName}")]
         public async Task<IActionResult> CreateBusinessPriceList(
             [FromBody] AddBusinessPriceListCommand command,
@@ -107,6 +97,32 @@ namespace OnlineShop.Catalog.API.Controllers
             return result.IsSuccess ?
                 Ok() :
                 BadRequest(result.Error);
+        }
+
+        [HttpGet("{priceListId}")]
+        public async Task<IActionResult> DownloadPriceListAsExcel(
+            string priceListId,
+            CancellationToken cancellationToken)
+        {
+            //var query = new GetPriceListsQuery();
+
+            //var response = await _sender.Send(query, cancellationToken);
+
+            //return Ok(response.Value);
+            return NotFound();
+        }
+
+        [HttpPost("{priceListId}")]
+        public async Task<IActionResult> UploadPriceListAsExcel(
+            IFormFile spreadsheet,
+            CancellationToken cancellationToken)
+        {
+            //var query = new GetPriceListsQuery();
+
+            //var response = await _sender.Send(query, cancellationToken);
+
+            //return Ok(response.Value);
+            return NotFound();
         }
     }
 }

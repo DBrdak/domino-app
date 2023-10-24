@@ -1,4 +1,4 @@
-﻿using OnlineShop.Catalog.Domain.Products;
+﻿using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.PriceLists
@@ -7,7 +7,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
     {
         Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken);
 
-        Task<PriceList?> GetRetailPriceList(PriceListCategory category, CancellationToken cancellationToken);
+        Task<PriceList?> GetRetailPriceList(Category category, CancellationToken cancellationToken);
 
         Task AddPriceList(PriceList priceList, CancellationToken cancellationToken);
 

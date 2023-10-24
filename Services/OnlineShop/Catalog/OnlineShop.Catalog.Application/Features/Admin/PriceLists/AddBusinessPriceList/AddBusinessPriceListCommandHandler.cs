@@ -1,4 +1,5 @@
 ﻿using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.ResponseTypes;
 
@@ -16,7 +17,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPr
         public async Task<Result> Handle(AddBusinessPriceListCommand request, CancellationToken cancellationToken)
         {
             await _priceListRepository.AddPriceList(
-                PriceList.CreateBusiness(request.Name, request.ContractorName, PriceListCategory.Meat),
+                PriceList.CreateBusiness(request.Name, request.ContractorName, Category.FromValue(request.Category)),
                 cancellationToken);
 
             return Result.Success();

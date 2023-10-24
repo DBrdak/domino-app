@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Photo;
 using Shared.Domain.ResponseTypes;
 
@@ -95,9 +96,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 return null;
             }
 
-            var productCategory = priceList.Category == PriceListCategory.Meat ? Category.Meat : Category.Sausage;
-
-            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId!, productCategory, cancellationToken);
+            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId!, priceList.Category, cancellationToken);
 
             if (priceListLineItem is null)
             {
@@ -115,7 +114,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachImage(uploadResult.PhotoUrl);
 
-            var product = Product.Create(values, productCategory, productId);
+            var product = Product.Create(values, priceList.Category, productId);
 
             await _context.Products.InsertOneAsync(product, null, cancellationToken);
 
@@ -155,9 +154,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             var product = await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken).Result
                 .SingleOrDefaultAsync(cancellationToken);
 
-            var priceListCategory = product.Category == Category.Meat ? PriceListCategory.Meat : PriceListCategory.Sausage;
-
-            var priceList = await _priceListRepository.GetRetailPriceList(priceListCategory, cancellationToken);
+            var priceList = await _priceListRepository.GetRetailPriceList(product.Category, cancellationToken);
 
             if (priceList is null)
             {

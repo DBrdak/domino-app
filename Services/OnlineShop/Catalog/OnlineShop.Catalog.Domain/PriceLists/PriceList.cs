@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using OnlineShop.Catalog.Domain.PriceLists.Events;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 
@@ -10,13 +11,13 @@ namespace OnlineShop.Catalog.Domain.PriceLists
         public string Name { get; init; }
         public List<LineItem> LineItems { get; init; }
         public Contractor Contractor { get; init; }
-        public PriceListCategory Category { get; init; }
+        public Category Category { get; init; }
 
         private PriceList()
         {
         }
 
-        private PriceList(string name, Contractor contractor, PriceListCategory category) : base(ObjectId.GenerateNewId().ToString())
+        private PriceList(string name, Contractor contractor, Category category) : base(ObjectId.GenerateNewId().ToString())
         {
             Name = name;
             Contractor = contractor;
@@ -24,9 +25,9 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             Category = category;
         }
 
-        public static PriceList CreateRetail(string name, PriceListCategory category) => new(name, Contractor.Retail, category);
+        public static PriceList CreateRetail(string name, Category category) => new(name, Contractor.Retail, category);
 
-        public static PriceList CreateBusiness(string name, string contractorName, PriceListCategory category) =>
+        public static PriceList CreateBusiness(string name, string contractorName, Category category) =>
             new(name, Contractor.Business(contractorName), category);
 
         public void AddLineItem(LineItem lineItem)

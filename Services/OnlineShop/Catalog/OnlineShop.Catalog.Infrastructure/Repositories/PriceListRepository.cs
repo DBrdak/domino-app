@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
-using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
@@ -26,15 +26,15 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (!isRetailPriceListExist)
             {
-                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny mięsa", PriceListCategory.Meat), cancellationToken);
-                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny wędlin", PriceListCategory.Sausage), cancellationToken);
+                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny mięsa", Category.Meat), cancellationToken);
+                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny wędlin", Category.Sausage), cancellationToken);
                 await GetPriceListsAsync(cancellationToken);
             }
 
             return priceLists;
         }
 
-        public async Task<PriceList?> GetRetailPriceList(PriceListCategory category, CancellationToken cancellationToken)
+        public async Task<PriceList?> GetRetailPriceList(Category category, CancellationToken cancellationToken)
         {
             var retailPriceListCursor = await _context.PriceLists.FindAsync(
                 pl => pl.Contractor.Name == Contractor.Retail.Name && pl.Category.Value == category.Value,
@@ -185,9 +185,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 throw new ApplicationException($"Product with ID {productId} not found");
             }
 
-            var priceListCategory = productCategory == Category.Meat ? PriceListCategory.Meat : PriceListCategory.Sausage;
-
-            var priceList = await GetRetailPriceList(priceListCategory, cancellationToken);
+            var priceList = await GetRetailPriceList(productCategory, cancellationToken);
 
             if (priceList is null)
             {
@@ -199,9 +197,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> SplitLineItemFromProduct(string productId, Category productCategory, CancellationToken cancellationToken)
         {
-            var priceListCategory = productCategory == Category.Meat ? PriceListCategory.Meat : PriceListCategory.Sausage;
-
-            var priceList = await GetRetailPriceList(priceListCategory , cancellationToken);
+            var priceList = await GetRetailPriceList(productCategory, cancellationToken);
 
             if (priceList is null)
             {
@@ -224,7 +220,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        private bool ContractorDuplicatesExists(Contractor contractor, PriceListCategory category, CancellationToken cancellationToken) =>
+        private bool ContractorDuplicatesExists(Contractor contractor, Category category, CancellationToken cancellationToken) =>
             _context.PriceLists
                 .FindAsync(pl => pl.Contractor.Name == contractor.Name && pl.Category.Value == category.Value, null, cancellationToken)
                 .Result.ToList(cancellationToken).Any();
@@ -238,14 +234,13 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         private async Task<PriceList?> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
             (await GetPriceListsAsync(cancellationToken)).SingleOrDefault(pl => pl.Id == priceListId);
 
-        private async Task<PriceListCategory> GetPriceListCategory(string productId, CancellationToken cancellationToken)
+        private async Task<Category> GetPriceListCategory(string productId, CancellationToken cancellationToken)
         {
             var products = await _productRepository.GetProductsAsync("", cancellationToken);
 
             var product = products.SingleOrDefault(p => p.Id == productId);
 
-            var priceListCategory = product.Category == Category.Meat ? PriceListCategory.Meat : PriceListCategory.Sausage;
-            return priceListCategory;
+            return product!.Category;
         }
 
         //TODO Kontrahent się loguje -> tworzy się cennik na podstawie retailu -> admin edytuje -> cennika nie można usunąć dopóki istnieje kontrahent

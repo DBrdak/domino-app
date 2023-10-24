@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Domain.Shared;
 using System.Globalization;
 using System.Text;
 
