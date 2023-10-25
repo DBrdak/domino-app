@@ -37,9 +37,9 @@ function ProductUpperSection({onApplySearch}: Props) {
     useEffect(() => {
         const getNames = async () => {
             await adminPriceListStore.loadPriceLists()
-            const retailPriceList = adminPriceListStore.priceLists.find(pl => pl.contractor.name === 'Retail')
+            const retailPriceList = [...adminPriceListStore.priceLists].filter(pl => pl.contractor.name === 'Retail')
             const nonAggregatedProductNames = retailPriceList &&
-                retailPriceList.lineItems.filter(li => li.productId === null).map(li => li.name)
+                retailPriceList.flatMap(pl => pl.lineItems).filter(li => li.productId == null).map(li => li.name)
             nonAggregatedProductNames && setNames(nonAggregatedProductNames)
         }
         getNames()

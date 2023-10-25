@@ -1,4 +1,5 @@
-﻿using Shared.Domain.Money;
+﻿using OnlineShop.Catalog.Domain.Shared;
+using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.Products
 {
@@ -8,6 +9,7 @@ namespace OnlineShop.Catalog.Domain.Products
         public string Description { get; init; }
         public string? Image { get; private set; }
         public Money? Price { get; private set; }
+        public Category? Category { get; private set; }
         public bool IsWeightSwitchAllowed { get; init; }
         public decimal? SingleWeight { get; init; }
 
@@ -34,6 +36,11 @@ namespace OnlineShop.Catalog.Domain.Products
         public void AttachPrice(Money productPrice)
         {
             Price = productPrice;
+        }
+
+        public void AttachCategory(Category category)
+        {
+            Category = category;
         }
     }
 }

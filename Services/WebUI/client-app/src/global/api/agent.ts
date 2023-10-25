@@ -75,7 +75,6 @@ const catalog = {
     const formData = new FormData()
     formData.append('Id', newValues.id)
     formData.append('Description', newValues.description)
-    formData.append('Category', newValues.category)
     formData.append('IsAvailable', `${newValues.isAvailable}`)
     formData.append('ImageUrl', `${newValues.imageUrl}`)
     formData.append('IsWeightSwitchAllowed', `${newValues.isWeightSwitchAllowed}`)
@@ -89,7 +88,6 @@ const catalog = {
     photo && formData.append('Photo', photo, values.name)
     formData.append('Name', values.name)
     formData.append('Description', values.description)
-    formData.append('Category', values.category)
     formData.append('IsWeightSwitchAllowed', `${values.isWeightSwitchAllowed}`)
     formData.append('SingleWeight', `${values.singleWeight}`)
 

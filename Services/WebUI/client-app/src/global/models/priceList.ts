@@ -1,9 +1,10 @@
 import { Money } from "./common"
+import {Category} from "./product";
 
 export interface PriceList {
   id:string
   name: string
-  category: PriceListCategory
+  category: Category
   lineItems: LineItem[]
   contractor: Contractor
 }
@@ -16,10 +17,6 @@ export interface LineItem {
 
 export interface Contractor {
   name: string
-}
-
-export interface PriceListCategory {
-  value: string
 }
 
 export interface LineItemCreateValues  {

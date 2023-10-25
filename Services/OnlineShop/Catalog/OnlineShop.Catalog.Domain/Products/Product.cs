@@ -40,7 +40,7 @@ namespace OnlineShop.Catalog.Domain.Products
                 null;
         }
 
-        public static Product Create(
+        internal static Product Create(
             string name,
             string description,
             string category,
@@ -120,7 +120,6 @@ namespace OnlineShop.Catalog.Domain.Products
         public void Update(UpdateValues newValues)
         {
             Description = newValues.Description;
-            Category = Category.FromValue(newValues.Category);
             Image = new(newValues.ImageUrl);
 
             if (newValues.IsWeightSwitchAllowed && newValues.SingleWeight.HasValue)

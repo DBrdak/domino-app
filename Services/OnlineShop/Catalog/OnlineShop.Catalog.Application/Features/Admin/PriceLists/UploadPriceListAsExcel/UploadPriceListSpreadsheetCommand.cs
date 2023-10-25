@@ -9,7 +9,7 @@ using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceListAsExcel
 {
-    public sealed record UploadPriceListSpreadsheetCommand(IFormFile Spreadsheet) : ICommand
+    public sealed record UploadPriceListSpreadsheetCommand(string PriceListId, IFormFile PriceListFile) : ICommand
     {
     }
 }

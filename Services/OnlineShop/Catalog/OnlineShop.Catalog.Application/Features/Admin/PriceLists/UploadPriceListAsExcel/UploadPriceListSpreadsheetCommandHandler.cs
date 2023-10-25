@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OnlineShop.Catalog.Domain.PriceLists;
 using Shared.Domain.Abstractions.Messaging;
+using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceListAsExcel
@@ -18,9 +19,13 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceLi
             _priceListRepository = priceListRepository;
         }
 
-        public Task<Result> Handle(UploadPriceListSpreadsheetCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UploadPriceListSpreadsheetCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _priceListRepository.UploadPriceListFile(request.PriceListId, request.PriceListFile, cancellationToken);
+
+            return result ?
+                Result.Success() :
+                Result.Failure(Error.TaskFailed($"Error during uploading price list with ID: {request.PriceListId}"));
         }
 
     }

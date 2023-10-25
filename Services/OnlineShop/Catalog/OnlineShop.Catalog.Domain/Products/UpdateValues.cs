@@ -4,7 +4,6 @@
     {
         public string Id { get; init; }
         public string Description { get; init; }
-        public string Category { get; init; }
         public string ImageUrl { get; set; }
         public bool IsWeightSwitchAllowed { get; init; }
         public decimal? SingleWeight { get; init; }
@@ -17,7 +16,6 @@
 
         public UpdateValues(string id,
             string description,
-            string category,
             string imageUrl,
             bool isWeightSwitchAllowed,
             decimal? singleWeight,
@@ -25,7 +23,6 @@
         {
             Id = id;
             Description = description;
-            Category = category;
             ImageUrl = imageUrl;
             IsWeightSwitchAllowed = isWeightSwitchAllowed;
             SingleWeight = singleWeight;

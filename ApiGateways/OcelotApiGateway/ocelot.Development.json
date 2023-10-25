@@ -131,6 +131,32 @@
       "UpstreamHttpMethod": [ "PUT" ],
       "FileCacheOptions": { "TtlSeconds": 0 }
     },
+    {
+      "DownstreamPathTemplate": "/api/v1/onlineshop/pricelist/file/{priceListId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineshop.catalog.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/onlineshop/pricelist/file/{priceListId}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/onlineshop/pricelist/file/{priceListId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineshop.catalog.api",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/onlineshop/pricelist/file/{priceListId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": { "TtlSeconds": 0 }
+    },
     // OnlineShop.ShoppingCart.API
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/shoppingcart",

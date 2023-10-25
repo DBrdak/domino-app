@@ -1,12 +1,15 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddLineItem;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddRetailPriceList;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.DownloadPriceListAsExcel;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.GetPriceLists;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemoveLineItem;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemovePriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceListAsExcel;
 
 namespace OnlineShop.Catalog.API.Controllers
 {
@@ -99,30 +102,41 @@ namespace OnlineShop.Catalog.API.Controllers
                 BadRequest(result.Error);
         }
 
-        [HttpGet("{priceListId}")]
+        [HttpGet("file/{priceListId}")]
         public async Task<IActionResult> DownloadPriceListAsExcel(
             string priceListId,
             CancellationToken cancellationToken)
         {
-            //var query = new GetPriceListsQuery();
+            var query = new GetPriceListSpreadsheetQuery(priceListId);
 
-            //var response = await _sender.Send(query, cancellationToken);
+            var response = await _sender.Send(query, cancellationToken);
 
-            //return Ok(response.Value);
-            return NotFound();
+            if (response.IsFailure)
+            {
+                return BadRequest(response.Error);
+            }
+
+            var stream = new MemoryStream();
+
+            response.Value.Spreadsheet.SaveAs(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{response.Value.FileName}.xlsx");
         }
 
-        [HttpPost("{priceListId}")]
+        [HttpPost("file/{priceListId}")]
         public async Task<IActionResult> UploadPriceListAsExcel(
-            IFormFile spreadsheet,
+            string priceListId,
+            [FromForm] IFormFile priceListFile,
             CancellationToken cancellationToken)
         {
-            //var query = new GetPriceListsQuery();
+            var command = new UploadPriceListSpreadsheetCommand(priceListId, priceListFile);
 
-            //var response = await _sender.Send(query, cancellationToken);
+            var response = await _sender.Send(command, cancellationToken);
 
-            //return Ok(response.Value);
-            return NotFound();
+            return response.IsSuccess ?
+                Ok() :
+                BadRequest(response.Error);
         }
     }
 }

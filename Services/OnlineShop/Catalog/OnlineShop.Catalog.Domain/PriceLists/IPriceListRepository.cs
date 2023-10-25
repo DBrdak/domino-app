@@ -1,4 +1,5 @@
-﻿using OnlineShop.Catalog.Domain.Shared;
+﻿using Microsoft.AspNetCore.Http;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.PriceLists
@@ -25,6 +26,8 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             CancellationToken cancellationToken);
 
         Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken);
+
+        Task<bool> UploadPriceListFile(string priceListId, IFormFile priceListFile, CancellationToken cancellationToken);
 
         // Internal use for products
 

@@ -1,5 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Money;
 
@@ -8,12 +11,10 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
     public sealed class PriceListRepository : IPriceListRepository
     {
         private readonly CatalogContext _context;
-        private readonly ProductRepository _productRepository;
 
-        public PriceListRepository(CatalogContext context, ProductRepository productRepository)
+        public PriceListRepository(CatalogContext context)
         {
             _context = context;
-            _productRepository = productRepository;
         }
 
         public async Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken)
@@ -38,6 +39,15 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         {
             var retailPriceListCursor = await _context.PriceLists.FindAsync(
                 pl => pl.Contractor.Name == Contractor.Retail.Name && pl.Category.Value == category.Value,
+                null, cancellationToken);
+
+            return await retailPriceListCursor.SingleOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<PriceList?> GetRetailPriceList(string lineItemName, CancellationToken cancellationToken)
+        {
+            var retailPriceListCursor = await _context.PriceLists.FindAsync(
+                pl => pl.Contractor.Name == Contractor.Retail.Name && pl.LineItems.Any(li => li.Name == lineItemName),
                 null, cancellationToken);
 
             return await retailPriceListCursor.SingleOrDefaultAsync(cancellationToken);
@@ -145,14 +155,53 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
+        public async Task<bool> UploadPriceListFile(string priceListId, IFormFile priceListFile, CancellationToken cancellationToken)
+        {
+            await using var stream = priceListFile.OpenReadStream();
+            var workbook = new XLWorkbook(stream);
+            workbook.TryGetWorksheet("Cennik", out var worksheet);
+
+            if (worksheet is null)
+            {
+                return false;
+            }
+
+            var lineItems = RetriveLineItemsNames(worksheet);
+            var results = lineItems.Select(li => AddLineItem(priceListId, li, cancellationToken).Result);
+
+            return results.All(r => r);
+        }
+
+        private List<LineItem> RetriveLineItemsNames(IXLWorksheet worksheet)
+        {
+            var names = new List<string>();
+            var prices = new List<Money>();
+            var lineItems = new List<LineItem>();
+            var row = 2;
+            var isCellEmpty = worksheet.Cell(2,1).IsEmpty();
+
+            while (!isCellEmpty)
+            {
+                names.Add(worksheet.Cell(row, 1).GetText());
+                prices.Add(Money.FromString(worksheet.Cell(row, 2).GetText()));
+                row++;
+                isCellEmpty = worksheet.Cell(row, 1).IsEmpty() || worksheet.Cell(row, 2).IsEmpty();
+            }
+
+            for (int i = 0; i < names.Count && i < prices.Count; i++)
+            {
+                lineItems.Add(new (names[i], prices[i]));
+            }
+
+            return lineItems;
+        }
+
         public async Task<PriceList?> AggregateLineItemWithProduct(
             string productId,
             string lineItemName,
             CancellationToken cancellationToken)
         {
-            var priceListCategory = await GetPriceListCategory(productId, cancellationToken);
-
-            var priceList = await GetRetailPriceList(priceListCategory, cancellationToken);
+            var priceList = await GetRetailPriceList(lineItemName, cancellationToken);
 
             if (priceList is null)
             {
@@ -177,8 +226,8 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<LineItem?> GetLineItemForProduct(string productId, Category productCategory, CancellationToken cancellationToken, bool isProductInDb = false)
         {
-            var product = (await _productRepository.GetProductsAsync("", cancellationToken))
-                .SingleOrDefault(p => p.Id == productId);
+            var product = (await _context.Products.FindAsync(p => p.Id == productId))
+                .SingleOrDefault(cancellationToken);
 
             if (isProductInDb && product is null)
             {
@@ -233,15 +282,6 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         private async Task<PriceList?> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
             (await GetPriceListsAsync(cancellationToken)).SingleOrDefault(pl => pl.Id == priceListId);
-
-        private async Task<Category> GetPriceListCategory(string productId, CancellationToken cancellationToken)
-        {
-            var products = await _productRepository.GetProductsAsync("", cancellationToken);
-
-            var product = products.SingleOrDefault(p => p.Id == productId);
-
-            return product!.Category;
-        }
 
         //TODO Kontrahent się loguje -> tworzy się cennik na podstawie retailu -> admin edytuje -> cennika nie można usunąć dopóki istnieje kontrahent
     }

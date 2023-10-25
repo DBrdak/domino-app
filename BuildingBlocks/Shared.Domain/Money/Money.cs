@@ -28,5 +28,27 @@ namespace Shared.Domain.Money
         public static Money Zero(Currency currency, Unit? unit) => new(0, currency, unit);
 
         public bool IsZero() => this == Zero(Currency, Unit);
+
+        public override string ToString() => Unit is null ? 
+            $"{Amount} {Currency.Code}" :
+            $"{Amount} {Currency.Code}/{Unit.Code}";
+
+        public static Money FromString(string moneyString)
+        {
+            var amount = decimal.Parse(moneyString.Split(' ')[0]);
+            var amountUnit = moneyString.Split(' ')[1].Split("/");
+            var currencyCode = amountUnit[0];
+            var currency = Currency.FromCode(currencyCode);
+
+            Unit? unit = null;
+
+            if (amountUnit.Length == 2)
+            {
+                var unitCode = amountUnit[1];
+                unit = Unit.FromCode(unitCode);
+            }
+
+            return new Money(amount, currency, unit);
+        }
     }
 }
