@@ -1,12 +1,14 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
+using MongoDB.Bson;
+using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 
 namespace Shops.Domain.MobileShops
 {
-    public sealed record SalePoint
+    public sealed class SalePoint : Entity
     {
         public Location Location { get; init; }
         public WeekDay WeekDay { get; private set; }
@@ -14,7 +16,7 @@ namespace Shops.Domain.MobileShops
         public TimeRange? OpenHours { get; private set; }
         public TimeRange? CachedOpenHours { get; private set; }
 
-        public SalePoint(Location location, TimeRange openHours, WeekDay weekDay)
+        public SalePoint(Location location, TimeRange openHours, WeekDay weekDay) : base(ObjectId.GenerateNewId().ToString())
         {
             Location = location;
             OpenHours = openHours;

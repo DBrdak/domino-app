@@ -7,6 +7,7 @@ using MassTransit;
 using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.Domain.OnlineOrders;
+using OnlineShop.Order.Domain.OrderItems;
 using OnlineShop.Order.Infrastructure.Persistence;
 
 namespace OnlineShop.Order.Infrastructure.Repositories
@@ -99,7 +100,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
             string? orderStatus,
             CancellationToken cancellationToken,
             string? smsMessage = null,
-            OnlineOrder? modifiedOrder = null,
+            IEnumerable<OrderItem>? modifiedOrderItems = null,
             bool? isPrinted = null)
         {
             var order = await _context.Set<OnlineOrder>()
@@ -112,7 +113,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
             if(orderStatus is not null)
             {
-                order.UpdateStatus(orderStatus, modifiedOrder);
+                order.UpdateStatus(orderStatus, modifiedOrderItems);
             }
 
             if (!string.IsNullOrWhiteSpace(smsMessage))

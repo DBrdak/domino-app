@@ -21,7 +21,7 @@ namespace OnlineShop.Order.Application.Features.Commands.UpdateOrder
                 request.Status,
                 cancellationToken,
                 request.SmsMessage,
-                request.ModifiedOrder,
+                request.ModifiedOrderItems,
                 request.IsPrinted);
 
             if (!updateResult)

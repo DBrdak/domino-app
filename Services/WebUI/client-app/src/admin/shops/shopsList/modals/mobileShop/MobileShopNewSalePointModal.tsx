@@ -8,7 +8,7 @@ import LocationPicker from "../../../../../components/LocationPicker";
 import {LocalizationProvider, TimeField} from "@mui/x-date-pickers";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import pl from 'date-fns/locale/pl';
-import {TimeRange} from "../../../../../global/models/common";
+import {TimeRange, Location} from "../../../../../global/models/common";
 
 interface Props {
     shop: MobileShop
@@ -17,9 +17,11 @@ interface Props {
 }
 
 export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}: Props) {
+    const [pickedLocation, setPickedLocation] = useState<Location | null>(null)
     const [isNameEditable, setIsNameEditable] = useState(true)
 
     const init: SalePoint = {
+        id: '',
         location: {latitude: '', longitude: '', name: ''},
         cachedOpenHours: null,
         openHours: {start: '', end: ''},
@@ -34,6 +36,19 @@ export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}
         const isMinutesValid = isHoursEqual ? start.split(':')[1] < end.split(':')[1] : true
 
         return isHourValid && isMinutesValid
+    }
+
+    const dayWeekUnavailable = (weekDayValue: string) => {
+        const existingSalePointInPickedLocation = pickedLocation &&
+            shop.salePoints.find(sp => sp.location === pickedLocation)
+
+        const shopWeekDayValueForExistingLocation = existingSalePointInPickedLocation && existingSalePointInPickedLocation.weekDay.value
+
+        if(shopWeekDayValueForExistingLocation){
+            return false
+        }
+
+        return shopWeekDayValueForExistingLocation === weekDayValue
     }
 
     return <Formik
@@ -60,13 +75,27 @@ export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}
                             label="Dzień tygodnia"
                             onChange={handleChange}
                         >
-                            <MenuItem key={1} value={'Poniedziałek'}>Poniedziałek</MenuItem>
-                            <MenuItem key={2} value={'Wtorek'}>Wtorek</MenuItem>
-                            <MenuItem key={3} value={'Środa'}>Środa</MenuItem>
-                            <MenuItem key={4} value={'Czwartek'}>Czwartek</MenuItem>
-                            <MenuItem key={5} value={'Piątek'}>Piątek</MenuItem>
-                            <MenuItem key={6} value={'Sobota'}>Sobota</MenuItem>
-                            <MenuItem key={7} value={'Niedziela'}>Niedziela</MenuItem>
+                            <MenuItem key={1} value={'Poniedziałek'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Poniedziałek
+                            </MenuItem>
+                            <MenuItem key={2} value={'Wtorek'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Wtorek
+                            </MenuItem>
+                            <MenuItem key={3} value={'Środa'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Środa
+                            </MenuItem>
+                            <MenuItem key={4} value={'Czwartek'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Czwartek
+                            </MenuItem>
+                            <MenuItem key={5} value={'Piątek'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Piątek
+                            </MenuItem>
+                            <MenuItem key={6} value={'Sobota'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Sobota
+                            </MenuItem>
+                            <MenuItem key={7} value={'Niedziela'} disabled={dayWeekUnavailable('Poniedziałek')}>
+                                Niedziela
+                            </MenuItem>
                         </Select>
                     </FormControl>
                     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={pl}>
@@ -104,7 +133,10 @@ export function MobileShopNewSalePointModal({shop, onSubmit, existingSalePoints}
                 </Stack>
                 <LocationPicker locationName={values.location.name} existingSalePoints={existingSalePoints}
                                 setNameEdition={(state) => setIsNameEditable(state)}
-                                onChange={(pickedLocation) => setValues({...values, location: pickedLocation})} newMode />
+                                onChange={(pickedLocation) => {
+                                    setValues({...values, location: pickedLocation})
+                                    setPickedLocation(pickedLocation)
+                                }} newMode />
             </Stack>
         </Form>}
     </Formik>;

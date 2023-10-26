@@ -47,7 +47,6 @@ export default class AdminOrderStore {
                     this.setOrder(o)
                 })
             })
-            console.log(this.ordersRegistry)
         } catch (e) {
             console.log(e)
         } finally {
@@ -58,6 +57,7 @@ export default class AdminOrderStore {
     async updateOrder(values: OrderUpdateValues) {
         this.setLoading(true)
         try {
+            console.log(values)
             await agent.order.updateOrder(values)
             await this.loadOrders()
         } catch (e) {

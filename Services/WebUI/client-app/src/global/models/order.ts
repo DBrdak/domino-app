@@ -132,6 +132,6 @@ export interface OrderUpdateValues {
   orderId: string
   status: string | null
   smsMessage: string | null
-  modifiedOrder: OnlineOrder | null
-  isPrinted: false | null
+  modifiedOrderItems: OrderItem[] | null
+  isPrinted: boolean | null
 }

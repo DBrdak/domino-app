@@ -1,4 +1,5 @@
-﻿using EventBus.Domain.Events.ShoppingCartCheckout;
+﻿using System.Text.Json.Serialization;
+using EventBus.Domain.Events.ShoppingCartCheckout;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Quantity;
@@ -13,10 +14,10 @@ public sealed class OrderItem : Entity
     public string ProductName { get; init; }
     public Money TotalValue { get; init; }
 
-    public OrderItem()
-    { }
+    private OrderItem() : base(string.Empty) { }
 
-    private OrderItem(
+    [JsonConstructor]
+    public OrderItem(
         string orderId,
         Quantity quantity,
         Money price,

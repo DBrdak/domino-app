@@ -8,6 +8,7 @@ import {LocalizationProvider, TimeField} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import pl from "date-fns/locale/pl";
 import LocationPicker from "../../../../../components/LocationPicker";
+import ShopExtendedLocationPicker from "./ShopExtendedLocationPicker";
 
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 
 export function MobileShopUpdateSalePointModal({salePoints, onSubmit}: Props) {
     const init: SalePoint = {
+        id: null,
         location: {latitude: '', longitude: '', name: ''},
         cachedOpenHours: {start: '', end: ''},
         openHours: {start: '', end: ''},
@@ -55,14 +57,8 @@ export function MobileShopUpdateSalePointModal({salePoints, onSubmit}: Props) {
         ]
     }
 
-    function handleLocationPick(pickedLocation: Location, setValues: (values: React.SetStateAction<SalePoint>, shouldValidate?: (boolean | undefined)) => Promise<void | FormikErrors<SalePoint>>) {
-        const salePoint = salePoints.find(sp => sp.location.name === pickedLocation.name)
-
-        if(!salePoint){
-            return
-        }
-
-        setValues(salePoint)
+    function handleSalePointPick(pickedSalePoint: SalePoint, setValues: (values: React.SetStateAction<SalePoint>, shouldValidate?: (boolean | undefined)) => Promise<void | FormikErrors<SalePoint>>) {
+        setValues(pickedSalePoint)
     }
 
     return <Formik
@@ -135,8 +131,8 @@ export function MobileShopUpdateSalePointModal({salePoints, onSubmit}: Props) {
                         </Button>
                     }
                 </Stack>
-                <LocationPicker locationName={values.location.name} existingSalePoints={salePoints}
-                                onChange={(pickedLocation) => handleLocationPick(pickedLocation, setValues)} />
+                <ShopExtendedLocationPicker existingSalePoints={salePoints}
+                                onChange={(pickedSalePoint) => handleSalePointPick(pickedSalePoint,setValues)} />
             </Stack>
         </Form>}
     </Formik>;

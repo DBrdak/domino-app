@@ -86,9 +86,11 @@ public sealed record DeliveryPoint(Location Location, ShopWorkingDay[] WorkingDa
 
         foreach (var group in groupedSalePoints)
         {
+            var activeSalePoints = group.Where(sp => !sp.IsClosed);
+
             deliveryPoints.Add(new DeliveryPoint(
                 group.Key,
-                group.Select(sp => new ShopWorkingDay(sp.WeekDay, sp.OpenHours!)).ToArray()));
+                activeSalePoints.Select(sp => new ShopWorkingDay(sp.WeekDay, sp.OpenHours!)).ToArray()));
         }
 
         return deliveryPoints;
@@ -98,7 +100,7 @@ public sealed record DeliveryPoint(Location Location, ShopWorkingDay[] WorkingDa
     {
         return new(
             stationaryShop.Location,
-            stationaryShop.WeekSchedule
+            stationaryShop.WeekSchedule.Where(d => !d.IsClosed).ToArray()
         );
     }
 }

@@ -12,7 +12,7 @@ import {OnlineOrder} from "../../global/models/order";
 
 function OrdersListSection() {
     const {adminOrderStore, adminShopStore} = useStore()
-    const [shopName, setShopName] = useState<string | null>(null)
+    const [shopName, setShopName] = useState<string>('')
     const [orders, setOrders] = useState<OnlineOrder[] | null>(null)
 
     useEffect(() => {
@@ -25,18 +25,19 @@ function OrdersListSection() {
 
     useEffect(() => {
 
-        if(shopName === null) {
+        if(shopName === '') {
             adminOrderStore.orders && setOrders(adminOrderStore.orders)
+            return
         }
 
-        shopName && adminOrderStore.orders && setOrders([...adminOrderStore.orders].filter(o => o.shop?.shopName === shopName))
+        adminOrderStore.orders && setOrders([...adminOrderStore.orders].filter(o => o.shop?.shopName === shopName))
     }, [adminOrderStore.orders, shopName])
 
     return (
         !adminOrderStore.loading && !adminShopStore.loading && orders ?
             <Stack direction={'column'} style={{position: 'relative', justifyContent: 'center', alignItems: 'center'}} spacing={3}>
                 <Box position='absolute' top="15px" left="15px" width={'200px'}>
-                    <OrderFilter shops={adminShopStore.shops} handleShopChange={sn => setShopName(sn)} />
+                    <OrderFilter shops={adminShopStore.shops} handleShopChange={sn => setShopName(sn)} selectedName={shopName} />
                 </Box>
                 <Typography variant="h4">Zamówienia Online</Typography>
                 <OrdersList orders={orders} />

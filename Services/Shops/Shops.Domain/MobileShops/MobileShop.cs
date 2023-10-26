@@ -32,10 +32,10 @@ namespace Shops.Domain.MobileShops
 
         public void AddSalePoint(Location location, TimeRange openHours, string weekDay)
         {
-            if (SalePoints.Any(sp => sp.Location.Name == location.Name))
+            if (SalePoints.Any(sp => sp.Location.Name == location.Name && sp.WeekDay.Value == weekDay))
             {
                 throw new ApplicationException(
-                    $"Sale point in location [{location.Name}] already exist for shop [{ShopName}]");
+                    $"Sale point in location [{location.Name}] already exist for shop [{ShopName}] on {weekDay}");
             }
 
             SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));
@@ -43,7 +43,7 @@ namespace Shops.Domain.MobileShops
 
         public void UpdateSalePoint(SalePoint updatedSalePoint)
         {
-            var existingSalePoint = SalePoints.FirstOrDefault(sp => sp.Location == updatedSalePoint.Location) ??
+            var existingSalePoint = SalePoints.FirstOrDefault(sp => sp.Id == updatedSalePoint.Id) ??
                                     throw new ApplicationException(
                                         $"No sale point in location {updatedSalePoint.Location} find for shop named {ShopName}");
 
@@ -52,7 +52,7 @@ namespace Shops.Domain.MobileShops
 
         public void RemoveSalePoint(SalePoint salePoint)
         {
-            if (!SalePoints.Any(s => s.Location == salePoint.Location && s.WeekDay == salePoint.WeekDay && s.OpenHours == salePoint.OpenHours))
+            if (SalePoints.All(s => s.Id != salePoint.Id))
             {
                 throw new ApplicationException($"Sale point doesn't exists for location: {salePoint.Location}");
             }
@@ -62,10 +62,7 @@ namespace Shops.Domain.MobileShops
 
         public void DisableSalePoint(SalePoint salePoint)
         {
-            var salePointToDisable = SalePoints.FirstOrDefault(
-                                         s => s.Location == salePoint.Location &&
-                                              s.WeekDay == salePoint.WeekDay &&
-                                              s.OpenHours == salePoint.OpenHours) ??
+            var salePointToDisable = SalePoints.FirstOrDefault(s => s.Id != salePoint.Id) ??
                                      throw new ApplicationException(
                                          $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
@@ -74,10 +71,7 @@ namespace Shops.Domain.MobileShops
 
         public void EnableSalePoint(SalePoint salePoint)
         {
-            var salePointToEnable = SalePoints.FirstOrDefault(
-                                        s => s.Location == salePoint.Location &&
-                                             s.WeekDay == salePoint.WeekDay &&
-                                             s.OpenHours == salePoint.OpenHours) ??
+            var salePointToEnable = SalePoints.FirstOrDefault(s => s.Id != salePoint.Id) ??
                                     throw new ApplicationException(
                                         $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
