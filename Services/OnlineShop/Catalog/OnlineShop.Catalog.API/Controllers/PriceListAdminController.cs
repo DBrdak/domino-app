@@ -10,6 +10,7 @@ using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemoveLineItem;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemovePriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceListAsExcel;
+using Shared.Domain.Extensions;
 
 namespace OnlineShop.Catalog.API.Controllers
 {
@@ -102,7 +103,7 @@ namespace OnlineShop.Catalog.API.Controllers
                 BadRequest(result.Error);
         }
 
-        [HttpGet("file/{priceListId}")]
+        [HttpGet("{priceListId}/xlsx")]
         public async Task<IActionResult> DownloadPriceListAsExcel(
             string priceListId,
             CancellationToken cancellationToken)
@@ -121,10 +122,10 @@ namespace OnlineShop.Catalog.API.Controllers
             response.Value.Spreadsheet.SaveAs(stream);
             stream.Seek(0, SeekOrigin.Begin);
             
-            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{response.Value.FileName}.xlsx");
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{response.Value.FileName.RemovePolishDiacritics()}.xlsx");
         }
 
-        [HttpPost("file/{priceListId}")]
+        [HttpPost("{priceListId}/xlsx")]
         public async Task<IActionResult> UploadPriceListAsExcel(
             string priceListId,
             [FromForm] IFormFile priceListFile,

@@ -8,7 +8,7 @@ services:
   shoppingcartdb:
     image: redis
 
-  orderdb:
+  postgresdb:
     image: postgres
 
 #Microservices
@@ -51,7 +51,7 @@ services:
 
 volumes:
   mongo_data:
-  order_data:
+  postgres_data:
 
 networks:
   default:

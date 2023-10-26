@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\BuildingBlocks\EventBus.Messages\EventBus.Domain.csproj" />
     <ProjectReference Include="..\OnlineShop.Catalog.Application\OnlineShop.Catalog.Application.csproj" />
     <ProjectReference Include="..\OnlineShop.Catalog.Infrastructure\OnlineShop.Catalog.Infrastructure.csproj" />
   </ItemGroup>

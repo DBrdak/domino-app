@@ -45,6 +45,31 @@ namespace Shops.Infrastructure.Repositories
             return shops.ToList();
         }
 
+        public async Task<List<Shop>> GetShops(IEnumerable<string> shopsId, CancellationToken cancellationToken)
+        {
+            var mobileShopFilter = Builders<Shop>.Filter.Where(s => s is MobileShop && shopsId.Any(id => id == s.Id));
+            var stationaryShopFilter = Builders<Shop>.Filter.Where(s => s is StationaryShop && shopsId.Any(id => id == s.Id));
+
+            var mobileShops = await (await _context.Shops.FindAsync(
+                    mobileShopFilter,
+                    new FindOptions<Shop, MobileShop>(),
+                    cancellationToken))
+                .ToListAsync(cancellationToken);
+
+            var stationaryShops = await (await _context.Shops.FindAsync(
+                    stationaryShopFilter,
+                    new FindOptions<Shop, StationaryShop>(),
+                    cancellationToken))
+                .ToListAsync(cancellationToken);
+
+            var shops = new List<Shop>();
+
+            shops.AddRange(mobileShops);
+            shops.AddRange(stationaryShops);
+
+            return shops.ToList();
+        }
+
         public async Task<Shop?> AddShop(Shop newShop, CancellationToken cancellationToken)
         {
             var isDuplicate = await (await _context.Shops.FindAsync(s => 

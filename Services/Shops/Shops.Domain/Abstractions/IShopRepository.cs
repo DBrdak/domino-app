@@ -13,6 +13,7 @@ namespace Shops.Domain.Abstractions
     public interface IShopRepository
     {
         Task<List<Shop>> GetShops(CancellationToken cancellationToken);
+        Task<List<Shop>> GetShops(IEnumerable<string> shopsId,CancellationToken cancellationToken);
 
         Task<Shop?> AddShop(Shop newShop, CancellationToken cancellationToken);
 

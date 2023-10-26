@@ -1,5 +1,5 @@
 import { makeAutoObservable,} from "mobx";
-import {BusinessPriceListCreateValues, LineItemCreateValues, PriceList} from "../../models/priceList";
+import {BusinessPriceListCreateValues, LineItem, LineItemCreateValues, PriceList} from "../../models/priceList";
 import {toast} from "react-toastify";
 import loading = toast.loading;
 import agent from "../../api/agent";
@@ -46,18 +46,6 @@ export default class AdminPriceListStore {
         try {
             const result = await agent.catalog.getPriceLists()
             result.forEach(pl => this.setPriceList(pl))
-        } catch (e) {
-            console.log(e)
-        } finally {
-            this.setLoading(false)
-        }
-    }
-
-    async createRetailPriceList() {
-        this.setLoading(true)
-        try {
-            await agent.catalog.createRetailPriceList()
-            await this.loadPriceLists()
         } catch (e) {
             console.log(e)
         } finally {
@@ -121,6 +109,30 @@ export default class AdminPriceListStore {
             await agent.catalog.priceListRemoveLineItem(priceListId, lineItemName)
             await this.loadPriceLists()
             this.refreshSelectedPriceList()
+        } catch (e) {
+            console.log(e)
+        } finally {
+            this.setLoading(false)
+        }
+    }
+
+    async uploadPriceList(excelFile: File, priceListId: string) {
+        this.setLoading(true)
+        try {
+            this.selectedPriceList && await agent.catalog.uploadPriceList(excelFile, this.selectedPriceList.id)
+            await this.loadPriceLists()
+            this.refreshSelectedPriceList()
+        } catch (e) {
+            console.log(e)
+        } finally {
+            this.setLoading(false)
+        }
+    }
+
+    async downloadPriceList(priceListId: string) {
+        this.setLoading(true)
+        try {
+            await agent.catalog.downloadPriceList(priceListId)
         } catch (e) {
             console.log(e)
         } finally {

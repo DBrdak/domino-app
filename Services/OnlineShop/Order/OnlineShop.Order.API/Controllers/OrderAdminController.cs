@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Order.Application.Features.Commands.UpdateOrder;
 using OnlineShop.Order.Application.Features.Queries.GetOrders;
+using OnlineShop.Order.Application.Features.Queries.GetOrdersAsPdf;
+using Shared.Domain.Date;
 
 namespace OnlineShop.Order.API.Controllers
 {
@@ -37,6 +39,15 @@ namespace OnlineShop.Order.API.Controllers
             return result.IsSuccess ?
                 Ok() :
                 BadRequest(result.Error);
+        }
+
+
+        [HttpGet("pdf")]
+        public async Task<IActionResult> GetOrderPdf([FromQuery]string[] ordersId, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetOrdersAsPdfQuery(ordersId), cancellationToken);
+
+            return File(result.Value, "application/pdf", $"Zamowienia-{DateTimeService.UtcNow}.pdf");
         }
     }
 }

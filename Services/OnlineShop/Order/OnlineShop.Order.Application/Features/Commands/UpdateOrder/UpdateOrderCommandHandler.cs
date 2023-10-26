@@ -1,5 +1,6 @@
 ﻿using OnlineShop.Order.Domain.OnlineOrders;
 using Shared.Domain.Abstractions.Messaging;
+using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Order.Application.Features.Commands.UpdateOrder
@@ -15,18 +16,18 @@ namespace OnlineShop.Order.Application.Features.Commands.UpdateOrder
 
         public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var updateTask = _orderRepository.UpdateOrder(
+            var updateResult = await _orderRepository.UpdateOrder(
                 request.OrderId,
                 request.Status,
                 cancellationToken,
-                request.ModifiedOrder);
+                request.SmsMessage,
+                request.ModifiedOrder,
+                request.IsPrinted);
 
-            if (request.SmsMessage is not null)
+            if (!updateResult)
             {
-                // TODO Send sms
+                return Result.Failure(Error.TaskFailed($"Error during updating order with ID: {request.OrderId}"));
             }
-
-            await Task.WhenAny(updateTask);
 
             return Result.Success();
         }

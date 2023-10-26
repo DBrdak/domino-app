@@ -11,6 +11,17 @@ export default class AdminOrderStore {
         makeAutoObservable(this)
     }
 
+    get axiosParams() {
+        const params = new URLSearchParams()
+        this.ordersToPrint.length > 0 &&
+            this.ordersToPrint.forEach(o => params.append("ordersId", o.id))
+        return params
+    }
+
+    get ordersToPrint() {
+        return Array.from(this.ordersRegistry.values()).filter(o => !o.isPrinted)
+    }
+
     get orders() {
         return Array.from(this.ordersRegistry.values())
     }
@@ -22,6 +33,7 @@ export default class AdminOrderStore {
     private setOrder(order: OnlineOrderRead) {
         this.ordersRegistry.set(order.id, order)
     }
+
 
     async loadOrders() {
         this.setLoading(true)
@@ -55,4 +67,15 @@ export default class AdminOrderStore {
         }
     }
 
+    async downloadOrders() {
+        this.setLoading(true)
+        try {
+            this.ordersToPrint.length > 0 && await agent.order.downloadOrders(this.axiosParams)
+            await this.loadOrders()
+        } catch (e) {
+            console.log(e)
+        } finally {
+            this.setLoading(false)
+        }
+    }
 }

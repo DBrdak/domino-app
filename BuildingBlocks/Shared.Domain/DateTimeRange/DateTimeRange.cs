@@ -65,5 +65,7 @@ namespace Shared.Domain.DateTimeRange
 
             return this;
         }
+
+        public override string ToString() => $"{Start:d.M} - {End:d.M}";
     }
 }

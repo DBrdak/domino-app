@@ -11,9 +11,18 @@ import {
     Typography
 } from "@mui/material";
 import DateTimeRangeDisplay from "../../../components/DateTimeRangeDisplay";
-import {Clear, Delete, Done, KeyboardArrowDown, KeyboardArrowUp, Remove, Visibility} from "@mui/icons-material";
+import {
+    Clear,
+    Delete,
+    Done, Edit,
+    KeyboardArrowDown,
+    KeyboardArrowUp,
+    PrintDisabled,
+    Remove,
+    Visibility
+} from "@mui/icons-material";
 import React, {useState} from "react";
-import {OnlineOrder} from "../../../global/models/order";
+import {OnlineOrder, OrderItem} from "../../../global/models/order";
 import {observer} from "mobx-react-lite";
 import {useStore} from "../../../global/stores/store";
 import ConfirmModal from "../../../components/ConfirmModal";
@@ -27,21 +36,26 @@ function OrdersTableRow({order}: Props) {
     const {modalStore, adminOrderStore} = useStore()
     const [open, setOpen] = useState(false)
     const [isModified, setIsModified] = useState(false)
+    const [modifiedOrder, setModifiedOrder] = useState<OnlineOrder>(order)
 
     const handleOrderAccept = () => {
         modalStore.closeModal()
-        !isModified ?
+        !modifiedOrder ?
             order.id && adminOrderStore.updateOrder({
                 orderId: order.id,
                 status:'Potwierdzone',
                 smsMessage: SmsMessages.OrderAccepted,
-                modifiedOrder: null })
+                modifiedOrder: null,
+                isPrinted: null
+            })
             :
             order.id && adminOrderStore.updateOrder({
                 orderId: order.id,
                 status:'Potwierdzone ze zmianami',
                 smsMessage: SmsMessages.OrderModified,
-                modifiedOrder: order })
+                modifiedOrder: modifiedOrder,
+                isPrinted: null
+            })
     }
 
     const handleOrderReject = () => {
@@ -50,12 +64,29 @@ function OrdersTableRow({order}: Props) {
             orderId: order.id,
             status: 'Odrzucone',
             smsMessage: SmsMessages.OrderRejected,
-            modifiedOrder: null
+            modifiedOrder: null,
+            isPrinted: null
         })
     }
 
-    const handleOrderItemReject = () => {
+    const handleOrderPrintLost = () => {
+        modalStore.closeModal()
+        order.id && adminOrderStore.updateOrder({
+            orderId: order.id,
+            status: null,
+            smsMessage: null,
+            modifiedOrder: null,
+            isPrinted: false
+        })
+    }
+//TODO FIX ORDER OPERATIONS !!!
+    const handleOrderItemReject = (item: OrderItem) => {
+        modalStore.closeModal()
+        let orderToModify = modifiedOrder
+        orderToModify.items.filter(i => i.id !== item.id)
+
         setIsModified(true)
+        setModifiedOrder(orderToModify)
     }
 
     return (
@@ -97,6 +128,14 @@ function OrdersTableRow({order}: Props) {
                             </IconButton>
                         </ButtonGroup>
                     }
+                    {(order.status?.statusMessage === 'Potwierdzone' || order.status?.statusMessage === 'Potwierdzone ze zmianami') &&
+                        <IconButton onClick={() => modalStore.openModal(
+                            <ConfirmModal onConfirm={handleOrderPrintLost} text={`Czy na pewno chcesz oznaczyć zamówienie jako niewydrukowane?`}/>)}
+                                    color={'error'} style={{flexDirection: 'column'}}>
+                            <PrintDisabled/>
+                            <Typography variant={'caption'} >Anuluj wydruk</Typography>
+                        </IconButton>
+                    }
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -137,9 +176,9 @@ function OrdersTableRow({order}: Props) {
                                             </TableCell>
                                             <TableCell align={'center'}>{item.totalValue.amount} {item.totalValue.currency.code}</TableCell>
                                             <TableCell align={'center'}>
-                                                {order.status?.statusMessage === 'Oczekuje na potwierdzenie' &&
+                                                {(order.status?.statusMessage === 'Oczekuje na potwierdzenie' && order.items.length > 1) &&
                                                     <IconButton onClick={() => modalStore.openModal(
-                                                        <ConfirmModal onConfirm={handleOrderItemReject} important
+                                                        <ConfirmModal onConfirm={() => handleOrderItemReject(item)} important
                                                                       text={`Czy na pewno chcesz odrzucić produkt ${item.productName}`}/>)}
                                                                  color={'error'} style={{flexDirection: 'column'}}>
                                                         <Delete/>
