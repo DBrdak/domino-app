@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Photo;
 using Shared.Domain.ResponseTypes;
 
@@ -74,19 +75,30 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<Product?> Add(CreateValues values, IFormFile photoFile, CancellationToken cancellationToken = default)
         {
-            var productId = ObjectId.GenerateNewId().ToString();
+            var isDuplicate = await _context.Products.FindAsync(
+                               Builders<Product>.Filter.Eq(p => p.Name, values.Name),
+                                              null, cancellationToken);
 
-            var aggregationResult = await _priceListRepository.AggregateLineItemWithProduct(
-                productId,
-                values.Name,
-                cancellationToken);
-
-            if (aggregationResult is false)
+            if (await isDuplicate.AnyAsync(cancellationToken))
             {
                 return null;
             }
 
-            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId, cancellationToken);
+            var productId = ObjectId.GenerateNewId().ToString();
+
+            var priceList = await _priceListRepository.AggregateLineItemWithProduct(
+                productId,
+                values.Name,
+                cancellationToken);
+
+            if (priceList is null)
+            {
+                return null;
+            }
+
+            values.AttachCategory(priceList.Category);
+
+            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId!, priceList.Category, cancellationToken);
 
             if (priceListLineItem is null)
             {
@@ -104,7 +116,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachImage(uploadResult.PhotoUrl);
 
-            var product = Product.Create(values, productId);
+            var product = Product.Create(values, priceList.Category, productId);
 
             await _context.Products.InsertOneAsync(product, null, cancellationToken);
 
@@ -113,16 +125,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> Delete(string productId, CancellationToken cancellationToken)
         {
-            var isSuccesfullySplitedFromPriceList = await _priceListRepository.SplitLineItemFromProduct(productId, cancellationToken);
+            var product = (await _context.Products.FindAsync(
+                Builders<Product>.Filter.Eq(p => p.Id, productId),
+                null, cancellationToken)).Single(cancellationToken);
+
+            var isSuccesfullySplitedFromPriceList = await _priceListRepository.SplitLineItemFromProduct(productId, product.Category, cancellationToken);
 
             if (!isSuccesfullySplitedFromPriceList)
             {
                 throw new ApplicationException("Cannot delete product due to it aggregation with price list");
             }
-
-            var product = (await _context.Products.FindAsync(
-                Builders<Product>.Filter.Eq(p => p.Id, productId),
-                null, cancellationToken)).Single(cancellationToken);
 
             var isSuccesfullyDeletedPhoto = await _photoRepository.DeletePhoto(product.Image.Url);
 
@@ -141,7 +153,10 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> RefreshPrice(string productId, CancellationToken cancellationToken = default)
         {
-            var priceList = await _priceListRepository.GetRetailPriceList(cancellationToken);
+            var product = await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken).Result
+                .SingleOrDefaultAsync(cancellationToken);
+
+            var priceList = await _priceListRepository.GetRetailPriceList(product.Category, cancellationToken);
 
             if (priceList is null)
             {
@@ -157,9 +172,6 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var price = lineItem.Price;
 
-            var product = await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken).Result
-                .SingleOrDefaultAsync(cancellationToken);
-
             product.UpdatePrice(price);
 
             var result = await _context.Products.ReplaceOneAsync(
@@ -168,60 +180,5 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
-
-        // Development Feature
-        //public async Task<bool> Seed()
-        //{
-        //    if (await _context.Products.EstimatedDocumentCountAsync() > 0)
-        //        return false;
-
-        //    var random = new Random();
-
-        //    var sausageNames = new[] { "Boczek Marysieńki", "Kiełbasa Pyszna", "Kiełbasa Krucha", "Kiełbasa Chłopska", "Salceson Królewski", "Parówki", "Frankfurterki", "Szynka Marysieńki", "Baleron Wędzony", "Kaszanka" };
-        //    var meatNames = new[] { "Kark", "Żebro", "Schab", "Szynka Górny Zraz", "Szynka Dolny Zraz", "Polędwiczka", "Podgardle", "Pachwina", "Golonka Tylnia", "Golonka Przednia" };
-        //    var subcategoriesSausage = new[] { "Szynka", "Kiełbasa gruba", "Kiełbasa cienka", "Podroby" };
-
-        //    var products = sausageNames.Select((name, index) => Product.Create(
-        //        name,
-        //        "Przykładowy opis wędliny",
-        //        "Wędlina",
-        //        subcategoriesSausage[random.Next(subcategoriesSausage.Length)],
-        //        "/assets/examples/bokmar.jpg",
-        //        Math.Round(random.Next(15, 40) + (decimal)random.NextDouble()),
-        //        "PLN",
-        //        "kg",
-        //        random.Next(3) == 0,
-        //        (decimal)random.NextDouble() * (decimal)(3 - 0.7) + 0.7m))
-        //        .Concat(meatNames.Select((name, index) => Product.Create(
-        //            name,
-        //            "Przykładowy opis mięsa",
-        //            "Mięso",
-        //            subcategoriesSausage[random.Next(subcategoriesSausage.Length)],
-        //            "/assets/examples/kark.jpg",
-        //            Math.Round(random.Next(15, 40) + (decimal)random.NextDouble()),
-        //            "PLN",
-        //            "kg",
-        //            random.Next(3) == 0,
-        //            (decimal)random.NextDouble() * (decimal)(3 - 0.7) + 0.7m))
-        //        .ToArray()).ToList();
-
-        //    var discountedProduct = products[0];
-        //    discountedProduct.StartDiscount(7);
-        //    products[0] = discountedProduct;
-
-        //    var outOfStockProduct = products[2];
-        //    outOfStockProduct.OutOfStock();
-        //    products[2] = outOfStockProduct;
-
-        //    var tasks = new List<Task>();
-
-        //    foreach (var product in products)
-        //    {
-        //        tasks.Add(_context.Products.InsertOneAsync(product));
-        //    }
-
-        //    await Task.WhenAll(tasks);
-        //    return true;
-        //}
     }
 }

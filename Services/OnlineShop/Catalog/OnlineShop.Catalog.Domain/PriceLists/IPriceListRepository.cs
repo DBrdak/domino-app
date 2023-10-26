@@ -1,4 +1,6 @@
-﻿using Shared.Domain.Money;
+﻿using Microsoft.AspNetCore.Http;
+using OnlineShop.Catalog.Domain.Shared;
+using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.PriceLists
 {
@@ -6,7 +8,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
     {
         Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken);
 
-        Task<PriceList?> GetRetailPriceList(CancellationToken cancellationToken);
+        Task<PriceList?> GetRetailPriceList(Category category, CancellationToken cancellationToken);
 
         Task AddPriceList(PriceList priceList, CancellationToken cancellationToken);
 
@@ -25,15 +27,17 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
         Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken);
 
+        Task<bool> UploadPriceListFile(string priceListId, IFormFile priceListFile, CancellationToken cancellationToken);
+
         // Internal use for products
 
-        Task<bool> AggregateLineItemWithProduct(
+        Task<PriceList?> AggregateLineItemWithProduct(
             string productId,
             string lineItemName,
             CancellationToken cancellationToken);
 
-        Task<LineItem?> GetLineItemForProduct(string productId, CancellationToken cancellationToken, bool isProductInDb = false);
+        Task<LineItem?> GetLineItemForProduct(string productId, Category productCategory, CancellationToken cancellationToken, bool isProductInDb = false);
 
-        Task<bool> SplitLineItemFromProduct(string productId, CancellationToken cancellationToken);
+        Task<bool> SplitLineItemFromProduct(string productId, Category productCategory, CancellationToken cancellationToken);
     }
 }

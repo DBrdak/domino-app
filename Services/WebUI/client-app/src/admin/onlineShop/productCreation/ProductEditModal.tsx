@@ -51,19 +51,6 @@ const ProductEditModal: React.FC<Props> = ({product, onSubmit, onPhotoChange}) =
               <Typography variant="h4" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}} height={'75px'}>{product.name}</Typography>
             </Stack>
             <MyTextInput name='description' placeholder={'Opis'} label='Opis' />
-            <FormControl fullWidth >
-              <InputLabel>Kategoria</InputLabel>
-              <Select
-                  id={'category'}
-                  name={'category.value'}
-                  value={values.category.value}
-                  label="Kategoria"
-                  onChange={handleChange}
-              >
-                <MenuItem value='Wędlina'>Wędlina</MenuItem>
-                <MenuItem value='Mięso'>Mięso</MenuItem>
-              </Select>
-            </FormControl>
             <Stack direction={'row'} spacing={2} style={{display: 'flex', justifyContent: 'start', alignItems: 'center'}}>
               <Typography variant={'h6'}>Jednostka alternatywna?</Typography>
               <Switch

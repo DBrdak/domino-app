@@ -1,5 +1,6 @@
 ﻿using EventBus.Domain.Common;
 using EventBus.Domain.Events.OrderCreate;
+using EventBus.Domain.Events.OrderShopQuery;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.API.EventBusConsumer;
@@ -24,6 +25,7 @@ namespace OnlineShop.Order.API.Extensions
             {
                 config.AddConsumer<ShoppingCartCheckoutConsumer>();
                 config.AddRequestClient<OrderCreateEvent>();
+                config.AddRequestClient<OrderShopQueryEvent>();
                 config.UsingRabbitMq((context, configMq) =>
                 {
                     configMq.Host(configuration["EventBusSettings:HostAddress"]);

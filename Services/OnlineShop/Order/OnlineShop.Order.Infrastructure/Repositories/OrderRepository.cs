@@ -1,8 +1,10 @@
 ﻿using EventBus.Domain.Events;
 using EventBus.Domain.Events.OrderCreate;
 using EventBus.Domain.Events.OrderDelete;
+using EventBus.Domain.Events.OrderShopQuery;
 using EventBus.Domain.Results;
 using MassTransit;
+using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Infrastructure.Persistence;
@@ -65,11 +67,40 @@ namespace OnlineShop.Order.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
+        public async Task<List<OnlineOrder>> PrepareOrdersForPrint(IEnumerable<string> ordersId, CancellationToken cancellationToken)
+        {
+            var orders = await _context.Set<OnlineOrder>()
+                .Include(o => o.Items)
+                .AsNoTracking()
+                .Where(o => ordersId.Contains(o.Id))
+                .OrderBy(o => o.DeliveryDate.Start)
+                .ToListAsync(cancellationToken);
+
+            orders.ForEach(o => o.Print());
+
+            return orders;
+        }
+
+        public async Task CatchPrintingError(IEnumerable<string> ordersId, CancellationToken cancellationToken)
+        {
+            var orders = await _context.Set<OnlineOrder>()
+                .Include(o => o.Items)
+                .Where(o => ordersId.Contains(o.Id))
+                .OrderBy(o => o.DeliveryDate.Start)
+                .ToListAsync(cancellationToken);
+
+            orders.ToList().ForEach(o => o.PrintLost());
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<bool> UpdateOrder(
             string orderId,
-            string orderStatus,
+            string? orderStatus,
             CancellationToken cancellationToken,
-            OnlineOrder? modifiedOrder = null)
+            string? smsMessage = null,
+            OnlineOrder? modifiedOrder = null,
+            bool? isPrinted = null)
         {
             var order = await _context.Set<OnlineOrder>()
                 .SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
@@ -79,7 +110,21 @@ namespace OnlineShop.Order.Infrastructure.Repositories
                 return false;
             }
 
-            order.UpdateStatus(orderStatus, modifiedOrder);
+            if(orderStatus is not null)
+            {
+                order.UpdateStatus(orderStatus, modifiedOrder);
+            }
+
+            if (!string.IsNullOrWhiteSpace(smsMessage))
+            {
+                // TODO Send SMS
+            }
+
+            if (isPrinted is false)
+            {
+                order.PrintLost();
+            }
+
             var result = await _context.SaveChangesAsync(cancellationToken);
 
             return result > 0;
@@ -88,6 +133,20 @@ namespace OnlineShop.Order.Infrastructure.Repositories
         public async Task DeleteAggregatedOrderIdFromShop(string orderId, string shopId)
         {
             _ = _bus.Publish<OrderDeleteEvent>(new(shopId, orderId));
+        }
+
+        public async Task<OrderShopQueryResult?> GetShopsName(IEnumerable<string> shopsId, CancellationToken cancellationToken)
+        {
+            var eventMessage = new OrderShopQueryEvent(shopsId);
+            var client = _bus.CreateRequestClient<OrderShopQueryEvent>();
+            var response = await client.GetResponse<OrderShopQueryResult>(eventMessage, cancellationToken);
+
+            if (!response.Message.ShopNameWithId.Any())
+            {
+                return null;
+            }
+
+            return response.Message;
         }
 
         private async Task<string> GetShopIdForOrder(OnlineOrder order)

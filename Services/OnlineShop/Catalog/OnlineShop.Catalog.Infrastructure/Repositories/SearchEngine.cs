@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Domain.Shared;
 using System.Globalization;
 using System.Text;
 
@@ -27,7 +28,9 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             for (int i = 0; i < sortBy.Length; i++)
             {
-                normailzedSortBy += i == 0 ? sortBy[i].ToString().ToUpper() : sortBy[i];
+                normailzedSortBy += (i == 0 || sortBy[i-1] == '.') ? 
+                    sortBy[i].ToString().ToUpper() : 
+                    sortBy[i];
             }
 
             return normailzedSortBy;
@@ -73,16 +76,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 throw new ApplicationException("Category is required");
             }
 
-            if (minPrice is > 0)
+            if (minPrice is > 0 && maxPrice > minPrice)
             {
                 filter &= Builders<Product>.Filter.Where(
-                    p => p.DiscountedPrice == null ? p.Price.Amount >= minPrice : p.DiscountedPrice.Amount >= minPrice);
+                    p => !p.Details.IsDiscounted ? p.Price.Amount >= minPrice : p.DiscountedPrice.Amount >= minPrice);
             }
 
             if (maxPrice is > 0 && maxPrice > minPrice)
             {
                 filter &= Builders<Product>.Filter.Where(
-                    p => p.DiscountedPrice == null ? p.Price.Amount <= maxPrice : p.DiscountedPrice.Amount <= maxPrice);
+                    p => !p.Details.IsDiscounted ? p.Price.Amount <= maxPrice : p.DiscountedPrice.Amount <= maxPrice);
             }
 
             if (isDiscounted == true)

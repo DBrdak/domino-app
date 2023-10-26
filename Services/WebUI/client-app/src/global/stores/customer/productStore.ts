@@ -10,6 +10,7 @@ export default class ProductStore {
   pagination: Pagination | null = null
   pagingParams = new PagingParams()
   filterParams: FilterOptions = new FilterOptions()
+  loadingNext: boolean = false
   loading: boolean = false
 
   constructor() {
@@ -38,6 +39,10 @@ export default class ProductStore {
     this.loading = state
   }
 
+  setLoadingNext(state: boolean) {
+    this.loadingNext = state
+  }
+
   setPagination = (page: number, pageSize: number, totalCount: number, totalPages: number, hasNextPage: boolean, hasPreviousPage: boolean) => {
     this.pagination = new Pagination({page, pageSize, totalCount, totalPages, hasNextPage, hasPreviousPage})
   }
@@ -51,8 +56,9 @@ export default class ProductStore {
   }
 
   loadProducts = async (category: string) => {
-    this.setLoading(true)
-    this.productsRegistry.clear()
+    !this.loadingNext && this.setLoading(true)
+    !this.pagination && this.productsRegistry.clear()
+    console.log(this.pagination)
     try {
       const result = await agent.catalog.products(category, this.axiosParams)
       result.items.forEach(i => this.setProduct(i))
@@ -65,6 +71,8 @@ export default class ProductStore {
   }
 
   setFilter(filter: FilterOptions) {
+    this.setPagingParams(new PagingParams())
+    this.pagination = null
     this.filterParams = filter
   }
 

@@ -1,12 +1,16 @@
-﻿using MediatR;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddLineItem;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddRetailPriceList;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.DownloadPriceListAsExcel;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.GetPriceLists;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemoveLineItem;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemovePriceList;
 using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceListAsExcel;
+using Shared.Domain.Extensions;
 
 namespace OnlineShop.Catalog.API.Controllers
 {
@@ -28,16 +32,6 @@ namespace OnlineShop.Catalog.API.Controllers
             var result = await _sender.Send(new GetPriceListsQuery(), cancellationToken);
 
             return Ok(result.Value);
-        }
-
-        [HttpPost("retail")]
-        public async Task<IActionResult> CreateRetailPriceList(CancellationToken cancellationToken)
-        {
-            var result = await _sender.Send(new AddRetailPriceListCommand(), cancellationToken);
-
-            return result.IsSuccess ?
-                Ok() :
-                BadRequest(result.Error);
         }
 
         [HttpPost("{contractorName}")]
@@ -107,6 +101,43 @@ namespace OnlineShop.Catalog.API.Controllers
             return result.IsSuccess ?
                 Ok() :
                 BadRequest(result.Error);
+        }
+
+        [HttpGet("{priceListId}/xlsx")]
+        public async Task<IActionResult> DownloadPriceListAsExcel(
+            string priceListId,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetPriceListSpreadsheetQuery(priceListId);
+
+            var response = await _sender.Send(query, cancellationToken);
+
+            if (response.IsFailure)
+            {
+                return BadRequest(response.Error);
+            }
+
+            var stream = new MemoryStream();
+
+            response.Value.Spreadsheet.SaveAs(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{response.Value.FileName.RemovePolishDiacritics()}.xlsx");
+        }
+
+        [HttpPost("{priceListId}/xlsx")]
+        public async Task<IActionResult> UploadPriceListAsExcel(
+            string priceListId,
+            [FromForm] IFormFile priceListFile,
+            CancellationToken cancellationToken)
+        {
+            var command = new UploadPriceListSpreadsheetCommand(priceListId, priceListFile);
+
+            var response = await _sender.Send(command, cancellationToken);
+
+            return response.IsSuccess ?
+                Ok() :
+                BadRequest(response.Error);
         }
     }
 }

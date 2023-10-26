@@ -4,5 +4,6 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPr
 {
     public sealed record AddBusinessPriceListCommand(
         string Name,
-        string ContractorName) : ICommand;
+        string ContractorName,
+        string Category) : ICommand;
 }

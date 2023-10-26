@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Catalog.Domain.Products
+﻿namespace OnlineShop.Catalog.Domain.Shared
 {
     public sealed record Category
     {

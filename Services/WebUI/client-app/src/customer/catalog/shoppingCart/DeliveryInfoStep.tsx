@@ -38,7 +38,7 @@ const DeliveryInfoStep: React.FC = () => {
   useEffect(() => {
     runInAction(async () => {
       await shopStore.loadDeliveryPoints()
-      setCenter(getCenterFromDeliveryPointLocations(shopStore.deliveryPoints))
+      shopStore.deliveryPoints.length > 0 && setCenter(getCenterFromDeliveryPointLocations(shopStore.deliveryPoints))
     })
   }, [])
 

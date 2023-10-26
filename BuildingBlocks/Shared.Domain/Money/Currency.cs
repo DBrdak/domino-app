@@ -4,6 +4,7 @@
     {
         internal static readonly Currency None = new("");
         public static readonly Currency Pln = new("PLN");
+        private static readonly Currency altPln = new("ZŁ");
 
         public Currency()
         { }
@@ -14,8 +15,11 @@
 
         public static Currency FromCode(string code)
         {
-            return All.FirstOrDefault(c => c.Code.ToLower() == code.ToLower()) ??
+            var result = All.FirstOrDefault(c => c.Code.ToLower() == code.ToLower()) ??
                    throw new ApplicationException("The currency code is invalid");
+
+            return result == altPln ? 
+                    Pln : result;
         }
 
         public static readonly IReadOnlyCollection<Currency> All = new[]

@@ -31,9 +31,9 @@ export class Product implements Product {
 export interface ProductCreateValues {
   name: string;
   description: string;
-  category: string;
   image: string | null;
   price: Money | null;
+  category: Category | null
   isWeightSwitchAllowed: boolean;
   singleWeight: number | null;
 }
@@ -42,9 +42,9 @@ export class ProductCreateValues implements ProductCreateValues {
   constructor(init: ProductCreateValues | null) {
     this.name = init ? init.name : ''
     this.description = init ? init.description : ''
-    this.category = init ? init.category : ''
     this.image = null
     this.price = null
+    this.category = null
     this.isWeightSwitchAllowed = init ? init.isWeightSwitchAllowed : false
     this.singleWeight = init ? init.singleWeight : 0
   }
@@ -54,7 +54,6 @@ export interface ProductUpdateValues {
   id: string;
   name: string;
   description: string;
-  category: string;
   imageUrl: string;
   isWeightSwitchAllowed: boolean;
   singleWeight: number | null;
@@ -66,7 +65,6 @@ export class ProductUpdateValues implements ProductUpdateValues {
     this.id = product.id
     this.name = product.name
     this.description = product.description
-    this.category = product.category.value
     this.imageUrl = product.image.url
     this.isWeightSwitchAllowed = product.details.isWeightSwitchAllowed
     this.singleWeight = product.details.isWeightSwitchAllowed ? (product.details.singleWeight && product.details.singleWeight.value) : null

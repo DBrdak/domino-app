@@ -19,5 +19,7 @@ namespace Shared.Domain.Quantity
         public static Quantity Zero(Unit unit) => new(0, unit);
 
         public bool IsZero() => this == Zero(Unit);
+
+        public override string ToString() => $"{Value} {Unit.Code}";
     }
 }

@@ -19,6 +19,7 @@ namespace Shops.API.Extensions
             {
                 config.AddConsumer<OrderCreateConsumer>();
                 config.AddConsumer<OrderDeleteConsumer>();
+                config.AddConsumer<OrderShopQueryConsumer>();
                 config.UsingRabbitMq((context, configMq) =>
                 {
                     configMq.Host(configuration["EventBusSettings:HostAddress"]);
@@ -28,6 +29,7 @@ namespace Shops.API.Extensions
                         {
                             configEndpoint.ConfigureConsumer<OrderCreateConsumer>(context);
                             configEndpoint.ConfigureConsumer<OrderDeleteConsumer>(context);
+                            configEndpoint.ConfigureConsumer<OrderShopQueryConsumer>(context);
                         });
                 });
             });

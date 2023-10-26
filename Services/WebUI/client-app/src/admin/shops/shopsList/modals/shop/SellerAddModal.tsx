@@ -45,6 +45,7 @@ export function SellerAddModal({onSubmit}: Props) {
                             name={'phoneNumber'}
                             showErrors
                             type={'number'}
+                            maxLength={9}
                         />
                         <Button disabled={!isValid} type={'submit'} onClick={() => handleSubmit} variant={'contained'}>
                             <Typography>Dodaj sprzedawcę</Typography>

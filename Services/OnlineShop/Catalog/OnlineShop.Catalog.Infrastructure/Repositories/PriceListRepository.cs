@@ -1,5 +1,9 @@
-﻿using MongoDB.Driver;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
+using OnlineShop.Catalog.Domain.Products;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Infrastructure.Repositories
@@ -23,17 +27,27 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (!isRetailPriceListExist)
             {
-                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny"), cancellationToken);
+                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny mięsa", Category.Meat), cancellationToken);
+                await AddPriceList(PriceList.CreateRetail("Cennik detaliczny wędlin", Category.Sausage), cancellationToken);
                 await GetPriceListsAsync(cancellationToken);
             }
 
             return priceLists;
         }
 
-        public async Task<PriceList?> GetRetailPriceList(CancellationToken cancellationToken)
+        public async Task<PriceList?> GetRetailPriceList(Category category, CancellationToken cancellationToken)
         {
             var retailPriceListCursor = await _context.PriceLists.FindAsync(
-                pl => pl.Contractor == Contractor.Retail,
+                pl => pl.Contractor.Name == Contractor.Retail.Name && pl.Category.Value == category.Value,
+                null, cancellationToken);
+
+            return await retailPriceListCursor.SingleOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<PriceList?> GetRetailPriceList(string lineItemName, CancellationToken cancellationToken)
+        {
+            var retailPriceListCursor = await _context.PriceLists.FindAsync(
+                pl => pl.Contractor.Name == Contractor.Retail.Name && pl.LineItems.Any(li => li.Name == lineItemName),
                 null, cancellationToken);
 
             return await retailPriceListCursor.SingleOrDefaultAsync(cancellationToken);
@@ -41,10 +55,9 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task AddPriceList(PriceList priceList, CancellationToken cancellationToken)
         {
-            if (priceList.Contractor == Contractor.Retail &&
-                CheckForRetailDuplicates(cancellationToken))
+            if (ContractorDuplicatesExists(priceList.Contractor, priceList.Category, cancellationToken))
             {
-                throw new ApplicationException($"Price list for contractor {priceList.Contractor.Name} already exists");
+                throw new ApplicationException($"Price list for contractor {priceList.Contractor.Name} with category {priceList.Category.Value} already exists");
             }
 
             await _context.PriceLists.InsertOneAsync(priceList, null, cancellationToken);
@@ -64,7 +77,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 throw new ApplicationException("Retail price list cannot be deleted");
             }
 
-            //TODO Sprawdzam czy kontrahent jest null
+            //TODO Check if contractor is null
 
             var result = await _context.PriceLists.DeleteOneAsync(pl => pl.Id == priceList.Id, null, cancellationToken);
 
@@ -118,10 +131,17 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
         }
 
         public async Task<bool> AddLineItem(string priceListId, LineItem lineItem, CancellationToken cancellationToken)
-        {
+        { 
             var priceList = await GetPriceList(priceListId, cancellationToken);
 
             if (priceList == null)
+            {
+                return false;
+            }
+
+            var isValid = PriceListslLineItemDuplicatesNotExists(lineItem.Name, priceList.Contractor, cancellationToken);
+
+            if (!isValid)
             {
                 return false;
             }
@@ -135,16 +155,57 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        public async Task<bool> AggregateLineItemWithProduct(
+        public async Task<bool> UploadPriceListFile(string priceListId, IFormFile priceListFile, CancellationToken cancellationToken)
+        {
+            await using var stream = priceListFile.OpenReadStream();
+            var workbook = new XLWorkbook(stream);
+            workbook.TryGetWorksheet("Cennik", out var worksheet);
+
+            if (worksheet is null)
+            {
+                return false;
+            }
+
+            var lineItems = RetriveLineItemsNames(worksheet);
+            var results = lineItems.Select(li => AddLineItem(priceListId, li, cancellationToken).Result);
+
+            return results.All(r => r);
+        }
+
+        private List<LineItem> RetriveLineItemsNames(IXLWorksheet worksheet)
+        {
+            var names = new List<string>();
+            var prices = new List<Money>();
+            var lineItems = new List<LineItem>();
+            var row = 2;
+            var isCellEmpty = worksheet.Cell(2,1).IsEmpty();
+
+            while (!isCellEmpty)
+            {
+                names.Add(worksheet.Cell(row, 1).GetText());
+                prices.Add(Money.FromString(worksheet.Cell(row, 2).GetText()));
+                row++;
+                isCellEmpty = worksheet.Cell(row, 1).IsEmpty() || worksheet.Cell(row, 2).IsEmpty();
+            }
+
+            for (int i = 0; i < names.Count && i < prices.Count; i++)
+            {
+                lineItems.Add(new (names[i], prices[i]));
+            }
+
+            return lineItems;
+        }
+
+        public async Task<PriceList?> AggregateLineItemWithProduct(
             string productId,
             string lineItemName,
             CancellationToken cancellationToken)
         {
-            var priceList = await GetRetailPriceList(cancellationToken);
+            var priceList = await GetRetailPriceList(lineItemName, cancellationToken);
 
             if (priceList is null)
             {
-                return false;
+                return null;
             }
 
             priceList.AggregateLineItemWithProduct(lineItemName, productId);
@@ -153,19 +214,27 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 pl => pl.Id == priceList.Id,
                 priceList, new ReplaceOptions(), cancellationToken);
 
-            return result.IsAcknowledged && result.ModifiedCount > 0;
+            var isSuccess = result.IsAcknowledged && result.ModifiedCount > 0;
+
+            if (isSuccess)
+            {
+                return priceList;
+            }
+
+            return null;
         }
 
-        public async Task<LineItem?> GetLineItemForProduct(string productId, CancellationToken cancellationToken, bool isProductInDb = false)
+        public async Task<LineItem?> GetLineItemForProduct(string productId, Category productCategory, CancellationToken cancellationToken, bool isProductInDb = false)
         {
-            var product = (await _context.Products.FindAsync(p => p.Id == productId, null, cancellationToken)).SingleOrDefault();
+            var product = (await _context.Products.FindAsync(p => p.Id == productId))
+                .SingleOrDefault(cancellationToken);
 
             if (isProductInDb && product is null)
             {
                 throw new ApplicationException($"Product with ID {productId} not found");
             }
 
-            var priceList = await GetRetailPriceList(cancellationToken);
+            var priceList = await GetRetailPriceList(productCategory, cancellationToken);
 
             if (priceList is null)
             {
@@ -175,9 +244,9 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return priceList.LineItems.Single(li => li.ProductId == productId);
         }
 
-        public async Task<bool> SplitLineItemFromProduct(string productId, CancellationToken cancellationToken)
+        public async Task<bool> SplitLineItemFromProduct(string productId, Category productCategory, CancellationToken cancellationToken)
         {
-            var priceList = await GetRetailPriceList(cancellationToken);
+            var priceList = await GetRetailPriceList(productCategory, cancellationToken);
 
             if (priceList is null)
             {
@@ -200,10 +269,16 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        private bool CheckForRetailDuplicates(CancellationToken cancellationToken) =>
+        private bool ContractorDuplicatesExists(Contractor contractor, Category category, CancellationToken cancellationToken) =>
             _context.PriceLists
-                .FindAsync(pl => pl.Contractor.Name == Contractor.Retail.Name, null, cancellationToken)
+                .FindAsync(pl => pl.Contractor.Name == contractor.Name && pl.Category.Value == category.Value, null, cancellationToken)
                 .Result.ToList(cancellationToken).Any();
+
+        private bool PriceListslLineItemDuplicatesNotExists(string lineItemName, Contractor contractor, CancellationToken cancellationToken) =>
+            _context.PriceLists.FindAsync(pl => pl.Contractor.Name == contractor.Name, null, cancellationToken)
+                .Result.ToList(cancellationToken)
+                .SelectMany(pl => pl.LineItems)
+                .All(li => li.Name != lineItemName);
 
         private async Task<PriceList?> GetPriceList(string priceListId, CancellationToken cancellationToken) =>
             (await GetPriceListsAsync(cancellationToken)).SingleOrDefault(pl => pl.Id == priceListId);

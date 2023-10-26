@@ -75,7 +75,6 @@ const catalog = {
     const formData = new FormData()
     formData.append('Id', newValues.id)
     formData.append('Description', newValues.description)
-    formData.append('Category', newValues.category)
     formData.append('IsAvailable', `${newValues.isAvailable}`)
     formData.append('ImageUrl', `${newValues.imageUrl}`)
     formData.append('IsWeightSwitchAllowed', `${newValues.isWeightSwitchAllowed}`)
@@ -89,7 +88,6 @@ const catalog = {
     photo && formData.append('Photo', photo, values.name)
     formData.append('Name', values.name)
     formData.append('Description', values.description)
-    formData.append('Category', values.category)
     formData.append('IsWeightSwitchAllowed', `${values.isWeightSwitchAllowed}`)
     formData.append('SingleWeight', `${values.singleWeight}`)
 
@@ -97,12 +95,18 @@ const catalog = {
   },
   deleteProduct: (productId: string) => axios.delete(`/onlineshop/product/${productId}`),
   getPriceLists: () => axios.get<PriceList[]>('/onlineshop/pricelist').then(responseBody),
-  createRetailPriceList: () => axios.post('/onlineshop/pricelist/retail'),
   createBusinessPriceList: (command: BusinessPriceListCreateValues) => axios.post(`/onlineshop/pricelist/${command.contractorName}`, command),
   removePriceList: (priceListId: string) => axios.delete(`/onlineshop/pricelist/${priceListId}`),
   priceListAddLineItem: (request: LineItemCreateValues, priceListId: string) => axios.put(`/onlineshop/pricelist/${priceListId}/add`, request),
   priceListUpdateLineItem: (request: LineItemCreateValues, priceListId: string) => axios.put(`/onlineshop/pricelist/${priceListId}/update`, request),
   priceListRemoveLineItem: (priceListId: string, lineItemName: string) => axios.put(`/onlineshop/pricelist/${priceListId}/remove/${lineItemName}`),
+  uploadPriceList: (file: File, priceListId: string) => {
+    const formData = new FormData()
+    file && formData.append('priceListFile', file)
+
+    return axios.post(`/onlineshop/pricelist/${priceListId}/xlsx`, formData).then(responseBody)
+  },
+  downloadPriceList: (priceListId: string) => axios.get(`/onlineshop/pricelist/${priceListId}/xlsx`).then(responseBody)
 }
 
 const shoppingCart ={
@@ -116,7 +120,8 @@ const order = {
   get: (params: URLSearchParams) => axios.get<OnlineOrderRead>('/onlineshop/order', {params}).then(responseBody),
   cancel: (orderId: string) => axios.put('/onlineshop/order/cancel', {orderId}),
   getAll: () => axios.get<OnlineOrderRead[]>('/onlineshop/order/all').then(responseBody),
-  updateOrder: (command: OrderUpdateValues) => axios.put('/onlineshop/order', command)
+  updateOrder: (command: OrderUpdateValues) => axios.put('/onlineshop/order', command),
+  downloadOrders: (params: URLSearchParams) => axios.get('/onlineshop/order/pdf', {params}).then(responseBody)
 }
 
 const shops = {

@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using OnlineShop.Catalog.Domain.Products.Events;
+using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
@@ -39,7 +40,7 @@ namespace OnlineShop.Catalog.Domain.Products
                 null;
         }
 
-        public static Product Create(
+        internal static Product Create(
             string name,
             string description,
             string category,
@@ -119,7 +120,6 @@ namespace OnlineShop.Catalog.Domain.Products
         public void Update(UpdateValues newValues)
         {
             Description = newValues.Description;
-            Category = Category.FromValue(newValues.Category);
             Image = new(newValues.ImageUrl);
 
             if (newValues.IsWeightSwitchAllowed && newValues.SingleWeight.HasValue)
@@ -138,7 +138,7 @@ namespace OnlineShop.Catalog.Domain.Products
                 Details.Unavailable();
         }
 
-        public static Product Create(CreateValues requestValues, string? id = null)
+        public static Product Create(CreateValues requestValues, Category category, string? id = null)
         {
             if (requestValues.Price is null ||
                 string.IsNullOrWhiteSpace(requestValues.Image))
@@ -149,7 +149,7 @@ namespace OnlineShop.Catalog.Domain.Products
             return Create(
                 requestValues.Name,
                 requestValues.Description,
-                requestValues.Category,
+                category.Value,
                 requestValues.Image,
                 requestValues.Price.Amount,
                 requestValues.Price.Currency.Code,

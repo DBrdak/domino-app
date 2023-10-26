@@ -49,6 +49,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public DateTime? ExpiryDate { get; private set; }
         public OrderStatus Status { get; private set; }
+        public bool IsPrinted { get; private set; }
 
         public OnlineOrder()
         { }
@@ -78,6 +79,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             CompletionDate = receiveDate;
             Status = status;
             ShopId = null;
+            IsPrinted = false;
         }
 
         private void Modify(OnlineOrder order, OrderStatus status)
@@ -175,9 +177,26 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Modify(modifiedOrder, OrderStatus.Modified);
         }
 
-        public void SetShopId(string shopId)
+        public void SetShopId(string shopId) => ShopId = shopId;
+
+        public void Print()
         {
-            ShopId = shopId;
+            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            {
+                throw new ApplicationException($"Cannot print order with id: {Id} because of it status is {Status.StatusMessage}");
+            }
+
+            IsPrinted = true;
+        }
+
+        public void PrintLost() 
+        {
+            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            {
+                throw new ApplicationException($"Cannot change print status of order with id: {Id} because of it status is {Status.StatusMessage}");
+            }
+
+            IsPrinted = false;
         }
 
         public static OnlineOrder Create(ShoppingCartCheckoutEvent shoppingCart)
@@ -194,6 +213,10 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                 DateTimeService.UtcNow,
                 null,
                 OrderStatus.Validating);
+
+            // TODO TEMPORARY SOLUTION
+            order.Validate(true);
+            // TODO TEMPORARY SOLUTION
 
             order.RaiseDomainEvent(new OrderCreatedDomainEvent(order.Id, order.PhoneNumber));
 

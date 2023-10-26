@@ -11,7 +11,7 @@ import {useStore} from "../../../global/stores/store";
 function PriceListCreateModal() {
     //TODO w przyszłości dać kontrahentów z dropdowna
     const {adminPriceListStore, modalStore} = useStore()
-    const init: BusinessPriceListCreateValues = {name: '', contractorName: ''}
+    const init: BusinessPriceListCreateValues = {name: '', contractorName: '', category: ''}
     const validationSchema = yup.object({
         name: yup.string().required( 'Nazwa cennika jest wymagana'),
         contractorName: yup.string().required( 'Kontrahent jest wymagany'),
@@ -43,6 +43,19 @@ function PriceListCreateModal() {
                             name={'contractorName'}
                             showErrors
                         />
+                        <FormControl fullWidth>
+                            <InputLabel>Nazwa produktu</InputLabel>
+                            <Select
+                                id={'category'}
+                                name={'category'}
+                                value={values.category}
+                                label="Kategoria"
+                                onChange={handleChange}
+                            >
+                                <MenuItem key={1} value={'Mięso'}>Mięso</MenuItem>
+                                <MenuItem key={2} value={'Wędliny'}>Wędliny</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Button disabled={!isValid} type={'submit'} onClick={() => handleSubmit} variant={'contained'}>
                             <Typography>Dodaj cennik</Typography>
                         </Button>

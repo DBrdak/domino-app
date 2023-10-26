@@ -34,6 +34,7 @@ export interface OnlineOrder {
   status: OrderStatus | null;
   shopId: string | null
   shop: Shop | null
+  isPrinted: boolean
 }
 
 export class OnlineOrderRead implements OnlineOrder {
@@ -54,6 +55,7 @@ export class OnlineOrderRead implements OnlineOrder {
   status!: OrderStatus;
   shopId!: string
   shop!: Shop | null
+  isPrinted!: boolean
 }
 
 export class OnlineOrderCreate implements OnlineOrder {
@@ -70,7 +72,8 @@ export class OnlineOrderCreate implements OnlineOrder {
   expiryDate!: null;
   status!: null;
   shopId: string | null
-  shop!: Shop | null
+  shop: Shop | null
+  isPrinted: boolean
 
   constructor(init: ShoppingCartCheckout) {
     this.totalPrice = init.shoppingCart.totalPrice;
@@ -87,6 +90,7 @@ export class OnlineOrderCreate implements OnlineOrder {
     this.status = null
     this.shopId = null
     this.shop = null
+    this.isPrinted = false
   }
 
   private convertToOrderItems(shoppingCartItems: ShoppingCartItem[]): OrderItem[] {
@@ -126,7 +130,8 @@ export interface OrderStatus {
 
 export interface OrderUpdateValues {
   orderId: string
-  status: string
+  status: string | null
   smsMessage: string | null
   modifiedOrder: OnlineOrder | null
+  isPrinted: false | null
 }
