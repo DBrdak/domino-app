@@ -10,6 +10,8 @@ export default class AdminPriceListStore {
     priceListsRegistry: Map<string, PriceList> = new Map<string, PriceList>()
     selectedPriceList: PriceList | null = null
     loading: boolean = false
+    downloadLoading: boolean = false
+    uploadLoading: boolean = false
 
     constructor() {
         makeAutoObservable(this)
@@ -34,6 +36,12 @@ export default class AdminPriceListStore {
 
     private setLoading(state: boolean) {
         this.loading = state
+    }
+    private setUploadLoading(state: boolean) {
+        this.uploadLoading = state
+    }
+    private setDownloadLoading(state: boolean) {
+        this.downloadLoading = state
     }
 
     private setPriceList(priceList: PriceList) {
@@ -117,7 +125,8 @@ export default class AdminPriceListStore {
     }
 
     async uploadPriceList(excelFile: File, priceListId: string) {
-        this.setLoading(true)
+        this.setUploadLoading(true)
+
         try {
             this.selectedPriceList && await agent.catalog.uploadPriceList(excelFile, this.selectedPriceList.id)
             await this.loadPriceLists()
@@ -125,18 +134,20 @@ export default class AdminPriceListStore {
         } catch (e) {
             console.log(e)
         } finally {
-            this.setLoading(false)
+            this.setUploadLoading(false)
         }
     }
 
     async downloadPriceList(priceListId: string) {
-        this.setLoading(true)
+        this.setDownloadLoading(true)
         try {
-            await agent.catalog.downloadPriceList(priceListId)
+            const name = this.priceLists &&
+                this.priceLists.find(pl => pl.id == priceListId)?.name
+            name && agent.catalog.downloadPriceList(priceListId, name)
         } catch (e) {
             console.log(e)
         } finally {
-            this.setLoading(false)
+            this.setDownloadLoading(false)
         }
     }
 }

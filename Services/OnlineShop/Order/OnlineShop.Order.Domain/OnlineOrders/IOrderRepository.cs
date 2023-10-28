@@ -1,4 +1,5 @@
 ﻿using EventBus.Domain.Results;
+using OnlineShop.Order.Domain.OrderItems;
 
 namespace OnlineShop.Order.Domain.OnlineOrders
 {
@@ -14,7 +15,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         Task<List<OnlineOrder>> PrepareOrdersForPrint(IEnumerable<string> ordersId, CancellationToken cancellationToken);
         Task CatchPrintingError(IEnumerable<string> ordersId, CancellationToken cancellationToken);
 
-        Task<bool> UpdateOrder(string orderId, string? orderStatus, CancellationToken cancellationToken, string? smsMessage = null, OnlineOrder? modifiedOrder = null, bool? isPrinted = null);
+        Task<bool> UpdateOrder(string orderId, string? orderStatus, CancellationToken cancellationToken, string? smsMessage = null, IEnumerable<OrderItem>? modifiedOrderItems = null, bool? isPrinted = null);
 
         Task DeleteAggregatedOrderIdFromShop(string orderId, string shopId);
 

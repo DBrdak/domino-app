@@ -1,10 +1,10 @@
 import {LineItem, PriceList} from "../../../global/models/priceList";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import LoadingTableRow from "../../../components/LoadingTableRow";
 import PriceListListItem from "../priceListList/PriceListListItem";
 import React, {useEffect, useState} from "react";
 import PriceListLineItem from "./PriceListLineItem";
-import LineItemCreateSection from "./lineItemCreation/LineItemCreateSection";
+import PriceListViewUpperSection from "./priceListUpperSection/PriceListViewUpperSection";
 import {useStore} from "../../../global/stores/store";
 import {observer} from "mobx-react-lite";
 
@@ -21,7 +21,7 @@ function PriceListView() {
 
     return (
         <>
-            <LineItemCreateSection priceListId={priceList!.id} />
+            <PriceListViewUpperSection priceListId={priceList!.id} />
             <TableContainer>
                 <Table>
                     <TableHead>

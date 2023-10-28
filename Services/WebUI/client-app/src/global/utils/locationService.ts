@@ -1,7 +1,7 @@
 import {DeliveryPoint, MobileShop, StationaryShop} from "../models/shop";
 
 export const getCenterFromShopLocations = (stationaryShops: StationaryShop[], mobileShops: MobileShop[]) => {
-    const mobileCenter = mobileShops
+    const mobileCenter = mobileShops.length > 0 && mobileShops
         .flatMap(ms => ms.salePoints)
         .reduce(
             (center, sp) => {
@@ -16,10 +16,14 @@ export const getCenterFromShopLocations = (stationaryShops: StationaryShop[], mo
         .flatMap(ms => ms.salePoints)
         .length;
 
-    mobileCenter.lat /= numSalePoints;
-    mobileCenter.lng /= numSalePoints;
+    const isMobileCenterDefined = mobileCenter && mobileCenter.lng !== 0 && mobileCenter.lat !== 0
 
-    const stationaryCenter = stationaryShops.reduce((center, shop) => {
+    if(isMobileCenterDefined) {
+        mobileCenter.lat /= numSalePoints;
+        mobileCenter.lng /= numSalePoints;
+    }
+
+    const stationaryCenter = stationaryShops.length > 0 && stationaryShops.reduce((center, shop) => {
         center.lat += Number(shop.location.latitude)
         center.lng += Number(shop.location.longitude)
         return center
@@ -27,15 +31,26 @@ export const getCenterFromShopLocations = (stationaryShops: StationaryShop[], mo
 
     const numStationaryShops = stationaryShops.length
 
-    stationaryCenter.lat /= numStationaryShops;
-    stationaryCenter.lng /= numStationaryShops;
+    const isStationaryCenterDefined = stationaryCenter && stationaryCenter.lng !== 0 && stationaryCenter.lat !== 0
 
-    const combinedCenter = {
+    if(isStationaryCenterDefined) {
+        stationaryCenter.lat /= numStationaryShops;
+        stationaryCenter.lng /= numStationaryShops;
+    }
+
+
+    const combinedCenter = isMobileCenterDefined && isStationaryCenterDefined && {
         lat: (stationaryCenter.lat + mobileCenter.lat) / 2,
         lng: (stationaryCenter.lng + mobileCenter.lng) / 2
     }
 
-    return combinedCenter
+    if(combinedCenter) return combinedCenter
+
+    if(stationaryCenter) return stationaryCenter
+
+    if(mobileCenter) return mobileCenter
+
+    return {lat: 52.8054070118536, lng: 20.11809186478481}
 }
 
 export const getCenterFromDeliveryPointLocations = (deliveryPoints: DeliveryPoint[]) => {

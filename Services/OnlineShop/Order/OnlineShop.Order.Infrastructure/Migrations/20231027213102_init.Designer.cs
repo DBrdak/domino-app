@@ -12,15 +12,15 @@ using OnlineShop.Order.Infrastructure.Persistence;
 namespace OnlineShop.Order.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderContext))]
-    [Migration("20230826003534_Refactor_02")]
-    partial class Refactor_02
+    [Migration("20231027213102_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -36,13 +36,25 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsPrinted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShopId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -56,9 +68,11 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("OrderId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ProductName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -99,6 +113,7 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                                 .HasColumnType("text");
 
                             b1.Property<string>("StatusMessage")
+                                .IsRequired()
                                 .HasColumnType("text");
 
                             b1.HasKey("OnlineOrderId");
@@ -153,13 +168,17 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                                 .HasForeignKey("OnlineOrderId");
                         });
 
-                    b.Navigation("DeliveryDate");
+                    b.Navigation("DeliveryDate")
+                        .IsRequired();
 
-                    b.Navigation("DeliveryLocation");
+                    b.Navigation("DeliveryLocation")
+                        .IsRequired();
 
-                    b.Navigation("Status");
+                    b.Navigation("Status")
+                        .IsRequired();
 
-                    b.Navigation("TotalPrice");
+                    b.Navigation("TotalPrice")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OnlineShop.Order.Domain.OrderItems.OrderItem", b =>
@@ -167,7 +186,8 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                     b.HasOne("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder", null)
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Shared.Domain.Money.Money", "Price", b1 =>
                         {
@@ -235,11 +255,14 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                                 .HasForeignKey("OrderItemId");
                         });
 
-                    b.Navigation("Price");
+                    b.Navigation("Price")
+                        .IsRequired();
 
-                    b.Navigation("Quantity");
+                    b.Navigation("Quantity")
+                        .IsRequired();
 
-                    b.Navigation("TotalValue");
+                    b.Navigation("TotalValue")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder", b =>

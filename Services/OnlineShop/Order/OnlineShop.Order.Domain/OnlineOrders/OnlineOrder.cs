@@ -82,19 +82,11 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             IsPrinted = false;
         }
 
-        private void Modify(OnlineOrder order, OrderStatus status)
+        private void Modify(IEnumerable<OrderItem> orderItems)
         {
-            TotalPrice = order.TotalPrice;
-            Items = order.Items;
-            PhoneNumber = order.PhoneNumber;
-            FirstName = order.FirstName;
-            LastName = order.LastName;
-            DeliveryLocation = order.DeliveryLocation;
-            DeliveryDate = order.DeliveryDate;
-            Id = order.Id;
-            CreatedDate = order.CreatedDate;
+            Items = orderItems.ToList();
+            Status = OrderStatus.Modified;
             CompletionDate = DateTimeService.UtcNow;
-            Status = status;
         }
 
         private static string GenerateId() => Ulid.NewUlid(DateTimeOffset.UtcNow).ToString().Substring(4, 12);
@@ -102,14 +94,14 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         public void Validate(bool isValidationSucceed) =>
             Status = isValidationSucceed ? OrderStatus.Waiting : OrderStatus.Rejected;
 
-        public void UpdateStatus(string status, OnlineOrder? modifiedOrder)
+        public void UpdateStatus(string status, IEnumerable<OrderItem>? modifiedOrderItems)
         {
             var actions = new Dictionary<OrderStatus, Action>()
             {
                 {OrderStatus.Accepted, () => Accept(null)},
                 {OrderStatus.Received, Receive},
                 {OrderStatus.Rejected, Reject},
-                {OrderStatus.Modified, () => Accept(modifiedOrder)},
+                {OrderStatus.Modified, () => Accept(modifiedOrderItems)},
             };
 
             if (actions.TryGetValue(OrderStatus.FromMessage(status), out Action updateAction))
@@ -158,30 +150,29 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Status = OrderStatus.Received;
         }
 
-        public void Accept(OnlineOrder? modifiedOrder)
+        public void Accept(IEnumerable<OrderItem>? modifiedOrderItems)
         {
-            Status = OrderStatus.Waiting;
             if (Status != OrderStatus.Waiting)
             {
                 throw new ApplicationException(
                     $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
-            if (modifiedOrder is null)
+            if (modifiedOrderItems is null)
             {
                 CompletionDate = DateTimeService.UtcNow;
                 Status = OrderStatus.Accepted;
                 return;
             }
 
-            Modify(modifiedOrder, OrderStatus.Modified);
+            Modify(modifiedOrderItems);
         }
 
         public void SetShopId(string shopId) => ShopId = shopId;
 
         public void Print()
         {
-            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
                 throw new ApplicationException($"Cannot print order with id: {Id} because of it status is {Status.StatusMessage}");
             }
@@ -191,7 +182,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public void PrintLost() 
         {
-            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
                 throw new ApplicationException($"Cannot change print status of order with id: {Id} because of it status is {Status.StatusMessage}");
             }

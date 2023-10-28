@@ -59,5 +59,6 @@ namespace OnlineShop.Order.Infrastructure.Persistence
 
             Orders.RemoveRange(expiredOrders);
         }
+
     }
 }

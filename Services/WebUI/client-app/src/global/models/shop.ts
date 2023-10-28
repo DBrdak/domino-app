@@ -21,6 +21,7 @@ export interface ShopWorkingDay {
 }
 
 export interface SalePoint {
+    id: string | null
     location: Location
     weekDay: WeekDay
     isClosed: boolean

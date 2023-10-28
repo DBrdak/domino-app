@@ -160,8 +160,8 @@ export default class AdminShopStore {
 
 
 
-    async loadShops() {
-        this.setLoading(true)
+    async loadShops(loading: boolean = true) {
+        loading && this.setLoading(true)
         this.shopsRegistry.clear()
         try {
             const result = await agent.shops.getShops()
@@ -169,7 +169,7 @@ export default class AdminShopStore {
         } catch (e) {
             console.log(e)
         } finally {
-            this.setLoading(false)
+            loading && this.setLoading(false)
         }
     }
 

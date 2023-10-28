@@ -65,7 +65,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
                     return _result;
                 }
 
-                UpdateMobileShop(ref mobileShopToUpdate, request.MobileShopUpdateValues);
+                UpdateMobileShop(mobileShopToUpdate, request.MobileShopUpdateValues);
                 var result = await _shopRepository.UpdateShop(mobileShopToUpdate, cancellationToken);
 
                 _result = result;
@@ -90,7 +90,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
             return _result;
         }
 
-        private void UpdateMobileShop(ref MobileShop mobileShopToUpdate, MobileShopUpdateValues values)
+        private void UpdateMobileShop(MobileShop mobileShopToUpdate, MobileShopUpdateValues values)
         {
             if (values.NewSalePoint is not null)
             {

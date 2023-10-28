@@ -47,7 +47,9 @@ namespace OnlineShop.Order.API.Controllers
         {
             var result = await _mediator.Send(new GetOrdersAsPdfQuery(ordersId), cancellationToken);
 
-            return File(result.Value, "application/pdf", $"Zamowienia-{DateTimeService.UtcNow}.pdf");
+            return result.IsSuccess ?
+                File(result.Value, "application/pdf", $"Zamowienia-{DateTimeService.UtcNow}.pdf") :
+                BadRequest(result.Error);
         }
     }
 }

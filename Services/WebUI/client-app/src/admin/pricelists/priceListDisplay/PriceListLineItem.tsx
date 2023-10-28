@@ -6,7 +6,7 @@ import React from "react";
 import ConfirmModal from "../../../components/ConfirmModal";
 import {useStore} from "../../../global/stores/store";
 import { observer } from "mobx-react-lite";
-import LineItemUpdateModal from "./lineItemCreation/LineItemUpdateModal";
+import LineItemUpdateModal from "./priceListUpperSection/LineItemUpdateModal";
 
 interface Props {
     priceList: PriceList

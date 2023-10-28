@@ -23,15 +23,15 @@ namespace Shops.Application.Features.Queries.GetDeliveryPoints
         {
             var salePoints = await _mobileShopRepository
                 .GetSalePoints(cancellationToken);
-            var stationarySalePoints = await _stationaryShopRepository
-                .GetStationarySalePoints(cancellationToken);
+            var stationarySalePoints = (await _stationaryShopRepository
+                .GetStationarySalePoints(cancellationToken));
 
             var deliveryPoints = DeliveryPoint
                 .GetDeliveryPointsFromSalePoints(
                 salePoints,
                 stationarySalePoints);
 
-            return deliveryPoints;
+            return deliveryPoints.Where(dp => dp.PossiblePickupDate.Any()).ToList();
         }
     }
 }
