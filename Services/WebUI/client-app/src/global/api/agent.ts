@@ -100,12 +100,36 @@ const catalog = {
   priceListUpdateLineItem: (request: LineItemCreateValues, priceListId: string) => axios.put(`/onlineshop/pricelist/${priceListId}/update`, request),
   priceListRemoveLineItem: (priceListId: string, lineItemName: string) => axios.put(`/onlineshop/pricelist/${priceListId}/remove/${lineItemName}`),
   uploadPriceList: (file: File, priceListId: string) => {
-    const formData = new FormData()
-    file && formData.append('priceListFile', file)
+    if (!file) {
+      return Promise.reject('File is missing');
+    }
 
-    return axios.post(`/onlineshop/pricelist/${priceListId}/xlsx`, formData).then(responseBody)
+    const formData = new FormData();
+    formData.append('priceListFile', file);
+
+    return axios.post(`/onlineshop/pricelist/${priceListId}/xlsx`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then(responseBody)
   },
-  downloadPriceList: (priceListId: string) => axios.get(`/onlineshop/pricelist/${priceListId}/xlsx`).then(responseBody)
+  downloadPriceList: (priceListId: string, priceListName: string) => {
+    axios
+        .get(`/onlineshop/pricelist/${priceListId}/xlsx`, {
+          responseType: 'arraybuffer',
+        })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `${priceListName}.xlsx`;
+          link.click();
+        })
+        .catch((error) => {
+          console.error('Error downloading file:', error);
+        });
+  }
 }
 
 const shoppingCart ={

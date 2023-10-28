@@ -4,10 +4,9 @@ import LoadingTableRow from "../../../components/LoadingTableRow";
 import PriceListListItem from "../priceListList/PriceListListItem";
 import React, {useEffect, useState} from "react";
 import PriceListLineItem from "./PriceListLineItem";
-import PriceListViewUpperSection from "./lineItemCreation/LineItemCreateSection";
+import PriceListViewUpperSection from "./priceListUpperSection/PriceListViewUpperSection";
 import {useStore} from "../../../global/stores/store";
 import {observer} from "mobx-react-lite";
-import {Save, UploadFile} from "@mui/icons-material";
 
 function PriceListView() {
     const {adminPriceListStore} = useStore()

@@ -167,13 +167,25 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }
 
             var lineItems = RetriveLineItemsNames(worksheet);
+
+            if (lineItems is null)
+            {
+                return false;
+            }
+
             var results = lineItems.Select(li => AddLineItem(priceListId, li, cancellationToken).Result);
 
             return results.All(r => r);
         }
 
-        private List<LineItem> RetriveLineItemsNames(IXLWorksheet worksheet)
+        private List<LineItem>? RetriveLineItemsNames(IXLWorksheet worksheet)
         {
+            if (string.IsNullOrWhiteSpace(worksheet.Cell(0, 0).GetText()) ||
+                string.IsNullOrWhiteSpace(worksheet.Cell(0, 1).GetText()))
+            {
+                return null;
+            }
+
             var names = new List<string>();
             var prices = new List<Money>();
             var lineItems = new List<LineItem>();

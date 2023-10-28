@@ -36,7 +36,7 @@ export default function PhotoWidgetDropzone({setFiles}: Props) {
         <div {...getRootProps()} style={isDragActive ? {...dzStyles, ...dzActive} : dzStyles}>
             <input {...getInputProps()} />
             <Upload color={'primary'}/>
-            <Typography content='Drop image here' />
+            <Typography content='Upuść zdjęcie' />
         </div>
     )
 }
