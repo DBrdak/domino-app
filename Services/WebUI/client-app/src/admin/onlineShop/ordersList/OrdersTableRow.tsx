@@ -39,8 +39,7 @@ function OrdersTableRow({order}: Props) {
 
     const handleOrderAccept = () => {
         modalStore.closeModal()
-        console.log(liveOrderItems)
-        console.log(order.items)
+
         order.id && adminOrderStore.updateOrder({
             orderId: order.id,
             status: liveOrderItems.length === order.items.length ? 'Potwierdzone' : 'Potwierdzone ze zmianami',
@@ -63,6 +62,7 @@ function OrdersTableRow({order}: Props) {
 
     const handleOrderPrintLost = () => {
         modalStore.closeModal()
+
         order.id && adminOrderStore.updateOrder({
             orderId: order.id,
             status: null,
@@ -74,7 +74,6 @@ function OrdersTableRow({order}: Props) {
 
     const handleOrderItemReject = (item: OrderItem) => {
         modalStore.closeModal()
-
         setLiveOrderItems(prev => prev.filter(i => i.id !== item.id))
     }
 
@@ -117,10 +116,11 @@ function OrdersTableRow({order}: Props) {
                             </IconButton>
                         </ButtonGroup>
                     }
-                    {(order.status?.statusMessage === 'Potwierdzone' || order.status?.statusMessage === 'Potwierdzone ze zmianami') && order.isPrinted &&
+                    {(order.status?.statusMessage === 'Potwierdzone' || order.status?.statusMessage === 'Potwierdzone ze zmianami') &&
+                        !adminOrderStore.ordersToPrint.find(o => o.id === order.id) &&
                         <IconButton onClick={() => modalStore.openModal(
                             <ConfirmModal onConfirm={handleOrderPrintLost} text={`Czy na pewno chcesz oznaczyć zamówienie jako niewydrukowane?`}/>)}
-                                    color={'error'} style={{flexDirection: 'column'}}>
+                                    color={'error'} style={{flexDirection: 'column', borderRadius:'2px'}}>
                             <PrintDisabled/>
                             <Typography variant={'caption'} >Anuluj wydruk</Typography>
                         </IconButton>
@@ -128,9 +128,9 @@ function OrdersTableRow({order}: Props) {
                 </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
+                        <Box sx={{margin: 1}}>
                             <Stack direction={'row'} spacing={5} justifyContent={'center'} padding={'10px 0px'}>
                                 <Typography variant={'subtitle1'}>
                                     <strong>Imię:</strong> {order.firstName}
@@ -159,17 +159,20 @@ function OrdersTableRow({order}: Props) {
                                     {liveOrderItems.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell align={'center'}>{item.productName}</TableCell>
-                                            <TableCell align={'center'}>{item.quantity.value} {item.quantity.unit.code}</TableCell>
+                                            <TableCell
+                                                align={'center'}>{item.quantity.value} {item.quantity.unit.code}</TableCell>
                                             <TableCell align={'center'}>
                                                 {item.price.amount} {item.price.currency.code}/{item.price.unit?.code}
                                             </TableCell>
-                                            <TableCell align={'center'}>{item.totalValue.amount} {item.totalValue.currency.code}</TableCell>
+                                            <TableCell
+                                                align={'center'}>{item.totalValue.amount} {item.totalValue.currency.code}</TableCell>
                                             <TableCell align={'center'}>
                                                 {(order.status?.statusMessage === 'Oczekuje na potwierdzenie' && liveOrderItems.length > 1) &&
                                                     <IconButton onClick={() => modalStore.openModal(
-                                                        <ConfirmModal onConfirm={() => handleOrderItemReject(item)} important
+                                                        <ConfirmModal onConfirm={() => handleOrderItemReject(item)}
+                                                                      important
                                                                       text={`Czy na pewno chcesz odrzucić produkt ${item.productName}`}/>)}
-                                                                 color={'error'} style={{flexDirection: 'column'}}>
+                                                                color={'error'} style={{flexDirection: 'column', borderRadius: '2px'}}>
                                                         <Delete/>
                                                         <Typography variant={'caption'}>Odrzuć produkt</Typography>
                                                     </IconButton>

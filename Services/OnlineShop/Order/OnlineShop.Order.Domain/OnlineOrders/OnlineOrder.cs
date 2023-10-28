@@ -172,7 +172,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public void Print()
         {
-            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
                 throw new ApplicationException($"Cannot print order with id: {Id} because of it status is {Status.StatusMessage}");
             }
@@ -182,7 +182,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public void PrintLost() 
         {
-            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
                 throw new ApplicationException($"Cannot change print status of order with id: {Id} because of it status is {Status.StatusMessage}");
             }

@@ -1,12 +1,12 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { toast } from "react-toastify";
-import { router } from "../router/Routes";
-import { PaginatedResult } from "../models/pagination";
-import {Product, ProductCreateValues, ProductUpdateValues} from "../models/product";
-import { ShoppingCart, ShoppingCartCheckout } from "../models/shoppingCart";
-import {OnlineOrderRead, OrderUpdateValues} from "../models/order";
-import {BusinessPriceListCreateValues, LineItemCreateValues, PriceList} from "../models/priceList";
-import {DeliveryPoint, MobileShop, Shop, ShopCreateValues, ShopUpdateValues, StationaryShop} from "../models/shop";
+import axios, { AxiosResponse } from "axios"
+import { toast } from "react-toastify"
+import { router } from "../router/Routes"
+import { PaginatedResult } from "../models/pagination"
+import {Product, ProductCreateValues, ProductUpdateValues} from "../models/product"
+import { ShoppingCart, ShoppingCartCheckout } from "../models/shoppingCart"
+import {OnlineOrderRead, OrderUpdateValues} from "../models/order"
+import {BusinessPriceListCreateValues, LineItemCreateValues, PriceList} from "../models/priceList"
+import {DeliveryPoint, Shop, ShopCreateValues, ShopUpdateValues} from "../models/shop"
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -18,48 +18,47 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const responseBody = <T> (response: AxiosResponse<T>) => response.data;
 
-axios.interceptors.response.use(async response => {
-  if(process.env.NODE_ENV === "development") await sleep(1000);
-  //const pagination = response.headers['pagination']
-  return response;
-}, (error:AxiosError) => {
-  const {data, status, config, headers} = error.response! as AxiosResponse;
-  switch(status) {
-    case 400:
-      if(config.method === 'get' && data.errors.hasOwnProperty('id')){
-        router.navigate('/not-found');
-      }
-      if(data.errors) {
-        const modalStateErrors = [];
-        for (const key in data.errors){
-          if(data.name) {
-            modalStateErrors.push(data.name);
+axios.interceptors.response.use(async(response) => {
+  if(process.env.NODE_ENV === "development") {
+    await sleep(1000)
+  }
+    return response
+}, (error) => {
+      if (error.response) {
+        if (error.response.data && error.response.data.isSuccess === false) {
+          const errorMessage = error.response.data.error.message;
+          toast.error(errorMessage);
+          return Promise.reject();
+        } else {
+          switch(error.response.status) {
+            case 400:
+              if(error.response.config.method === 'get' && error.response.data.errors.hasOwnProperty('id')){
+                router.navigate('/not-found');
+              }
+              break;
+            case 401:
+              if( error.response.headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')){
+                toast.error("Session expired - please login again")
+              }
+              else toast.error('unauthorized')
+              break;
+            case 403:
+              toast.error('forbidden')
+              break;
+            case 404:
+              router.navigate('/not-found');
+              break;
+            case 500:
+              router.navigate('/server-error');
+              break;
           }
         }
-        throw modalStateErrors.flat();
-      }else {
-        toast.error(data.name);
       }
-      toast.error(data.name);
 
-      break;
-    case 401:
-      if(headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')){
-        toast.error("Session expired - please login again")
-      }
-      else toast.error('unauthorized')
-      break;
-    case 403:
-      toast.error('forbidden')
-      break;
-    case 404:
-      break;
-    case 500:
-      router.navigate('/server-error');
-      break;
-  }
-  return Promise.reject(error);
-})
+      // Pass the error to the next handler
+      return Promise.reject(error);
+    }
+);
 
 const requests = {
   get: <T> (url: string) => axios.get<T>(url).then(responseBody),
@@ -121,7 +120,26 @@ const order = {
   cancel: (orderId: string) => axios.put('/onlineshop/order/cancel', {orderId}),
   getAll: () => axios.get<OnlineOrderRead[]>('/onlineshop/order/all').then(responseBody),
   updateOrder: (command: OrderUpdateValues) => axios.put('/onlineshop/order', command),
-  downloadOrders: (params: URLSearchParams) => axios.get('/onlineshop/order/pdf', {params}).then(responseBody)
+  downloadOrders: (params: URLSearchParams) => {
+    axios.get('/onlineshop/order/pdf', { params, responseType: 'blob' })
+        .then(response => {
+          const blob = new Blob([response.data], { type: 'application/pdf' });
+
+          const url = window.URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Zamówienia-${new Date().toLocaleDateString('pl')}.pdf`;
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error('Error downloading PDF:', error);
+        });
+  }
 }
 
 const shops = {

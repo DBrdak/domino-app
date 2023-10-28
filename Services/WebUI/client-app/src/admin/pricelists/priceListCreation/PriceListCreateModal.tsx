@@ -44,7 +44,7 @@ function PriceListCreateModal() {
                             showErrors
                         />
                         <FormControl fullWidth>
-                            <InputLabel>Nazwa produktu</InputLabel>
+                            <InputLabel>Kategoria cennika</InputLabel>
                             <Select
                                 id={'category'}
                                 name={'category'}

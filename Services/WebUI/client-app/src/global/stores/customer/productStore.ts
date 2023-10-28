@@ -58,7 +58,6 @@ export default class ProductStore {
   loadProducts = async (category: string) => {
     !this.loadingNext && this.setLoading(true)
     !this.pagination && this.productsRegistry.clear()
-    console.log(this.pagination)
     try {
       const result = await agent.catalog.products(category, this.axiosParams)
       result.items.forEach(i => this.setProduct(i))

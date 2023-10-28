@@ -13,7 +13,7 @@ interface Props {
 export function OrderFilter({shops, handleShopChange, selectedName}:Props) {
 
     return (
-        <Stack direction={'row'}>
+        <Stack direction={'row'} width={'200px'}>
             <FormControl fullWidth>
                 <InputLabel>Sklep</InputLabel>
                 <Select

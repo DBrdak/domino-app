@@ -72,14 +72,15 @@ namespace OnlineShop.Order.Infrastructure.Repositories
         {
             var orders = await _context.Set<OnlineOrder>()
                 .Include(o => o.Items)
-                .AsNoTracking()
                 .Where(o => ordersId.Contains(o.Id))
                 .OrderBy(o => o.DeliveryDate.Start)
                 .ToListAsync(cancellationToken);
 
             orders.ForEach(o => o.Print());
 
-            return orders;
+            var result = await _context.SaveChangesAsync() > 0;
+
+            return result ? orders : new ();
         }
 
         public async Task CatchPrintingError(IEnumerable<string> ordersId, CancellationToken cancellationToken)
@@ -104,6 +105,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
             bool? isPrinted = null)
         {
             var order = await _context.Set<OnlineOrder>()
+                .Include(onlineOrder => onlineOrder.Items)
                 .SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
 
             if (order is null)
@@ -146,7 +148,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
             {
                 return null;
             }
-
+            
             return response.Message;
         }
 

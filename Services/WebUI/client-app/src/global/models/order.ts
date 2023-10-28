@@ -105,7 +105,6 @@ export class OnlineOrderCreate implements OnlineOrder {
 }
 
 export class OrderItem implements OrderItem {
-  id: string | null;
   orderId: string | null;
   price!: Money;
   totalValue!: Money;
@@ -114,7 +113,6 @@ export class OrderItem implements OrderItem {
 
   constructor(init: ShoppingCartItem){
     Object.assign(this, init)
-    this.id = null
     this.orderId = null
   }
 }
