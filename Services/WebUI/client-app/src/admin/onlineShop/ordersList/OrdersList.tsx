@@ -1,6 +1,6 @@
 import {OnlineOrder} from "../../../global/models/order";
 import {
-    Button, Collapse,
+    Button, Collapse, Divider,
     List,
     ListItemButton,
     ListItemIcon,
@@ -35,6 +35,7 @@ function OrdersList({orders} : Props) {
             <Collapse in={openedLists[0]} timeout="auto" unmountOnExit>
                 <OrdersTable orders={[...orders].filter(o => o.status?.statusMessage === 'Oczekuje na potwierdzenie')}/>
             </Collapse>
+            <Divider />
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], !openedLists[1], openedLists[2], openedLists[3]])}>
                 {openedLists[1] ? <ExpandLess /> : <ExpandMore />}
@@ -47,6 +48,7 @@ function OrdersList({orders} : Props) {
                 <OrdersTable orders={[...orders].filter(o =>
                     o.status?.statusMessage === 'Potwierdzone' || o.status?.statusMessage === 'Potwierdzone ze zmianami')} />
             </Collapse>
+            <Divider />
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], openedLists[1], !openedLists[2], openedLists[3]])}>
                 {openedLists[2] ? <ExpandLess /> : <ExpandMore />}
@@ -58,6 +60,7 @@ function OrdersList({orders} : Props) {
             <Collapse in={openedLists[2]} timeout="auto" unmountOnExit>
                 <OrdersTable orders={[...orders].filter(o => o.status?.statusMessage === 'Odebrane')}/>
             </Collapse>
+            <Divider />
             <ListItemButton style={{textAlign: 'center'}}
                             onClick={() => setOpenedLists([openedLists[0], openedLists[1], openedLists[2], !openedLists[3]])}>
                 {openedLists[3] ? <ExpandLess /> : <ExpandMore />}
@@ -70,6 +73,7 @@ function OrdersList({orders} : Props) {
                 <OrdersTable orders={[...orders].filter(o =>
                     o.status?.statusMessage === 'Odrzucone' || o.status?.statusMessage === 'Anulowane')} />
             </Collapse>
+            <Divider />
         </List>
     );
 }

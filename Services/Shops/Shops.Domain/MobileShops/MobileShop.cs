@@ -52,17 +52,15 @@ namespace Shops.Domain.MobileShops
 
         public void RemoveSalePoint(SalePoint salePoint)
         {
-            if (SalePoints.All(s => s.Id != salePoint.Id))
-            {
-                throw new ApplicationException($"Sale point doesn't exists for location: {salePoint.Location}");
-            }
+            var salePointToRemove = SalePoints.FirstOrDefault(sp => sp.Id == salePoint.Id) ??
+                                    throw new ApplicationException($"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
-            SalePoints.Remove(salePoint);
+            SalePoints.Remove(salePointToRemove);
         }
 
         public void DisableSalePoint(SalePoint salePoint)
         {
-            var salePointToDisable = SalePoints.FirstOrDefault(s => s.Id != salePoint.Id) ??
+            var salePointToDisable = SalePoints.FirstOrDefault(s => s.Id == salePoint.Id) ??
                                      throw new ApplicationException(
                                          $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
@@ -71,7 +69,7 @@ namespace Shops.Domain.MobileShops
 
         public void EnableSalePoint(SalePoint salePoint)
         {
-            var salePointToEnable = SalePoints.FirstOrDefault(s => s.Id != salePoint.Id) ??
+            var salePointToEnable = SalePoints.FirstOrDefault(s => s.Id == salePoint.Id) ??
                                     throw new ApplicationException(
                                         $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 

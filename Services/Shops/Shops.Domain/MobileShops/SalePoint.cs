@@ -16,6 +16,16 @@ namespace Shops.Domain.MobileShops
         public TimeRange? OpenHours { get; private set; }
         public TimeRange? CachedOpenHours { get; private set; }
 
+        [JsonConstructor]
+        public SalePoint(Location location, WeekDay weekDay, bool isClosed, TimeRange? openHours, TimeRange? cachedOpenHours, string id) : base(id)
+        {
+            Location = location;
+            WeekDay = weekDay;
+            IsClosed = isClosed;
+            OpenHours = openHours;
+            CachedOpenHours = cachedOpenHours;
+        }
+
         public SalePoint(Location location, TimeRange openHours, WeekDay weekDay) : base(ObjectId.GenerateNewId().ToString())
         {
             Location = location;

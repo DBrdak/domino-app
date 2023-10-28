@@ -21,7 +21,7 @@ function SalePointMapSection() {
             {adminShopStore.loading ?
                 <LoadingComponent />
                 :
-                ((adminShopStore.stationaryShops.length > 0 && adminShopStore.mobileShops.length > 0 && adminShopStore.salePoints.length > 0) ?
+                ((adminShopStore.stationaryShops.length > 0 || adminShopStore.mobileShops.length > 0 || adminShopStore.salePoints.length > 0) ?
                     <SalePointMap stationaryShops={adminShopStore.stationaryShops}
                            mobileShops={adminShopStore.mobileShops}
                            locations={adminShopStore.salePoints.flatMap(sp => sp.location)}/>
