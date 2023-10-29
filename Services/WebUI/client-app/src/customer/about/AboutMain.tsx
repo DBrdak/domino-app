@@ -4,6 +4,7 @@ import './aboutPageStyles.css';
 import NavBar from '../components/NavBar';
 import theme from '../../global/layout/theme';
 import { setPageTitle } from '../../global/utils/pageTitle';
+import Footer from "../footer/Footer";
 
 const AboutMain: React.FC = () => {
   useEffect(() => {
@@ -93,6 +94,7 @@ const AboutMain: React.FC = () => {
         </Box>
       </div>
         }
+        <Footer />
     </>
   );
 };

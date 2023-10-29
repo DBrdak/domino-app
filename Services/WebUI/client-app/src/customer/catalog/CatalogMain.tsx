@@ -14,6 +14,7 @@ import { setPageTitle } from '../../global/utils/pageTitle'
 import InfiniteScroll from "react-infinite-scroller";
 import {PagingParams} from "../../global/models/pagination";
 import LoadingComponent from "../../components/LoadingComponent";
+import Footer from "../footer/Footer";
 
 interface Props {
   category: string | null
@@ -53,7 +54,7 @@ function CatalogMain({category}: Props) {
             :
             <div style={{backgroundColor: '#E4E4E4', width: '99.5vw', overflowX: 'hidden'}}>
                 <NavBar/>
-                <div style={{margin: '20px 0px 20px 0px', width: '100%', display: 'flex', justifyContent: 'center'}}>
+                <div style={{margin: '20px 0px 20px 0px', width: '100%', display: 'flex', justifyContent: 'center', minHeight: '100vh'}}>
                     <Grid container spacing={2} style={{width: '100%'}}>
                         <Grid item xs={12} md={12} lg={2}>
                             <ResetCategoryButton/>
@@ -79,6 +80,7 @@ function CatalogMain({category}: Props) {
                         <ShoppingCartBadge/>
                     </Grid>
                 </div>
+                <Footer />
             </div>
     )
 }
