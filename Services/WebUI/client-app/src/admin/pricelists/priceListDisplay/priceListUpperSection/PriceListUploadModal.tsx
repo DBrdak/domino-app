@@ -2,7 +2,6 @@ import React, {useCallback, useState} from "react";
 import {useDropzone} from "react-dropzone";
 import {Upload} from "@mui/icons-material";
 import {Button, Select, Stack, Typography} from "@mui/material";
-import * as XLSX from 'xlsx'
 
 interface PriceListUploadModalProps {
     onUpload: (file: File) => any

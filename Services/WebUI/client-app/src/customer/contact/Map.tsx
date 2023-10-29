@@ -23,7 +23,7 @@ function Map() {
     };
   }, []);
 
-  return <div ref={mapRef} style={{ width: '400px', height: '400px' }} />;
+  return <div ref={mapRef} style={{ width: '400px', height: '400px', borderRadius: '20px', boxShadow: '0px 0px 7px 0px' }} />;
 }
 
 export default Map;
