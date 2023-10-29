@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Results;
 using OnlineShop.Order.Domain.OrderItems;
 
 namespace OnlineShop.Order.Domain.OnlineOrders

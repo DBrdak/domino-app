@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
-using Shops.Domain.Shared;
 
 namespace Shops.Domain.MobileShops
 {

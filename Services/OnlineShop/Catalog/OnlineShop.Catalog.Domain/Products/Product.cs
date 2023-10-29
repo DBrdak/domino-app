@@ -71,7 +71,10 @@ namespace OnlineShop.Catalog.Domain.Products
                 id);
         }
 
-        public void StartDiscount(decimal newPriceAmount)
+        /// <summary>
+        /// Feature not implemented yet
+        /// </summary>
+        internal void StartDiscount(decimal newPriceAmount)
         {
             if (newPriceAmount >= Price.Amount)
             {
@@ -86,7 +89,10 @@ namespace OnlineShop.Catalog.Domain.Products
             DiscountedPrice = newPrice;
         }
 
-        public void EndDiscount()
+        /// <summary>
+        /// Feature not implemented yet
+        /// </summary>
+        internal void EndDiscount()
         {
             Details.EndDiscount();
 
@@ -95,19 +101,9 @@ namespace OnlineShop.Catalog.Domain.Products
             DiscountedPrice = null;
         }
 
-        public void OutOfStock()
-        {
-            Details.Unavailable();
+        private void OutOfStock() => Details.Unavailable();
 
-            RaiseDomainEvent(new ProductOutOfStockDomainEvent(Id));
-        }
-
-        public void InStock()
-        {
-            Details.Available();
-
-            RaiseDomainEvent(new ProductInStockDomainEvent(Id));
-        }
+        private void InStock() => Details.Available();
 
         public void UpdatePrice(Money price)
         {
@@ -133,9 +129,9 @@ namespace OnlineShop.Catalog.Domain.Products
             }
 
             if (newValues.IsAvailable)
-                Details.Available();
+                InStock();
             else
-                Details.Unavailable();
+                OutOfStock();
         }
 
         public static Product Create(CreateValues requestValues, Category category, string? id = null)

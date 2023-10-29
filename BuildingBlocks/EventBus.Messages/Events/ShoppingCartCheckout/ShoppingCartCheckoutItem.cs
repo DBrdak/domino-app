@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Money;
 using Shared.Domain.Quantity;
 
-namespace EventBus.Domain.Events.ShoppingCartCheckout
+namespace IntegrationEvents.Domain.Events.ShoppingCartCheckout
 {
     public sealed record ShoppingCartCheckoutItem(
         Quantity Quantity,

@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Results;
 using MediatR;
 using OnlineShop.Order.Domain.OnlineOrders;
 

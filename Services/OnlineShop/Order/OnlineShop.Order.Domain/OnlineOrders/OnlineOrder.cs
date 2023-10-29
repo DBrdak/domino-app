@@ -1,5 +1,4 @@
-﻿using EventBus.Domain.Events.ShoppingCartCheckout;
-using OnlineShop.Order.Domain.OnlineOrders.Events;
+﻿using OnlineShop.Order.Domain.OnlineOrders.Events;
 using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Date;
@@ -7,6 +6,7 @@ using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
 using Shared.Domain.Money;
 using System.ComponentModel.DataAnnotations;
+using IntegrationEvents.Domain.Events.ShoppingCartCheckout;
 
 namespace OnlineShop.Order.Domain.OnlineOrders
 {

@@ -1,6 +1,5 @@
 ﻿using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.ResponseTypes;
-using Shops.Domain.Abstractions;
 using Shops.Domain.MobileShops;
 using Shops.Domain.StationaryShops;
 

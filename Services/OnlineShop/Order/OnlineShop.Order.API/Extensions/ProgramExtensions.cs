@@ -1,6 +1,6 @@
-﻿using EventBus.Domain.Common;
-using EventBus.Domain.Events.OrderCreate;
-using EventBus.Domain.Events.OrderShopQuery;
+﻿using IntegrationEvents.Domain.Common;
+using IntegrationEvents.Domain.Events.OrderCreate;
+using IntegrationEvents.Domain.Events.OrderShopQuery;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.API.EventBusConsumer;

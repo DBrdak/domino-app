@@ -1,6 +1,5 @@
-﻿using EventBus.Domain.Common;
-using EventBus.Domain.Events.ShoppingCartCheckout;
-using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Events.ShoppingCartCheckout;
+using IntegrationEvents.Domain.Results;
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;

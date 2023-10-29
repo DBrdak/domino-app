@@ -1,6 +1,5 @@
-﻿using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Results;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using OnlineShop.Order.Domain.OnlineOrders;
 
 namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder

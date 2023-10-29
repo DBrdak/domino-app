@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Date;
-using Shared.Domain.DateTimeRange;
 
 namespace OnlineShop.Order.Infrastructure.Persistence
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EventBus.Domain.Results
+﻿namespace IntegrationEvents.Domain.Results
 {
     public sealed record CheckoutShopResult(string ShopId, string? Error, bool IsSuccess)
     {

@@ -1,4 +1,4 @@
-﻿namespace EventBus.Domain.Results
+﻿namespace IntegrationEvents.Domain.Results
 {
     public sealed record CheckoutOrderResult(string? OrderId, string? Error, bool IsSuccess)
     {

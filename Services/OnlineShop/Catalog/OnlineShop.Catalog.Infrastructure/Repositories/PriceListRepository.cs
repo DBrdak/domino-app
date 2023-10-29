@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
-using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Money;
 

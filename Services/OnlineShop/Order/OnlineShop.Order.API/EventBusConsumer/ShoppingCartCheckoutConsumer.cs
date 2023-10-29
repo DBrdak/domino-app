@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Events.ShoppingCartCheckout;
+﻿using IntegrationEvents.Domain.Events.ShoppingCartCheckout;
 using MassTransit;
 using MediatR;
 using OnlineShop.Order.Application.Features.Commands.CheckoutOrder;

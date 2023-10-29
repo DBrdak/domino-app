@@ -2,12 +2,7 @@
 using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using MongoDB.Bson;
 using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 
 namespace OnlineShop.Order.Application.Features.Queries.GetOrdersAsPdf
 {

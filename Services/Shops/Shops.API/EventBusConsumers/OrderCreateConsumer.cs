@@ -1,6 +1,5 @@
-﻿using EventBus.Domain.Events.OrderCreate;
-using EventBus.Domain.Events.ShoppingCartCheckout;
-using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Events.OrderCreate;
+using IntegrationEvents.Domain.Results;
 using MassTransit;
 using MediatR;
 using Shops.Application.Features.Commands.AggregateOrderWithShop;

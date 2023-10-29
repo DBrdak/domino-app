@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shops.Application.Features.Queries;
 using Shops.Application.Features.Queries.GetDeliveryPoints;
 
 namespace Shops.API.Controllers

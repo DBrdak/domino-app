@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Common;
+﻿using IntegrationEvents.Domain.Common;
 using MassTransit;
 using Shops.API.EventBusConsumers;
 using Shops.Application;

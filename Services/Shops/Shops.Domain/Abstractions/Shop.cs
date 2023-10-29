@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Abstractions.Entities;
-using Shared.Domain.Money;
 using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
 using Shops.Domain.StationaryShops;

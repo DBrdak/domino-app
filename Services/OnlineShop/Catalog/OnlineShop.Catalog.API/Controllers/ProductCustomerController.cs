@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.Application.Features.Customer.GetProducts;
+using OnlineShop.Catalog.Application.Features.Customer.Queries.GetProducts;
 
 namespace OnlineShop.Catalog.API.Controllers
 {

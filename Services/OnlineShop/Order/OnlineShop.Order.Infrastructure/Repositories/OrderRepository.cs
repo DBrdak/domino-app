@@ -1,10 +1,8 @@
-﻿using EventBus.Domain.Events;
-using EventBus.Domain.Events.OrderCreate;
-using EventBus.Domain.Events.OrderDelete;
-using EventBus.Domain.Events.OrderShopQuery;
-using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Events.OrderCreate;
+using IntegrationEvents.Domain.Events.OrderDelete;
+using IntegrationEvents.Domain.Events.OrderShopQuery;
+using IntegrationEvents.Domain.Results;
 using MassTransit;
-using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;

@@ -48,7 +48,7 @@ namespace Shared.Domain.Money
                 unit = Unit.FromCode(unitCode);
             }
 
-            return new Money(amount, currency, unit);
+            return new Money(amount, currency, unit) ?? throw new ApplicationException("Wrong price format");
         }
     }
 }

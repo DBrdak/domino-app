@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using EventBus.Domain.Events.ShoppingCartCheckout;
+using IntegrationEvents.Domain.Events.ShoppingCartCheckout;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Money;
 using Shared.Domain.Quantity;
