@@ -115,7 +115,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachImage(uploadResult.PhotoUrl);
 
-            var product = Product.Create(values, priceList.Category, productId);
+            var product = Product.Create(values, productId);
 
             await _context.Products.InsertOneAsync(product, null, cancellationToken);
 
