@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
 using Shops.Domain.Shared;
@@ -39,7 +40,7 @@ namespace Shops.Domain.StationaryShops
         {
             if (WeekSchedule.Any(wd => wd.OpenHours is not null))
             {
-                throw new ApplicationException($"Week schedule for shop with name {ShopName} already exists");
+                throw new DomainException<StationaryShop>($"Week schedule for shop with name {ShopName} already exists");
             }
 
             var shopWorkingDays = weekSchedule.Where(

@@ -1,3 +1,5 @@
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -6,15 +8,12 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.API/OnlineShop.Order.API.csproj", "Services/OnlineShop/Order/OnlineShop.Order.API/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Application/OnlineShop.Order.Application.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Application/"]
-COPY ["Services/OnlineShop/Order/OnlineShop.Order.Domain/OnlineShop.Order.Domain.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Domain/"]
-COPY ["BuildingBlocks/EventBus.Messages/EventBus.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
+COPY ["BuildingBlocks/Shared.Behaviors/Shared.Behaviors.csproj", "BuildingBlocks/Shared.Behaviors/"]
 COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
+COPY ["Services/OnlineShop/Order/OnlineShop.Order.Domain/OnlineShop.Order.Domain.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Domain/"]
+COPY ["BuildingBlocks/EventBus.Messages/IntegrationEvents.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Infrastructure/OnlineShop.Order.Infrastructure.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Infrastructure/"]
 RUN dotnet restore "Services/OnlineShop/Order/OnlineShop.Order.API/OnlineShop.Order.API.csproj"
-#RUN apt-get update
-#RUN apt-get install -y libfreetype6
-#RUN apt-get update && apt-get install -y libfontconfig1
-#RUN apk-get update && apk --no-cache add icu-libs fontconfig ttf-dejavu
 COPY . .
 WORKDIR "/src/Services/OnlineShop/Order/OnlineShop.Order.API"
 RUN dotnet build "OnlineShop.Order.API.csproj" -c Release -o /app/build

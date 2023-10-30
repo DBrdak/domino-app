@@ -1,71 +1,43 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineShop.Order.API.Middlewares
 {
-    public sealed class ExceptionHandlingMiddleware : IMiddleware
+    public class ExceptionMiddleware
     {
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly IHostEnvironment _env;
+        private const string contentType = "application/json";
 
-        public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger, IHostEnvironment env)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env)
         {
+            _next = next;
             _logger = logger;
             _env = env;
         }
 
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await next(context);
+                await _next(context);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                _logger.LogError(e, e.Message);
+                _logger.LogError(exception, "Exception occurred: {Message}", exception.Message);
 
-                await HandleExceptionAsync(context, e);
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Type = "ServerError",
+                    Title = "Server error",
+                    Detail = "An unexpected error has occurred"
+                };
+
+                context.Response.StatusCode = (int)problemDetails.Status;
+
+                await context.Response.WriteAsJsonAsync(problemDetails);
             }
         }
-
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            var statusCode = GetStatusCode(exception);
-
-            var response = new
-            {
-                title = GetTitle(exception),
-                status = statusCode,
-                detail = exception.Message,
-                //errors = _env.IsDevelopment() ? GetErrors(exception) : null
-            };
-
-            context.Response.ContentType = "application/json";
-
-            context.Response.StatusCode = statusCode;
-
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-        }
-
-        private static int GetStatusCode(Exception exception) =>
-            exception switch
-            {
-                ValidationException => StatusCodes.Status400BadRequest,
-                _ => StatusCodes.Status500InternalServerError
-            };
-
-        private static string GetTitle(Exception exception) =>
-            exception switch
-            {
-                ValidationException => "Validation Error",
-                _ => "Server Error"
-            };
-
-        //private static IEnumerable<ValidationFailure> GetErrors(Exception exception) =>
-        //    exception switch
-        //    {
-        //        ValidationException e => e.Errors,
-        //        _ => null
-        //    };
     }
 }

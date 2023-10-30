@@ -7,6 +7,7 @@ using Shared.Domain.Location;
 using Shared.Domain.Money;
 using System.ComponentModel.DataAnnotations;
 using IntegrationEvents.Domain.Events.ShoppingCartCheckout;
+using Shared.Domain.Exceptions;
 
 namespace OnlineShop.Order.Domain.OnlineOrders
 {
@@ -110,7 +111,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             }
             else
             {
-                throw new ApplicationException("Wrong order status provided");
+                throw new DomainException<OnlineOrder>("Wrong order status provided");
             }
         }
 
@@ -118,7 +119,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (Status == OrderStatus.Received || Status == OrderStatus.Rejected)
             {
-                throw new ApplicationException(
+                throw new DomainException<OnlineOrder>(
                     $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
@@ -130,7 +131,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (Status == OrderStatus.Received || Status == OrderStatus.Accepted || Status == OrderStatus.Modified)
             {
-                throw new ApplicationException(
+                throw new DomainException<OnlineOrder>(
                     $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
@@ -142,7 +143,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
             {
-                throw new ApplicationException(
+                throw new DomainException<OnlineOrder>(
                     $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
@@ -154,7 +155,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (Status != OrderStatus.Waiting)
             {
-                throw new ApplicationException(
+                throw new DomainException<OnlineOrder>(
                     $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
@@ -174,7 +175,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
-                throw new ApplicationException($"Cannot print order with id: {Id} because of it status is {Status.StatusMessage}");
+                throw new DomainException<OnlineOrder>($"Cannot print order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
             IsPrinted = true;
@@ -184,7 +185,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
-                throw new ApplicationException($"Cannot change print status of order with id: {Id} because of it status is {Status.StatusMessage}");
+                throw new DomainException<OnlineOrder>($"Cannot change print status of order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
             IsPrinted = false;

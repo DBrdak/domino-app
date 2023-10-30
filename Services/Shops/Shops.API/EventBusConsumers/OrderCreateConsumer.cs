@@ -2,6 +2,7 @@
 using IntegrationEvents.Domain.Results;
 using MassTransit;
 using MediatR;
+using Shared.Domain.Exceptions;
 using Shops.Application.Features.Commands.AggregateOrderWithShop;
 using Shops.Application.Features.Queries.GetShopByDeliveryInfo;
 
@@ -26,9 +27,9 @@ namespace Shops.API.EventBusConsumers
 
             var response = new CheckoutShopResult(queryResult.Value, queryResult.Error.Name, queryResult.IsSuccess);
 
-            if (!response.IsSuccess)
+            if (!response.IsSuccess && response.Error is not null)
             {
-                throw new ApplicationException(response.Error);
+                throw new IntegrationEventException<CheckoutShopResult>(response.Error);
             }
 
             var command = new AggregateOrderWithShopCommand(context.Message.OrderId, queryResult.Value);

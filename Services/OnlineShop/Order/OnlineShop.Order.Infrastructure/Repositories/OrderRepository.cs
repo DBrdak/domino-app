@@ -4,9 +4,11 @@ using IntegrationEvents.Domain.Events.OrderShopQuery;
 using IntegrationEvents.Domain.Results;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OnlineShop.Order.Domain.OnlineOrders;
 using OnlineShop.Order.Domain.OrderItems;
 using OnlineShop.Order.Infrastructure.Persistence;
+using Shared.Domain.Exceptions;
 
 namespace OnlineShop.Order.Infrastructure.Repositories
 {
@@ -158,7 +160,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
 
             if (!response.Message.IsSuccess)
             {
-                throw new ApplicationException(response.Message.Error);
+                throw new IntegrationEventException<CheckoutShopResult>(response.Message.Error);
             }
 
             return response.Message.ShopId;

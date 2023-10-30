@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Shared.Domain.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace Shared.Domain.DateTimeRange
 {
@@ -14,7 +15,7 @@ namespace Shared.Domain.DateTimeRange
         {
             if (start > end)
             {
-                throw new ApplicationException("End date precedes start date");
+                throw new DomainException<DateTimeRange>("End date precedes start date");
             }
 
             Start = start;

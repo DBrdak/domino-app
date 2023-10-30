@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Exceptions;
 using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
 using Shops.Domain.StationaryShops;
@@ -30,7 +31,7 @@ namespace Shops.Domain.Abstractions
         {
             if (Sellers.Any(s => s == seller))
             {
-                throw new ApplicationException(string.Concat(
+                throw new DomainException<Shop>(string.Concat(
                     $"Seller with data: ",
                     $"[First name: {seller.FirstName}, Last name:{seller.LastName}, Phone number: {seller.PhoneNumber}], ",
                     $"is already binded to shop {ShopName}"
@@ -44,7 +45,7 @@ namespace Shops.Domain.Abstractions
         {
             if (Sellers.All(s => s != seller))
             {
-                throw new ApplicationException(string.Concat(
+                throw new DomainException<Shop>(string.Concat(
                     $"Seller with data: ",
                     $"[First name: {seller.FirstName}, Last name:{seller.LastName}, Phone number: {seller.PhoneNumber}], ",
                     $"is not binded to shop {ShopName}"
@@ -58,7 +59,7 @@ namespace Shops.Domain.Abstractions
         {
             if (OrdersId.Any(o => o == orderId))
             {
-                throw new ApplicationException(
+                throw new DomainException<Shop>(
                     $"Order with Id {orderId} already exists in order registry of shop {ShopName}");
             }
 

@@ -1,4 +1,6 @@
-﻿namespace OnlineShop.Catalog.Domain.Shared
+﻿using Shared.Domain.Exceptions;
+
+namespace OnlineShop.Catalog.Domain.Shared
 {
     public sealed record Category
     {
@@ -22,6 +24,6 @@
         public static Category FromValue(string value)
             => All.FirstOrDefault(c => c.Value.ToLower() == value.ToLower() ||
                                        c._engValue.ToLower() == value.ToLower()) ??
-               throw new ApplicationException($"Category {value} not found");
+               throw new DomainException<Category>($"Category {value} not found");
     }
 }

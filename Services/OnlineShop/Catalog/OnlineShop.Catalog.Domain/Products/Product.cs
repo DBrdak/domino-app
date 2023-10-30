@@ -2,6 +2,7 @@
 using OnlineShop.Catalog.Domain.Products.Events;
 using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
 
@@ -56,7 +57,7 @@ namespace OnlineShop.Catalog.Domain.Products
 
             if (isWeightSwitchAllowed && singleWeight is null)
             {
-                throw new ApplicationException("Single weight must be specified when pcs is allowed");
+                throw new DomainException<Product>("Single weight must be specified when pcs is allowed");
             }
 
             var details = new ProductDetails(true, false, isWeightSwitchAllowed, singleWeight);
@@ -78,7 +79,7 @@ namespace OnlineShop.Catalog.Domain.Products
         {
             if (newPriceAmount >= Price.Amount)
             {
-                throw new ApplicationException("Discount price must be lower than regular price");
+                throw new DomainException<Product>("Discount price must be lower than regular price");
             }
 
             Details.StartDiscount();
@@ -139,7 +140,7 @@ namespace OnlineShop.Catalog.Domain.Products
             if (requestValues.Price is null ||
                 string.IsNullOrWhiteSpace(requestValues.Image))
             {
-                throw new ApplicationException("Image and price is required");
+                throw new DomainException<Product>("Image and price is required");
             }
 
             return Create(

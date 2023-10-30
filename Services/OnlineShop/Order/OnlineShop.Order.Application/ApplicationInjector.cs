@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineShop.Order.Application.Behaviors;
 using QuestPDF.Infrastructure;
 using System.Reflection;
+using Shared.Behaviors;
 
 namespace OnlineShop.Order.Application
 {
@@ -14,13 +15,13 @@ namespace OnlineShop.Order.Application
         {
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg =>
+            services.AddMediatR(configuration =>
             {
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                cfg.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+                configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                configuration.AddOpenBehavior(typeof(DomainEventPublishBehavior<,>));
+                configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
-
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             QuestPDF.Settings.License = LicenseType.Community;
 

@@ -1,13 +1,14 @@
-﻿using IntegrationEvents.Domain.Common;
+﻿using HealthChecks.ApplicationStatus.DependencyInjection;
+using IntegrationEvents.Domain.Common;
 using IntegrationEvents.Domain.Events.OrderCreate;
 using IntegrationEvents.Domain.Events.OrderShopQuery;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Order.API.EventBusConsumer;
-using OnlineShop.Order.API.Middlewares;
 using OnlineShop.Order.Application;
 using OnlineShop.Order.Infrastructure;
 using OnlineShop.Order.Infrastructure.Persistence;
+using Serilog;
 
 namespace OnlineShop.Order.API.Extensions
 {
@@ -15,11 +16,14 @@ namespace OnlineShop.Order.API.Extensions
     {
         public static IServiceCollection Inject(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHealthChecks()
+                .AddRabbitMQ()
+                .AddApplicationStatus()
+                .AddNpgSql(configuration.GetConnectionString("OrderConnectionString") ?? string.Empty);
+            
             services.AddControllers();
             services.InjectApplication();
             services.InjectInfrastructure(configuration);
-
-            services.AddTransient<ExceptionHandlingMiddleware>();
 
             services.AddMassTransit(config =>
             {
@@ -49,6 +53,14 @@ namespace OnlineShop.Order.API.Extensions
             });
 
             return services;
+        }
+        
+        public static WebApplicationBuilder InjectLogging(this WebApplicationBuilder builder)
+        {
+            builder.Host.UseSerilog((context, loggerConfig) =>
+                loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+            return builder;
         }
 
         public static async Task<IHost> MigrateDatabase(this IHost app, IHostEnvironment env, int? retry = 0)

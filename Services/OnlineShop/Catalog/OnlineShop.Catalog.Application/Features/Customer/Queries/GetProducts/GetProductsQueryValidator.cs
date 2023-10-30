@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using OnlineShop.Catalog.Domain.Shared;
 
 namespace OnlineShop.Catalog.Application.Features.Customer.Queries.GetProducts

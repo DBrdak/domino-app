@@ -7,7 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Services/OnlineShop/ShoppingCart/OnlineShop.ShoppingCart.API/OnlineShop.ShoppingCart.API.csproj", "Services/OnlineShop/ShoppingCart/OnlineShop.ShoppingCart.API/"]
-COPY ["BuildingBlocks/EventBus.Messages/EventBus.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
+COPY ["BuildingBlocks/EventBus.Messages/IntegrationEvents.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
 COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 RUN dotnet restore "Services/OnlineShop/ShoppingCart/OnlineShop.ShoppingCart.API/OnlineShop.ShoppingCart.API.csproj"
 COPY . .

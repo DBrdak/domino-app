@@ -1,6 +1,7 @@
 ﻿using OnlineShop.Catalog.Domain.PriceLists.Events;
 using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Exceptions;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.RemoveLineItem
 {
@@ -19,7 +20,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Remo
 
             if (!isSuccess)
             {
-                throw new ApplicationException($"Delete operation for product with ID {notification.ProductId} failed");
+                throw new DomainException<LineItemDeletedDomainEvent>($"Delete operation for product with ID {notification.ProductId} failed");
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Shared.Domain.Date
+﻿using Shared.Domain.Exceptions;
+
+namespace Shared.Domain.Date
 {
     public sealed record WeekDay
     {
@@ -27,7 +29,7 @@
         public static WeekDay FromValue(string code)
         {
             return All.FirstOrDefault(c => c.Value.ToLower() == code.ToLower()) ??
-                   throw new ApplicationException("The week day value is invalid");
+                   throw new DomainException<WeekDay>("The week day value is invalid");
         }
 
         public static WeekDay FromDayOfWeekEnum(DayOfWeek dayOfWeek)
@@ -56,7 +58,7 @@
                     return Sunday;
 
                 default:
-                    throw new ApplicationException($"Cannot convert {dayOfWeek} to WeekDay type");
+                    throw new DomainException<WeekDay>($"Cannot convert {dayOfWeek} to WeekDay type");
             }
         }
 

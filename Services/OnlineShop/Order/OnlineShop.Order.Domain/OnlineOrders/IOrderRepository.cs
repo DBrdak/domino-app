@@ -7,7 +7,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
     {
         Task<OnlineOrder?> GetCustomerOrders(string phoneNumber, string orderId);
 
-        Task<OnlineOrder> CreateOrder(OnlineOrder order);
+        Task<OnlineOrder?> CreateOrder(OnlineOrder order);
 
         Task<bool> CancelOrder(string orderId);
 

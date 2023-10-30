@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineShop.Catalog.Application.Behaviors;
 using System.Reflection;
+using Shared.Behaviors;
 
 namespace OnlineShop.Catalog.Application
 {
@@ -14,9 +14,11 @@ namespace OnlineShop.Catalog.Application
                 configuration.RegisterServicesFromAssembly(typeof(ApplicationInjector).Assembly);
 
                 configuration.AddOpenBehavior(typeof(DomainEventPublishBehavior<,>));
+                configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
 
-            services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(ApplicationInjector)));
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             return services;
         }

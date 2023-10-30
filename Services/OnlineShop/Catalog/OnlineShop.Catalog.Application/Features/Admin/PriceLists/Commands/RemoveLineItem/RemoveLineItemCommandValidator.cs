@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using MongoDB.Bson;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.RemoveLineItem

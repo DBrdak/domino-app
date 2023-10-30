@@ -73,7 +73,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (priceList.Contractor == Contractor.Retail)
             {
-                throw new ApplicationException("Retail price list cannot be deleted");
+                return false;
             }
 
             //TODO Check if contractor is null
@@ -242,7 +242,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (isProductInDb && product is null)
             {
-                throw new ApplicationException($"Product with ID {productId} not found");
+                return null;
             }
 
             var priceList = await GetRetailPriceList(productCategory, cancellationToken);

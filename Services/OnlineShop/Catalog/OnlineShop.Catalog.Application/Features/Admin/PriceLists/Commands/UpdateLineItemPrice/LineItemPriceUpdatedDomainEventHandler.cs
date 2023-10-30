@@ -1,6 +1,7 @@
 ﻿using OnlineShop.Catalog.Domain.PriceLists.Events;
 using OnlineShop.Catalog.Domain.Products;
 using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Exceptions;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.UpdateLineItemPrice
 {
@@ -19,7 +20,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Upda
 
             if (!isSuccess)
             {
-                throw new ApplicationException($"Price update for product with ID {notification.ProductId} failed");
+                throw new DomainException<LineItemPriceUpdatedDomainEvent>($"Price update for product with ID {notification.ProductId} failed");
             }
         }
     }

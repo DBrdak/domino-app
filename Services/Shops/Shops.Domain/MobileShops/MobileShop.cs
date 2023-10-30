@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
 
@@ -27,7 +28,7 @@ namespace Shops.Domain.MobileShops
         {
             if (SalePoints.Any(sp => sp.Location.Name == location.Name && sp.WeekDay.Value == weekDay))
             {
-                throw new ApplicationException(
+                throw new DomainException<MobileShop>(
                     $"Sale point in location [{location.Name}] already exist for shop [{ShopName}] on {weekDay}");
             }
 
@@ -37,7 +38,7 @@ namespace Shops.Domain.MobileShops
         public void UpdateSalePoint(SalePoint updatedSalePoint)
         {
             var existingSalePoint = SalePoints.FirstOrDefault(sp => sp.Id == updatedSalePoint.Id) ??
-                                    throw new ApplicationException(
+                                    throw new DomainException<MobileShop>(
                                         $"No sale point in location {updatedSalePoint.Location} find for shop named {ShopName}");
 
             existingSalePoint.Update(updatedSalePoint);
@@ -46,7 +47,7 @@ namespace Shops.Domain.MobileShops
         public void RemoveSalePoint(SalePoint salePoint)
         {
             var salePointToRemove = SalePoints.FirstOrDefault(sp => sp.Id == salePoint.Id) ??
-                                    throw new ApplicationException($"No sale point in location {salePoint.Location} find for shop named {ShopName}");
+                                    throw new DomainException<MobileShop>($"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
             SalePoints.Remove(salePointToRemove);
         }
@@ -54,7 +55,7 @@ namespace Shops.Domain.MobileShops
         public void DisableSalePoint(SalePoint salePoint)
         {
             var salePointToDisable = SalePoints.FirstOrDefault(s => s.Id == salePoint.Id) ??
-                                     throw new ApplicationException(
+                                     throw new DomainException<MobileShop>(
                                          $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
             salePointToDisable.Close();
@@ -63,7 +64,7 @@ namespace Shops.Domain.MobileShops
         public void EnableSalePoint(SalePoint salePoint)
         {
             var salePointToEnable = SalePoints.FirstOrDefault(s => s.Id == salePoint.Id) ??
-                                    throw new ApplicationException(
+                                    throw new DomainException<MobileShop>(
                                         $"No sale point in location {salePoint.Location} find for shop named {ShopName}");
 
             salePointToEnable.Open();
@@ -73,7 +74,7 @@ namespace Shops.Domain.MobileShops
         {
             if (!Regex.IsMatch(vehicleNumberPlate, polishVehiclePlateNumberRegex))
             {
-                throw new ApplicationException($"{vehicleNumberPlate} is invalid plate number");
+                throw new DomainException<MobileShop>($"{vehicleNumberPlate} is invalid plate number");
             }
 
             VehiclePlateNumber = vehicleNumberPlate;
