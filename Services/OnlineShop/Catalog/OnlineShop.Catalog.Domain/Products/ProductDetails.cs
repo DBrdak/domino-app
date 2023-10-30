@@ -1,4 +1,5 @@
-﻿using Shared.Domain.Money;
+﻿using Shared.Domain.Exceptions;
+using Shared.Domain.Money;
 using Shared.Domain.Quantity;
 
 namespace OnlineShop.Catalog.Domain.Products
@@ -18,7 +19,7 @@ namespace OnlineShop.Catalog.Domain.Products
 
             if (isWeightSwitchAllowed && !singleWeight.HasValue)
             {
-                throw new ApplicationException("Single weight is not provided");
+                throw new DomainException<ProductDetails>("Single weight is not provided");
             }
 
             SingleWeight = isWeightSwitchAllowed ? new(singleWeight!.Value, Unit.Kg) : null;

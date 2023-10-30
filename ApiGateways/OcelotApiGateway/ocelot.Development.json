@@ -12,7 +12,7 @@
       ],
       "UpstreamPathTemplate": "/onlineshop/product/{category}",
       "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": { "TtlSeconds": 0 }
+      "FileCacheOptions": { "TtlSeconds": 1 }
     },
     {
       "DownstreamPathTemplate": "/api/v1/onlineshop/product",

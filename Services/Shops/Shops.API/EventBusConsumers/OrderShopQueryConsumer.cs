@@ -1,5 +1,5 @@
-﻿using EventBus.Domain.Events.OrderShopQuery;
-using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Events.OrderShopQuery;
+using IntegrationEvents.Domain.Results;
 using MassTransit;
 using Shops.Domain.Abstractions;
 

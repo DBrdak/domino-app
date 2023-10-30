@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Results;
 using OnlineShop.Order.Domain.OrderItems;
 
 namespace OnlineShop.Order.Domain.OnlineOrders
@@ -7,7 +7,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
     {
         Task<OnlineOrder?> GetCustomerOrders(string phoneNumber, string orderId);
 
-        Task<OnlineOrder> CreateOrder(OnlineOrder order);
+        Task<OnlineOrder?> CreateOrder(OnlineOrder order);
 
         Task<bool> CancelOrder(string orderId);
 

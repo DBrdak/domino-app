@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Shared.Domain.Exceptions;
 
 namespace Shared.Domain.Money
 {
@@ -48,7 +49,7 @@ namespace Shared.Domain.Money
                 unit = Unit.FromCode(unitCode);
             }
 
-            return new Money(amount, currency, unit);
+            return new Money(amount, currency, unit) ?? throw new DomainException<Money>("Wrong price format");
         }
     }
 }

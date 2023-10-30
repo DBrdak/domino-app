@@ -1,4 +1,6 @@
-﻿namespace OnlineShop.Order.Domain.OnlineOrders
+﻿using Shared.Domain.Exceptions;
+
+namespace OnlineShop.Order.Domain.OnlineOrders
 {
     public sealed record OrderStatus
     {
@@ -27,6 +29,6 @@
 
         public static OrderStatus FromMessage(string message)
             => All.FirstOrDefault(m => m.StatusMessage == message) ??
-               throw new ApplicationException("Invalid status message");
+               throw new DomainException<OrderStatus>("Invalid status message");
     }
 }

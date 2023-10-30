@@ -1,7 +1,6 @@
 ﻿using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Location;
-using Shops.Domain.Abstractions;
 using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
 using Shops.Domain.StationaryShops;

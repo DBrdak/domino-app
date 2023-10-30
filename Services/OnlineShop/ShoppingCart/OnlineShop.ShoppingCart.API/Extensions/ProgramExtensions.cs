@@ -1,6 +1,10 @@
-﻿using EventBus.Domain.Results;
+﻿using System.Reflection;
+using IntegrationEvents.Domain.Results;
 using MassTransit;
 using OnlineShop.ShoppingCart.API.Repositories;
+using FluentValidation;
+using HealthChecks.ApplicationStatus.DependencyInjection;
+using Serilog;
 
 namespace OnlineShop.ShoppingCart.API.Extensions
 {
@@ -8,6 +12,11 @@ namespace OnlineShop.ShoppingCart.API.Extensions
     {
         public static IServiceCollection Inject(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHealthChecks()
+                .AddApplicationStatus()
+                .AddRabbitMQ()
+                .AddRedis(configuration["CacheSettings:ConnectionString"] ?? String.Empty);
+            
             services.AddControllers();
 
             services.AddStackExchangeRedisCache(opt =>
@@ -26,6 +35,8 @@ namespace OnlineShop.ShoppingCart.API.Extensions
                 });
             });
 
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "DefaultPolicy",
@@ -41,5 +52,14 @@ namespace OnlineShop.ShoppingCart.API.Extensions
 
             return services;
         }
+        
+        public static WebApplicationBuilder InjectLogging(this WebApplicationBuilder builder)
+        {
+            builder.Host.UseSerilog((context, loggerConfig) =>
+                loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+            return builder;
+        }
+        
     }
 }

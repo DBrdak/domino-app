@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Location;
 using Shops.Domain.Abstractions;
-using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
 
 namespace Shops.Domain.StationaryShops
@@ -46,7 +40,7 @@ namespace Shops.Domain.StationaryShops
         {
             if (WeekSchedule.Any(wd => wd.OpenHours is not null))
             {
-                throw new ApplicationException($"Week schedule for shop with name {ShopName} already exists");
+                throw new DomainException<StationaryShop>($"Week schedule for shop with name {ShopName} already exists");
             }
 
             var shopWorkingDays = weekSchedule.Where(

@@ -1,5 +1,4 @@
-﻿using OnlineShop.Order.Domain.OnlineOrders;
-using OnlineShop.Order.Domain.OrderItems;
+﻿using OnlineShop.Order.Domain.OrderItems;
 using Shared.Domain.Abstractions.Messaging;
 
 namespace OnlineShop.Order.Application.Features.Commands.UpdateOrder

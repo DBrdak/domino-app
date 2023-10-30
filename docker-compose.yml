@@ -47,6 +47,9 @@ services:
       context: .
       dockerfile: ApiGateways/OcelotApiGateway/Dockerfile
 
+  seq:
+    image: datalust/seq:latest
+
 #Others
 
 volumes:

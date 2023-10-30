@@ -1,4 +1,6 @@
-﻿namespace Shared.Domain.Money
+﻿using Shared.Domain.Exceptions;
+
+namespace Shared.Domain.Money
 {
     public sealed record Currency
     {
@@ -16,7 +18,7 @@
         public static Currency FromCode(string code)
         {
             var result = All.FirstOrDefault(c => c.Code.ToLower() == code.ToLower()) ??
-                   throw new ApplicationException("The currency code is invalid");
+                   throw new DomainException<Currency>("The currency code is invalid");
 
             return result == altPln ? 
                     Pln : result;

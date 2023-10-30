@@ -1,9 +1,7 @@
-﻿using EventBus.Domain.Events.OrderCreate;
-using EventBus.Domain.Events.OrderDelete;
+﻿using IntegrationEvents.Domain.Events.OrderDelete;
 using MassTransit;
 using MediatR;
 using Shops.Application.Features.Commands.DeleteOrderFromShop;
-using Shops.Domain.Abstractions;
 
 namespace Shops.API.EventBusConsumers
 {

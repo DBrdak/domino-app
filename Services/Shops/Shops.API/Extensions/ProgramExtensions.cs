@@ -1,5 +1,7 @@
-﻿using EventBus.Domain.Common;
+﻿using HealthChecks.ApplicationStatus.DependencyInjection;
+using IntegrationEvents.Domain.Common;
 using MassTransit;
+using Serilog;
 using Shops.API.EventBusConsumers;
 using Shops.Application;
 using Shops.Infrastructure;
@@ -10,6 +12,11 @@ namespace Shops.API.Extensions
     {
         public static IServiceCollection Inject(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHealthChecks()
+                .AddMongoDb(configuration.GetValue<string>("DatabaseSettings:ConnectionString") ?? string.Empty)
+                .AddApplicationStatus()
+                .AddRabbitMQ();
+            
             services.AddControllers();
 
             services.InjectApplication();
@@ -48,6 +55,14 @@ namespace Shops.API.Extensions
             });
 
             return services;
+        }
+        
+        public static WebApplicationBuilder InjectLogging(this WebApplicationBuilder builder)
+        {
+            builder.Host.UseSerilog((context, loggerConfig) =>
+                loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+            return builder;
         }
     }
 }

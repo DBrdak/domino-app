@@ -11,5 +11,7 @@
         public static Error TaskFailed(string name) => new("Error.TaskFailed", name);
 
         public static Error NotFound(string name) => new("Error.NotFound", name);
+
+        public override string ToString() => $"{Code}: {Name}";
     }
 }

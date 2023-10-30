@@ -1,15 +1,13 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddBusinessPriceList;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddLineItem;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.AddRetailPriceList;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.DownloadPriceListAsExcel;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.GetPriceLists;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemoveLineItem;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.RemovePriceList;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UpdateLineItemPrice;
-using OnlineShop.Catalog.Application.Features.Admin.PriceLists.UploadPriceListAsExcel;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.AddBusinessPriceList;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.AddLineItem;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.RemoveLineItem;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.RemovePriceList;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.UpdateLineItemPrice;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.UploadPriceListAsExcel;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Queries.DownloadPriceListAsExcel;
+using OnlineShop.Catalog.Application.Features.Admin.PriceLists.Queries.GetPriceLists;
 using Shared.Domain.Extensions;
 
 namespace OnlineShop.Catalog.API.Controllers

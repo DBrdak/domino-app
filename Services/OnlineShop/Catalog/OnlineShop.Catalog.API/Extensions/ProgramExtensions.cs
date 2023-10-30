@@ -1,5 +1,7 @@
-﻿using OnlineShop.Catalog.Application;
+﻿using HealthChecks.ApplicationStatus.DependencyInjection;
+using OnlineShop.Catalog.Application;
 using OnlineShop.Catalog.Infrastructure;
+using Serilog;
 
 namespace OnlineShop.Catalog.API.Extensions
 {
@@ -7,6 +9,10 @@ namespace OnlineShop.Catalog.API.Extensions
     {
         public static IServiceCollection Inject(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHealthChecks()
+                .AddMongoDb(configuration.GetValue<string>("DatabaseSettings:ConnectionString") ?? string.Empty)
+                .AddApplicationStatus();
+            
             services.AddControllers();
 
             services.InjectApplication();
@@ -26,6 +32,14 @@ namespace OnlineShop.Catalog.API.Extensions
             });
 
             return services;
+        }
+
+        public static WebApplicationBuilder InjectLogging(this WebApplicationBuilder builder)
+        {
+            builder.Host.UseSerilog((context, loggerConfig) =>
+                loggerConfig.ReadFrom.Configuration(context.Configuration));
+
+            return builder;
         }
     }
 }

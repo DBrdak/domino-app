@@ -46,7 +46,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (uploadResult.Error != null)
             {
-                throw new ApplicationException(uploadResult.Error.Message);
+                return null;
             }
 
             return new PhotoUploadResult(

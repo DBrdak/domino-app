@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shared.Domain.ResponseTypes;
-using Shops.Domain.MobileShops;
-using Shops.Domain.Shared;
-using Shops.Domain.StationaryShops;
-
-namespace Shops.Domain.Abstractions
+﻿namespace Shops.Domain.Abstractions
 {
     public interface IShopRepository
     {

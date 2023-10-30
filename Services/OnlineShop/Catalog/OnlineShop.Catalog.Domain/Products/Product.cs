@@ -2,6 +2,7 @@
 using OnlineShop.Catalog.Domain.Products.Events;
 using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
 
@@ -56,7 +57,7 @@ namespace OnlineShop.Catalog.Domain.Products
 
             if (isWeightSwitchAllowed && singleWeight is null)
             {
-                throw new ApplicationException("Single weight must be specified when pcs is allowed");
+                throw new DomainException<Product>("Single weight must be specified when pcs is allowed");
             }
 
             var details = new ProductDetails(true, false, isWeightSwitchAllowed, singleWeight);
@@ -71,11 +72,14 @@ namespace OnlineShop.Catalog.Domain.Products
                 id);
         }
 
-        public void StartDiscount(decimal newPriceAmount)
+        /// <summary>
+        /// Feature not implemented yet
+        /// </summary>
+        internal void StartDiscount(decimal newPriceAmount)
         {
             if (newPriceAmount >= Price.Amount)
             {
-                throw new ApplicationException("Discount price must be lower than regular price");
+                throw new DomainException<Product>("Discount price must be lower than regular price");
             }
 
             Details.StartDiscount();
@@ -86,7 +90,10 @@ namespace OnlineShop.Catalog.Domain.Products
             DiscountedPrice = newPrice;
         }
 
-        public void EndDiscount()
+        /// <summary>
+        /// Feature not implemented yet
+        /// </summary>
+        internal void EndDiscount()
         {
             Details.EndDiscount();
 
@@ -95,19 +102,9 @@ namespace OnlineShop.Catalog.Domain.Products
             DiscountedPrice = null;
         }
 
-        public void OutOfStock()
-        {
-            Details.Unavailable();
+        private void OutOfStock() => Details.Unavailable();
 
-            RaiseDomainEvent(new ProductOutOfStockDomainEvent(Id));
-        }
-
-        public void InStock()
-        {
-            Details.Available();
-
-            RaiseDomainEvent(new ProductInStockDomainEvent(Id));
-        }
+        private void InStock() => Details.Available();
 
         public void UpdatePrice(Money price)
         {
@@ -133,9 +130,9 @@ namespace OnlineShop.Catalog.Domain.Products
             }
 
             if (newValues.IsAvailable)
-                Details.Available();
+                InStock();
             else
-                Details.Unavailable();
+                OutOfStock();
         }
 
         public static Product Create(CreateValues requestValues, Category category, string? id = null)
@@ -143,7 +140,7 @@ namespace OnlineShop.Catalog.Domain.Products
             if (requestValues.Price is null ||
                 string.IsNullOrWhiteSpace(requestValues.Image))
             {
-                throw new ApplicationException("Image and price is required");
+                throw new DomainException<Product>("Image and price is required");
             }
 
             return Create(

@@ -1,6 +1,5 @@
-﻿using EventBus.Domain.Common;
-using EventBus.Domain.Events.ShoppingCartCheckout;
-using EventBus.Domain.Results;
+﻿using IntegrationEvents.Domain.Events.ShoppingCartCheckout;
+using IntegrationEvents.Domain.Results;
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -13,11 +12,13 @@ namespace OnlineShop.ShoppingCart.API.Repositories
     {
         private readonly IDistributedCache _cache;
         private readonly IBus _bus;
+        private readonly ILogger<ShoppingCartRepository> _logger;
 
-        public ShoppingCartRepository(IDistributedCache cache, IBus bus)
+        public ShoppingCartRepository(IDistributedCache cache, IBus bus, ILogger<ShoppingCartRepository> logger)
         {
             _cache = cache;
             _bus = bus;
+            _logger = logger;
         }
 
         public async Task<Entities.ShoppingCart> GetShoppingCart(string cartId)
@@ -62,11 +63,17 @@ namespace OnlineShop.ShoppingCart.API.Repositories
                 request.LastName,
                 request.DeliveryLocation,
                 request.DeliveryDate);
+
+            _logger.LogInformation("The shopping cart checkout has started");
             
             var client = _bus.CreateRequestClient<ShoppingCartCheckoutEvent>();
             var responseFromOrder = await client.GetResponse<CheckoutOrderResult>(eventMessage);
 
+            _logger.LogInformation($"Received order ID from order service: {responseFromOrder.Message.OrderId}");
+
             await DeleteShoppingCart(request.ShoppingCart.ShoppingCartId);
+
+            _logger.LogInformation("The shopping cart checkout has been completed successfully");
 
             return responseFromOrder.Message.OrderId;
         }

@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using Shared.Domain.Abstractions.Entities;
 using Shared.Domain.Date;

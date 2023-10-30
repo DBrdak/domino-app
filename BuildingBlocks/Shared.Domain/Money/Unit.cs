@@ -1,4 +1,6 @@
-﻿namespace Shared.Domain.Money
+﻿using Shared.Domain.Exceptions;
+
+namespace Shared.Domain.Money
 {
     public sealed record Unit
     {
@@ -24,7 +26,7 @@
         public static Unit FromCode(string code)
         {
             return All.FirstOrDefault(u => u.Code.ToLower() == code.ToLower()) ??
-                   throw new ApplicationException("The unit code is invalid");
+                   throw new DomainException<Unit>("The unit code is invalid");
         }
     }
 }

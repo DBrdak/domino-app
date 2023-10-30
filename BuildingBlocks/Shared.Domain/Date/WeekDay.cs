@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shared.Domain.Exceptions;
 
 namespace Shared.Domain.Date
 {
@@ -34,7 +29,7 @@ namespace Shared.Domain.Date
         public static WeekDay FromValue(string code)
         {
             return All.FirstOrDefault(c => c.Value.ToLower() == code.ToLower()) ??
-                   throw new ApplicationException("The week day value is invalid");
+                   throw new DomainException<WeekDay>("The week day value is invalid");
         }
 
         public static WeekDay FromDayOfWeekEnum(DayOfWeek dayOfWeek)
@@ -63,7 +58,7 @@ namespace Shared.Domain.Date
                     return Sunday;
 
                 default:
-                    throw new ApplicationException($"Cannot convert {dayOfWeek} to WeekDay type");
+                    throw new DomainException<WeekDay>($"Cannot convert {dayOfWeek} to WeekDay type");
             }
         }
 

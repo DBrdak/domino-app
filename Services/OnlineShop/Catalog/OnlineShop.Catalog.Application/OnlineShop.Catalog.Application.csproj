@@ -8,10 +8,12 @@
 
 	<ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
     <PackageReference Include="MediatR" Version="12.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\Shared.Behaviors\Shared.Behaviors.csproj" />
     <ProjectReference Include="..\OnlineShop.Catalog.Domain\OnlineShop.Catalog.Domain.csproj" />
   </ItemGroup>
 

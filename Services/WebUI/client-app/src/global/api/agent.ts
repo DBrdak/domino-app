@@ -24,6 +24,7 @@ axios.interceptors.response.use(async(response) => {
   }
     return response
 }, (error) => {
+  console.log(error.data)
       if (error.response) {
         if (error.response.data && error.response.data.isSuccess === false) {
           const errorMessage = error.response.data.error.message;

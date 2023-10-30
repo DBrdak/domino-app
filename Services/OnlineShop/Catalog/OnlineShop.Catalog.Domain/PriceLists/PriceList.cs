@@ -2,6 +2,7 @@
 using OnlineShop.Catalog.Domain.PriceLists.Events;
 using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Abstractions.Entities;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.PriceLists
@@ -37,7 +38,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
             if (isDuplicate)
             {
-                throw new ApplicationException($"Line item named {lineItem.Name} already exists in price list {Name}");
+                throw new DomainException<PriceList>($"Line item named {lineItem.Name} already exists in price list {Name}");
             }
 
             LineItems.Add(lineItem);
@@ -49,7 +50,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
             if (lineItemToUpdate is null)
             {
-                throw new ApplicationException($"No line item found matching product with ID: {productId}");
+                throw new DomainException<PriceList>($"No line item found matching product with ID: {productId}");
             }
 
             lineItemToUpdate.SplitFromProduct();
@@ -62,7 +63,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
             if (lineItemToDelete is null)
             {
-                throw new ApplicationException($"Given line item do not exist in price list {Name}");
+                throw new DomainException<PriceList>($"Given line item do not exist in price list {Name}");
             }
 
             LineItems.Remove(lineItemToDelete);
@@ -81,7 +82,7 @@ namespace OnlineShop.Catalog.Domain.PriceLists
 
             if (lineItemToUpdate is null)
             {
-                throw new ApplicationException($"Given line item do not exist in price list {Name}");
+                throw new DomainException<PriceList>($"Given line item do not exist in price list {Name}");
             }
 
             lineItemToUpdate.UpdatePrice(price);
@@ -97,16 +98,16 @@ namespace OnlineShop.Catalog.Domain.PriceLists
         {
             if (Contractor != Contractor.Retail)
             {
-                throw new ApplicationException("Cannot aggregate line item with product if price list is not retail");
+                throw new DomainException<PriceList>("Cannot aggregate line item with product if price list is not retail");
             }
 
             var lineItemToUpdate = LineItems.FirstOrDefault(li =>
                 li.Name.ToLower() == lineItemName.ToLower()) ??
-                                   throw new ApplicationException($"Given line item do not exist in price list {Name}");
+                                   throw new DomainException<PriceList>($"Given line item do not exist in price list {Name}");
 
             if (lineItemToUpdate.ProductId is not null)
             {
-                throw new ApplicationException(
+                throw new DomainException<PriceList>(
                     $"Given line item is already aggregated with product with ID {lineItemToUpdate.ProductId}");
             }
 
