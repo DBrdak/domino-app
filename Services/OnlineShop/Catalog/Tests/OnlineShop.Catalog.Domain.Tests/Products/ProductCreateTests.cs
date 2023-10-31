@@ -8,7 +8,7 @@ namespace OnlineShop.Catalog.Domain.Tests.Products
     public class ProductCreateTests
     {
         [Theory]
-        [ClassData(typeof(ProductSuccessTestData))]
+        [ClassData(typeof(ProductCreateSuccessTestData))]
         public void Create_ProductWithValidData_ReturnsProductInstance(CreateValues createValues, Category category, string image, Money price)
         {
             // Arrange
@@ -24,19 +24,19 @@ namespace OnlineShop.Catalog.Domain.Tests.Products
         }
         
         [Theory]
-        [ClassData(typeof(ProductFailureTestData))]
+        [ClassData(typeof(ProductCreateFailureTestData))]
         public void Create_ProductWithInValidData_ThrowsError(CreateValues createValues, Category category, string image, Money price)
         {
             // Arrange
             createValues.AttachCategory(category);
             createValues.AttachImage(image);
             createValues.AttachPrice(price);
-            var isSuccessfullyCreated = true;
 
             // Act
+            var productCreateFunc = () => Product.Create(createValues);
 
             // Assert
-            Assert.Throws<DomainException<Product>>(() => Product.Create(createValues));
+            Assert.Throws<DomainException<Product>>(productCreateFunc);
         }
     }
 }

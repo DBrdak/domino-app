@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BuildingBlocks\IntegrationEvents.Domain\IntegrationEvents.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\BuildingBlocks\Shared.Behaviors\Shared.Behaviors.csproj" />
     <ProjectReference Include="..\OnlineShop.Order.Domain\OnlineShop.Order.Domain.csproj" />
   </ItemGroup>

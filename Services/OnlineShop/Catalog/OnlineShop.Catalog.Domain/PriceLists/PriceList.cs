@@ -18,17 +18,24 @@ namespace OnlineShop.Catalog.Domain.PriceLists
         {
         }
 
-        private PriceList(string name, Contractor contractor, Category category) : base(ObjectId.GenerateNewId().ToString())
+        private PriceList(string name, Contractor contractor, Category category, string? id = null) : 
+            base(id ?? ObjectId.GenerateNewId().ToString())
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new DomainException<PriceList>("Name is required for creating price list");
+            }
+            
             Name = name;
             Contractor = contractor;
             LineItems = new();
             Category = category;
         }
 
-        public static PriceList CreateRetail(string name, Category category) => new(name, Contractor.Retail, category);
+        public static PriceList CreateRetail(string name, Category category) => 
+            new(name, Contractor.Retail, category);
 
-        public static PriceList CreateBusiness(string name, string contractorName, Category category) =>
+        public static PriceList CreateBusiness(string name, string contractorName, Category category) => 
             new(name, Contractor.Business(contractorName), category);
 
         public void AddLineItem(LineItem lineItem)

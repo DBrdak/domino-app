@@ -25,14 +25,16 @@ public class CategoryTests
     [Theory]
     [InlineData("")]
     [InlineData("Wedlina")]
+    [InlineData("Wędliny")]
     [InlineData("Mieso")]
     public void Category_InvalidCreateParams_ShouldThrowExcpetion(string value)
     {
         //Arrange
-        
+
         //Act
-        
+        var categoryCreateFunc = () => Category.FromValue(value);
+
         //Assert
-        Assert.Throws<DomainException<Category>>(() => Category.FromValue(value));
+        Assert.Throws<DomainException<Category>>(categoryCreateFunc);
     }
 }
