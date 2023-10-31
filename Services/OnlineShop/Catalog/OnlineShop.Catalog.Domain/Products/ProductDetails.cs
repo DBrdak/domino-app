@@ -11,7 +11,7 @@ namespace OnlineShop.Catalog.Domain.Products
         public bool IsWeightSwitchAllowed { get; private set; }
         public Quantity? SingleWeight { get; private set; }
 
-        internal ProductDetails(bool isAvailable, bool isDiscounted, bool isWeightSwitchAllowed, decimal? singleWeight)
+        public ProductDetails(bool isAvailable, bool isDiscounted, bool isWeightSwitchAllowed, decimal? singleWeight)
         {
             IsAvailable = isAvailable;
             IsDiscounted = isDiscounted;

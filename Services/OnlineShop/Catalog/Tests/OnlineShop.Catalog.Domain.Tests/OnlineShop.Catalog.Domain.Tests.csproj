@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\OnlineShop.Catalog.Domain\OnlineShop.Catalog.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

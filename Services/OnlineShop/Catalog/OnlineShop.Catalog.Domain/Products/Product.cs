@@ -135,18 +135,18 @@ namespace OnlineShop.Catalog.Domain.Products
                 OutOfStock();
         }
 
-        public static Product Create(CreateValues requestValues, Category category, string? id = null)
+        public static Product Create(CreateValues requestValues, string? id = null)
         {
-            if (requestValues.Price is null ||
+            if (requestValues.Price is null || requestValues.Category is null ||
                 string.IsNullOrWhiteSpace(requestValues.Image))
             {
-                throw new DomainException<Product>("Image and price is required");
+                throw new DomainException<Product>("Image, category and price is required");
             }
 
             return Create(
                 requestValues.Name,
                 requestValues.Description,
-                category.Value,
+                requestValues.Category.Value,
                 requestValues.Image,
                 requestValues.Price.Amount,
                 requestValues.Price.Currency.Code,
