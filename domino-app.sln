@@ -45,7 +45,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Order.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Order.Infrastructure", "Services\OnlineShop\Order\OnlineShop.Order.Infrastructure\OnlineShop.Order.Infrastructure.csproj", "{D0022E01-33F8-4FCD-B7F3-7C473BB99A25}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEvents.Domain", "BuildingBlocks\EventBus.Messages\IntegrationEvents.Domain.csproj", "{91FF6838-5B1F-4283-B5E7-A280C122A894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEvents.Domain", "BuildingBlocks\IntegrationEvents.Domain\IntegrationEvents.Domain.csproj", "{91FF6838-5B1F-4283-B5E7-A280C122A894}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OcelotApiGateway", "ApiGateways\OcelotApiGateway\OcelotApiGateway.csproj", "{652EA3BD-1591-46BC-AD12-AF0A776A783E}"
 EndProject

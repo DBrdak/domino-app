@@ -8,10 +8,10 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.API/OnlineShop.Order.API.csproj", "Services/OnlineShop/Order/OnlineShop.Order.API/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Application/OnlineShop.Order.Application.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Application/"]
-COPY ["BuildingBlocks/Shared.Behaviors/Shared.Behaviors.csproj", "BuildingBlocks/Shared.Behaviors/"]
+COPY ["BuildingBlocks/IntegrationEvents.Domain/IntegrationEvents.Domain.csproj", "BuildingBlocks/IntegrationEvents.Domain/"]
 COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
+COPY ["BuildingBlocks/Shared.Behaviors/Shared.Behaviors.csproj", "BuildingBlocks/Shared.Behaviors/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Domain/OnlineShop.Order.Domain.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Domain/"]
-COPY ["BuildingBlocks/EventBus.Messages/IntegrationEvents.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
 COPY ["Services/OnlineShop/Order/OnlineShop.Order.Infrastructure/OnlineShop.Order.Infrastructure.csproj", "Services/OnlineShop/Order/OnlineShop.Order.Infrastructure/"]
 RUN dotnet restore "Services/OnlineShop/Order/OnlineShop.Order.API/OnlineShop.Order.API.csproj"
 COPY . .

@@ -11,7 +11,6 @@ COPY ["Services/Shops/Shops.Application/Shops.Application/Shops.Application.cspr
 COPY ["BuildingBlocks/Shared.Behaviors/Shared.Behaviors.csproj", "BuildingBlocks/Shared.Behaviors/"]
 COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 COPY ["Services/Shops/Shops.Domain/Shops.Domain.csproj", "Services/Shops/Shops.Domain/"]
-COPY ["BuildingBlocks/EventBus.Messages/IntegrationEvents.Domain.csproj", "BuildingBlocks/EventBus.Messages/"]
 COPY ["Services/Shops/Shops.Infrastructure/Shops.Infrastructure.csproj", "Services/Shops/Shops.Infrastructure/"]
 RUN dotnet restore "Services/Shops/Shops.API/Shops.API.csproj"
 COPY . .
