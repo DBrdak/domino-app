@@ -23,3 +23,39 @@ public class ProductCreateFailureTestData : TheoryData<CreateValues, Category, s
         Add(new (String.Empty, String.Empty, false, null), Category.Meat, String.Empty, new (12, Currency.Pln, null));
     }
 };
+
+public class ProductPriceUpdateSuccessTestData : TheoryData<Money>
+{
+    public ProductPriceUpdateSuccessTestData()
+    {
+        Add(new (12.9m, Currency.Pln, Unit.Kg));
+        Add(new (12.9m, Currency.Pln, Unit.Pcs));
+    }
+}
+
+public class ProductPriceUpdateFailureTestData : TheoryData<Money>
+{
+    public ProductPriceUpdateFailureTestData()
+    {
+        Add(new (12.9m, Currency.Pln, null));
+    }
+}
+
+public class ProductUpdateSuccessTestData : TheoryData<UpdateValues>
+{
+    public ProductUpdateSuccessTestData()
+    {
+        Add(new ("", "New Description 1", "img2.jpg", true, 12.8m, false));
+        Add(new ("", "New Description 2", "img3.jpg", false, null, true));
+    }
+}
+
+public class ProductUpdateFailureTestData : TheoryData<UpdateValues>
+{
+    public ProductUpdateFailureTestData()
+    {
+        Add(new ("", "New Description 1", "img3.jpg", false, 12.8m, false));
+        Add(new ("", string.Empty, "img3.jpg", true, null, true));
+        
+    }
+}

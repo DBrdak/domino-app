@@ -108,6 +108,11 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public void UpdatePrice(Money price)
         {
+            if (price.Unit is null)
+            {
+                throw new DomainException<Product>($"Price of {Name} must contain unit");
+            }
+            
             Price = price;
             AlternativeUnitPrice = Details.IsWeightSwitchAllowed ?
                 PricingService.CalculatePrice(Price, Details, Price.Unit!.AlternativeUnit()) :
@@ -116,10 +121,15 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public void Update(UpdateValues newValues)
         {
-            Description = newValues.Description;
-            Image = new(newValues.ImageUrl);
+            var newImage = new Photo(newValues.ImageUrl);
+            Image = newImage;
+            
+            if (!string.IsNullOrWhiteSpace(newValues.Description))
+            {
+                Description = newValues.Description;
+            }
 
-            if (newValues.IsWeightSwitchAllowed && newValues.SingleWeight.HasValue)
+            if (newValues.IsWeightSwitchAllowed && newValues.SingleWeight is > 0)
             {
                 Details.AllowWeightSwitch(newValues.SingleWeight.Value, Price.Unit!.AlternativeUnit());
                 AlternativeUnitPrice = PricingService.CalculatePrice(Price, Details, Price.Unit.AlternativeUnit());
@@ -142,6 +152,11 @@ namespace OnlineShop.Catalog.Domain.Products
             {
                 throw new DomainException<Product>("Image, category and price is required");
             }
+            
+            if (requestValues.Price.Unit is null)
+            {
+                throw new DomainException<Product>($"Price of new product must contain unit");
+            }
 
             return Create(
                 requestValues.Name,
@@ -154,6 +169,11 @@ namespace OnlineShop.Catalog.Domain.Products
                 requestValues.IsWeightSwitchAllowed,
                 requestValues.SingleWeight,
                 id);
+        }
+
+        public Product Clone()
+        {
+            return (Product)MemberwiseClone();
         }
     }
 }

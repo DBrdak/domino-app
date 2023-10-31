@@ -1,4 +1,6 @@
-﻿namespace OnlineShop.Catalog.Domain.Products
+﻿using Shared.Domain.Exceptions;
+
+namespace OnlineShop.Catalog.Domain.Products
 {
     public sealed class UpdateValues
     {
@@ -21,6 +23,11 @@
             decimal? singleWeight,
             bool isAvailable)
         {
+            if (singleWeight is < 0)
+            {
+                throw new DomainException<UpdateValues>("Single weight cannot be negative");
+            }
+            
             Id = id;
             Description = description;
             ImageUrl = imageUrl;

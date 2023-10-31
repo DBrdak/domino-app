@@ -1,4 +1,5 @@
 ﻿using OnlineShop.Catalog.Domain.Shared;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Domain.Products
@@ -22,6 +23,11 @@ namespace OnlineShop.Catalog.Domain.Products
             bool isWeightSwitchAllowed,
             decimal? singleWeight)
         {
+            if (singleWeight is < 0)
+            {
+                throw new DomainException<CreateValues>("Single weight cannot be negative");
+            }
+            
             Name = name;
             Description = description;
             IsWeightSwitchAllowed = isWeightSwitchAllowed;

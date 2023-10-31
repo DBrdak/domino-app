@@ -1,4 +1,6 @@
-﻿namespace OnlineShop.Catalog.Domain.PriceLists;
+﻿using Shared.Domain.Exceptions;
+
+namespace OnlineShop.Catalog.Domain.PriceLists;
 
 public sealed record Contractor
 {
@@ -7,5 +9,13 @@ public sealed record Contractor
     private Contractor(string name) => Name = name;
 
     public static readonly Contractor Retail = new("Retail");
-    public static Contractor Business(string name) => new(name);
+    public static Contractor Business(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new DomainException<Contractor>("Contractor name is required");
+        }
+        
+        return new(name);
+    }
 }

@@ -31,7 +31,6 @@ namespace OnlineShop.Catalog.Domain.Tests.Products
             createValues.AttachCategory(category);
             createValues.AttachImage(image);
             createValues.AttachPrice(price);
-            var isSuccessfullyCreated = true;
 
             // Act
             var productCreateFunc = () => Product.Create(createValues);
