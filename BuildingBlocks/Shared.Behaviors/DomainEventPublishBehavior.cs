@@ -43,7 +43,7 @@ namespace Shared.Behaviors
                 _logger.LogInformation("Domain event {DomainEvent} published", domainEvent.GetType().Name);
             }
 
-            _logger.LogInformation("The process of publishing domain events is complete");
+            _logger.LogInformation($"The process of publishing domain events is completed, {domainEvents.Count} domain events were published");
 
             return response;
         }

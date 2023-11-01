@@ -24,7 +24,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Remo
             return modifiedPriceList is not null ?
                 Result.Success(modifiedPriceList) :
                     Result.Failure<PriceList>(Error.InvalidRequest(
-                        $"Problem while removing line item of name {request.LineItemName} from price list with ID {request.PriceListId}"));
+                        $"Błąd podczas usuwania pozycji o nazwie {request.LineItemName} z cennika o ID: {request.PriceListId}"));
         }
     }
 }

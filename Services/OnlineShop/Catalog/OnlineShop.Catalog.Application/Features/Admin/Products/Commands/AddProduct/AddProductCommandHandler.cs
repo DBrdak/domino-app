@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.AddPro
 
             if (result is null)
             {
-                return Result.Failure<Product>(Error.TaskFailed("Product create proccess failed"));
+                return Result.Failure<Product>(Error.TaskFailed("Nie udało się stworzyć produktu"));
             }
 
             return result;

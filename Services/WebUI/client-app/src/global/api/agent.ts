@@ -26,8 +26,8 @@ axios.interceptors.response.use(async(response) => {
 }, (error) => {
   console.log(error.data)
       if (error.response) {
-        if (error.response.data && error.response.data.isSuccess === false) {
-          const errorMessage = error.response.data.error.message;
+        if (error.response.data && error.response.data.name) {
+          const errorMessage = error.response.data.name;
           toast.error(errorMessage);
           return Promise.reject();
         } else {

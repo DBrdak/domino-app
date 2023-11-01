@@ -25,7 +25,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.Update
 
                 if (uploadResult is null)
                 {
-                    return Result.Failure<Product>(Error.TaskFailed("Photo upload failed"));
+                    return Result.Failure<Product>(Error.TaskFailed("Błąd podczas przesyłania zdjęcia"));
                 }
 
                 request.NewValues.UpdatePhoto(uploadResult.PhotoUrl);

@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Shared;
@@ -10,10 +11,12 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
     public sealed class PriceListRepository : IPriceListRepository
     {
         private readonly CatalogContext _context;
+        private readonly ILogger<PriceListRepository> _logger;
 
-        public PriceListRepository(CatalogContext context)
+        public PriceListRepository(CatalogContext context, ILogger<PriceListRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<List<PriceList>> GetPriceListsAsync(CancellationToken cancellationToken)
@@ -166,21 +169,20 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }
 
             var lineItems = RetriveLineItemsNames(worksheet);
-
             if (lineItems is null)
             {
                 return false;
             }
-
+            
             var results = lineItems.Select(li => AddLineItem(priceListId, li, cancellationToken).Result);
-
+            _logger.LogError($"{results.ToList()[0]}");
             return results.All(r => r);
         }
 
         private List<LineItem>? RetriveLineItemsNames(IXLWorksheet worksheet)
         {
-            if (string.IsNullOrWhiteSpace(worksheet.Cell(0, 0).GetText()) ||
-                string.IsNullOrWhiteSpace(worksheet.Cell(0, 1).GetText()))
+            if (string.IsNullOrWhiteSpace(worksheet.Cell(1, 1).GetText()) ||
+                string.IsNullOrWhiteSpace(worksheet.Cell(1, 2).GetText()))
             {
                 return null;
             }
@@ -193,14 +195,26 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             while (!isCellEmpty)
             {
-                names.Add(worksheet.Cell(row, 1).GetText());
-                prices.Add(Money.FromString(worksheet.Cell(row, 2).GetText()));
+                try
+                {
+                    names.Add(worksheet.Cell(row, 1).GetText());
+                    var moneyString = worksheet.Cell(row, 2).GetText();
+                    prices.Add(Money.FromString(moneyString));
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "{Exception} occurred: {Message}", e.GetType(), e.Message);
+                    return null;
+                }
+
                 row++;
                 isCellEmpty = worksheet.Cell(row, 1).IsEmpty() || worksheet.Cell(row, 2).IsEmpty();
             }
+            _logger.LogError($"Hi");
 
             for (int i = 0; i < names.Count && i < prices.Count; i++)
             {
+                _logger.LogError($"{lineItems.Count} - count ({i})");
                 lineItems.Add(new (names[i], prices[i]));
             }
 

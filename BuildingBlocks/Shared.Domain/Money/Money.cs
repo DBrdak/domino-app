@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Text.RegularExpressions;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Exceptions;
 
@@ -11,6 +12,8 @@ namespace Shared.Domain.Money
 
         public Currency Currency { get; init; }
         public Unit? Unit { get; init; }
+
+        private const string moneyFormatRegex = "^\\d+(\\.\\d+)?\\s*[Pp][Ll][nN]\\/[Kk][gG]|[Pp][Ll][nN]\\/[Ss][zZ][tT]$";
         
         public Money(decimal Amount,
             Currency Currency, 
@@ -30,21 +33,19 @@ namespace Shared.Domain.Money
         {
             if (first.Currency != second.Currency)
             {
-                throw new InvalidOperationException("Currencies have to be equal");
+                throw new DomainException<Money>("Currencies have to be equal");
             }
 
             if (first.Unit != second.Unit)
             {
-                throw new InvalidOperationException("Units have to be equal");
+                throw new DomainException<Money>("Units have to be equal");
             }
 
             return new Money(first.Amount + second.Amount, first.Currency, first.Unit);
         }
         
-        public static Money operator +(Money first, decimal secondAmount)
-        {
-            return new Money(first.Amount + secondAmount, first.Currency, first.Unit);
-        }
+        public static Money operator +(Money first, decimal secondAmount) =>
+            new (first.Amount + secondAmount, first.Currency, first.Unit);
 
         public override string ToString() => Unit is null ? 
             $"{Amount} {Currency.Code}" :
@@ -52,6 +53,8 @@ namespace Shared.Domain.Money
 
         public static Money FromString(string moneyString)
         {
+            ValidateMoneyString(ref moneyString);
+            
             var amount = decimal.Parse(moneyString.Split(' ')[0]);
             var amountUnit = moneyString.Split(' ')[1].Split("/");
             var currencyCode = amountUnit[0];
@@ -66,6 +69,38 @@ namespace Shared.Domain.Money
             }
 
             return new Money(amount, currency, unit) ?? throw new DomainException<Money>("Wrong price format");
+        }
+
+        public static void ValidateMoneyString(ref string moneyString)
+        {
+            moneyString = ReformatSlightlyInvalidMoneyString(moneyString);
+            var isValid = Regex.IsMatch(moneyString, moneyFormatRegex);
+
+            if (!isValid)
+            {
+                throw new DomainException<Money>($"{moneyString} is invalid string format for String -> Money convert");
+            }
+        }
+        
+        public static string ReformatSlightlyInvalidMoneyString(string moneyString)
+        {
+            moneyString = moneyString.Replace(',', '.');
+            var isSlightlyInvalid = moneyString.IndexOf(' ') == -1;
+
+            if (!isSlightlyInvalid)
+            {
+                return moneyString;
+            }
+            
+            for (int i = 0; i < moneyString.Length - 1; i++)
+            {
+                if (char.IsDigit(moneyString[i]) && char.IsLetter(moneyString[i + 1]))
+                {
+                    moneyString = moneyString.Insert(i, " ");
+                }
+            }
+
+            return moneyString;
         }
 
         public void Deconstruct(out decimal Amount, out Currency Currency, out Unit? Unit)

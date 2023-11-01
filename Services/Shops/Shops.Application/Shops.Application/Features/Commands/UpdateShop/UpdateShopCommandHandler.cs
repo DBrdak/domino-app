@@ -16,7 +16,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
         {
             _shopRepository = shopRepository;
             _result = Result.Failure<Shop>(
-                Error.InvalidRequest("Update values not provided - unable to update shop")
+                Error.InvalidRequest("Nie zapewniono wymaganych danych do zaktualizowania sklepu")
             );
         }
 
@@ -28,7 +28,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
             if (shopToUpdate is null)
             {
                 _result = Result.Failure<Shop>(
-                    Error.InvalidRequest($"Shop with ID: {request.ShopToUpdateId} not found")
+                    Error.InvalidRequest($"Nie znaleziono sklepu o ID: {request.ShopToUpdateId}")
                     );
                 return _result;
             }
@@ -56,7 +56,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
                 if (mobileShopToUpdate is null)
                 {
                     _result = Result.Failure<Shop>(Error.InvalidRequest(
-                        $"Cannot convert provided shop to {typeof(MobileShop)}"));
+                        $"Nie można skonwertować podanego sklepu na typ {typeof(MobileShop)}"));
                     return _result;
                 }
 
@@ -72,7 +72,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
                 if (stationaryShopToUpdate is null)
                 {
                     _result = Result.Failure<Shop>(Error.InvalidRequest(
-                        $"Cannot convert provided shop to {typeof(StationaryShop)}"));
+                        $"Nie można skonwertować podanego sklepu na typ {typeof(StationaryShop)}"));
                     return _result;
                 }
 

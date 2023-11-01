@@ -26,7 +26,7 @@ namespace OnlineShop.Order.Application.Features.Commands.UpdateOrder
 
             if (!updateResult)
             {
-                return Result.Failure(Error.TaskFailed($"Error during updating order with ID: {request.OrderId}"));
+                return Result.Failure(Error.TaskFailed($"Błąd podczas aktualizowania zamówienia o ID: {request.OrderId}"));
             }
 
             return Result.Success();

@@ -22,17 +22,17 @@ namespace OnlineShop.Order.Application.Features.Queries.GetOrdersAsPdf
             if (!orders.Any())
             {
                 _ = _orderRepository.CatchPrintingError(request.OrdersId, cancellationToken);
-                return Result.Failure<byte[]>(Error.NotFound($"Cannot create pdf - no orders was found for given ids"));
+                return Result.Failure<byte[]>(Error.NotFound($"Nie można wygenerować pliku PDF - nie znaleziono zamówień dla podanych ID"));
             }
 
             var shopNames = await _orderRepository
-                .GetShopsName(orders.Select(o => o.ShopId ?? throw new ApplicationException($"Order with ID {o.Id} has no aggregated shop")), 
+                .GetShopsName(orders.Select(o => o.ShopId ?? throw new ApplicationException($"Zamówienie o ID {o.Id} nie posiada przydzielonego sklepu")), 
                     cancellationToken);
 
             if (shopNames is null)
             {
                 _ = _orderRepository.CatchPrintingError(request.OrdersId, cancellationToken);
-                return Result.Failure<byte[]>(Error.NotFound($"No shops found for PDF generation"));
+                return Result.Failure<byte[]>(Error.NotFound($"Nie znaleziono sklepów do operacji generowania PDF"));
             }
 
             var groupedOrders = orders
@@ -52,7 +52,7 @@ namespace OnlineShop.Order.Application.Features.Queries.GetOrdersAsPdf
             catch (Exception e)
             {
                 _ = _orderRepository.CatchPrintingError(request.OrdersId, cancellationToken);
-                return Result.Failure<byte[]>(Error.TaskFailed($"Error generating PDF file for orders"));
+                return Result.Failure<byte[]>(Error.TaskFailed($"Błąd podczas generowania pliku PDF"));
             }
         }
     }
