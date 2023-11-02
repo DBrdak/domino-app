@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Uplo
 
             return result ?
                 Result.Success() :
-                Result.Failure(Error.TaskFailed($"Error during uploading price list with ID: {request.PriceListId}"));
+                Result.Failure(Error.TaskFailed($"Wystąpił błąd podczas przesyłania pliku do cennika: {request.PriceListId}"));
         }
 
     }

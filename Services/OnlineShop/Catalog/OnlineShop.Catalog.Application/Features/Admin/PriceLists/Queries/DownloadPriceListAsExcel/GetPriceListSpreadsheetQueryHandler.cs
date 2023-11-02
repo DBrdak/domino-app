@@ -23,7 +23,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Queries.Downl
             if (priceList is null)
             {
                 return Result.Failure<PriceListSpreadsheetResponse>(Error.TaskFailed(
-                    $"Cannot download price list - price list with id {request.PriceListId} does not exist."));
+                    $"Nie można pobrać cennika - cennik o ID: {request.PriceListId} nie istnieje."));
             }
 
             var workbook = new XLWorkbook();

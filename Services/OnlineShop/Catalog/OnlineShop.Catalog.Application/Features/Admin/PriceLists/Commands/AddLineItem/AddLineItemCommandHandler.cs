@@ -24,7 +24,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.AddL
             return isSuccess ?
                 Result.Success() :
                 Result.Failure(Error.InvalidRequest(
-                    $"Problem while adding new line item of name {request.Name} to price list with ID {request.PriceListId}"
+                    $"Błąd podczas dodawania nowej pozycji o nazwie {request.Name} do cennika z ID {request.PriceListId}"
                     ));
         }
     }

@@ -25,7 +25,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Upda
             return priceListBeforeUpdate is not null ?
                     Result.Success(priceListBeforeUpdate) :
                     Result.Failure<PriceList>(Error.InvalidRequest(
-                        $"Cannot update price of line item named {request.LineItemName} to value {request.NewPrice} in price list with ID {request.PriceListId}"));
+                        $"Nie można zaktualizować ceny pozycji o nazwie {request.LineItemName} do wartości {request.NewPrice} w cenniku o ID {request.PriceListId}"));
         }
     }
 }

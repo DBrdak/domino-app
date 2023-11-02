@@ -16,7 +16,7 @@ namespace Shops.Application.Features.Commands.AddShop
         {
             _shopRepository = shopRepository;
             _result = Result.Failure<Shop>(
-                Error.InvalidRequest("Shop values not provided - unable to create shop")
+                Error.InvalidRequest("Nie zapewniono wymaganych danych do stworzenia sklepu")
             );
         }
 
@@ -25,7 +25,7 @@ namespace Shops.Application.Features.Commands.AddShop
             if (request.MobileShopData is not null && request.StationaryShopData is not null)
             {
                 _result = Result.Failure<Shop>(
-                    Error.InvalidRequest("Shop values provided for both mobile and stationary shop - unable to create shop")
+                    Error.InvalidRequest("Dane do storzenia sklepu zostały podane dla sklepu stacjonarnego i mobilnego - proszę podać wartości dla jednego z nich")
                 );
             }
             else if (request.MobileShopData is not null)
@@ -36,7 +36,7 @@ namespace Shops.Application.Features.Commands.AddShop
                 _result = mobileShop is not null ? 
                     Result.Success<Shop>(mobileShop) :
                     Result.Failure<Shop>(
-                        Error.InvalidRequest($"Error during database operation on insert new shop with name: {request.ShopName}")
+                        Error.InvalidRequest($"Błąd podczas wprowadzania do bazy danych nowego sklepu o nazwie: {request.ShopName}")
                     );
             }
             else if (request.StationaryShopData is not null)
@@ -47,7 +47,7 @@ namespace Shops.Application.Features.Commands.AddShop
                 _result = stationaryShop is not null ?
                         Result.Success<Shop>(stationaryShop) :
                         Result.Failure<Shop>(
-                            Error.InvalidRequest($"Error during database operation on insert new shop with name: {request.ShopName}")
+                            Error.InvalidRequest($"Błąd podczas wprowadzania do bazy danych nowego sklepu o nazwie: {request.ShopName}")
                         );
             }
 

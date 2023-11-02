@@ -127,7 +127,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Status = OrderStatus.Cancelled;
         }
 
-        public void Reject()
+        private void Reject()
         {
             if (Status == OrderStatus.Received || Status == OrderStatus.Accepted || Status == OrderStatus.Modified)
             {
@@ -139,7 +139,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Status = OrderStatus.Rejected;
         }
 
-        public void Receive()
+        private void Receive()
         {
             if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
             {
@@ -151,7 +151,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Status = OrderStatus.Received;
         }
 
-        public void Accept(IEnumerable<OrderItem>? modifiedOrderItems)
+        private void Accept(IEnumerable<OrderItem>? modifiedOrderItems)
         {
             if (Status != OrderStatus.Waiting)
             {

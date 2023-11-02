@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.Delete
 
             if (!isSuccess)
             {
-                return Result.Failure(Error.TaskFailed($"Problem while deleting product of ID {request.ProductId}"));
+                return Result.Failure(Error.TaskFailed($"Błąd podczas usuwania produktu o ID: {request.ProductId}"));
             }
 
             return Result.Success();

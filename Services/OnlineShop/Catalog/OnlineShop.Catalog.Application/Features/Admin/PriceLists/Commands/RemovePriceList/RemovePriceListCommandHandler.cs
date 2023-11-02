@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Remo
 
             return isSuccess ?
                 Result.Success() :
-                Result.Failure(Error.TaskFailed($"Problem while removing price list with ID {request.PriceListId}"));
+                Result.Failure(Error.TaskFailed($"Błąd podczas usuwania cennika z ID {request.PriceListId}"));
         }
     }
 }

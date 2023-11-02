@@ -28,7 +28,7 @@ namespace Shops.Application.Features.Queries.GetShopByDeliveryInfo
             {
                 return Result.Failure<string>(
                     Error.NotFound(
-                        $"Shop for delivery data: [{request.DeliveryLocation.Name}, {request.DeliveryDate.Start} - {request.DeliveryDate.End}] not found"));
+                        $"Nie znaleziono sklepu dla danych wysyłki: [{request.DeliveryLocation.Name}, {request.DeliveryDate.Start} - {request.DeliveryDate.End}]"));
             }
 
             return shop.Id;

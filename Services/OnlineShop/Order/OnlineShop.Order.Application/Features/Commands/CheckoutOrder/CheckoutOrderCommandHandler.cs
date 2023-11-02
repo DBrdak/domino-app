@@ -18,7 +18,7 @@ namespace OnlineShop.Order.Application.Features.Commands.CheckoutOrder
             var newOrder = await _repository.CreateOrder(request.CheckoutOrder);
 
             if (newOrder is null)
-                return CheckoutOrderResult.Failure("Problem while checking out shopping cart");
+                return CheckoutOrderResult.Failure("Błąd podczas składania zamówienia");
 
             return CheckoutOrderResult.Success(newOrder.Id);
         }
