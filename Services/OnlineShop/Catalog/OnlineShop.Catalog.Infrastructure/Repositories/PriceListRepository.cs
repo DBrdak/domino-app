@@ -174,8 +174,8 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 return false;
             }
             
-            var results = lineItems.Select(li => AddLineItem(priceListId, li, cancellationToken).Result);
-            _logger.LogError($"{results.ToList()[0]}");
+            var results = lineItems.Select(li => AddLineItem(priceListId, li, cancellationToken).Result).ToList();
+            
             return results.All(r => r);
         }
 
@@ -210,11 +210,9 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 row++;
                 isCellEmpty = worksheet.Cell(row, 1).IsEmpty() || worksheet.Cell(row, 2).IsEmpty();
             }
-            _logger.LogError($"Hi");
 
             for (int i = 0; i < names.Count && i < prices.Count; i++)
             {
-                _logger.LogError($"{lineItems.Count} - count ({i})");
                 lineItems.Add(new (names[i], prices[i]));
             }
 
