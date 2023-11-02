@@ -47,7 +47,7 @@ namespace OnlineShop.Order.Infrastructure.Persistence
                             && (o.Status.StatusMessage != OrderStatus.Received.StatusMessage || o.Status.StatusMessage == OrderStatus.Accepted.StatusMessage || o.Status.StatusMessage == OrderStatus.Modified.StatusMessage))
                 .ToList();
 
-            notAcceptedOrders.ForEach(o => o.Reject());
+            notAcceptedOrders.ForEach(o => o.UpdateStatus("Odrzucone", null));
         }
 
         private void RemoveExpiredOrders()
