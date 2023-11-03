@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
 using Shared.Domain.Quantity;
@@ -25,6 +26,16 @@ namespace OnlineShop.ShoppingCart.API.Entities
             Quantity singleWeight,
             Money? alternativeUnitPrice)
         {
+            if (price.Unit is null)
+            {
+                throw new DomainException<ShoppingCartItem>("Price unit is required");
+            }
+
+            if (alternativeUnitPrice is not null && alternativeUnitPrice.Unit is null)
+            {
+                throw new DomainException<ShoppingCartItem>("Alternative unit price unit is required");
+            }
+            
             Quantity = quantity;
             Price = price;
             TotalValue = CalculateTotalValue(quantity, price, alternativeUnitPrice);

@@ -46,6 +46,17 @@ namespace Shared.Domain.Money
         
         public static Money operator +(Money first, decimal secondAmount) =>
             new (first.Amount + secondAmount, first.Currency, first.Unit);
+        
+        public static Money operator -(Money first, decimal secondAmount) =>
+            new(first.Amount - secondAmount, first.Currency, first.Unit);
+        
+        
+        public static Money operator /(Money first, decimal secondAmount) =>
+            new(first.Amount / secondAmount, first.Currency, first.Unit);
+        
+        
+        public static Money operator *(Money first, decimal secondAmount) =>
+            new(first.Amount * secondAmount, first.Currency, first.Unit);
 
         public override string ToString() => Unit is null ? 
             $"{Amount} {Currency.Code}" :

@@ -3,8 +3,8 @@ using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
-using Shops.Domain.Abstractions;
 using Shops.Domain.MobileShops;
+using Shops.Domain.Shops;
 using Shops.Domain.StationaryShops;
 
 namespace Shops.Application.Features.Queries.GetShopByDeliveryInfo

@@ -5,7 +5,7 @@ using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Location;
-using Shops.Domain.Abstractions;
+using Shops.Domain.Shops;
 
 namespace Shops.Domain.MobileShops
 {

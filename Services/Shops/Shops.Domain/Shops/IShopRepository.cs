@@ -1,4 +1,4 @@
-﻿namespace Shops.Domain.Abstractions
+﻿namespace Shops.Domain.Shops
 {
     public interface IShopRepository
     {

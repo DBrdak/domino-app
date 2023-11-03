@@ -10,7 +10,8 @@
         "onlineshop.order.api": "StartDebugging",
         "ocelotapigateway": "StartDebugging",
         "outbox.grpc": "StartDebugging",
-        "shops.api": "StartDebugging"
+        "shops.api": "StartDebugging",
+        "smsservice.api": "StartDebugging"
       }
     }
   }

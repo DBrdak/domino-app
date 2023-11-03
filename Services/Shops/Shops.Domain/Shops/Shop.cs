@@ -7,7 +7,7 @@ using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
 using Shops.Domain.StationaryShops;
 
-namespace Shops.Domain.Abstractions
+namespace Shops.Domain.Shops
 {
     [BsonDiscriminator(RootClass = true)]
     [BsonKnownTypes(typeof(MobileShop), typeof(StationaryShop))]

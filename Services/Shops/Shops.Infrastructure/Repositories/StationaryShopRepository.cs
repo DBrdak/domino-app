@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using Shops.Domain.Abstractions;
+using Shops.Domain.Shops;
 using Shops.Domain.StationaryShops;
 
 namespace Shops.Infrastructure.Repositories
