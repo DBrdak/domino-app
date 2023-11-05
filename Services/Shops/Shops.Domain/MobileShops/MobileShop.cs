@@ -45,7 +45,7 @@ namespace Shops.Domain.MobileShops
         {
             var existingSalePoint = SalePoints.FirstOrDefault(sp => sp.Id == updatedSalePoint.Id) ??
                                     throw new DomainException<MobileShop>(
-                                        $"No sale point in location {updatedSalePoint.Location} find for shop named {ShopName}");
+                                        $"No sale point in location {updatedSalePoint.Location} with ID: {updatedSalePoint.Id} find for shop named {ShopName}");
 
             existingSalePoint.Update(updatedSalePoint);
         }

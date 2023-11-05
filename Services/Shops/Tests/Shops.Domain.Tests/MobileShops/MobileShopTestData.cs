@@ -27,4 +27,16 @@ namespace Shops.Domain.Tests.MobileShops
             return shop;
         }
     }
+
+    public class AddSalePointOverlapTestData : TheoryData<TimeRange>
+    {
+        public AddSalePointOverlapTestData()
+        {
+            // 9:30 - 10:45
+            Add(new TimeRange("9:00", "10:00")); // Starts earlier, ends earlier
+            Add(new TimeRange("9:15", "12:30")); // Starts earlier, ends later
+            Add(new TimeRange("10:00", "11:00")); // Starts later, ends later
+            Add(new TimeRange("10:00", "10:30")); // Starts later, ends earlier
+        }
+    }
 }
