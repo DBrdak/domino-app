@@ -51,9 +51,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
 
             if (request.MobileShopUpdateValues is not null)
             {
-                var mobileShopToUpdate = shopToUpdate as MobileShop;
-
-                if (mobileShopToUpdate is null)
+                if (shopToUpdate is not MobileShop mobileShopToUpdate)
                 {
                     _result = Result.Failure<Shop>(Error.InvalidRequest(
                         $"Nie można skonwertować podanego sklepu na typ {typeof(MobileShop)}"));
@@ -67,9 +65,7 @@ namespace Shops.Application.Features.Commands.UpdateShop
             }
             else if (request.StationaryShopUpdateValues is not null)
             {
-                var stationaryShopToUpdate = shopToUpdate as StationaryShop;
-
-                if (stationaryShopToUpdate is null)
+                if (shopToUpdate is not StationaryShop stationaryShopToUpdate)
                 {
                     _result = Result.Failure<Shop>(Error.InvalidRequest(
                         $"Nie można skonwertować podanego sklepu na typ {typeof(StationaryShop)}"));

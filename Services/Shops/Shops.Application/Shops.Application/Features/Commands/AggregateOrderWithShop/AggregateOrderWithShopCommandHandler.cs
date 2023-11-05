@@ -1,4 +1,5 @@
 ﻿using Shared.Domain.Abstractions.Messaging;
+using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
 using Shops.Domain.Shops;
 
@@ -17,7 +18,19 @@ namespace Shops.Application.Features.Commands.AggregateOrderWithShop
         {
             var shops = await _shopRepository.GetShops(cancellationToken);
 
-            var updatedShop = shops.Single(s => s.Id == request.ShopId);
+            var updatedShop = shops.SingleOrDefault(s => s.Id == request.ShopId);
+
+            if (updatedShop is null)
+            {
+                return Result.Failure(Error.InvalidRequest($"Nie znaleziono sklepu z ID: {request.ShopId}"));
+            }
+
+            var isOrderAlreadyAssignedToShop = shops.SelectMany(s => s.OrdersId).Any(id => id == request.OrderId);
+
+            if (isOrderAlreadyAssignedToShop)
+            {
+                return Result.Failure(Error.InvalidRequest($"Zamówienie z ID: {request.OrderId} już jest przypisane do innego sklepu"));
+            }
 
             updatedShop.AddOrder(request.OrderId);
 

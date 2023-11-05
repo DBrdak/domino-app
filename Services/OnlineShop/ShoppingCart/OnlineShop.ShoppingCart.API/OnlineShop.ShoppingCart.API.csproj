@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\BuildingBlocks\EventBus.Messages\IntegrationEvents.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\BuildingBlocks\IntegrationEvents.Domain\IntegrationEvents.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\BuildingBlocks\Shared.Domain\Shared.Domain.csproj" />
   </ItemGroup>

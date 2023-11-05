@@ -68,6 +68,12 @@ namespace Shops.Domain.Shops
 
         public void RemoveOrder(string orderId)
         {
+            if (OrdersId.All(o => o != orderId))
+            {
+                throw new DomainException<Shop>(
+                    $"Order with Id {orderId} does not exists in order registry of shop {ShopName}");
+            }
+
             OrdersId.Remove(orderId);
         }
     }

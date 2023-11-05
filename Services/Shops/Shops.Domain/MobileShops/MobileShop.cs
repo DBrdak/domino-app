@@ -32,6 +32,12 @@ namespace Shops.Domain.MobileShops
                     $"Sale point in location [{location.Name}] already exist for shop [{ShopName}] on {weekDay}");
             }
 
+            if (SalePoints.Where(sp => sp.WeekDay.Value == weekDay).Any(sp => DateTimeService.IsTimeOverlap(sp.OpenHours, openHours)))
+            {
+                throw new DomainException<MobileShop>(
+                    $"Sale point with open hours: [ {openHours} ] on {weekDay} is overlap with other sale point for shop [{ShopName}]");
+            }
+
             SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));
         }
 
