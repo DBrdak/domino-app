@@ -24,7 +24,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         public static readonly IReadOnlyCollection<OrderStatus> All = new[]
         {
-            Validating, Waiting, Accepted, Modified, Cancelled, Rejected
+            Validating, Waiting, Accepted, Modified, Cancelled, Rejected, Received
         };
 
         public static OrderStatus FromMessage(string message)

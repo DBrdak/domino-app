@@ -1,6 +1,6 @@
 ﻿using Shared.Domain.Abstractions.Messaging;
-using Shops.Domain.Abstractions;
 using Shops.Domain.Shared;
+using Shops.Domain.Shops;
 
 namespace Shops.Application.Features.Commands.UpdateShop
 {

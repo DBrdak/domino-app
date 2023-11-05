@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Abstractions.Messaging;
 using Shared.Domain.Errors;
 using Shared.Domain.ResponseTypes;
-using Shops.Domain.Abstractions;
+using Shops.Domain.Shops;
 
 namespace Shops.Application.Features.Commands.DeleteShop
 {

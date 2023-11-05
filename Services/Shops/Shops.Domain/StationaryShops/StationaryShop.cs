@@ -3,8 +3,8 @@ using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Location;
-using Shops.Domain.Abstractions;
 using Shops.Domain.Shared;
+using Shops.Domain.Shops;
 
 namespace Shops.Domain.StationaryShops
 {
@@ -33,7 +33,7 @@ namespace Shops.Domain.StationaryShops
         {
             var weekDayIndex = WeekDay.GetIndex(weekDay);
 
-            WeekSchedule[weekDayIndex]!.UpdateOpenHours(openHours);
+            WeekSchedule[weekDayIndex].UpdateOpenHours(openHours);
         }
 
         public void CreateWeekSchedule(List<ShopWorkingDay> weekSchedule)
@@ -43,8 +43,8 @@ namespace Shops.Domain.StationaryShops
                 throw new DomainException<StationaryShop>($"Week schedule for shop with name {ShopName} already exists");
             }
 
-            var shopWorkingDays = weekSchedule.Where(
-            shopWorkingDay => shopWorkingDay.OpenHours is not null && !shopWorkingDay.IsClosed);
+            var shopWorkingDays = weekSchedule.Where(shopWorkingDay => 
+                shopWorkingDay.OpenHours is not null && !shopWorkingDay.IsClosed);
 
             foreach (var shopWorkingDay in shopWorkingDays)
             {

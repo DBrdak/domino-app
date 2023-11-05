@@ -58,7 +58,7 @@ namespace Shops.Domain.MobileShops
             CachedOpenHours = null;
         }
 
-        public void Update(SalePoint updatedSalePoint)
+        internal void Update(SalePoint updatedSalePoint)
         {
             if (IsClosed)
             {

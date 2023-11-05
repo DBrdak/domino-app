@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using Shops.Domain.Abstractions;
+using Shops.Domain.Shops;
 
 namespace Shops.Infrastructure
 {

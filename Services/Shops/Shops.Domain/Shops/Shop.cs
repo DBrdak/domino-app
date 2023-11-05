@@ -7,7 +7,7 @@ using Shops.Domain.MobileShops;
 using Shops.Domain.Shared;
 using Shops.Domain.StationaryShops;
 
-namespace Shops.Domain.Abstractions
+namespace Shops.Domain.Shops
 {
     [BsonDiscriminator(RootClass = true)]
     [BsonKnownTypes(typeof(MobileShop), typeof(StationaryShop))]
@@ -68,6 +68,12 @@ namespace Shops.Domain.Abstractions
 
         public void RemoveOrder(string orderId)
         {
+            if (OrdersId.All(o => o != orderId))
+            {
+                throw new DomainException<Shop>(
+                    $"Order with Id {orderId} does not exists in order registry of shop {ShopName}");
+            }
+
             OrdersId.Remove(orderId);
         }
     }

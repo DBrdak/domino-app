@@ -22,6 +22,20 @@ namespace Shared.Domain.DateTimeRange
             End = end;
         }
 
+        public TimeRange(string startString, string endString)
+        {
+            TimeOnly.TryParse(startString, out var start);
+            TimeOnly.TryParse(endString, out var end);
+
+            if (start > end)
+            {
+                throw new DomainException<TimeRange>("End time precedes start time");
+            }
+
+            Start = start;
+            End = end;
+        }
+
         public TimeRange(DateTime start, DateTime end) : this(
             new TimeOnly(start.Hour, start.Minute),
             new TimeOnly(end.Hour, end.Minute))
@@ -29,5 +43,7 @@ namespace Shared.Domain.DateTimeRange
 
         public TimeRange(DateTimeRange dateRange) : this(dateRange.Start, dateRange.End)
         { }
+
+        public override string ToString() => $"{Start.ToShortTimeString()} - {End.ToShortTimeString()}";
     }
 }

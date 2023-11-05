@@ -5,7 +5,7 @@ using Shared.Domain.Date;
 using Shared.Domain.DateTimeRange;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Location;
-using Shops.Domain.Abstractions;
+using Shops.Domain.Shops;
 
 namespace Shops.Domain.MobileShops
 {
@@ -30,6 +30,12 @@ namespace Shops.Domain.MobileShops
             {
                 throw new DomainException<MobileShop>(
                     $"Sale point in location [{location.Name}] already exist for shop [{ShopName}] on {weekDay}");
+            }
+
+            if (SalePoints.Where(sp => sp.WeekDay.Value == weekDay).Any(sp => DateTimeService.IsTimeOverlap(sp.OpenHours, openHours)))
+            {
+                throw new DomainException<MobileShop>(
+                    $"Sale point with open hours: [ {openHours} ] on {weekDay} is overlap with other sale point for shop [{ShopName}]");
             }
 
             SalePoints.Add(new(location, openHours, WeekDay.FromValue(weekDay)));

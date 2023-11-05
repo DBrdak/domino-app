@@ -1,4 +1,6 @@
-﻿namespace Shared.Domain.Date
+﻿using Shared.Domain.DateTimeRange;
+
+namespace Shared.Domain.Date
 {
     /// <summary>
     /// <b>Use it instead of DateTime struct to define new date</b>
@@ -35,5 +37,11 @@
 
             return resultDate;
         }
+
+        public static bool IsTimeNotOverlap(TimeRange first, TimeRange second) =>
+            first.End <= second.Start || 
+            first.Start >= second.End;
+
+        public static bool IsTimeOverlap(TimeRange first, TimeRange second) => !IsTimeNotOverlap(first, second);
     }
 }

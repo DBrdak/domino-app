@@ -52,6 +52,12 @@ services:
 
 #Others
 
+  smsservice.api:
+    image: ${DOCKER_REGISTRY-}smsserviceapi
+    build:
+      context: .
+      dockerfile: Services\SmsService\SmsService.API\Dockerfile
+
 volumes:
   mongo_data:
   postgres_data:

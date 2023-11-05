@@ -1,7 +1,7 @@
 ﻿using IntegrationEvents.Domain.Events.OrderShopQuery;
 using IntegrationEvents.Domain.Results;
 using MassTransit;
-using Shops.Domain.Abstractions;
+using Shops.Domain.Shops;
 
 namespace Shops.API.EventBusConsumers
 {

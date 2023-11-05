@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Shops.Domain.Abstractions;
 using Shops.Domain.MobileShops;
+using Shops.Domain.Shops;
 using Shops.Domain.StationaryShops;
 using Shops.Infrastructure.Repositories;
 

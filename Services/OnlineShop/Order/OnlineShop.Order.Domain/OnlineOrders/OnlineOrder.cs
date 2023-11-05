@@ -92,8 +92,15 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         private static string GenerateId() => Ulid.NewUlid(DateTimeOffset.UtcNow).ToString().Substring(4, 12);
 
-        public void Validate(bool isValidationSucceed) =>
+        public void Validate(bool isValidationSucceed)
+        {
+            if (Status != OrderStatus.Validating)
+            {
+                throw new DomainException<OnlineOrder>($"Order cannot be validated due to it's staus is: {Status}");
+            }
+
             Status = isValidationSucceed ? OrderStatus.Waiting : OrderStatus.Rejected;
+        }
 
         public void UpdateStatus(string status, IEnumerable<OrderItem>? modifiedOrderItems)
         {
@@ -120,7 +127,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             if (Status == OrderStatus.Received || Status == OrderStatus.Rejected)
             {
                 throw new DomainException<OnlineOrder>(
-                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+                    $"Cannot cancel order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
             CompletionDate = DateTimeService.UtcNow;
@@ -132,7 +139,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             if (Status == OrderStatus.Received || Status == OrderStatus.Accepted || Status == OrderStatus.Modified)
             {
                 throw new DomainException<OnlineOrder>(
-                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+                    $"Cannot reject order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
             CompletionDate = DateTimeService.UtcNow;
@@ -141,10 +148,10 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
         private void Receive()
         {
-            if (Status != OrderStatus.Accepted || Status != OrderStatus.Modified)
+            if (Status != OrderStatus.Accepted && Status != OrderStatus.Modified)
             {
                 throw new DomainException<OnlineOrder>(
-                    $"Cannot accept order with id: {Id} because of it status is {Status.StatusMessage}");
+                    $"Cannot receive order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
             CompletionDate = DateTimeService.UtcNow;
@@ -169,7 +176,15 @@ namespace OnlineShop.Order.Domain.OnlineOrders
             Modify(modifiedOrderItems);
         }
 
-        public void SetShopId(string shopId) => ShopId = shopId;
+        public void SetShopId(string shopId)
+        {
+            if (string.IsNullOrWhiteSpace(shopId))
+            {
+                throw new DomainException<OnlineOrder>("ShopId is required when setting ShopId");
+            }
+
+            ShopId = shopId;
+        }
 
         public void Print()
         {
@@ -207,7 +222,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                 OrderStatus.Validating);
 
             // TODO TEMPORARY SOLUTION
-            order.Validate(true);
+            //order.Validate(true);
             // TODO TEMPORARY SOLUTION
 
             order.RaiseDomainEvent(new OrderCreatedDomainEvent(order.Id, order.PhoneNumber));
