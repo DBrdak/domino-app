@@ -82,7 +82,7 @@ namespace Shared.Domain.Money
             return new Money(amount, currency, unit) ?? throw new DomainException<Money>("Wrong price format");
         }
 
-        public static void ValidateMoneyString(ref string moneyString)
+        private static void ValidateMoneyString(ref string moneyString)
         {
             moneyString = ReformatSlightlyInvalidMoneyString(moneyString);
             var isValid = Regex.IsMatch(moneyString, moneyFormatRegex);
@@ -93,7 +93,7 @@ namespace Shared.Domain.Money
             }
         }
         
-        public static string ReformatSlightlyInvalidMoneyString(string moneyString)
+        private static string ReformatSlightlyInvalidMoneyString(string moneyString)
         {
             moneyString = moneyString.Replace(',', '.');
             var isSlightlyInvalid = moneyString.IndexOf(' ') == -1;

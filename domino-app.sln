@@ -99,6 +99,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Behaviors", "Buildin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Order.Domain.Tests", "Services\OnlineShop\Order\Tests\OnlineShop.Order.Domain.Tests\OnlineShop.Order.Domain.Tests.csproj", "{78DE5987-0CC7-472E-9F69-B88BA1215E32}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{93E02418-43F7-4AA2-B3EA-02BC978419B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain.Tests", "BuildingBlocks\Tests\Shared.Domain.Tests\Shared.Domain.Tests.csproj", "{D0DBC9E8-2751-44E2-8D47-083124BDE072}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -209,6 +213,10 @@ Global
 		{78DE5987-0CC7-472E-9F69-B88BA1215E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DE5987-0CC7-472E-9F69-B88BA1215E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78DE5987-0CC7-472E-9F69-B88BA1215E32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0DBC9E8-2751-44E2-8D47-083124BDE072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0DBC9E8-2751-44E2-8D47-083124BDE072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0DBC9E8-2751-44E2-8D47-083124BDE072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0DBC9E8-2751-44E2-8D47-083124BDE072}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,6 +265,8 @@ Global
 		{D0730807-3E2F-4868-93D8-0A3EA516CE13} = {EAC810D1-BC81-4D3B-B622-52C7A33A5007}
 		{B5440694-55E8-4D1F-A5A7-A800C0C0B96E} = {A2055739-F798-479C-8784-B7397DF92D8D}
 		{78DE5987-0CC7-472E-9F69-B88BA1215E32} = {38F05414-3AD8-4483-B923-E1D8874171B8}
+		{93E02418-43F7-4AA2-B3EA-02BC978419B4} = {A2055739-F798-479C-8784-B7397DF92D8D}
+		{D0DBC9E8-2751-44E2-8D47-083124BDE072} = {93E02418-43F7-4AA2-B3EA-02BC978419B4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23EBFCAC-E8DC-4B92-BCAC-E5FA2B1CD3B2}

@@ -26,7 +26,8 @@ namespace Shared.Domain.Money
 
         public static readonly IReadOnlyCollection<Currency> All = new[]
         {
-            Pln
+            Pln,
+            altPln
         };
     }
 }
