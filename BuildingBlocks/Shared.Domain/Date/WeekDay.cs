@@ -62,6 +62,8 @@ namespace Shared.Domain.Date
             }
         }
 
+        public static WeekDay FromDayOfWeekEnum(int dayOfWeekIndex) => FromDayOfWeekEnum((DayOfWeek)dayOfWeekIndex);
+
         public static WeekDay operator ++(WeekDay day)
         {
             var currentIndex = All.ToList().IndexOf(day);
