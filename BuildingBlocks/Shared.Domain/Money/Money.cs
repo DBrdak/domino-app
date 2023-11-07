@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Exceptions;
@@ -13,7 +14,8 @@ namespace Shared.Domain.Money
         public Currency Currency { get; init; }
         public Unit? Unit { get; init; }
 
-        private const string moneyFormatRegex = "^\\d+(\\.\\d+)?\\s*[Pp][Ll][nN]\\/[Kk][gG]|[Pp][Ll][nN]\\/[Ss][zZ][tT]$";
+        private const string moneyFormatRegex = 
+            "^\\d+(\\.\\d+)?\\s*[Pp][Ll][nN]\\/[Kk][gG]$|[Pp][Ll][nN]\\/[Ss][zZ][tT]$|[Zz][Łł]\\/[Ss][Zz][Tt]$|[Zz][Łł]\\/[Kk][gG]$|[Zz][Łł]$|[Pp][Ll][Nn]$";
         
         public Money(decimal Amount,
             Currency Currency, 
@@ -66,7 +68,7 @@ namespace Shared.Domain.Money
         {
             ValidateMoneyString(ref moneyString);
             
-            var amount = decimal.Parse(moneyString.Split(' ')[0]);
+            var amount = decimal.Parse(moneyString.Split(' ')[0], NumberStyles.Number, new CultureInfo("en"));
             var amountUnit = moneyString.Split(' ')[1].Split("/");
             var currencyCode = amountUnit[0];
             var currency = Currency.FromCode(currencyCode);
@@ -107,7 +109,7 @@ namespace Shared.Domain.Money
             {
                 if (char.IsDigit(moneyString[i]) && char.IsLetter(moneyString[i + 1]))
                 {
-                    moneyString = moneyString.Insert(i, " ");
+                    moneyString = moneyString.Insert(i + 1, " ");
                 }
             }
 

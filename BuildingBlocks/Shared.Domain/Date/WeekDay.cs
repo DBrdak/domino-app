@@ -23,7 +23,6 @@ namespace Shared.Domain.Date
 
         public string Value { get; init; }
 
-        public static int GetIndex(string weekDay) => All.ToList().IndexOf(FromValue(weekDay));
         public static int GetIndex(WeekDay weekDay) => All.ToList().IndexOf(weekDay);
 
         public static WeekDay FromValue(string code)

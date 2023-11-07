@@ -24,8 +24,15 @@ namespace Shared.Domain.DateTimeRange
 
         public TimeRange(string startString, string endString)
         {
-            TimeOnly.TryParse(startString, out var start);
-            TimeOnly.TryParse(endString, out var end);
+            var parsingResult = new bool[] { false, false };
+
+            parsingResult[0] = TimeOnly.TryParse(startString, out var start);
+            parsingResult[1] = TimeOnly.TryParse(endString, out var end);
+
+            if (!parsingResult.All(r => r))
+            {
+                throw new DomainException<TimeRange>("Passed invalid time format");
+            }
 
             if (start > end)
             {
