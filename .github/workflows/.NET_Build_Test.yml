@@ -21,7 +21,7 @@ jobs:
     - name: List Projects in Solution
       run: |
         # List the projects in the solution and capture the list in a variable
-        projects=($(dotnet sln $SOLUTION_FILE list | sed -n '/projects:/,/Tools:/p' | sed -e '1d;$d'))
+        projects=($(dotnet sln $SOLUTION_FILE list))
         echo "Projects in solution: ${projects[@]}"
       shell: bash
 
