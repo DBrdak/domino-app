@@ -1,9 +1,12 @@
 name: Docker Compose for Local Testing
 
 on:
+  push:
+    branches:
+      - "master"
   pull_request:
     branches:
-      - main
+      - "master"
 
 jobs:
   docker-compose:
