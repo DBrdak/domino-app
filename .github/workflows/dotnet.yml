@@ -1,0 +1,48 @@
+name: .NET Multiple Projects
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: List Projects in Solution
+      run: |
+        projects=("Catalog.API.csproj"
+                  "OnlineShop.ShoppingCart.API.csproj"
+                  "OnlineShop.Order.API.csproj"
+                  "Shops.API.csproj")
+
+        echo "Projects to build and test: ${projects[@]}"
+      shell: bash
+
+    - name: Restore and Build Projects
+      run: |
+        for project in "${projects[@]}"; do
+          echo "Restoring and building $project"
+          dotnet restore "$project"
+          dotnet build "$project" --no-restore
+        done
+      shell: bash
+
+    - name: Test Projects
+      run: |
+        for project in "${projects[@]}"; do
+          echo "Testing $project"
+          dotnet test "$project" --no-build --verbosity normal
+        done
+      shell: bash
