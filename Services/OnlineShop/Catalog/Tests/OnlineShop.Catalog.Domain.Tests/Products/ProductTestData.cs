@@ -8,8 +8,8 @@ public class ProductCreateSuccessTestData : TheoryData<CreateValues, Category, s
 {
     public ProductCreateSuccessTestData()
     {
-        Add(new ("Test1", "Desc1", true, 12), Category.Meat, "img1.jpg", new (12, Currency.Pln, Unit.Kg));
-        Add(new ("Test2", "Desc2", false, null), Category.Sausage, "img2.jpg", new (12, Currency.Pln, Unit.Pcs));
+        Add(new ("Test1", "Desc1", true, 12), Category.Meat, "https://res.cloudinary.com/dsfafasdfdsaf", new (12, Currency.Pln, Unit.Kg));
+        Add(new ("Test2", "Desc2", false, null), Category.Sausage, "https://res.cloudinary.com/dsfaf231asdfdsaf", new (12, Currency.Pln, Unit.Pcs));
     }
 };
         
@@ -17,7 +17,7 @@ public class ProductCreateFailureTestData : TheoryData<CreateValues, Category, s
 {
     public ProductCreateFailureTestData()
     {
-        Add(new ("Test1", "Desc1", true, null), Category.Meat, "img1.jpg", new (12, Currency.Pln, Unit.Kg));
+        Add(new ("Test1", "Desc1", true, null), Category.Meat, "https://res.cloudinary.com/dsfafasdfdsaf", new (12, Currency.Pln, Unit.Kg));
         Add(new ("Test1", "Desc1", false, null), Category.Meat, String.Empty, new (12, Currency.Pln, Unit.Pcs));
         Add(new ("Test1", "Desc1", false, null), Category.Meat, String.Empty, new (12, Currency.Pln, Unit.Pcs));
         Add(new (String.Empty, String.Empty, false, null), Category.Meat, String.Empty, new (12, Currency.Pln, null));
@@ -45,8 +45,8 @@ public class ProductUpdateSuccessTestData : TheoryData<UpdateValues>
 {
     public ProductUpdateSuccessTestData()
     {
-        Add(new ("", "New Description 1", "img2.jpg", true, 12.8m, false));
-        Add(new ("", "New Description 2", "img3.jpg", false, null, true));
+        Add(new ("", "New Description 1", "https://res.cloudinary.com/dsfafasdfdsaf", true, 12.8m, false));
+        Add(new ("", "New Description 2", "https://res.cloudinary.com/dsfaf12123saf", false, null, true));
     }
 }
 

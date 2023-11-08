@@ -12,8 +12,8 @@ public class UpdateLineItemPriceTests
     public void UpdateLineItem_ValidData_ShouldUpdateLineItem(string lineItemName, Money newPrice)
     {
         // Arrange
-        var retailPriceList = TestPriceLists.RetailPriceList;
-        var businessPriceList = TestPriceLists.BusinessPriceList;
+        var retailPriceList = TestPriceLists.RetailPriceList();
+        var businessPriceList = TestPriceLists.BusinessPriceList();
         var lineItem = new LineItem("Test Line Item", new (10.9m, Currency.Pln, Unit.Kg));
         retailPriceList.AddLineItem(lineItem);
         businessPriceList.AddLineItem(lineItem);
@@ -32,8 +32,8 @@ public class UpdateLineItemPriceTests
     public void UpdateLineItem_InvalidData_ShouldNotUpdateLineItem(string lineItemName, Money newPrice)
     {
         // Arrange
-        var retailPriceList = TestPriceLists.RetailPriceList;
-        var businessPriceList = TestPriceLists.BusinessPriceList;
+        var retailPriceList = TestPriceLists.RetailPriceList();
+        var businessPriceList = TestPriceLists.BusinessPriceList();
         var lineItem = new LineItem("Test Line Item", new (10.9m, Currency.Pln, Unit.Kg));
         retailPriceList.AddLineItem(lineItem);
         businessPriceList.AddLineItem(lineItem);
@@ -54,7 +54,7 @@ public class UpdateLineItemPriceTests
     public void UpdateRetailLineItemWithAggregatedProduct_ValidData_ShouldUpdateLineItemAndRaiseDomainEvent(string lineItemName, Money newPrice)
     {
         // Arrange
-        var retailPriceList = TestPriceLists.RetailPriceList;
+        var retailPriceList = TestPriceLists.RetailPriceList();
         var lineItem = new LineItem("Test Line Item", new (10.9m, Currency.Pln, Unit.Kg));
         retailPriceList.AddLineItem(lineItem);
         retailPriceList.AggregateLineItemWithProduct(lineItem.Name, "exampleId");

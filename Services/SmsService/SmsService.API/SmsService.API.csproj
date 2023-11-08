@@ -4,9 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
 </Project>

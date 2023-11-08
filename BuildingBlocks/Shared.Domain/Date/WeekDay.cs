@@ -23,7 +23,6 @@ namespace Shared.Domain.Date
 
         public string Value { get; init; }
 
-        public static int GetIndex(string weekDay) => All.ToList().IndexOf(FromValue(weekDay));
         public static int GetIndex(WeekDay weekDay) => All.ToList().IndexOf(weekDay);
 
         public static WeekDay FromValue(string code)
@@ -61,6 +60,8 @@ namespace Shared.Domain.Date
                     throw new DomainException<WeekDay>($"Cannot convert {dayOfWeek} to WeekDay type");
             }
         }
+
+        public static WeekDay FromDayOfWeekEnum(int dayOfWeekIndex) => FromDayOfWeekEnum((DayOfWeek)dayOfWeekIndex);
 
         public static WeekDay operator ++(WeekDay day)
         {

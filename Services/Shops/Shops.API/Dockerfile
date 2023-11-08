@@ -7,9 +7,10 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Services/Shops/Shops.API/Shops.API.csproj", "Services/Shops/Shops.API/"]
+COPY ["BuildingBlocks/IntegrationEvents.Domain/IntegrationEvents.Domain.csproj", "BuildingBlocks/IntegrationEvents.Domain/"]
+COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 COPY ["Services/Shops/Shops.Application/Shops.Application/Shops.Application.csproj", "Services/Shops/Shops.Application/Shops.Application/"]
 COPY ["BuildingBlocks/Shared.Behaviors/Shared.Behaviors.csproj", "BuildingBlocks/Shared.Behaviors/"]
-COPY ["BuildingBlocks/Shared.Domain/Shared.Domain.csproj", "BuildingBlocks/Shared.Domain/"]
 COPY ["Services/Shops/Shops.Domain/Shops.Domain.csproj", "Services/Shops/Shops.Domain/"]
 COPY ["Services/Shops/Shops.Infrastructure/Shops.Infrastructure.csproj", "Services/Shops/Shops.Infrastructure/"]
 RUN dotnet restore "Services/Shops/Shops.API/Shops.API.csproj"

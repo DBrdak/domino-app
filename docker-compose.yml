@@ -5,7 +5,7 @@ services:
   mongodb:
     image: mongo
 
-  shoppingcartdb:
+  cachedb:
     image: redis
 
   postgresdb:
@@ -49,14 +49,6 @@ services:
 
   seq:
     image: datalust/seq:latest
-
-#Others
-
-  smsservice.api:
-    image: ${DOCKER_REGISTRY-}smsserviceapi
-    build:
-      context: .
-      dockerfile: Services\SmsService\SmsService.API\Dockerfile
 
 volumes:
   mongo_data:
