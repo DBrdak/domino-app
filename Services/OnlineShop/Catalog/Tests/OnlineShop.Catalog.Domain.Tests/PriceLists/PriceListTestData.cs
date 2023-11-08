@@ -7,8 +7,15 @@ namespace OnlineShop.Catalog.Domain.Tests.PriceLists;
 
 public static class TestPriceLists
 {
-    public static PriceList RetailPriceList = PriceList.CreateRetail("Retail Test", Category.Meat);
-    public static PriceList BusinessPriceList = PriceList.CreateBusiness("Business Test", "Contractor Test", Category.Meat);
+    public static PriceList RetailPriceList()
+    {
+        return PriceList.CreateRetail("Retail Test", Category.Meat);
+    }
+
+    public static PriceList BusinessPriceList()
+    {
+        return PriceList.CreateBusiness("Business Test", "Contractor Test", Category.Meat);
+    }
 }
 
 public class AddLineItemTestData : TheoryData<string, Money>

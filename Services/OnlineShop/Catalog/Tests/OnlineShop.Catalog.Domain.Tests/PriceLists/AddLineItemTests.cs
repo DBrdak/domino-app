@@ -12,8 +12,8 @@ public class AddLineItemTests
     public void AddLineItem_ValidData_ShouldAddLineItemToPriceList(string lineItemName, Money lineItemPrice)
     {
         // Arrange
-        var retailPriceList = TestPriceLists.RetailPriceList;
-        var businessPriceList = TestPriceLists.BusinessPriceList;
+        var retailPriceList = TestPriceLists.RetailPriceList();
+        var businessPriceList = TestPriceLists.BusinessPriceList();
         var lineItem = new LineItem(lineItemName, lineItemPrice);
         
         // Act

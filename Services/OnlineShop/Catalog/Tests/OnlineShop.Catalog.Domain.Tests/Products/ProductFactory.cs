@@ -14,7 +14,7 @@ public class ProductFactory
     public ProductFactory()
     {
         _createValues = new ("Test Product Name", "Test Product Description", true, 2);
-        _image = "img.jpg";
+        _image = "https://res.cloudinary.com/dsfafasdfdsaf";
         _price = new (10.9m, Currency.Pln, Unit.Kg);
         _category = Category.Meat;
         

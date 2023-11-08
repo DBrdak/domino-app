@@ -29,12 +29,6 @@ namespace Shared.Domain.Quantity
         public decimal Value { get; init; }
         public Unit Unit { get; init; }
 
-        public static Quantity Zero() => new(0, Unit.None);
-
-        public static Quantity Zero(Unit unit) => new(0, unit);
-
-        public bool IsZero() => this == Zero(Unit);
-
         public override string ToString() => $"{Value} {Unit.Code}";
 
         public void Deconstruct(out decimal value, out Unit unit)

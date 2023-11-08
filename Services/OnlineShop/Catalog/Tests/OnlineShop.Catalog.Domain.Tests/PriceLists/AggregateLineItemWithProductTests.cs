@@ -11,7 +11,7 @@ public class AggregateLineItemWithProductTests
     public void AggregateLineItemWithProduct_ValidData_ShouldAggregate()
     {
         // Arrange
-        var retailPriceList = TestPriceLists.RetailPriceList;
+        var retailPriceList = TestPriceLists.RetailPriceList();
         var lineItem = new LineItem("Test Line Item", new (10.9m, Currency.Pln, Unit.Kg));
         var productId = "productId";
         retailPriceList.AddLineItem(lineItem);
@@ -27,7 +27,7 @@ public class AggregateLineItemWithProductTests
     public void AggregateLineItemWithProduct_InvalidContractorData_ShouldThrow()
     {
         // Arrange
-        var businessPriceList = TestPriceLists.BusinessPriceList;
+        var businessPriceList = TestPriceLists.BusinessPriceList();
         var lineItem = new LineItem("Test Line Item", new (10.9m, Currency.Pln, Unit.Kg));
         var productId = "productId";
         businessPriceList.AddLineItem(lineItem);
@@ -44,7 +44,7 @@ public class AggregateLineItemWithProductTests
     public void AggregateLineItemWithProduct_InvalidProductData_ShouldThrow()
     {
         // Arrange
-        var retailPriceList = TestPriceLists.RetailPriceList;
+        var retailPriceList = TestPriceLists.RetailPriceList();
         var lineItem = new LineItem("Test Line Item", new (10.9m, Currency.Pln, Unit.Kg));
         var productId = "productId";
         var productId2 = "productId2";
