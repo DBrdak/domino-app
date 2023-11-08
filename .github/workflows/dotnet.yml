@@ -1,4 +1,4 @@
-name: .NET Multiple Projects
+name: .NET Microservices
 
 on:
   push:
@@ -22,10 +22,12 @@ jobs:
 
     - name: List Projects in Solution
       run: |
-        projects=("Catalog.API.csproj"
-                  "OnlineShop.ShoppingCart.API.csproj"
-                  "OnlineShop.Order.API.csproj"
-                  "Shops.API.csproj")
+        projects=("Catalog.API"
+                  "OnlineShop.ShoppingCart.API"
+                  "OnlineShop.Order.API"
+                  "Shops.API"
+                  "OcelotApiGateway"
+                  "docker-compose")
 
         echo "Projects to build and test: ${projects[@]}"
       shell: bash
