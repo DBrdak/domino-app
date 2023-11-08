@@ -1,27 +1,35 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+name: .NET Microservices
 
-name: .NET
+env:
+  SOLUTION_FILE: YourSolution.sln
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - "master"
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - "master"
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: List Projects in Solution
+      run: |
+        # List the projects in the solution and capture the list in a variable
+        projects=($(dotnet sln $SOLUTION_FILE list | sed -n '/projects:/,/Tools:/p' | sed -e '1d;$d'))
+        echo "Projects in solution: ${projects[@]}"
+      shell: bash
+
+    - name: Build and Test Microservices
+      run: |
+        for project in "${projects[@]}"; do
+          echo "Building and testing $project"
+          dotnet build "$project" --no-restore
+          dotnet test "$project" --no-build --verbosity normal
+        done
+      shell: bash
