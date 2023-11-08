@@ -1,7 +1,7 @@
 name: .NET Microservices
 
 env:
-  SOLUTION_FILE: YourSolution.sln
+  SOLUTION_FILE: domino-app.sln
 
 on:
   push:
