@@ -28,12 +28,12 @@ jobs:
 
     - name: Build
       run: |
-        dotnet build --configuration Release
+        dotnet build --configuration Release --project **/*.csproj
         done
       shell: bash
 
     - name: Test
       run: |
-        dotnet test --configuration Release --no-build
+        dotnet test --configuration Release --no-build --project **/*.csproj
         done
       shell: bash
