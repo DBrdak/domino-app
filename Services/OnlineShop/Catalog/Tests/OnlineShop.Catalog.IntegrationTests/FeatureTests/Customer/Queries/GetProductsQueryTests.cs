@@ -14,9 +14,11 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Customer.Queries
         {
             var command = new GetProductsQuery("Mięso");
 
-            var products = await Sender.Send(command);
+            var result = await Sender.Send(command);
 
-            Assert.NotNull(products);
+            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
         }
 
         public GetProductsQueryTests(IntegrationTestWebAppFactory factory) : base(factory)
