@@ -101,7 +101,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Order.Domain.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{93E02418-43F7-4AA2-B3EA-02BC978419B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain.Tests", "BuildingBlocks\Tests\Shared.Domain.Tests\Shared.Domain.Tests.csproj", "{D0DBC9E8-2751-44E2-8D47-083124BDE072}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Domain.Tests", "BuildingBlocks\Tests\Shared.Domain.Tests\Shared.Domain.Tests.csproj", "{D0DBC9E8-2751-44E2-8D47-083124BDE072}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

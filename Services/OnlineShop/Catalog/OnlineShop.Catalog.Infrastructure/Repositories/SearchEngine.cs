@@ -63,18 +63,13 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }).ToList();
         }
 
-        internal static FilterDefinition<Product> ApplyFiltering(string category, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
+        internal static FilterDefinition<Product> ApplyFiltering(string categoryString, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
             var filter = FilterDefinition<Product>.Empty;
 
-            if (category.ToLower() == "meat" || category.ToLower() == "sausage")
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.Category, Category.FromValue(category));
-            }
-            else
-            {
-                throw new ApplicationException("Category is required");
-            }
+            var category = Category.FromValue(categoryString);
+
+            filter &= Builders<Product>.Filter.Eq(p => p.Category, category);
 
             if (minPrice is > 0 && maxPrice > minPrice)
             {

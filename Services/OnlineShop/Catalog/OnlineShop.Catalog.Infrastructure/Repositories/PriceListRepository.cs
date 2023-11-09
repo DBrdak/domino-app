@@ -233,38 +233,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             priceList.AggregateLineItemWithProduct(lineItemName, productId);
 
-            var result = await _context.PriceLists.ReplaceOneAsync(
-                pl => pl.Id == priceList.Id,
-                priceList, new ReplaceOptions(), cancellationToken);
-
-            var isSuccess = result.IsAcknowledged && result.ModifiedCount > 0;
-
-            if (isSuccess)
-            {
-                return priceList;
-            }
-
-            return null;
-        }
-
-        public async Task<LineItem?> GetLineItemForProduct(string productId, Category productCategory, CancellationToken cancellationToken, bool isProductInDb = false)
-        {
-            var product = (await _context.Products.FindAsync(p => p.Id == productId))
-                .SingleOrDefault(cancellationToken);
-
-            if (isProductInDb && product is null)
-            {
-                return null;
-            }
-
-            var priceList = await GetRetailPriceList(productCategory, cancellationToken);
-
-            if (priceList is null)
-            {
-                return null;
-            }
-
-            return priceList.LineItems.Single(li => li.ProductId == productId);
+            return priceList;
         }
 
         public async Task<bool> SplitLineItemFromProduct(string productId, Category productCategory, CancellationToken cancellationToken)

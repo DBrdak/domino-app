@@ -36,8 +36,6 @@ namespace OnlineShop.Catalog.Domain.PriceLists
             string lineItemName,
             CancellationToken cancellationToken);
 
-        Task<LineItem?> GetLineItemForProduct(string productId, Category productCategory, CancellationToken cancellationToken, bool isProductInDb = false);
-
         Task<bool> SplitLineItemFromProduct(string productId, Category productCategory, CancellationToken cancellationToken);
     }
 }
