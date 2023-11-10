@@ -25,5 +25,16 @@ namespace OnlineShop.Catalog.Domain.Shared
             => All.FirstOrDefault(c => c.Value.ToLower() == value.ToLower() ||
                                        c._engValue.ToLower() == value.ToLower()) ??
                throw new DomainException<Category>($"Category {value} not found");
+
+        public bool Equals(Category? other)
+        {
+            return Value == other.Value || 
+                   _engValue == other._engValue;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_engValue, Value);
+        }
     }
 }

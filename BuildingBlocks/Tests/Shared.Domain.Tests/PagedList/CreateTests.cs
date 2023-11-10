@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Shared.Domain.Tests.PagedList
 {
-    internal class CreateTests
+    public class CreateTests
     {
-        //TODO
+        public void Create_ValiData_ShouldCreatePagedList()
+        {
+
+        }
     }
 }

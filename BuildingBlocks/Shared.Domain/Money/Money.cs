@@ -8,7 +8,7 @@ namespace Shared.Domain.Money
 {
     public sealed record Money
     {
-        [BsonRepresentation(BsonType.Double)]
+        [BsonRepresentation(BsonType.Decimal128)]
         public decimal Amount { get; init; }
 
         public Currency Currency { get; init; }
