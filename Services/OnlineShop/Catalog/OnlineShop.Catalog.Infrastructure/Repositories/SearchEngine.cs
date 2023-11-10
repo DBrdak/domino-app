@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using System.Collections.Immutable;
+using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.Domain.Shared;
 using System.Globalization;
@@ -8,19 +9,34 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 {
     internal static class SearchEngine
     {
+        private static readonly string[] allowedSortProperties = new[]
+        {
+            "Name", "Price"
+        };
+
         internal static FindOptions<Product> ApplySorting(string sortOrder, string sortBy)
         {
             sortBy = NormailzeSortPropertyName(sortBy);
+            var isValid = IsValidSortProperty(sortBy);
+
+            if (!isValid)
+            {
+                sortBy = allowedSortProperties[0];
+            }
 
             var sort = sortOrder == "asc"
                 ? Builders<Product>.Sort.Ascending(sortBy)
                 : Builders<Product>.Sort.Descending(sortBy);
+
             var options = new FindOptions<Product>
             {
                 Sort = sort
             };
+
             return options;
         }
+
+        private static bool IsValidSortProperty(string sortBy) => allowedSortProperties.Any(x => x.ToLower().Equals(sortBy.ToLower()));
 
         private static string NormailzeSortPropertyName(string sortBy)
         {
@@ -46,6 +62,11 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 name = RemovePolishAccents(name.ToLower());
                 var productName = RemovePolishAccents(p.Name.ToLower());
 
+                if (name.Length >= 3)
+                {
+                    return productName.Contains(name);
+                }
+
                 if (productName.Contains(' '))
                 {
                     var words = productName.Split(" ");
@@ -63,18 +84,13 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             }).ToList();
         }
 
-        internal static FilterDefinition<Product> ApplyFiltering(string category, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
+        internal static FilterDefinition<Product> ApplyFiltering(string categoryString, decimal? minPrice, decimal? maxPrice, bool? isAvailable, bool? isDiscounted)
         {
             var filter = FilterDefinition<Product>.Empty;
 
-            if (category.ToLower() == "meat" || category.ToLower() == "sausage")
-            {
-                filter &= Builders<Product>.Filter.Eq(p => p.Category, Category.FromValue(category));
-            }
-            else
-            {
-                throw new ApplicationException("Category is required");
-            }
+            var category = Category.FromValue(categoryString);
+
+            filter &= Builders<Product>.Filter.Eq(p => p.Category, category);
 
             if (minPrice is > 0 && maxPrice > minPrice)
             {

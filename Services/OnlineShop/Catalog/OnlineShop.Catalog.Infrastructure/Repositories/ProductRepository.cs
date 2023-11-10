@@ -85,6 +85,15 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             var productId = ObjectId.GenerateNewId().ToString();
 
+            var uploadResult = await _photoRepository.UploadPhoto(photoFile, cancellationToken);
+
+            if (uploadResult is null)
+            {
+                return null;
+            }
+
+            values.AttachImage(uploadResult.PhotoUrl);
+
             var priceList = await _priceListRepository.AggregateLineItemWithProduct(
                 productId,
                 values.Name,
@@ -97,7 +106,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachCategory(priceList.Category);
 
-            var priceListLineItem = await _priceListRepository.GetLineItemForProduct(productId!, priceList.Category, cancellationToken);
+            var priceListLineItem = priceList.LineItems.SingleOrDefault(li => li.ProductId == productId);
 
             if (priceListLineItem is null)
             {
@@ -106,16 +115,18 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             values.AttachPrice(priceListLineItem.Price);
 
-            var uploadResult = await _photoRepository.UploadPhoto(photoFile, cancellationToken);
+            var product = Product.Create(values, productId);
 
-            if (uploadResult is null)
+            var result = await _context.PriceLists.ReplaceOneAsync(
+                pl => pl.Id == priceList.Id,
+                priceList, new ReplaceOptions(), cancellationToken);
+
+            var isSuccess = result.IsAcknowledged && result.ModifiedCount > 0;
+
+            if (!isSuccess)
             {
                 return null;
             }
-
-            values.AttachImage(uploadResult.PhotoUrl);
-
-            var product = Product.Create(values, productId);
 
             await _context.Products.InsertOneAsync(product, null, cancellationToken);
 

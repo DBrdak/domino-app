@@ -1,4 +1,5 @@
-﻿using Shared.Domain.Exceptions;
+﻿using System.Text.Json.Serialization;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Money;
 using Shared.Domain.Quantity;
 
@@ -24,6 +25,10 @@ namespace OnlineShop.Catalog.Domain.Products
 
             SingleWeight = isWeightSwitchAllowed ? new(singleWeight!.Value, Unit.Kg) : null;
         }
+
+        [JsonConstructor]
+        public ProductDetails()
+        {}
 
         public void StartDiscount() => IsDiscounted = true;
 

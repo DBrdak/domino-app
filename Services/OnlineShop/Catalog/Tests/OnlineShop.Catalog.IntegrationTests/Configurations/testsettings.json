@@ -1,0 +1,10 @@
+{
+  "DatabaseSettings": {
+    "ConnectionString": "mongodb://mongo:mongo@localhost:27017",
+    "DatabaseName": "CatalogDb",
+    "Collections": {
+      "Products": "Products",
+      "PriceLists": "PriceLists"
+    }
+  }
+}
