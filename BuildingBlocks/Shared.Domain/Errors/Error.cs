@@ -12,6 +12,8 @@
 
         public static Error NotFound(string name) => new("Error.NotFound", name);
 
+        public static Error Exception(string name) => new("Error.Exception", name);
+
         public override string ToString() => $"{Code}: {Name}";
     }
 }

@@ -33,7 +33,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             products = SearchEngine.ApplySearch(name, products);
 
-            return PagedList<Product>.CreateAsync(products, page, pageSize);
+            return PagedList<Product>.Create(products, page, pageSize);
         }
 
         public async Task<List<Product>> GetProductsAsync(string searchPhrase, CancellationToken cancellationToken = default)
