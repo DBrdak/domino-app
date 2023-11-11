@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.RemoveLineItem
 {
-    internal class RemoveLineItemCommandValidator : AbstractValidator<RemoveLineItemCommand>
+    public class RemoveLineItemCommandValidator : AbstractValidator<RemoveLineItemCommand>
     {
         public RemoveLineItemCommandValidator()
         {

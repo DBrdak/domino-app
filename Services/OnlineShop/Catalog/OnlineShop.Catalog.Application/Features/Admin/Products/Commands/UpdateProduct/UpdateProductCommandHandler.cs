@@ -35,7 +35,8 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.Update
 
             if (updatedProduct is null)
             {
-                return Result.Failure<Product>(Error.NullValue);
+                return Result.Failure<Product>(
+                    Error.TaskFailed($"Błąd podczas aktualizowania produktu o ID: {request.NewValues.Id}"));
             }
 
             return Result.Success(updatedProduct);

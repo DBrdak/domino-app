@@ -18,8 +18,4 @@
     <ProjectReference Include="..\..\Shops.Domain\Shops.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Behaviors\" />
-  </ItemGroup>
-
 </Project>

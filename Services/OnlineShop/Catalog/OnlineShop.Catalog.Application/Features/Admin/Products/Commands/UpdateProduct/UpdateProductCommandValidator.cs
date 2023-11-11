@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.UpdateProduct
 {
-    internal class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
         public UpdateProductCommandValidator()
         {
@@ -16,6 +16,12 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.Update
             RuleFor(x => x.NewValues.Description)
                 .NotEmpty()
                 .WithMessage("Opis jest wymagany.");
+
+            RuleFor(x => x.NewValues)
+                .Must(
+                    v => (v.IsWeightSwitchAllowed && v.SingleWeight.HasValue) ||
+                         (!v.IsWeightSwitchAllowed && !v.SingleWeight.HasValue))
+                .WithMessage("Niewłaściwe wartości dla alternatywnej jednostki");
         }
     }
 }

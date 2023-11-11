@@ -3,7 +3,7 @@ using OnlineShop.Order.Domain.OnlineOrders;
 
 namespace OnlineShop.Order.Application.Features.Commands.UpdateOrder
 {
-    internal class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
+    public class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
     {
         public UpdateOrderCommandValidator()
         {

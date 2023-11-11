@@ -2,18 +2,23 @@ using System.Reflection;
 using Castle.Components.DictionaryAdapter.Xml;
 using Castle.Core.Configuration;
 using DocumentFormat.OpenXml.Wordprocessing;
+using FluentValidation;
+using Irony.Parsing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OnlineShop.Catalog.API;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.Infrastructure;
+using OnlineShop.Catalog.Infrastructure.Repositories;
 using Shared.Domain.Photo;
 using Testcontainers.MongoDb;
+using Xunit.Sdk;
 
 namespace OnlineShop.Catalog.IntegrationTests
 {
@@ -59,7 +64,15 @@ namespace OnlineShop.Catalog.IntegrationTests
                         secretConfig.GetSection("Cloudinary").Bind(options);
                     });
 
+                var photoRepositoryScope = services.SingleOrDefault(s => s.ServiceType == typeof(IPhotoRepository));
+                if (photoRepositoryScope is null)
+                {
+                    throw new TestClassException("Cannot access photo repository scope");
+                }
+
                 services.AddSingleton(dbContext);
+                services.AddSingleton(photoRepositoryScope);
+                services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
             });
         }
 

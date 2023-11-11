@@ -4,7 +4,7 @@ using Shared.Domain.Money;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.UpdateLineItemPrice
 {
-    internal class UpdateLineItemPriceCommandValidator : AbstractValidator<UpdateLineItemPriceCommand>
+    public class UpdateLineItemPriceCommandValidator : AbstractValidator<UpdateLineItemPriceCommand>
     {
         public UpdateLineItemPriceCommandValidator()
         {

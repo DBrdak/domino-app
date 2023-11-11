@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Shops.Application.Features.Commands.AddShop
 {
-    internal class AddShopCommandValidator : AbstractValidator<AddShopCommand>
+    public class AddShopCommandValidator : AbstractValidator<AddShopCommand>
     {
         public AddShopCommandValidator()
         {

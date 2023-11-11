@@ -46,7 +46,12 @@ namespace OnlineShop.Catalog.API.Middlewares
 
                 context.Response.StatusCode = exceptionDetails.Status;
 
-                await context.Response.WriteAsJsonAsync(Result.Failure(Error.Exception(exceptionDetails.Title)));
+                if (exceptionDetails.Errors is null)
+                    await context.Response.WriteAsJsonAsync(Result.Failure(Error.Exception(exceptionDetails.Title)));
+                else
+                    await context.Response.WriteAsJsonAsync(
+                        Result.Failure(
+                            Error.ValidationError(exceptionDetails.Errors.Select(e => e.ToString())!)));
             }
         }
 

@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using CloudinaryDotNet;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.Domain.Shared;
 using OnlineShop.Catalog.Infrastructure;
+using OnlineShop.Catalog.Infrastructure.Repositories;
 using Shared.Domain.Money;
 using Shared.Domain.Photo;
 using Unit = Shared.Domain.Money.Unit;
@@ -15,6 +17,7 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
     private readonly IServiceScope _scope;
     protected readonly ISender Sender;
     protected readonly CatalogContext Context;
+    protected readonly IPhotoRepository PhotoRepository;
 
     protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
     {
@@ -22,8 +25,13 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
 
         Sender = _scope.ServiceProvider.GetRequiredService<ISender>();
         Context = _scope.ServiceProvider.GetRequiredService<CatalogContext>();
+        PhotoRepository = _scope.ServiceProvider.GetRequiredService<IPhotoRepository>();
 
-        SeedDatabase();
+        if (Context.Products.EstimatedDocumentCount() < 1 &&
+            Context.PriceLists.EstimatedDocumentCount() < 1)
+        {
+            SeedDatabase();
+        }
     }
 
     private void SeedDatabase()
