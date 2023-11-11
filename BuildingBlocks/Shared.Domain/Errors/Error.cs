@@ -12,6 +12,11 @@
 
         public static Error NotFound(string name) => new("Error.NotFound", name);
 
+        public static Error Exception(string name) => new("Error.Exception", name);
+
+        public static Error ValidationError
+            (IEnumerable<string> names) => new("Error.Validation", string.Join('\n', names));
+
         public override string ToString() => $"{Code}: {Name}";
     }
 }

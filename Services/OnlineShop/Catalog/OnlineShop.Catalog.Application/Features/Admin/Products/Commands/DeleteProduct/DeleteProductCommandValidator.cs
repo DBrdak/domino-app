@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.DeleteProduct
 {
-    internal class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
     {
         public DeleteProductCommandValidator()
         {

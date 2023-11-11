@@ -2,7 +2,7 @@
 
 namespace Shops.Application.Features.Commands.UpdateShop
 {
-    internal class UpdateShopCommandValidator : AbstractValidator<UpdateShopCommand>
+    public class UpdateShopCommandValidator : AbstractValidator<UpdateShopCommand>
     {
         public UpdateShopCommandValidator()
         {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using MediatR;
 using FluentValidation.Results;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using Shared.Domain.Abstractions.Messaging;
 using ValidationException = FluentValidation.ValidationException;

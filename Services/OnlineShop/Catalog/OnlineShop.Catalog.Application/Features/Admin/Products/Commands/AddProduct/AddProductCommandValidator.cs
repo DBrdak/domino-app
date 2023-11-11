@@ -2,7 +2,7 @@
 
 namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.AddProduct
 {
-    internal class AddProductCommandValidator : AbstractValidator<AddProductCommand>
+    public class AddProductCommandValidator : AbstractValidator<AddProductCommand>
     {
         public AddProductCommandValidator()
         {

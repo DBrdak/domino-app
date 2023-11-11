@@ -10,7 +10,7 @@
         public bool HasNextPage => Page * PageSize < TotalCount;
         public bool HasPreviousPage => Page > 1;
 
-        private PagedList(List<T> items, int page, int pageSize, int totalCount)
+        private PagedList(List<T> items, Page page, PageSize pageSize, int totalCount)
         {
             Items = items;
             Page = page;
@@ -18,8 +18,8 @@
             TotalCount = totalCount;
         }
 
-        public static PagedList<T> CreateAsync(
-            List<T> collection, int page, int pageSize)
+        public static PagedList<T> Create(
+            List<T> collection, Page page, PageSize pageSize)
         {
             var totalCount = collection.Count;
 

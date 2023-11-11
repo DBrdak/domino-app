@@ -2,7 +2,7 @@
 
 namespace Shops.Application.Features.Commands.AggregateOrderWithShop
 {
-    internal class DeleteOrderFromShopCommandValidator : AbstractValidator<AggregateOrderWithShopCommand>
+    public class DeleteOrderFromShopCommandValidator : AbstractValidator<AggregateOrderWithShopCommand>
     {
         public DeleteOrderFromShopCommandValidator()
         {

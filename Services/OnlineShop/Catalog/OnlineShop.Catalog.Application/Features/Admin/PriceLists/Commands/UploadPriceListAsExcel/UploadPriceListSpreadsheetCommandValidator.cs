@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.UploadPriceListAsExcel
 {
-    internal class UploadPriceListSpreadsheetCommandValidator : AbstractValidator<UploadPriceListSpreadsheetCommand>
+    public class UploadPriceListSpreadsheetCommandValidator : AbstractValidator<UploadPriceListSpreadsheetCommand>
     {
         public UploadPriceListSpreadsheetCommandValidator()
         {

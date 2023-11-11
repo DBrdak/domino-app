@@ -2,7 +2,7 @@
 
 namespace OnlineShop.Order.Application.Features.Commands.CancelOrder
 {
-    internal class CancelOrderCommandValidator : AbstractValidator<CancelOrderCommand>
+    public class CancelOrderCommandValidator : AbstractValidator<CancelOrderCommand>
     {
         public CancelOrderCommandValidator()
         {

@@ -33,7 +33,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             products = SearchEngine.ApplySearch(name, products);
 
-            return PagedList<Product>.CreateAsync(products, page, pageSize);
+            return PagedList<Product>.Create(products, page, pageSize);
         }
 
         public async Task<List<Product>> GetProductsAsync(string searchPhrase, CancellationToken cancellationToken = default)
@@ -57,10 +57,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (newValues.ImageUrl != product.Image.Url)
             {
-#pragma warning disable CS4014
-                _photoRepository.DeletePhoto(product.Image.Url);
-#pragma warning restore CS4014
-                //await _photoRepository.UploadPhoto(newValues.ImageUrl);
+                await _photoRepository.DeletePhoto(product.Image.Url);
             }
 
             product.Update(newValues);

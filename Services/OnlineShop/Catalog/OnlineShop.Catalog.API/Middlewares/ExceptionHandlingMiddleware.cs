@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Domain.Exceptions;
 using FluentValidation;
+using Shared.Domain.Errors;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.API.Middlewares
 {
@@ -44,7 +46,12 @@ namespace OnlineShop.Catalog.API.Middlewares
 
                 context.Response.StatusCode = exceptionDetails.Status;
 
-                await context.Response.WriteAsJsonAsync(problemDetails);
+                if (exceptionDetails.Errors is null)
+                    await context.Response.WriteAsJsonAsync(Result.Failure(Error.Exception(exceptionDetails.Title)));
+                else
+                    await context.Response.WriteAsJsonAsync(
+                        Result.Failure(
+                            Error.ValidationError(exceptionDetails.Errors.Select(e => e.ToString())!)));
             }
         }
 

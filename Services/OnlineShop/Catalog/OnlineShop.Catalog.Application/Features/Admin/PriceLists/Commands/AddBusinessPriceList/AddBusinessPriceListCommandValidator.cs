@@ -3,7 +3,7 @@ using OnlineShop.Catalog.Domain.Shared;
 
 namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.AddBusinessPriceList
 {
-    internal class AddBusinessPriceListCommandValidator : AbstractValidator<AddBusinessPriceListCommand>
+    public class AddBusinessPriceListCommandValidator : AbstractValidator<AddBusinessPriceListCommand>
     {
         public AddBusinessPriceListCommandValidator()
         {
