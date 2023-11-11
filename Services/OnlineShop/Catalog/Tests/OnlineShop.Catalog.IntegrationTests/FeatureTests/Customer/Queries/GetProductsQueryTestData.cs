@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Customer.Queries
 {
-    internal class GetProductsQueryValidTestData : TheoryData<GetProductsQuery>
+    internal class GetProductsQueryTestData : TheoryData<GetProductsQuery>
     {
-        public GetProductsQueryValidTestData()
+        public GetProductsQueryTestData()
         {
             Add(new ("Mięso"));
 

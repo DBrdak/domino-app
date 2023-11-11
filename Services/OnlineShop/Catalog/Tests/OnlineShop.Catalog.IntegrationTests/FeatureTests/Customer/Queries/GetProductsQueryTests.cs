@@ -16,7 +16,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Customer.Queries
         }
 
         [Theory]
-        [ClassData(typeof(GetProductsQueryValidTestData))]
+        [ClassData(typeof(GetProductsQueryTestData))]
         public async void GetProductsAsCustomer_ValidQuery_ShouldReturnFilteredListOfProducts(GetProductsQuery query)
         {
             var result = await Sender.Send(query);
