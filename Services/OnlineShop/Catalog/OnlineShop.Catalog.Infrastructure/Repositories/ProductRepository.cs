@@ -98,6 +98,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (priceList is null)
             {
+                await _photoRepository.DeletePhoto(uploadResult.PhotoUrl);
                 return null;
             }
 
@@ -107,6 +108,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (priceListLineItem is null)
             {
+                await _photoRepository.DeletePhoto(uploadResult.PhotoUrl);
                 return null;
             }
 
@@ -122,6 +124,8 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (!isSuccess)
             {
+                await _photoRepository.DeletePhoto(uploadResult.PhotoUrl);
+                await _priceListRepository.SplitLineItemFromProduct(product.Id, priceList.Category, cancellationToken);
                 return null;
             }
 
@@ -132,9 +136,14 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> Delete(string productId, CancellationToken cancellationToken)
         {
-            var product = (await _context.Products.FindAsync(
+            var product = await (await _context.Products.FindAsync(
                 Builders<Product>.Filter.Eq(p => p.Id, productId),
-                null, cancellationToken)).Single(cancellationToken);
+                null, cancellationToken)).SingleOrDefaultAsync(cancellationToken);
+
+            if (product is null)
+            {
+                return false; 
+            }
 
             var isSuccesfullySplitedFromPriceList = await _priceListRepository.SplitLineItemFromProduct(productId, product.Category, cancellationToken);
 
@@ -147,7 +156,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
             if (!isSuccesfullyDeletedPhoto)
             {
-                throw new ApplicationException("Cannot delete product due to unsuccesfull photo deletion");
+                throw new ApplicationException("Cannot delete product due to unsuccessful photo deletion");
             }
 
             var result = await _context.Products.DeleteOneAsync(

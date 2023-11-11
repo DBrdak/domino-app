@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CloudinaryDotNet.Actions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Moq;
 using OnlineShop.Catalog.Application.Features.Admin.Products.Commands.DeleteProduct;
 using OnlineShop.Catalog.Application.Features.Admin.Products.Commands.UpdateProduct;
 using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestData;
+using Shared.Domain.Errors;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 {
@@ -20,7 +25,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
         }
 
         [Theory]
-        [ClassData(typeof(UpdateProductTestData.UpdateProductValidTestData))]
+        [ClassData(typeof(ProductTestData.UpdateProductValidTestData))]
         public async Task UpdateProduct_ValidData_ShouldUpdate(int index, string description, bool isWeightSwitchAllowed, decimal? singleWeight, bool isAvailable)
         {
             // Arrange
@@ -29,14 +34,9 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
                 .ToListAsync())
                 .Select(p => p.Id)
                 .ToList();
-            var count = productsId.Count;
             var productToUpdate = (await Context.Products.FindAsync(p => p.Id == productsId[index])).First();
 
-            var sourceImg = File.OpenRead(@"D:\Programownie\Projekty\Domino Projekt\domino-app\Services\OnlineShop\Catalog\Tests\OnlineShop.Catalog.IntegrationTests\FeatureTests\Admin\Products\TestData\exampleImage.jpg");
-            var stream = new MemoryStream();
-            await sourceImg.CopyToAsync(stream);
-            stream.Position = 0;
-            var file = new FormFile(stream, 0, stream.Length, "exampleFile.jpg", "exampleFile.jpg");
+            var file = await ProductTestData.CreateImageFile();
             
             var command = new UpdateProductCommand(
                 new (productToUpdate.Id,
@@ -50,7 +50,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 
             // Act
             var result = await Sender.Send(command);
-            var deletrionResult = await PhotoRepository.DeletePhoto(result.Value.Image.Url);
+            var isPhotoChanged = (await PhotoRepository.GetPhotosUrl()).Any(uri => uri == result.Value.Image.Url);
+            var isPhotoDeleted = await PhotoRepository.DeletePhoto(result.Value.Image.Url);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -62,12 +63,13 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.True(result.Value.Description == description ||
                         (string.IsNullOrWhiteSpace(description) &&
                          result.Value.Description == productToUpdate.Description));
-            Assert.True(deletrionResult);
+            Assert.True(isPhotoChanged);
+            Assert.True(isPhotoDeleted);
         }
 
         [Theory]
-        [ClassData(typeof(UpdateProductTestData.UpdateProductInvalidTestData))]
-        public async Task UpdateProduct_InvalidData_ShouldUpdate(int index, string description, bool isWeightSwitchAllowed, decimal? singleWeight, bool isAvailable)
+        [ClassData(typeof(ProductTestData.UpdateProductInvalidTestData))]
+        public async Task UpdateProduct_InvalidData_ShouldThrowValidationException(int index, string description, bool isWeightSwitchAllowed, decimal? singleWeight, bool isAvailable)
         {
             // Arrange
             var productsId = (await (await Context.Products
@@ -95,11 +97,56 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
                 );
 
             // Act
-            var result = await Sender.Send(command);
-            var deletrionResult = await PhotoRepository.DeletePhoto(result.Value.Image.Url);
+            var sendFunc = async () => await Sender.Send(command);
 
             // Assert
-            Assert.True(deletrionResult);
+            await Assert.ThrowsAsync<ValidationException>(sendFunc);
+        }
+
+        [Fact]
+        public async Task UpdateProduct_InvalidIdType_ShouldThrowValidationException()
+        {
+            // Arrange
+            
+            var command = new UpdateProductCommand(
+                new("productToUpdate.Id",
+                    "description",
+                    "productToUpdate.Image.Url",
+                    false,
+                    null,
+                    true),
+                null
+            );
+
+            // Act
+            var sendFunc = async () => await Sender.Send(command);
+
+            // Assert
+            await Assert.ThrowsAsync<ValidationException>(sendFunc);
+        }
+
+        [Fact]
+        public async Task UpdateProduct_InvalidId_ShouldReturnFailure()
+        {
+            // Arrange
+
+            var command = new UpdateProductCommand(
+                new(ObjectId.GenerateNewId().ToString(),
+                    "description",
+                    "productToUpdate.Image.Url",
+                    false,
+                    null,
+                    true),
+                null
+            );
+
+            // Act
+            var result = await Sender.Send(command);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.True(result.IsFailure);
+            Assert.Throws<InvalidOperationException>(() => result.Value);
         }
     }
 }

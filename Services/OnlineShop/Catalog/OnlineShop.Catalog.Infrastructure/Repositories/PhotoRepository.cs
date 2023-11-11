@@ -75,6 +75,9 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
             return result.Result == "ok";
         }
 
+        public async Task<IEnumerable<string>> GetPhotosUrl() => 
+            (await _cloudinary.ListResourcesAsync()).Resources.ToList().Select(p => p.SecureUrl.AbsoluteUri);
+
         private async Task<PhotoUploadResult?> CheckIsAlreadyUploaded(string tag)
         {
             var resourceList = await _cloudinary.ListResourcesByTagAsync(tag);
