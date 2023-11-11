@@ -13,10 +13,6 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.Update
                 .Must(id => ObjectId.TryParse(id, out _))
                 .WithMessage("Nieprawidłowy format ID");
 
-            RuleFor(x => x.NewValues.Description)
-                .NotEmpty()
-                .WithMessage("Opis jest wymagany.");
-
             RuleFor(x => x.NewValues)
                 .Must(
                     v => (v.IsWeightSwitchAllowed && v.SingleWeight.HasValue) ||
