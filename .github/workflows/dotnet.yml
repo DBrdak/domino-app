@@ -26,9 +26,9 @@ jobs:
     - name: Set Environment Variables
       run: |
         echo "Setting environment variables..."
-        echo "CLOUDINARY_CLOUDNAME=${{ secrets.Cloudinary_CloudName }}" >> $GITHUB_ENV
-        echo "CLOUDINARY_APIKEY=${{ secrets.Cloudinary_ApiKey }}" >> $GITHUB_ENV
-        echo "CLOUDINARY_APISECRET=${{ secrets.Cloudinary_ApiSecret }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_CLOUDNAME=${{ secrets.CLOUDINARY_CLOUDNAME }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}" >> $GITHUB_ENV
       
     - name: Build
       run: dotnet build domino-app.sln --no-restore
