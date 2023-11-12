@@ -18,7 +18,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
             {
                 sourceImg = File.OpenRead("../../../FeatureTests/Admin/Products/TestData/exampleImage.jpg");
             }
-            catch (IOException)
+            catch (FileNotFoundException)
             {
                 sourceImg = File.OpenRead("/home/runner/work/domino-app/domino-app/Services/OnlineShop/Catalog/Tests/OnlineShop.Catalog.IntegrationTests/FeatureTests/Admin/Products/TestData/exampleImage.jpg");
             }
