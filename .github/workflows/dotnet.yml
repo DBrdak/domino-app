@@ -11,9 +11,9 @@ on:
 
 jobs:
   build_test:
-
     runs-on: ubuntu-latest
-
+    environment: 
+      name: Development
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -22,6 +22,14 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore domino-app.sln
+      
+    - name: Set Environment Variables
+      run: |
+        echo "Setting environment variables..."
+        echo "CLOUDINARY_CLOUDNAME=${{ secrets.Cloudinary_CloudName }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_APIKEY=${{ secrets.Cloudinary_ApiKey }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_APISECRET=${{ secrets.Cloudinary_ApiSecret }}" >> $GITHUB_ENV
+      
     - name: Build
       run: dotnet build domino-app.sln --no-restore
     - name: Test
