@@ -34,7 +34,6 @@ namespace OnlineShop.Catalog.IntegrationTests
             // TODO Przekminiæ u¿ycie github secrets
             var secretConfig = new ConfigurationBuilder()
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
-                .AddEnvironmentVariables("GITHUB_ENV")
                 .Build();
 
             var configuration = BuildConfigurationForMongo();
@@ -65,6 +64,17 @@ namespace OnlineShop.Catalog.IntegrationTests
                     options =>
                     {
                         secretConfig.GetSection("Cloudinary").Bind(options);
+
+                        if (!string.IsNullOrWhiteSpace(options.CloudName) &&
+                            !string.IsNullOrWhiteSpace(options.ApiKey) &&
+                            !string.IsNullOrWhiteSpace(options.ApiSecret))
+                        {
+                            return;
+                        }
+
+                        options.CloudName = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUDNAME");
+                        options.ApiKey = Environment.GetEnvironmentVariable("CLOUDINARY_APIKEY");
+                        options.ApiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_APISECRET");
                     });
 
                 var photoRepositoryScope = services.SingleOrDefault(s => s.ServiceType == typeof(IPhotoRepository)) ??
