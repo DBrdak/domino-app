@@ -32,6 +32,12 @@ namespace OnlineShop.Catalog.Domain.Shared
                    _engValue == other._engValue;
         }
 
+        public bool EqualsValue(string value)
+        {
+            return Value == value ||
+                   _engValue == value;
+        }
+
         public override int GetHashCode()
         {
             return HashCode.Combine(_engValue, Value);

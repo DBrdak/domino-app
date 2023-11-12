@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OnlineShop.Catalog.Application.Features.Customer.Queries.GetProducts;
 using OnlineShop.Catalog.Domain.Shared;
 using Shared.Domain.Exceptions;
+using Shared.Domain.ResponseTypes;
 
 namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Customer.Queries
 {
@@ -38,18 +39,26 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Customer.Queries
         [ClassData(typeof(GetProductsQueryInvalidTestData))]
         public async void GetProductsAsCustomer_InvalidQuery_ShouldReturnNonFilteredListOfProducts(GetProductsQuery query)
         {
-            var result = await Sender.Send(query);
+            var resultFunc = async () => await Sender.Send(query);
 
-            Assert.NotNull(result);
-            Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);
+            if (query.PageSize < 0)
+            {
+                await Assert.ThrowsAsync<DomainException<PageSize>>(resultFunc);
+            }
+            else if (query.Page <= 0)
+            {
+                await Assert.ThrowsAsync<DomainException<Page>>(resultFunc);
+            }
+            else
+            {
+                var result = await resultFunc.Invoke();
 
-            if(query.Page < 0)
-                Assert.Equal(result.Value.Page, query.Page);
-            if(query.PageSize < 0)
-                Assert.Equal(result.Value.PageSize, query.PageSize);
-            if(query.MinPrice < 0 || query.MaxPrice < 0 || (query.MaxPrice < query.MinPrice)) 
-                Assert.False(result.Value.Items.All(i => i.Price.Amount >= query.MinPrice && i.Price.Amount <= query.MaxPrice));
+                Assert.NotNull(result);
+                Assert.True(result.IsSuccess);
+                Assert.NotNull(result.Value);
+                if (query.MinPrice < 0 || query.MaxPrice < 0 || (query.MaxPrice < query.MinPrice))
+                    Assert.False(result.Value.Items.All(i => i.Price.Amount >= query.MinPrice && i.Price.Amount <= query.MaxPrice));
+            }
         }
 
         [Fact]

@@ -31,6 +31,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.False(result.IsFailure);
             Assert.NotNull(result.Value);
             Assert.IsType<List<Product>>(result.Value);
+
+            
         }
 
     }

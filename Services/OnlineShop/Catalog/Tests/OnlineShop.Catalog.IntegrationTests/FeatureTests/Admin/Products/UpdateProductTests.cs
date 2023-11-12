@@ -65,6 +65,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
                          result.Value.Description == productToUpdate.Description));
             Assert.True(isPhotoChanged);
             Assert.True(isPhotoDeleted);
+
+            
         }
 
         [Theory]
@@ -101,6 +103,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 
             // Assert
             await Assert.ThrowsAsync<ValidationException>(sendFunc);
+
+            
         }
 
         [Fact]
@@ -123,6 +127,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 
             // Assert
             await Assert.ThrowsAsync<ValidationException>(sendFunc);
+
+            
         }
 
         [Fact]
@@ -147,6 +153,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.False(result.IsSuccess);
             Assert.True(result.IsFailure);
             Assert.Throws<InvalidOperationException>(() => result.Value);
+
+            
         }
     }
 }

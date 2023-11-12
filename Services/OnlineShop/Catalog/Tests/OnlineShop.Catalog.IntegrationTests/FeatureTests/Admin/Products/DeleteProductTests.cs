@@ -38,6 +38,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.True(isProductDeleted);
             Assert.True(isPhotoDeleted);
             Assert.True(isSplittedFromPriceList);
+
+            
         }
 
         [Fact]
@@ -53,6 +55,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.False(result.IsSuccess);
             Assert.True(result.IsFailure);
             Assert.NotEqual(result.Error, Error.None);
+
+            
         }
     }
 }
