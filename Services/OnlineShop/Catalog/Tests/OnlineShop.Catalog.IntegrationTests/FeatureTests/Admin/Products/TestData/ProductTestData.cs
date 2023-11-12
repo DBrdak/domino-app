@@ -12,7 +12,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
     {
         internal static async Task<FormFile> CreateImageFile()
         {
-            var sourceImg = File.OpenRead(@"D:\Programownie\Projekty\Domino Projekt\domino-app\Services\OnlineShop\Catalog\Tests\OnlineShop.Catalog.IntegrationTests\FeatureTests\Admin\Products\TestData\exampleImage.jpg");
+            var sourceImg = File.OpenRead(@"..\..\..\FeatureTests\Admin\Products\TestData\exampleImage.jpg");
             var stream = new MemoryStream();
             await sourceImg.CopyToAsync(stream);
             stream.Position = 0;
