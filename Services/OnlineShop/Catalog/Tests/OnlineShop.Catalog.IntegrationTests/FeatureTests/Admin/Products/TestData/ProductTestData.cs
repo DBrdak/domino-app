@@ -12,7 +12,17 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
     {
         internal static async Task<FormFile> CreateImageFile()
         {
-            var sourceImg = File.OpenRead("../../../FeatureTests/Admin/Products/TestData/exampleImage.jpg");
+            FileStream sourceImg;
+
+            try
+            {
+                sourceImg = File.OpenRead("../../../FeatureTests/Admin/Products/TestData/exampleImage.jpg");
+            }
+            catch (IOException)
+            {
+                sourceImg = File.OpenRead("/home/runner/work/domino-app/domino-app/Services/OnlineShop/Catalog/Tests/OnlineShop.Catalog.IntegrationTests/FeatureTests/Admin/Products/TestData/exampleImage.jpg");
+            }
+
             var stream = new MemoryStream();
             await sourceImg.CopyToAsync(stream);
             stream.Position = 0;
