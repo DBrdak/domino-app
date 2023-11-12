@@ -20,7 +20,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
             }
             catch (FileNotFoundException)
             {
-                sourceImg = File.OpenRead("/home/runner/work/domino-app/domino-app/Services/OnlineShop/Catalog/Tests/OnlineShop.Catalog.IntegrationTests/FeatureTests/Admin/Products/TestData/exampleImage.jpg");
+                sourceImg = File.OpenRead("home/runner/work/domino-app/domino-app/Services/OnlineShop/Catalog/Tests/OnlineShop.Catalog.IntegrationTests/FeatureTests/Admin/Products/TestData/exampleImage.jpg");
             }
 
             var stream = new MemoryStream();
