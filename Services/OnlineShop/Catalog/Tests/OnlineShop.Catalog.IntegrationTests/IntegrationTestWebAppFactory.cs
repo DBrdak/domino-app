@@ -31,9 +31,10 @@ namespace OnlineShop.Catalog.IntegrationTests
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            // TODO Przekminiæ u¿ycie github secrets
             var secretConfig = new ConfigurationBuilder()
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
-                .AddEnvironmentVariables()
+                .AddEnvironmentVariables("GITHUB_ENV")
                 .Build();
 
             var configuration = BuildConfigurationForMongo();
@@ -71,7 +72,6 @@ namespace OnlineShop.Catalog.IntegrationTests
 
                 services.AddSingleton(dbContext);
                 services.AddSingleton(photoRepositoryScope);
-                //services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
             });
         }
 
