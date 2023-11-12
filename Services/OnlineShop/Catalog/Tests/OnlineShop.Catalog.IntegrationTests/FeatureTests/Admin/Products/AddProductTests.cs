@@ -62,6 +62,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.True(isPhotoUploaded);
             Assert.True(isAggregatedWithPriceList);
             Assert.True(isPriceAttachedCorrectly);
+
+            
         }
 
         [Theory]
@@ -79,6 +81,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 
             // Assert
             await Assert.ThrowsAsync<ValidationException>(createFunc);
+
+            
         }
 
         [Fact]
@@ -94,6 +98,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 
             // Assert
             await Assert.ThrowsAsync<ValidationException>(createFunc);
+
+            
         }
 
         [Fact]
@@ -111,6 +117,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.False(result.IsSuccess);
             Assert.NotEqual(result.Error, Error.None);
             Assert.Throws<InvalidOperationException>(() => result.Value);
+
+            
         }
 
         [Fact]
@@ -129,6 +137,8 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
             Assert.False(result.IsSuccess);
             Assert.NotEqual(result.Error, Error.None);
             Assert.Throws<InvalidOperationException>(() => result.Value);
+
+            
         }
     }
 }

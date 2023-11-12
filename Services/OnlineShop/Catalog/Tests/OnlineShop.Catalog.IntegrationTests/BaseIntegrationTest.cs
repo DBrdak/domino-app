@@ -1,6 +1,7 @@
 ﻿using CloudinaryDotNet;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using OnlineShop.Catalog.Domain.PriceLists;
 using OnlineShop.Catalog.Domain.Products;
 using OnlineShop.Catalog.Domain.Shared;
@@ -32,6 +33,14 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
         {
             SeedDatabase();
         }
+    }
+
+    protected void CleanAndSeedDatabase()
+    {
+        Context.PriceLists.DeleteManyAsync(FilterDefinition<PriceList>.Empty);
+        Context.Products.DeleteManyAsync(FilterDefinition<Product>.Empty);
+
+        SeedDatabase();
     }
 
     private void SeedDatabase()

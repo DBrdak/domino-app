@@ -17,9 +17,8 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.AddB
 
             RuleFor(x => x.Category)
                 .NotEmpty().WithMessage("Kategoria jest wymagana.")
-                .Must(c => Category.All.Contains(Category.FromValue(c)))
-                .WithMessage($"Kategoria musi mieć jedną z wartości: [{string.Join(',', Category.All.Select(c => c.Value))}]")
-                .MaximumLength(100);
+                .Must(c => Category.All.Any(category => category.EqualsValue(c)))
+                .WithMessage($"Kategoria musi mieć jedną z wartości: [{string.Join(',', Category.All.Select(c => c.Value))}]");
         }
     }
 }

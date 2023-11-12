@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using Castle.Components.DictionaryAdapter.Xml;
 using Castle.Core.Configuration;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -19,25 +20,25 @@ using OnlineShop.Catalog.Infrastructure.Repositories;
 using Shared.Domain.Photo;
 using Testcontainers.MongoDb;
 using Xunit.Sdk;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace OnlineShop.Catalog.IntegrationTests
 {
     public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         private readonly MongoDbContainer _mongoDbContainer =
-            new MongoDbBuilder().WithName("mongodb").WithPortBinding(27017).Build();
+            new MongoDbBuilder().WithName($"mongodb.{Guid.NewGuid()}").Build();
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("D:/Programownie/Projekty/Domino Projekt/domino-app/Services/OnlineShop/Catalog/Tests/OnlineShop.Catalog.IntegrationTests/Configurations/testsettings.json", optional: false, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
             var secretConfig = new ConfigurationBuilder()
                 .AddUserSecrets(Assembly.GetExecutingAssembly())
                 .AddEnvironmentVariables()
                 .Build();
-            builder.UseConfiguration(config);
+
+            var configuration = BuildConfigurationForMongo();
+
+            builder.UseConfiguration(configuration);
             builder.UseConfiguration(secretConfig);
 
             builder.ConfigureTestServices(services =>
@@ -57,22 +58,20 @@ namespace OnlineShop.Catalog.IntegrationTests
                     services.Remove(cloudinaryDescriptor);
                 }
 
-                var dbContext = new CatalogContext(config);
+                var dbContext = new CatalogContext(configuration);
+
                 services.Configure<CloudinarySettings>(
                     options =>
                     {
                         secretConfig.GetSection("Cloudinary").Bind(options);
                     });
 
-                var photoRepositoryScope = services.SingleOrDefault(s => s.ServiceType == typeof(IPhotoRepository));
-                if (photoRepositoryScope is null)
-                {
-                    throw new TestClassException("Cannot access photo repository scope");
-                }
+                var photoRepositoryScope = services.SingleOrDefault(s => s.ServiceType == typeof(IPhotoRepository)) ??
+                                           throw new TestClassException("Cannot access photo repository scope");
 
                 services.AddSingleton(dbContext);
                 services.AddSingleton(photoRepositoryScope);
-                services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
+                //services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(Program)));
             });
         }
 
@@ -81,5 +80,36 @@ namespace OnlineShop.Catalog.IntegrationTests
 
         public Task DisposeAsync()
             => _mongoDbContainer.DisposeAsync().AsTask();
+
+        private string CreateJsonConfiguration(object dataBaseSettings)
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(new { dataBaseSettings });
+
+            return json;
+        }
+
+        private IConfiguration BuildConfigurationForMongo()
+        {
+            var connectionString = _mongoDbContainer.GetConnectionString();
+            var dbName = "CatalogDb";
+            var collections = new
+            {
+                Products = "Products",
+                PriceLists = "PriceLists"
+            };
+
+            var databaseSettings = new
+            {
+                ConnectionString = connectionString,
+                DatabaseName = dbName,
+                Collections = collections
+            };
+
+            string json = CreateJsonConfiguration(databaseSettings);
+
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonStream(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)));
+            return builder.Build();
+        }
     }
 }
