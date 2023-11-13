@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing;
 using Microsoft.AspNetCore.Http;
 using OnlineShop.Catalog.Domain.Products;
+using System.Drawing;
+using System.Drawing.Imaging;
+using Rectangle = System.Drawing.Rectangle;
+using System.IO;
 
 namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestData
 {
@@ -12,10 +17,21 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
     {
         internal static async Task<FormFile> CreateImageFile()
         {
-            await using var sourceImg = File.Create("exampleImage.jpg");
+            var width = 500;
+            var height = 300;
+            using var image = new Bitmap(width, height);
 
-            using var stream = new MemoryStream();
-            await sourceImg.CopyToAsync(stream);
+            var graphics = Graphics.FromImage(image);
+
+            var pen = new Pen(Color.Red);
+            var rectangle = new Rectangle(50, 50, 200, 100);
+            graphics.DrawRectangle(pen, rectangle);
+
+            var stream = new MemoryStream();
+            image.Save(stream,  ImageFormat.Jpeg);
+            byte[] imageData = stream.ToArray();
+            // Optionally, you can save the memory stream to a file
+            await File.WriteAllBytesAsync("image.jpg", imageData);
             stream.Position = 0;
             var file = new FormFile(stream, 0, stream.Length, "exampleFile.jpg", "exampleFile.jpg");
             
