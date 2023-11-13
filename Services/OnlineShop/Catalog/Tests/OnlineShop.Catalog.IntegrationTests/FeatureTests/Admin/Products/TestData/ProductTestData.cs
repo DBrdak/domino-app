@@ -10,6 +10,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Rectangle = System.Drawing.Rectangle;
 using System.IO;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using Color = SixLabors.ImageSharp.Color;
+using RectangleF = SixLabors.ImageSharp.RectangleF;
 
 namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestData
 {
@@ -17,18 +24,12 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
     {
         internal static async Task<FormFile> CreateImageFile()
         {
-            var width = 500;
-            var height = 300;
-            using var image = new Bitmap(width, height);
+            using var image = new Image<Rgba32>(800, 600);
 
-            var graphics = Graphics.FromImage(image);
-
-            var pen = new Pen(Color.Red);
-            var rectangle = new Rectangle(50, 50, 200, 100);
-            graphics.DrawRectangle(pen, rectangle);
+            image.Mutate(ctx => ctx.Draw(new DrawingOptions(), Color.Azure, 2, RectangleF.Empty));
 
             var stream = new MemoryStream();
-            image.Save(stream,  ImageFormat.Jpeg);
+            image.Save(stream, new JpegEncoder());
             byte[] imageData = stream.ToArray();
             // Optionally, you can save the memory stream to a file
             await File.WriteAllBytesAsync("image.jpg", imageData);
