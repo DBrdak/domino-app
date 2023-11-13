@@ -35,14 +35,6 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
         }
     }
 
-    protected void CleanAndSeedDatabase()
-    {
-        Context.PriceLists.DeleteManyAsync(FilterDefinition<PriceList>.Empty);
-        Context.Products.DeleteManyAsync(FilterDefinition<Product>.Empty);
-
-        SeedDatabase();
-    }
-
     private void SeedDatabase()
     {
         var factory = new DocumentFactory();

@@ -79,14 +79,9 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
                 .ToListAsync())
                 .Select(p => p.Id)
                 .ToList();
-            var count = productsId.Count;
             var productToUpdate = (await Context.Products.FindAsync(p => p.Id == productsId[index])).First();
 
-            var sourceImg = File.OpenRead(@"D:\Programownie\Projekty\Domino Projekt\domino-app\Services\OnlineShop\Catalog\Tests\OnlineShop.Catalog.IntegrationTests\FeatureTests\Admin\Products\TestData\exampleImage.jpg");
-            var stream = new MemoryStream();
-            await sourceImg.CopyToAsync(stream);
-            stream.Position = 0;
-            var file = new FormFile(stream, 0, stream.Length, "exampleFile.jpg", "exampleFile.jpg");
+            var file = await ProductTestData.CreateImageFile();
 
             var command = new UpdateProductCommand(
                 new("productToUpdate.Id",

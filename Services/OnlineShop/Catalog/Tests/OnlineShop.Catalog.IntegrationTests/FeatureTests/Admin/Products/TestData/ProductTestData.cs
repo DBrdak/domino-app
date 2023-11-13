@@ -3,8 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing;
 using Microsoft.AspNetCore.Http;
 using OnlineShop.Catalog.Domain.Products;
+using System.Drawing;
+using System.Drawing.Imaging;
+using Rectangle = System.Drawing.Rectangle;
+using System.IO;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using Color = SixLabors.ImageSharp.Color;
+using RectangleF = SixLabors.ImageSharp.RectangleF;
 
 namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestData
 {
@@ -12,9 +24,15 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
     {
         internal static async Task<FormFile> CreateImageFile()
         {
-            var sourceImg = File.OpenRead(@"D:\Programownie\Projekty\Domino Projekt\domino-app\Services\OnlineShop\Catalog\Tests\OnlineShop.Catalog.IntegrationTests\FeatureTests\Admin\Products\TestData\exampleImage.jpg");
+            using var image = new Image<Rgba32>(800, 600);
+
+            image.Mutate(ctx => ctx.Draw(new DrawingOptions(), Color.Azure, 2, RectangleF.Empty));
+
             var stream = new MemoryStream();
-            await sourceImg.CopyToAsync(stream);
+            image.Save(stream, new JpegEncoder());
+            byte[] imageData = stream.ToArray();
+            // Optionally, you can save the memory stream to a file
+            await File.WriteAllBytesAsync("image.jpg", imageData);
             stream.Position = 0;
             var file = new FormFile(stream, 0, stream.Length, "exampleFile.jpg", "exampleFile.jpg");
             
