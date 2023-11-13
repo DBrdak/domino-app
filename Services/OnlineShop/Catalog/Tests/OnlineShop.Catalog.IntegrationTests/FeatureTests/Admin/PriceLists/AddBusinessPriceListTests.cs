@@ -25,7 +25,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.PriceLists
 
             // Act
             var result = await Sender.Send(command);
-            var isAppendedToDb = (await Context.PriceLists.FindAsync(p => p.Name == command.Name)).FirstOrDefault() is not null;
+            var isAppendedToDb = (await Context.PriceLists.FindAsync(p => p.Name == command.Name)).ToList() is not null;
 
             // Assert
             Assert.True(result.IsSuccess);

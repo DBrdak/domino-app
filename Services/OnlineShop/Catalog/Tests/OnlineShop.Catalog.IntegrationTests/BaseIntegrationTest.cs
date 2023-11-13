@@ -41,23 +41,28 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
 
         var priceLists = factory.GetPrefabricatedPriceLists();
         var products = factory.GetPrefabricatedProducts();
+        var businessPriceLists = factory.GetPrefabricatedBusinessPriceLists();
 
         Context.PriceLists.InsertMany(priceLists);
         Context.Products.InsertMany(products);
+        Context.PriceLists.InsertMany(businessPriceLists);
     }
 
     public class DocumentFactory
     {
         public List<Product> GetPrefabricatedProducts() => _products;
         public List<PriceList> GetPrefabricatedPriceLists() => _priceLists;
+        public List<PriceList> GetPrefabricatedBusinessPriceLists() => _businessPriceLists;
 
         private readonly List<Product> _products;
         private readonly List<PriceList> _priceLists;
+        private readonly List<PriceList> _businessPriceLists;
 
         public DocumentFactory()
         {
             _priceLists = CreatePriceLists();
             _products = CreateProducts();
+            _businessPriceLists = CreateBusinessPriceLists();
         }
 
         private List<Product> CreateProducts()
@@ -114,6 +119,17 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
                             ));
                     }
                 });
+            return priceLists;
+        }
+
+        private List<PriceList> CreateBusinessPriceLists()
+        {
+            var priceLists = new List<PriceList>()
+            {
+                PriceList.CreateBusiness("Cennik hurtowy wędlin MiniButcher", "MiniButcher", Category.Sausage),
+                PriceList.CreateBusiness("Cennik hurtowy mięsa MiniButcher", "MiniButcher", Category.Meat)
+            };
+
             return priceLists;
         }
     }
