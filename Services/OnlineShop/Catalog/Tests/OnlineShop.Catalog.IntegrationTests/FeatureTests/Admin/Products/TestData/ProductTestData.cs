@@ -29,10 +29,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
             image.Mutate(ctx => ctx.Draw(new DrawingOptions(), Color.Azure, 2, RectangleF.Empty));
 
             var stream = new MemoryStream();
-            image.Save(stream, new JpegEncoder());
-            byte[] imageData = stream.ToArray();
-            // Optionally, you can save the memory stream to a file
-            await File.WriteAllBytesAsync("image.jpg", imageData);
+            await image.SaveAsync(stream, new JpegEncoder());
             stream.Position = 0;
             var file = new FormFile(stream, 0, stream.Length, "exampleFile.jpg", "exampleFile.jpg");
             

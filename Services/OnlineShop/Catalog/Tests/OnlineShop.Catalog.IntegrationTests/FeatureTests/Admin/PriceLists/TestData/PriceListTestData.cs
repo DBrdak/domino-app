@@ -23,7 +23,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.PriceLists.Test
             public AddLineItemInvalidTestData()
             {
                 Add(0, "", new Money(12.5m, Currency.Pln, Unit.Kg));
-                Add(1, "new item 2", null);
+                Add(1, "new item 3", null);
             }
         }
     }

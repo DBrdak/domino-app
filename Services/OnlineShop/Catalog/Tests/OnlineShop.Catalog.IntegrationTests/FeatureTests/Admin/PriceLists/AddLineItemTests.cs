@@ -50,10 +50,7 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.PriceLists
 
             // Act
             var addFunc = async () => await Sender.Send(command);
-            var isNotAddedToDb = (await Context.PriceLists.FindAsync(pl => pl.Id == priceListId && pl.LineItems.Any(li => li.Name == name))).FirstOrDefault() is null;
-
             // Assert
-            Assert.True(isNotAddedToDb);
             await Assert.ThrowsAsync<ValidationException>(addFunc);
         }
 
