@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -159,8 +160,26 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
 
         public async Task<bool> UploadPriceListFile(string priceListId, IFormFile priceListFile, CancellationToken cancellationToken)
         {
-            await using var stream = priceListFile.OpenReadStream();
-            var workbook = new XLWorkbook(stream);
+            IXLWorkbook workbook;
+
+            try
+            {
+                await using var stream = priceListFile.OpenReadStream();
+                workbook = new XLWorkbook(stream);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Failed to open XLSX file during upload. Price list ID: {priceListId}, file: {priceListFile}");
+                return false;
+            }
+
+            var isWorksheetValid = workbook.Worksheets.Count(ws => ws.Name == "Cennik") == 1;
+
+            if (!isWorksheetValid)
+            {
+                return false;
+            }
+
             workbook.TryGetWorksheet("Cennik", out var worksheet);
 
             if (worksheet is null)

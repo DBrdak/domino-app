@@ -25,10 +25,6 @@ namespace OnlineShop.Catalog.Application.Features.Admin.PriceLists.Commands.Upda
             RuleFor(x => x.NewPrice.Amount)
                 .GreaterThan(0).WithMessage("Cena pozycji musi być większa od 0");
 
-            RuleFor(x => x.NewPrice.Currency)
-                .Must(currency => Currency.All.Contains(currency)).WithMessage(
-                    $"Waluta musi mieć jedną z wartości: [{string.Join(',', Currency.All.Select(u => u.Code))}]");
-
             RuleFor(x => x.NewPrice.Unit)
                 .Must(unit => Unit.All.Contains(unit)).WithMessage(
                     $"Jednostka wagi musi mieć jedną z wartości: [{string.Join(',', Unit.All.Select(u => u.Code))}]");
