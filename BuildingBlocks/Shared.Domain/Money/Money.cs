@@ -60,6 +60,16 @@ namespace Shared.Domain.Money
         public static Money operator *(Money first, decimal secondAmount) =>
             new(first.Amount * secondAmount, first.Currency, first.Unit);
 
+        public static Money operator *(Money price, Quantity.Quantity quantity)
+        {
+            if (quantity.Unit != price.Unit)
+            {
+                throw new DomainException<Money>("Price and quantity units must be equal when multiplying");
+            }
+
+            return new (price.Amount * quantity.Value, price.Currency, price.Unit);
+        }
+
         public override string ToString() => Unit is null ? 
             $"{Amount} {Currency.Code}" :
             $"{Amount} {Currency.Code}/{Unit.Code}";
