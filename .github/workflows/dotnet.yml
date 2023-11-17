@@ -1,0 +1,36 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    environment: 
+      name: Development
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore domino-app.sln
+      
+    - name: Set Environment Variables
+      run: |
+        echo "Setting environment variables..."
+        echo "CLOUDINARY_CLOUDNAME=${{ secrets.CLOUDINARY_CLOUDNAME }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_APIKEY=${{ secrets.CLOUDINARY_APIKEY }}" >> $GITHUB_ENV
+        echo "CLOUDINARY_APISECRET=${{ secrets.CLOUDINARY_APISECRET }}" >> $GITHUB_ENV
+      
+    - name: Build
+      run: dotnet build domino-app.sln --no-restore
+    - name: Test
+      run: dotnet test domino-app.sln --no-build --verbosity normal
