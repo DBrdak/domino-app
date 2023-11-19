@@ -48,6 +48,7 @@ namespace OnlineShop.Order.Infrastructure.Repositories
         public async Task<bool> CancelOrder(string orderId)
         {
             var order = await _context.Set<OnlineOrder>()
+                .Include(o => o.Status)
                 .SingleOrDefaultAsync(o => o.Id == orderId);
 
             if (order == null)
