@@ -12,26 +12,26 @@ services:
     image: postgres
 
 #Microservices
-  onlineshop.catalog.api:
+  onlineshop-catalog-api:
     image: ${DOCKER_REGISTRY-}onlineshopcatalogapi
     build:
       context: .
       dockerfile: Services/OnlineShop/Catalog/OnlineShop.Catalog.API/Dockerfile
 
-  onlineshop.shoppingcart.api:
+  onlineshop-shoppingcart-api:
     image: ${DOCKER_REGISTRY-}onlineshopshoppingcartapi
     build:
       context: .
       dockerfile: Services/OnlineShop/ShoppingCart/OnlineShop.ShoppingCart.API/Dockerfile
 
 
-  onlineshop.order.api:
+  onlineshop-order-api:
     image: ${DOCKER_REGISTRY-}onlineshoporderapi
     build:
       context: .
       dockerfile: Services/OnlineShop/Order/OnlineShop.Order.API/Dockerfile
 
-  shops.api:
+  shops-api:
     image: ${DOCKER_REGISTRY-}shopsapi
     build:
       context: .
