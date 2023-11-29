@@ -6,7 +6,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -19,7 +19,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -32,7 +32,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -45,7 +45,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -58,7 +58,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -71,7 +71,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -84,7 +84,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -97,7 +97,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -110,7 +110,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -123,7 +123,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -136,7 +136,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -149,7 +149,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.catalog.api",
+          "Host": "onlineshop-catalog-api",
           "Port": "80"
         }
       ],
@@ -163,7 +163,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.shoppingcart.api",
+          "Host": "onlineshop-shoppingcart-api",
           "Port": "80"
         }
       ],
@@ -176,7 +176,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.shoppingcart.api",
+          "Host": "onlineshop-shoppingcart-api",
           "Port": "80"
         }
       ],
@@ -189,7 +189,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.shoppingcart.api",
+          "Host": "onlineshop-shoppingcart-api",
           "Port": "80"
         }
       ],
@@ -203,7 +203,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.order.api",
+          "Host": "onlineshop-order-api",
           "Port": "80"
         }
       ],
@@ -216,7 +216,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.order.api",
+          "Host": "onlineshop-order-api",
           "Port": "80"
         }
       ],
@@ -229,7 +229,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.order.api",
+          "Host": "onlineshop-order-api",
           "Port": "80"
         }
       ],
@@ -242,7 +242,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.order.api",
+          "Host": "onlineshop-order-api",
           "Port": "80"
         }
       ],
@@ -255,7 +255,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "onlineshop.order.api",
+          "Host": "onlineshop-order-api",
           "Port": "80"
         }
       ],
@@ -269,7 +269,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "shops.api",
+          "Host": "shops-api",
           "Port": "80"
         }
       ],
@@ -282,7 +282,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "shops.api",
+          "Host": "shops-api",
           "Port": "80"
         }
       ],
@@ -295,7 +295,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "shops.api",
+          "Host": "shops-api",
           "Port": "80"
         }
       ],

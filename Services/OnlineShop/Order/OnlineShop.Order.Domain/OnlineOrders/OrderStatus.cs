@@ -6,7 +6,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
     {
         public string StatusMessage { get; set; }
 
-        private OrderStatus()
+        public OrderStatus()
         { }
 
         private OrderStatus(string status)

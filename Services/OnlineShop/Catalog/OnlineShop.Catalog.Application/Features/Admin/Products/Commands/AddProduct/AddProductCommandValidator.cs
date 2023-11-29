@@ -15,7 +15,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.AddPro
 
             RuleFor(x => x.Values)
                 .Must(x => (x.IsWeightSwitchAllowed && x.SingleWeight.HasValue) ||
-                           (!x.IsWeightSwitchAllowed && !x.SingleWeight.HasValue))
+                           (!x.IsWeightSwitchAllowed))
                 .WithMessage("Wartość wagi jednej jednostki produktu jest wymagana");
 
             RuleFor(x => x.PhotoFile)

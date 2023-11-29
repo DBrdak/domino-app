@@ -56,7 +56,7 @@ namespace OnlineShop.Order.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("OnlineShop.Order.Domain.OrderItems.OrderItem", b =>
@@ -76,52 +76,12 @@ namespace OnlineShop.Order.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder", b =>
                 {
-                    b.OwnsOne("Shared.Domain.Money.Money", "TotalPrice", b1 =>
-                        {
-                            b1.Property<string>("OnlineOrderId")
-                                .HasColumnType("text");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Unit")
-                                .HasColumnType("text");
-
-                            b1.HasKey("OnlineOrderId");
-
-                            b1.ToTable("Orders");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OnlineOrderId");
-                        });
-
-                    b.OwnsOne("OnlineShop.Order.Domain.OnlineOrders.OrderStatus", "Status", b1 =>
-                        {
-                            b1.Property<string>("OnlineOrderId")
-                                .HasColumnType("text");
-
-                            b1.Property<string>("StatusMessage")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("OnlineOrderId");
-
-                            b1.ToTable("Orders");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OnlineOrderId");
-                        });
-
-                    b.OwnsOne("Shared.Domain.DateTimeRange.DateTimeRange", "DeliveryDate", b1 =>
+                    b.OwnsOne("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder.DeliveryDate#Shared.Domain.DateTimeRange.DateTimeRange", "DeliveryDate", b1 =>
                         {
                             b1.Property<string>("OnlineOrderId")
                                 .HasColumnType("text");
@@ -134,13 +94,13 @@ namespace OnlineShop.Order.Infrastructure.Migrations
 
                             b1.HasKey("OnlineOrderId");
 
-                            b1.ToTable("Orders");
+                            b1.ToTable("Orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OnlineOrderId");
                         });
 
-                    b.OwnsOne("Shared.Domain.Location.Location", "DeliveryLocation", b1 =>
+                    b.OwnsOne("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder.DeliveryLocation#Shared.Domain.Location.Location", "DeliveryLocation", b1 =>
                         {
                             b1.Property<string>("OnlineOrderId")
                                 .HasColumnType("text");
@@ -159,7 +119,47 @@ namespace OnlineShop.Order.Infrastructure.Migrations
 
                             b1.HasKey("OnlineOrderId");
 
-                            b1.ToTable("Orders");
+                            b1.ToTable("Orders", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("OnlineOrderId");
+                        });
+
+                    b.OwnsOne("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder.Status#OnlineShop.Order.Domain.OnlineOrders.OrderStatus", "Status", b1 =>
+                        {
+                            b1.Property<string>("OnlineOrderId")
+                                .HasColumnType("text");
+
+                            b1.Property<string>("StatusMessage")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("OnlineOrderId");
+
+                            b1.ToTable("Orders", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("OnlineOrderId");
+                        });
+
+                    b.OwnsOne("OnlineShop.Order.Domain.OnlineOrders.OnlineOrder.TotalPrice#Shared.Domain.Money.Money", "TotalPrice", b1 =>
+                        {
+                            b1.Property<string>("OnlineOrderId")
+                                .HasColumnType("text");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Unit")
+                                .HasColumnType("text");
+
+                            b1.HasKey("OnlineOrderId");
+
+                            b1.ToTable("Orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OnlineOrderId");
@@ -186,7 +186,7 @@ namespace OnlineShop.Order.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shared.Domain.Money.Money", "Price", b1 =>
+                    b.OwnsOne("OnlineShop.Order.Domain.OrderItems.OrderItem.Price#Shared.Domain.Money.Money", "Price", b1 =>
                         {
                             b1.Property<string>("OrderItemId")
                                 .HasColumnType("text");
@@ -203,36 +203,13 @@ namespace OnlineShop.Order.Infrastructure.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");
                         });
 
-                    b.OwnsOne("Shared.Domain.Money.Money", "TotalValue", b1 =>
-                        {
-                            b1.Property<string>("OrderItemId")
-                                .HasColumnType("text");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Unit")
-                                .HasColumnType("text");
-
-                            b1.HasKey("OrderItemId");
-
-                            b1.ToTable("OrderItems");
-
-                            b1.WithOwner()
-                                .HasForeignKey("OrderItemId");
-                        });
-
-                    b.OwnsOne("Shared.Domain.Quantity.Quantity", "Quantity", b1 =>
+                    b.OwnsOne("OnlineShop.Order.Domain.OrderItems.OrderItem.Quantity#Shared.Domain.Quantity.Quantity", "Quantity", b1 =>
                         {
                             b1.Property<string>("OrderItemId")
                                 .HasColumnType("text");
@@ -246,7 +223,30 @@ namespace OnlineShop.Order.Infrastructure.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItems", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
+                        });
+
+                    b.OwnsOne("OnlineShop.Order.Domain.OrderItems.OrderItem.TotalValue#Shared.Domain.Money.Money", "TotalValue", b1 =>
+                        {
+                            b1.Property<string>("OrderItemId")
+                                .HasColumnType("text");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Unit")
+                                .HasColumnType("text");
+
+                            b1.HasKey("OrderItemId");
+
+                            b1.ToTable("OrderItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");

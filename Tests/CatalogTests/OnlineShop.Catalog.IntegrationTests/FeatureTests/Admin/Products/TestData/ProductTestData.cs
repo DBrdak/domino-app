@@ -70,7 +70,6 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products.TestDa
             public AddProductInvalidTestData()
             {
                 Add(0, "description 1", true, null);
-                Add(1, "description 2", false, 15.4m);
                 Add(0, "", true, 15.4m);
             }
         }

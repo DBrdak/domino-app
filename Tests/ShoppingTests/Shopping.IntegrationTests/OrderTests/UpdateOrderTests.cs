@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Order.IntegrationTests.FeatureTests.Customer
+namespace Shopping.IntegrationTests.OrderTests
 {
-    public class GetCustomerOrderTests
+    internal class UpdateOrderTests
     {
-
     }
 }

@@ -6,7 +6,7 @@ namespace OnlineShop.Catalog.Domain.Products
     {
         public string Id { get; init; }
         public string Description { get; init; }
-        public string ImageUrl { get; private set; }
+        public string? ImageUrl { get; private set; }
         public bool IsWeightSwitchAllowed { get; init; }
         public decimal? SingleWeight { get; init; }
         public bool IsAvailable { get; init; }

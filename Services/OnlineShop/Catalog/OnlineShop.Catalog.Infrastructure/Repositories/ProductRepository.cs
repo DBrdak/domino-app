@@ -55,7 +55,7 @@ namespace OnlineShop.Catalog.Infrastructure.Repositories
                 return null;
             }
 
-            if (newValues.ImageUrl != product.Image.Url)
+            if (!string.IsNullOrWhiteSpace(newValues.ImageUrl) && newValues.ImageUrl != product.Image.Url)
             {
                 await _photoRepository.DeletePhoto(product.Image.Url);
             }

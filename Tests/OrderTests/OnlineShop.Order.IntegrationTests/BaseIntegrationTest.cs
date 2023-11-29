@@ -35,15 +35,32 @@ public class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
 
     private void SeedDatabase()
     {
+        var factory = new EntityFactory();
+        var orders = factory.CreateOrders(5);
+
+        Context.AddRange(orders);
+        var a = Context.SaveChanges();
+        if(a >0) return;
     }
 
     public class EntityFactory
     {
 
-        //public List<OnlineOrder> CreateOrders(int count)
-        //{
+        public List<OnlineOrder> CreateOrders(int count)
+        {
+            var orders = new List<OnlineOrder>(count);
 
-        //}
+            for (int i = 0; i < count; i++)
+            {
+                var shoppingCart = ProduceShoppingCart(i, new Random().Next(1, 9));
+
+                var order = OnlineOrder.Create(shoppingCart);
+
+                orders.Add(order);
+            }
+
+            return orders;
+        }
 
         private ShoppingCartCheckoutItem ProduceShoppingCartItem(int index)
         {
