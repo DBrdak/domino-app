@@ -95,7 +95,18 @@ namespace Shops.Infrastructure.Repositories
 
         public async Task<bool> DeleteShop(string requestShopId, CancellationToken cancellationToken)
         {
-            var isValid = await CheckIfShopIsValidForDeletion(requestShopId, cancellationToken);
+            var shop = await (await _context.Shops.FindAsync(
+                    s => s.Id == requestShopId,
+                    null,
+                    cancellationToken))
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (shop is null)
+            {
+                return false;
+            }
+
+            var isValid = CheckIfShopIsValidForDeletion(shop, cancellationToken);
 
             if (!isValid)
             {
@@ -110,15 +121,6 @@ namespace Shops.Infrastructure.Repositories
             return deletionResult.IsAcknowledged && deletionResult.DeletedCount > 0;
         }
 
-        private async Task<bool> CheckIfShopIsValidForDeletion(string requestShopId, CancellationToken cancellationToken)
-        {
-            var shop = await (await _context.Shops.FindAsync(
-                s => s.Id == requestShopId,
-                null,
-                cancellationToken))
-                .FirstOrDefaultAsync(cancellationToken);
-
-            return !shop.OrdersId.Any();
-        }
+        private bool CheckIfShopIsValidForDeletion(Shop shop, CancellationToken cancellationToken) => !shop.OrdersId.Any();
     }
 }

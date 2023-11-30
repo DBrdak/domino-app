@@ -121,8 +121,11 @@ namespace OnlineShop.Catalog.Domain.Products
 
         public void Update(UpdateValues newValues)
         {
-            var newImage = new Photo(newValues.ImageUrl);
-            Image = newImage;
+            if(!string.IsNullOrWhiteSpace(newValues.ImageUrl) && newValues.ImageUrl != Image.Url)
+            {
+                var newImage = new Photo(newValues.ImageUrl);
+                Image = newImage;
+            }
             
             if (!string.IsNullOrWhiteSpace(newValues.Description))
             {

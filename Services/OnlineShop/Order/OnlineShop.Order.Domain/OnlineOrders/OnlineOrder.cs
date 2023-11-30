@@ -87,7 +87,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
         {
             Items = orderItems.ToList();
             Status = OrderStatus.Modified;
-            CompletionDate = DateTimeService.UtcNow.ToLocalTime();
+            CompletionDate = DateTimeService.UtcNow;
         }
 
         private static string GenerateId() => Ulid.NewUlid(DateTimeOffset.UtcNow).ToString().Substring(4, 12);
@@ -130,7 +130,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                     $"Cannot cancel order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
-            CompletionDate = DateTimeService.UtcNow.ToLocalTime();
+            CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Cancelled;
         }
 
@@ -142,7 +142,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                     $"Cannot reject order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
-            CompletionDate = DateTimeService.UtcNow.ToLocalTime();
+            CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Rejected;
         }
 
@@ -154,7 +154,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                     $"Cannot receive order with id: {Id} because of it status is {Status.StatusMessage}");
             }
 
-            CompletionDate = DateTimeService.UtcNow.ToLocalTime();
+            CompletionDate = DateTimeService.UtcNow;
             Status = OrderStatus.Received;
         }
 
@@ -168,7 +168,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
 
             if (modifiedOrderItems is null)
             {
-                CompletionDate = DateTimeService.UtcNow.ToLocalTime();
+                CompletionDate = DateTimeService.UtcNow;
                 Status = OrderStatus.Accepted;
                 return;
             }
@@ -217,7 +217,7 @@ namespace OnlineShop.Order.Domain.OnlineOrders
                 shoppingCart.DeliveryLocation,
                 shoppingCart.DeliveryDate.ParseToUTC(),
                 GenerateId(),
-                DateTimeService.UtcNow.ToLocalTime(),
+                DateTimeService.UtcNow,
                 null,
                 OrderStatus.Validating);
 

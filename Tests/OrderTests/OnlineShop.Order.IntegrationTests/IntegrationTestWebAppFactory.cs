@@ -47,10 +47,10 @@ namespace OnlineShop.Order.IntegrationTests
             });
         }
 
-        public Task InitializeAsync()
-            => _postgresDbContainer.StartAsync();
+        public async Task InitializeAsync()
+            => await _postgresDbContainer.StartAsync();
 
-        public Task DisposeAsync()
-            => _postgresDbContainer.DisposeAsync().AsTask();
+        public async Task DisposeAsync()
+            => await _postgresDbContainer.DisposeAsync().AsTask();
     }
 }

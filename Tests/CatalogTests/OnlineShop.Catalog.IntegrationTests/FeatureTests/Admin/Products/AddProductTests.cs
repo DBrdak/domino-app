@@ -81,7 +81,6 @@ namespace OnlineShop.Catalog.IntegrationTests.FeatureTests.Admin.Products
 
             // Assert
             await Assert.ThrowsAsync<ValidationException>(createFunc);
-
             
         }
 

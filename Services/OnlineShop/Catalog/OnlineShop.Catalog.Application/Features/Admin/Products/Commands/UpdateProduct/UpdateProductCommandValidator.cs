@@ -16,7 +16,7 @@ namespace OnlineShop.Catalog.Application.Features.Admin.Products.Commands.Update
             RuleFor(x => x.NewValues)
                 .Must(
                     v => (v.IsWeightSwitchAllowed && v.SingleWeight.HasValue) ||
-                         (!v.IsWeightSwitchAllowed && !v.SingleWeight.HasValue))
+                         (!v.IsWeightSwitchAllowed))
                 .WithMessage("Niewłaściwe wartości dla alternatywnej jednostki");
         }
     }

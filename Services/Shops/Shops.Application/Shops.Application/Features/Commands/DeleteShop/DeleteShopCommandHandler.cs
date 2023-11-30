@@ -20,7 +20,7 @@ namespace Shops.Application.Features.Commands.DeleteShop
 
             return isSuccess ?
                     Result.Success() :
-                    Result.Failure(Error.InvalidRequest($"Nie można usunąć sklepu o ID: {request.ShopId}"));
+                    Result.Failure(Error.InvalidRequest($"Nie można usunąć sklepu o ID: {request.ShopId}, sklep nie istnieje, bądź ma aktywne zamówienia"));
         }
     }
 }

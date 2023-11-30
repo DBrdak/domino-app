@@ -14,7 +14,7 @@ namespace OnlineShop.ShoppingCart.API.Entities
         public string ProductId { get; init; }
         public string ProductName { get; init; }
         public Photo ProductImage { get; init; }
-        public Quantity SingleWeight { get; init; }
+        public Quantity? SingleWeight { get; init; }
         public Money? AlternativeUnitPrice { get; init; }
 
         [JsonConstructor]
