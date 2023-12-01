@@ -23,7 +23,7 @@ namespace OnlineShop.ShoppingCart.API.Entities
             string productId,
             string productName,
             Photo productImage,
-            Quantity singleWeight,
+            Quantity? singleWeight,
             Money? alternativeUnitPrice)
         {
             if (price.Unit is null)
