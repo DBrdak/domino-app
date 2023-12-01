@@ -3,23 +3,31 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Shops.API.Extensions;
 using Shops.API.Middlewares;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace Shops.API;
 
-builder.InjectLogging();
-builder.Services.Inject(builder.Configuration);
-
-var app = builder.Build();
-
-app.UseRouting();
-app.MapHealthChecks(
-    "/health",
-    new HealthCheckOptions
+public class Program
+{
+    public static async Task Main(string[] args)
     {
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-    });
-app.MapControllers();
-app.UseCors("DefaultPolicy");
-app.UseMiddleware<MonitoringMiddleware>();
-app.UseMiddleware<ExceptionMiddleware>();
+        var builder = WebApplication.CreateBuilder(args);
 
-await app.RunAsync();
+        builder.InjectLogging();
+        builder.Services.Inject(builder.Configuration);
+
+        var app = builder.Build();
+
+        app.UseRouting();
+        app.MapHealthChecks(
+            "/health",
+            new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+        app.MapControllers();
+        app.UseCors("DefaultPolicy");
+        app.UseMiddleware<MonitoringMiddleware>();
+        app.UseMiddleware<ExceptionMiddleware>();
+
+        await app.RunAsync();
+    }
+}

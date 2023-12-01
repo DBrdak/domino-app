@@ -30,7 +30,7 @@ namespace Shops.Domain.Tests.Shops
         }
 
         [Fact]
-        public void AddSeller_InvalidData_ShouldThrow()
+        public void AddSeller_InvalidDuplicatedData_ShouldThrow()
         {
             // Arrange
             var stationaryShop = ShopTestData.CreateStationaryShop();
@@ -44,6 +44,21 @@ namespace Shops.Domain.Tests.Shops
             Assert.Throws<DomainException<Shop>>(tryToAddDuplicatedsellerFunc);
             Assert.True(stationaryShop.Sellers.First() == seller1);
             Assert.True(stationaryShop.Sellers.Count == 1);
+        }
+
+        [Theory]
+        [InlineData("", "Tester", "555444333")]
+        [InlineData("Test", "", "555444333")]
+        [InlineData("Test", "Tester", "1234567890")]
+        public void AddSeller_InvalidSellerData_ShouldThrow(string sellerFirstName, string sellerLastName, string sellerPhoneNumber)
+        {
+            // Arrange
+
+            // Act
+            var tryCreateSellerFunc = () => new Seller(sellerFirstName, sellerLastName, sellerPhoneNumber);
+
+            // Assert
+            Assert.Throws<DomainException<Seller>>(tryCreateSellerFunc);
         }
     }
 }

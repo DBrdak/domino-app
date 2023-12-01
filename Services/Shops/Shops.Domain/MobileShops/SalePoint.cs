@@ -68,5 +68,23 @@ namespace Shops.Domain.MobileShops
             OpenHours = updatedSalePoint.OpenHours;
             WeekDay = updatedSalePoint.WeekDay;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not SalePoint second)
+            {
+                return false;
+            }
+
+            return second.WeekDay == WeekDay &&
+                   second.CachedOpenHours == CachedOpenHours &&
+                   second.OpenHours == OpenHours &&
+                   second.Location == Location &&
+                   second.IsClosed == IsClosed;
+        }
+
+        public static bool operator ==(SalePoint first, SalePoint second) => first.Equals(second);
+
+        public static bool operator !=(SalePoint first, SalePoint second) => !first.Equals(second);
     }
 }
