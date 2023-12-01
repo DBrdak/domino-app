@@ -9,9 +9,11 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
     public class UpdateMobileShopTests : UpdateShopTests
     {
         private List<MobileShop> GetMobileShops => GetShops.OfType<MobileShop>().ToList();
+        private readonly string _mobileShopId;
 
         public UpdateMobileShopTests(IntegrationTestWebAppFactory factory) : base(factory)
         {
+            _mobileShopId = GetMobileShops[0].Id;
         }
 
         [Fact]
@@ -28,7 +30,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
                 null
             );
             var command = new UpdateShopCommand(
-                MobileShopId,
+                _mobileShopId,
                 null,
                 null,
                 mobileShopUpdateValues,
@@ -37,7 +39,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
             // Act
             var result = await Sender.Send(command);
             var isPlateUpdated =
-                GetMobileShops.First(s => s.Id == MobileShopId).VehiclePlateNumber == newVehiclePlateNumber;
+                GetMobileShops.First(s => s.Id == _mobileShopId).VehiclePlateNumber == newVehiclePlateNumber;
 
             // Assert
             Assert.True(isPlateUpdated);
@@ -57,7 +59,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
                 null
                 );
             var command = new UpdateShopCommand(
-                MobileShopId,
+                _mobileShopId,
                 null,
                 null,
                 mobileShopUpdateValues,
@@ -65,7 +67,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
 
             // Act
             var result = await Sender.Send(command);
-            var isSalePointAdded = GetMobileShops.First(s => s.Id == MobileShopId).SalePoints
+            var isSalePointAdded = GetMobileShops.First(s => s.Id == _mobileShopId).SalePoints
                     .FirstOrDefault(sp => sp == newSalePoint) is not null;
 
             // Assert
@@ -76,7 +78,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
         public async Task UpdateSalePoint_ValidData_ShouldUpdate()
         {
             // Arrange
-            var salePointToUpdate = GetMobileShops.First(s => s.Id == MobileShopId).SalePoints.First();
+            var salePointToUpdate = GetMobileShops.First(s => s.Id == _mobileShopId).SalePoints.First();
             var updatedSalePoint = new SalePoint(
                 salePointToUpdate.Location,
                 WeekDay.Friday,
@@ -93,7 +95,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
                 null
             );
             var command = new UpdateShopCommand(
-                MobileShopId,
+                _mobileShopId,
                 null,
                 null,
                 mobileShopUpdateValues,
@@ -101,7 +103,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
 
             // Act
             var result = await Sender.Send(command);
-            var isSalePointUpdated = GetMobileShops.First(s => s.Id == MobileShopId).SalePoints
+            var isSalePointUpdated = GetMobileShops.First(s => s.Id == _mobileShopId).SalePoints
                     .FirstOrDefault(sp => sp == updatedSalePoint) is not null;
 
             // Assert
@@ -112,7 +114,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
         public async Task DeleteSalePoint_ValidData_ShouldDelete()
         {
             // Arrange
-            var salePointToDelete = GetMobileShops.First(s => s.Id == MobileShopId).SalePoints.First();
+            var salePointToDelete = GetMobileShops.First(s => s.Id == _mobileShopId).SalePoints.First();
             var mobileShopUpdateValues = new MobileShopUpdateValues(
                 null,
                 null,
@@ -122,7 +124,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
                 null
             );
             var command = new UpdateShopCommand(
-                MobileShopId,
+                _mobileShopId,
                 null,
                 null,
                 mobileShopUpdateValues,
@@ -130,7 +132,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
 
             // Act
             var result = await Sender.Send(command);
-            var isSalePointDeleted = GetMobileShops.First(s => s.Id == MobileShopId).SalePoints
+            var isSalePointDeleted = GetMobileShops.First(s => s.Id == _mobileShopId).SalePoints
                     .FirstOrDefault(sp => sp == salePointToDelete) is null;
 
             // Assert

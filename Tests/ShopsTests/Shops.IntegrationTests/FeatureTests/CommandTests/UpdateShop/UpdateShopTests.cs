@@ -9,15 +9,12 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
 {
     public class UpdateShopTests : BaseIntegrationTest
     {
-        protected readonly string MobileShopId;
-        protected readonly string StationaryShopId;
+        private readonly string _shopId;
         protected List<Shop> GetShops => Context.Shops.Find(FilterDefinition<Shop>.Empty).ToList();
 
         public UpdateShopTests(IntegrationTestWebAppFactory factory) : base(factory)
         {
-            var shops = Context.Shops.Find(FilterDefinition<Shop>.Empty).ToList();
-            MobileShopId = shops.First(s => s is MobileShop).Id;
-            StationaryShopId = shops.First(s => s is StationaryShop).Id;
+            _shopId = GetShops[0].Id;
         }
 
         [Fact]
@@ -26,7 +23,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
             // Arrange
             var newSeller = new Seller("Test", "Tester", "555444333");
             var command = new UpdateShopCommand(
-                MobileShopId,
+                _shopId,
                 newSeller,
                 null,
                 null,
@@ -34,7 +31,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
 
             // Act
             var result = await Sender.Send(command);
-            var isSellerAdded = GetShops.First(s => s.Id == MobileShopId).Sellers.Contains(newSeller);
+            var isSellerAdded = GetShops.First(s => s.Id == _shopId).Sellers.Contains(newSeller);
 
             // Assert
             Assert.True(isSellerAdded);
@@ -44,9 +41,9 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
         public async Task DeleteSeller_ValidData_ShouldSuccess()
         {
             // Arrange
-            var sellerToDelete = GetShops.First(s => s.Id == MobileShopId).Sellers[0];
+            var sellerToDelete = GetShops.First(s => s.Id == _shopId).Sellers[0];
             var command = new UpdateShopCommand(
-                MobileShopId,
+                _shopId,
                 null,
                 sellerToDelete,
                 null,
@@ -54,7 +51,7 @@ namespace Shops.IntegrationTests.FeatureTests.CommandTests.UpdateShop
 
             // Act
             var result = await Sender.Send(command);
-            var isSellerDeleted = !GetShops.First(s => s.Id == MobileShopId).Sellers.Contains(sellerToDelete);
+            var isSellerDeleted = !GetShops.First(s => s.Id == _shopId).Sellers.Contains(sellerToDelete);
 
             // Assert
             Assert.True(isSellerDeleted);
