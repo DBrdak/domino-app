@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import HomePage from '../../customer/home/HomePage';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import ModalContainer from '../../components/ModalContainer';
 import { ToastContainer } from 'react-toastify';
